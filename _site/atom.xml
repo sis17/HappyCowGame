@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>Happy Cow Game</title>
+ <link href="http://username.github.io/" rel="self"/>
+ <link href="http://username.github.io"/>
+ <updated>2015-01-27T14:33:25+00:00</updated>
+ <id>http://username.github.io</id>
+ <author>
+   <name>Simeon Smith</name>
+   <email>sis17@aber.ac.uk</email>
+ </author>
+
+ 
+ <entry>
+   <title>What is the Tizen platform?</title>
+   <link href="http://username.github.io/research/2015/01/27/tizen"/>
+   <updated>2015-01-27T00:00:00+00:00</updated>
+   <id>http://username.github.io/research/2015/01/27/tizen</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;developer.tizen.org&quot;&gt;developer.tizen.org&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;When researching platforms often used to develop web applications I came across Tizen. 
+It is an open source engine to aid developers construct feature-rich web applications.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>What is the Tizen platform?</title>
+   <link href="http://username.github.io/research/2015/01/27/mozilla-game-engine-and-tools"/>
+   <updated>2015-01-27T00:00:00+00:00</updated>
+   <id>http://username.github.io/research/2015/01/27/mozilla-game-engine-and-tools</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Games/Tools/Engines_and_tools&quot;&gt;https://developer.mozilla.org/en-US/docs/Games/Tools/Engines_and_tools&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Mozilla has some helpful guides for developing ‘web applications’. However, it focuses on HTML5 and Javascript games, without going into detail about server side frameworks.&lt;/p&gt;
+
+&lt;p&gt;It introduces the HTML5 element ‘canvas’ for 2D games, and WebGL for 3D games. It also includes a list of technologies to aid game developemnt on the client side.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>What is the Tizen platform?</title>
+   <link href="http://username.github.io/research/2015/01/27/mozilla-game-considerations"/>
+   <updated>2015-01-27T00:00:00+00:00</updated>
+   <id>http://username.github.io/research/2015/01/27/mozilla-game-considerations</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/Apps/Build/Games/Special_considerations&quot;&gt;https://developer.mozilla.org/en-US/Apps/Build/Games/Special_considerations&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ 
+</feed>

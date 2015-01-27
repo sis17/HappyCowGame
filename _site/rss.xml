@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+        <title>Happy Cow Game</title>
+        <description>Happy Cow Game - Simeon Smith</description>
+        <link>http://username.github.io</link>
+        <link>http://username.github.io</link>
+        <lastBuildDate>2015-01-27T14:33:25+00:00</lastBuildDate>
+        <pubDate>2015-01-27T14:33:25+00:00</pubDate>
+        <ttl>1800</ttl>
+
+
+        <item>
+                <title>What is the Tizen platform?</title>
+                <description>&lt;p&gt;&lt;a href=&quot;developer.tizen.org&quot;&gt;developer.tizen.org&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;When researching platforms often used to develop web applications I came across Tizen. 
+It is an open source engine to aid developers construct feature-rich web applications.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/27/tizen</link>
+                <guid>http://username.github.io/research/2015/01/27/tizen</guid>
+                <pubDate>2015-01-27T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>What is the Tizen platform?</title>
+                <description>&lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Games/Tools/Engines_and_tools&quot;&gt;https://developer.mozilla.org/en-US/docs/Games/Tools/Engines_and_tools&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Mozilla has some helpful guides for developing ‘web applications’. However, it focuses on HTML5 and Javascript games, without going into detail about server side frameworks.&lt;/p&gt;
+
+&lt;p&gt;It introduces the HTML5 element ‘canvas’ for 2D games, and WebGL for 3D games. It also includes a list of technologies to aid game developemnt on the client side.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/27/mozilla-game-engine-and-tools</link>
+                <guid>http://username.github.io/research/2015/01/27/mozilla-game-engine-and-tools</guid>
+                <pubDate>2015-01-27T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>What is the Tizen platform?</title>
+                <description>&lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/Apps/Build/Games/Special_considerations&quot;&gt;https://developer.mozilla.org/en-US/Apps/Build/Games/Special_considerations&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/27/mozilla-game-considerations</link>
+                <guid>http://username.github.io/research/2015/01/27/mozilla-game-considerations</guid>
+                <pubDate>2015-01-27T00:00:00+00:00</pubDate>
+        </item>
+
+
+</channel>
+</rss>
