@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>What is the Tizen platform?</title>
+    <title>Objective-j - extending javascript.</title>
     
     <meta name="author" content="Simeon Smith">
 
@@ -130,19 +130,50 @@
       <div class="container">
         
 <div class="page-header">
-  <h1>What is the Tizen platform? </h1>
+  <h1>Objective-j - extending javascript. </h1>
 </div>
 
 <div class="row post-full">
   <div class="col-xs-12">
     <div class="date">
-      <span>27 January 2015</span>
+      <span>28 January 2015</span>
     </div>
     <div class="content">
-      <p><a href="developer.tizen.org">developer.tizen.org</a></p>
+      <p><a href="http://www.cappuccino-project.org/learn/objective-j.html">http://www.cappuccino-project.org/learn/objective-j.html</a></p>
 
-<p>When researching platforms often used to develop web applications I came across Tizen. 
-It is an open source engine to aid developers construct feature-rich web applications.</p>
+<p>Objective-j is an object oriented language built on top of Javascript. It is provided via the Cappuccino framework. Some of it’s features are 
+explained below.</p>
+
+<h3 id="classes">Classes</h3>
+
+<p>Classes are introduced in the following way. The class is everything between the implimentation and end.</p>
+
+<p>```
+@implementation Person : CPObject 
+{</p>
+
+<p>}
+@end
+```</p>
+
+<h3 id="methods">Methods</h3>
+
+<p><code>
+- (void)setName:(CPString)aName
+{
+    name = aName;
+}
+</code></p>
+
+<p>The - means the method is private. + makes it public.</p>
+
+<p>(void) is the return type, this can be any type or object.</p>
+
+<p>(CPString)aName is a parameter, with type and name of the variable. With more than one parameter a colon seperator is used:</p>
+
+<p><code>
+- (void)setJobTitle:(CPString)aJobTitle company:(CPString)aCompany
+</code></p>
 
     </div>
 
@@ -158,6 +189,14 @@ It is an open source engine to aid developers construct feature-rich web applica
     	<li><a href="/categories.html#research-ref">
     		research <span>20</span>
     	</a></li>
+     
+    	<li><a href="/categories.html#framework-ref">
+    		framework <span>3</span>
+    	</a></li>
+     
+    	<li><a href="/categories.html#language-ref">
+    		language <span>1</span>
+    	</a></li>
     
   
 
@@ -170,11 +209,11 @@ It is an open source engine to aid developers construct feature-rich web applica
     <hr>
     <ul class="pagination">
     
-      <li class="prev"><a href="/2015/01/27/spring" title="Spring">&laquo; Previous</a></li>
+      <li class="prev"><a href="/research/2015/01/28/nounds-and-verbs" title="Nouns vs. Verbs, OO vs. Functional programming.">&laquo; Previous</a></li>
     
       <li><a href="/archive.html">Archive</a></li>
     
-      <li class="next"><a href="/research/2015/01/28/atom" title="Cappuccino - a tool for web applications.">Next &raquo;</a></li>
+      <li class="next"><a href="/research/2015/01/28/require-for-templates" title="Loading external files for Underscore.js.">Next &raquo;</a></li>
     
     </ul>
     <hr>

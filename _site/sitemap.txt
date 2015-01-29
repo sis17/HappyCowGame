@@ -8,6 +8,24 @@ http://username.github.io/rss.xml
 http://username.github.io/sitemap.txt
 http://username.github.io/tags.html
 
+http://username.github.io/research/2015/01/29/paper-on-game-theory
+http://username.github.io/research/theory/2015/01/29/game-engines
+http://username.github.io/research/2015/01/28/require-for-templates
+http://username.github.io/research/framework/language/2015/01/28/objective-j
+http://username.github.io/research/2015/01/28/nounds-and-verbs
+http://username.github.io/research/2015/01/28/learning-node
+http://username.github.io/research/2015/01/28/compare-node-to-standard
+http://username.github.io/research/framework/2015/01/28/backbone-guide
+http://username.github.io/research/2015/01/28/backbone
+http://username.github.io/research/2015/01/28/atom
 http://username.github.io/research/2015/01/27/tizen
+http://username.github.io/2015/01/27/spring
+http://username.github.io/research/2015/01/27/objective-j
 http://username.github.io/research/2015/01/27/mozilla-game-engine-and-tools
 http://username.github.io/research/2015/01/27/mozilla-game-considerations
+http://username.github.io/research/2015/01/27/google-game-api
+http://username.github.io/research/2015/01/27/clientside-storage
+http://username.github.io/research/2015/01/27/client-vs-server-react
+http://username.github.io/research/framework/2015/01/27/cappuccino
+http://username.github.io/research/2015/01/27/best-approach
+http://username.github.io/research/2015/01/27/280slides-example

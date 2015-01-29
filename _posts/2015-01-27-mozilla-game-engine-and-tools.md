@@ -1,6 +1,6 @@
 ---
 layout: post
-title: What is the Tizen platform?
+title: Engines and tools for developing web games - Mozilla.
 categories: [research]
 ---
 

@@ -5,10 +5,216 @@
         <description>Happy Cow Game - Simeon Smith</description>
         <link>http://username.github.io</link>
         <link>http://username.github.io</link>
-        <lastBuildDate>2015-01-27T14:41:02+00:00</lastBuildDate>
-        <pubDate>2015-01-27T14:41:02+00:00</pubDate>
+        <lastBuildDate>2015-01-29T10:13:58+00:00</lastBuildDate>
+        <pubDate>2015-01-29T10:13:58+00:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>What is a game?</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://gamestudies.org/1401/articles/arjoranta&quot;&gt;http://gamestudies.org/1401/articles/arjoranta&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This is a paper about how to define games, common problems when defining games. It does not relate to board games specifically, or even online,
+or web-based games, so I did not read much of it.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/29/paper-on-game-theory</link>
+                <guid>http://username.github.io/research/2015/01/29/paper-on-game-theory</guid>
+                <pubDate>2015-01-29T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>A variety of game engines.</title>
+                <description>&lt;h3 id=&quot;photon&quot;&gt;Photon&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.exitgames.com/en/Turnbased&quot;&gt;https://www.exitgames.com/en/Turnbased&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Has an impressive portfolio of games developed using it. It allows games to be quickly and easly deployed world wide with cloud server hosting
+and pre-built game components, such as matching players and putting them in a game together.&lt;/p&gt;
+
+&lt;p&gt;It’s a bit pricy though, and does not focus on board games.&lt;/p&gt;
+
+&lt;h3 id=&quot;coco2d-x&quot;&gt;Coco2D-x&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.cocos2d-x.org/wiki&quot;&gt;http://www.cocos2d-x.org/wiki&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This is the open source version of the Coco2D platform. It can be used to make 2D games, or simple 3D adventure games. Commonly used for 
+mobile game development.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.raywenderlich.com/12022/how-to-make-a-turn-based-strategy-game-part-1&quot;&gt;http://www.raywenderlich.com/12022/how-to-make-a-turn-based-strategy-game-part-1&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This is the tutorial I found about Coco2D.&lt;/p&gt;
+
+&lt;h3 id=&quot;vassal&quot;&gt;Vassal&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.vassalengine.org/wiki/Overview&quot;&gt;http://www.vassalengine.org/wiki/Overview&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This is not web based, but runs on client Java software. Players make decisions and the game updates other players via the game engine messaging
+or via email. It is designed for board games.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=8148477&quot;&gt;https://news.ycombinator.com/item?id=8148477&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This article explains a bit more about Vassal, it often does not implement any rules, but expects players to behave as if they were playing
+the board game themselves.&lt;/p&gt;
+
+&lt;h3 id=&quot;boardgameareana&quot;&gt;BoardGameAreana&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://en.boardgamearena.com/#!doc/Studio&quot;&gt;http://en.boardgamearena.com/#!doc/Studio&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/theory/2015/01/29/game-engines</link>
+                <guid>http://username.github.io/research/theory/2015/01/29/game-engines</guid>
+                <pubDate>2015-01-29T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Loading external files for Underscore.js.</title>
+                <description>&lt;p&gt;&lt;a href=&quot;https://www.safaribooksonline.com/library/view/developing-backbonejs-applications/9781449328535/ch04s03.html&quot;&gt;https://www.safaribooksonline.com/library/view/developing-backbonejs-applications/9781449328535/ch04s03.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This blog explains that require.js is used for loading in libraries, Javascript, CSS, ect. However, it can also be used to load in templates
+when using Underscore.js, Handlebars.js or Moustache.js to render templates in a Javascript framework.&lt;/p&gt;
+
+&lt;p&gt;This was good news as it saved me from making a poor hand written attempt with and Ajax request.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/28/require-for-templates</link>
+                <guid>http://username.github.io/research/2015/01/28/require-for-templates</guid>
+                <pubDate>2015-01-28T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Objective-j - extending javascript.</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://www.cappuccino-project.org/learn/objective-j.html&quot;&gt;http://www.cappuccino-project.org/learn/objective-j.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Objective-j is an object oriented language built on top of Javascript. It is provided via the Cappuccino framework. Some of it’s features are 
+explained below.&lt;/p&gt;
+
+&lt;h3 id=&quot;classes&quot;&gt;Classes&lt;/h3&gt;
+
+&lt;p&gt;Classes are introduced in the following way. The class is everything between the implimentation and end.&lt;/p&gt;
+
+&lt;p&gt;```
+@implementation Person : CPObject 
+{&lt;/p&gt;
+
+&lt;p&gt;}
+@end
+```&lt;/p&gt;
+
+&lt;h3 id=&quot;methods&quot;&gt;Methods&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;
+- (void)setName:(CPString)aName
+{
+    name = aName;
+}
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The - means the method is private. + makes it public.&lt;/p&gt;
+
+&lt;p&gt;(void) is the return type, this can be any type or object.&lt;/p&gt;
+
+&lt;p&gt;(CPString)aName is a parameter, with type and name of the variable. With more than one parameter a colon seperator is used:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+- (void)setJobTitle:(CPString)aJobTitle company:(CPString)aCompany
+&lt;/code&gt;&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/framework/language/2015/01/28/objective-j</link>
+                <guid>http://username.github.io/research/framework/language/2015/01/28/objective-j</guid>
+                <pubDate>2015-01-28T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Nouns vs. Verbs, OO vs. Functional programming.</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://steve-yegge.blogspot.co.uk/2006/03/execution-in-kingdom-of-nouns.html&quot;&gt;http://steve-yegge.blogspot.co.uk/2006/03/execution-in-kingdom-of-nouns.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Nouns are things like rocks, trees, houses, people, heads and hands. Verbs are actions, run, do, take out the garbage, eat. We use both nouns and verbs
+in every day life to accomplish actions on things. However, OO languages, especially Java, restricts users to attaching verbs to nouns. This
+can be counter-intuitive at times, by being over restrictive. &lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/28/nounds-and-verbs</link>
+                <guid>http://username.github.io/research/2015/01/28/nounds-and-verbs</guid>
+                <pubDate>2015-01-28T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Node Beginner - learning to use node.js.</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://www.nodebeginner.org/&quot;&gt;http://www.nodebeginner.org/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;rd-generation-javascript&quot;&gt;3rd Generation Javascript&lt;/h3&gt;
+
+&lt;p&gt;Node.js is Javascript in it’s third generation. First Javascript created small changes on static HTML pages, such as displaying dates and
+changing colours. Then in the second generation it supported Ajax requests to asyncronously load data to a page, querying the server behind
+the scenes. In this generation Javascript runs the webserver itself, it has moved server side to generate web pages. So this is Javascript
+with even more power, the whole web-stack in one language.&lt;/p&gt;
+
+</description>
+                <link>http://username.github.io/research/2015/01/28/learning-node</link>
+                <guid>http://username.github.io/research/2015/01/28/learning-node</guid>
+                <pubDate>2015-01-28T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Why use Node.js?</title>
+                <description>&lt;h3 id=&quot;comparing-nodejs-vs-php-with-apache&quot;&gt;Comparing Node.js vs. PHP with Apache&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/questions/7419976/whats-advantages-on-using-node-js-node-http-server-over-php-ruby-etc-nginx&quot;&gt;http://stackoverflow.com/questions/7419976/whats-advantages-on-using-node-js-node-http-server-over-php-ruby-etc-nginx&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Choice of framework depends on what you are trying to do.&lt;/p&gt;
+
+&lt;p&gt;Node.js is quick and fast. It lets you implement more functionallity from scratch, and is a learning experience.&lt;/p&gt;
+
+&lt;p&gt;More developed frameworks such as Rails is safer, and provides more documentation, but can force your hand by requiring an application to be 
+created in a certain way.&lt;/p&gt;
+
+&lt;h3 id=&quot;comparing-nodejs-vs-other-frameworks&quot;&gt;Comparing Node.js vs. Other Frameworks&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://medium.com/@sagish/intro-why-i-chose-node-js-over-ruby-on-rails-905b0d7d15c3&quot;&gt;https://medium.com/@sagish/intro-why-i-chose-node-js-over-ruby-on-rails-905b0d7d15c3&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This chap’s opinion is that Node.js provides a lightweight and fast alternative to other server-framework varients. He liked programming in 
+Javascript (a taste I don’t fully share), and so was thrilled to discover Node.js and soon fell in love.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/28/compare-node-to-standard</link>
+                <guid>http://username.github.io/research/2015/01/28/compare-node-to-standard</guid>
+                <pubDate>2015-01-28T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>A guide to Backbone.js.</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://addyosmani.github.io/backbone-fundamentals/&quot;&gt;http://addyosmani.github.io/backbone-fundamentals/&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/framework/2015/01/28/backbone-guide</link>
+                <guid>http://username.github.io/research/framework/2015/01/28/backbone-guide</guid>
+                <pubDate>2015-01-28T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Backbone - a frontend JS framework.</title>
+                <description>&lt;h3 id=&quot;backbonejs&quot;&gt;Backbone.js&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://backbonejs.org/&quot;&gt;http://backbonejs.org/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Users a model view approach to automatically save data to the server and update the page.&lt;/p&gt;
+
+&lt;p&gt;Works well with REST. It is commonly used to implement a Single Page Application (SPA) on top of a RESTful API.&lt;/p&gt;
+
+&lt;h3 id=&quot;underscorejs&quot;&gt;Underscore.js&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://underscorejs.org&quot;&gt;http://underscorejs.org&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/28/backbone</link>
+                <guid>http://username.github.io/research/2015/01/28/backbone</guid>
+                <pubDate>2015-01-28T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Cappuccino - a tool for web applications.</title>
+                <description>&lt;p&gt;&lt;a href=&quot;https://atom.io/&quot;&gt;https://atom.io/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;A text editor I decided to try. It has links with Github.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/28/atom</link>
+                <guid>http://username.github.io/research/2015/01/28/atom</guid>
+                <pubDate>2015-01-28T00:00:00+00:00</pubDate>
+        </item>
 
         <item>
                 <title>What is the Tizen platform?</title>
@@ -23,7 +229,31 @@ It is an open source engine to aid developers construct feature-rich web applica
         </item>
 
         <item>
-                <title>What is the Tizen platform?</title>
+                <title>Spring</title>
+                <description>
+&lt;p&gt;&lt;a href=&quot;http://docs.spring.io/docs/Spring-MVC-step-by-step/&quot;&gt;http://docs.spring.io/docs/Spring-MVC-step-by-step/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Spring is a framework for Java to build web apps. It does not seem to offer any special support for games, but is designed for large scale web
+applications that rely on Java. As I already know more about PHP - Zend or Ruby on Rails, I didn’t delve any further.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/2015/01/27/spring</link>
+                <guid>http://username.github.io/2015/01/27/spring</guid>
+                <pubDate>2015-01-27T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Cappuccino - a tool for web applications.</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://www.stateofcode.com/2011/07/francisco-tolmasky/&quot;&gt;http://www.stateofcode.com/2011/07/francisco-tolmasky/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The creator of Objective-J talks about why they made it, and what it is good for. It is an extension of Javascript wich allows an object-oriented approach.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/27/objective-j</link>
+                <guid>http://username.github.io/research/2015/01/27/objective-j</guid>
+                <pubDate>2015-01-27T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Engines and tools for developing web games - Mozilla.</title>
                 <description>&lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Games/Tools/Engines_and_tools&quot;&gt;https://developer.mozilla.org/en-US/docs/Games/Tools/Engines_and_tools&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Mozilla has some helpful guides for developing ‘web applications’. However, it focuses on HTML5 and Javascript games, without going into detail about server side frameworks.&lt;/p&gt;
@@ -36,11 +266,95 @@ It is an open source engine to aid developers construct feature-rich web applica
         </item>
 
         <item>
-                <title>What is the Tizen platform?</title>
+                <title>Considerations when developing games - Mozilla.</title>
                 <description>&lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/Apps/Build/Games/Special_considerations&quot;&gt;https://developer.mozilla.org/en-US/Apps/Build/Games/Special_considerations&lt;/a&gt;&lt;/p&gt;
 </description>
                 <link>http://username.github.io/research/2015/01/27/mozilla-game-considerations</link>
                 <guid>http://username.github.io/research/2015/01/27/mozilla-game-considerations</guid>
+                <pubDate>2015-01-27T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Google game API.</title>
+                <description>&lt;p&gt;&lt;a href=&quot;https://developers.google.com/games/services/web/gettingstarted&quot;&gt;https://developers.google.com/games/services/web/gettingstarted&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The Google Play Game Services offer good support for simple client side games that need a way to authenticate users and provide levels, 
+leaderboards, or achievements. However, it does not offer anything else, and so does not fulfill the scope required by my project.&lt;/p&gt;
+
+&lt;p&gt;If there was not a need for data to be persisted, it would be a viable option. The game could be played in one sitting with users at the same
+machine/interface, and then user’s scores could be maintained. However, that type of application is overly simplistic for the level of project
+I want to build.&lt;/p&gt;
+
+&lt;p&gt;Using OAuth is something to keep in mind, however. An extra feature could be logging in via Google or Facebook.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/27/google-game-api</link>
+                <guid>http://username.github.io/research/2015/01/27/google-game-api</guid>
+                <pubDate>2015-01-27T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Client side storage for web applications.</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://www.webdirections.org/blog/webstorage-persistent-client-side-data-storage/&quot;&gt;http://www.webdirections.org/blog/webstorage-persistent-client-side-data-storage/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;There are 2 types of client side storage possible: session storage and local storage. Both allow an application to store data in the web browser
+between page requests, making session easier and smoother to manage. Local storage is a persistent version of session storage, available to any tab
+ and accessible forever, unless deleted by the application. There is a 5MB limit on storage per application imposed by the browsers.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/27/clientside-storage</link>
+                <guid>http://username.github.io/research/2015/01/27/clientside-storage</guid>
+                <pubDate>2015-01-27T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Client vs. Server? Or how about React.js?</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://eflorenzano.com/blog/2014/01/23/react-finally-server-client/&quot;&gt;http://eflorenzano.com/blog/2014/01/23/react-finally-server-client/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;React.js is a library which helps to blend client and server interaction. A common problem in web applications is that a page loads, but data and widgets
+must then be assembled, taking time before all the content of the page can be seen. Yet this information should have been available from the start,
+based on the request given to the server.&lt;/p&gt;
+
+&lt;p&gt;So React.js is a library that manages two DOM trees, one that is actually Javascript, and another which returns a string, and can be quickly rendered to a page.
+There are a number of technologies that, when combined with React.js, could make web applications smooth and sensible.&lt;/p&gt;
+
+&lt;p&gt;This is something to consider learning and using in my project.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/27/client-vs-server-react</link>
+                <guid>http://username.github.io/research/2015/01/27/client-vs-server-react</guid>
+                <pubDate>2015-01-27T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>Cappuccino - a tool for web applications.</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://www.cappuccino-project.org&quot;&gt;http://www.cappuccino-project.org&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/framework/2015/01/27/cappuccino</link>
+                <guid>http://username.github.io/research/framework/2015/01/27/cappuccino</guid>
+                <pubDate>2015-01-27T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>A good question.</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://www.quora.com/What-is-the-best-server-side-platform-for-developing-multi-player-games-like-words-with-friends-dots-etc&quot;&gt;http://www.quora.com/What-is-the-best-server-side-platform-for-developing-multi-player-games-like-words-with-friends-dots-etc&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;What is the best server side platform for developing multi-player games? Is the question on the forum, and what I was looking for.&lt;/p&gt;
+
+&lt;p&gt;It turns out the answer agreed with the rest of my research this afternoon: use a server side framework to create a RESTful API, and then
+access it with Ajax requests from the client. This allows the logic to be firmly controlled by the server application, yet the client can
+take any shape and form, mobile or other.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/27/best-approach</link>
+                <guid>http://username.github.io/research/2015/01/27/best-approach</guid>
+                <pubDate>2015-01-27T00:00:00+00:00</pubDate>
+        </item>
+
+        <item>
+                <title>280Slides example.</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://agbeat.com/social-media/280-slides-presentation-app-to-finally-shut-down-services-next-month/&quot;&gt;http://agbeat.com/social-media/280-slides-presentation-app-to-finally-shut-down-services-next-month/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;A smooth and easy to use web application built with Cappuccino.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/research/2015/01/27/280slides-example</link>
+                <guid>http://username.github.io/research/2015/01/27/280slides-example</guid>
                 <pubDate>2015-01-27T00:00:00+00:00</pubDate>
         </item>
 

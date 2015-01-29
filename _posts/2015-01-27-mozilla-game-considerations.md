@@ -1,6 +1,6 @@
 ---
 layout: post
-title: What is the Tizen platform?
+title: Considerations when developing games - Mozilla.
 categories: [research]
 ---
 
