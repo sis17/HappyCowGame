@@ -4,13 +4,50 @@
  <title>Happy Cow Game</title>
  <link href="http://username.github.io/" rel="self"/>
  <link href="http://username.github.io"/>
- <updated>2015-01-29T10:13:58+00:00</updated>
+ <updated>2015-01-29T14:33:47+00:00</updated>
  <id>http://username.github.io</id>
  <author>
    <name>Simeon Smith</name>
    <email>sis17@aber.ac.uk</email>
  </author>
 
+ 
+ <entry>
+   <title>Project Scope - some thoughts.</title>
+   <link href="http://username.github.io/design/2015/01/29/project-scope"/>
+   <updated>2015-01-29T00:00:00+00:00</updated>
+   <id>http://username.github.io/design/2015/01/29/project-scope</id>
+   <content type="html">&lt;h3 id=&quot;what-is-scope&quot;&gt;What is Scope?&lt;/h3&gt;
+
+&lt;p&gt;“Project scope is the part of project planning that involves determining and documenting a list of specific project goals, deliverables, tasks, costs and deadlines.”&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;definition from &lt;a href=&quot;searchcio.techtarget.com/definition/project-scope&quot;&gt;searchcio.techtarget.com&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;determined-project-goals&quot;&gt;Determined Project Goals&lt;/h3&gt;
+&lt;p&gt;The Happy Cow board game must be playable as originally created:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Players can log in or sign up&lt;/li&gt;
+  &lt;li&gt;Players choose an existing game, or make one with friends at the same machine&lt;/li&gt;
+  &lt;li&gt;Players each hace a deck of cards, get more cards and can lay cards&lt;/li&gt;
+  &lt;li&gt;There are turns and phases&lt;/li&gt;
+  &lt;li&gt;Players can choose which package to animage, and choose between dice amounts&lt;/li&gt;
+  &lt;li&gt;Players can move their packages with mouse interaction&lt;/li&gt;
+  &lt;li&gt;Packages can be damaged&lt;/li&gt;
+  &lt;li&gt;Information about the cow is always visible, to show cow health, etc.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;possible-extra-goals&quot;&gt;Possible Extra Goals&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Messaging between players, in and out of games&lt;/li&gt;
+  &lt;li&gt;Cards can be adaptable, players can therefore choose which deck to play with when starting&lt;/li&gt;
+  &lt;li&gt;More specific ingredients can be created and used, with extra side effects&lt;/li&gt;
+  &lt;li&gt;2 game types, between players across a network, and with players at the same machine&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>What is a game?</title>
@@ -64,6 +101,34 @@ the board game themselves.&lt;/p&gt;
 &lt;h3 id=&quot;boardgameareana&quot;&gt;BoardGameAreana&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://en.boardgamearena.com/#!doc/Studio&quot;&gt;http://en.boardgamearena.com/#!doc/Studio&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Game Design Fundamentals.</title>
+   <link href="http://username.github.io/research/framework/2015/01/29/game-design-fundamentals"/>
+   <updated>2015-01-29T00:00:00+00:00</updated>
+   <id>http://username.github.io/research/framework/2015/01/29/game-design-fundamentals</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;https://gamifique.files.wordpress.com/2011/11/1-rules-of-play-game-design-fundamentals.pdf&quot;&gt;https://gamifique.files.wordpress.com/2011/11/1-rules-of-play-game-design-fundamentals.pdf&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;A book on game design.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Articles on game design.</title>
+   <link href="http://username.github.io/research/framework/2015/01/29/game-design"/>
+   <updated>2015-01-29T00:00:00+00:00</updated>
+   <id>http://username.github.io/research/framework/2015/01/29/game-design</id>
+   <content type="html">&lt;p&gt;Slightly relevant, and intresting to me.&lt;/p&gt;
+
+&lt;h3 id=&quot;learn-board-game-design&quot;&gt;Learn Board Game Design&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://gamedevelopment.tutsplus.com/articles/how-to-learn-board-game-design-and-development--gamedev-11607&quot;&gt;http://gamedevelopment.tutsplus.com/articles/how-to-learn-board-game-design-and-development–gamedev-11607&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;policy-of-game-publishers&quot;&gt;Policy of Game Publishers&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://nickbentleygames.wordpress.com/2013/09/30/board-game-publishers-are-doing-it-wrong/&quot;&gt;https://nickbentleygames.wordpress.com/2013/09/30/board-game-publishers-are-doing-it-wrong/&lt;/a&gt;&lt;/p&gt;
 </content>
  </entry>
  
@@ -185,6 +250,9 @@ Javascript (a taste I don’t fully share), and so was thrilled to discover Node
    <updated>2015-01-28T00:00:00+00:00</updated>
    <id>http://username.github.io/research/framework/2015/01/28/backbone-guide</id>
    <content type="html">&lt;p&gt;&lt;a href=&quot;http://addyosmani.github.io/backbone-fundamentals/&quot;&gt;http://addyosmani.github.io/backbone-fundamentals/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;A helpful guide into Backbone.js, what it is, why an MVC framework is necessary, and more detail on using 
+Backbone’s Model, View and Event classes.&lt;/p&gt;
 </content>
  </entry>
  
@@ -208,7 +276,7 @@ Javascript (a taste I don’t fully share), and so was thrilled to discover Node
  </entry>
  
  <entry>
-   <title>Cappuccino - a tool for web applications.</title>
+   <title>Atom text editor.</title>
    <link href="http://username.github.io/research/2015/01/28/atom"/>
    <updated>2015-01-28T00:00:00+00:00</updated>
    <id>http://username.github.io/research/2015/01/28/atom</id>
@@ -223,7 +291,7 @@ Javascript (a taste I don’t fully share), and so was thrilled to discover Node
    <link href="http://username.github.io/research/2015/01/27/tizen"/>
    <updated>2015-01-27T00:00:00+00:00</updated>
    <id>http://username.github.io/research/2015/01/27/tizen</id>
-   <content type="html">&lt;p&gt;&lt;a href=&quot;developer.tizen.org&quot;&gt;developer.tizen.org&lt;/a&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;&lt;a href=&quot;developer.tizen.org&quot;&gt;http://developer.tizen.org&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;When researching platforms often used to develop web applications I came across Tizen. 
 It is an open source engine to aid developers construct feature-rich web applications.&lt;/p&gt;

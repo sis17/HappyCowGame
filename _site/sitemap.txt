@@ -8,8 +8,11 @@ http://username.github.io/rss.xml
 http://username.github.io/sitemap.txt
 http://username.github.io/tags.html
 
+http://username.github.io/design/2015/01/29/project-scope
 http://username.github.io/research/2015/01/29/paper-on-game-theory
 http://username.github.io/research/theory/2015/01/29/game-engines
+http://username.github.io/research/framework/2015/01/29/game-design-fundamentals
+http://username.github.io/research/framework/2015/01/29/game-design
 http://username.github.io/research/2015/01/28/require-for-templates
 http://username.github.io/research/framework/language/2015/01/28/objective-j
 http://username.github.io/research/2015/01/28/nounds-and-verbs
