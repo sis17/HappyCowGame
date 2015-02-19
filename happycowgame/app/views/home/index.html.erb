@@ -1,0 +1,134 @@
+<div id="section-main">
+  <div ng-controller="MenuCtrl" class="bar bar-dark bar-top">
+    <div class="pull-left">
+      <img class="cow-icon" alt="Happy Cow icon" src="assets/happycow.png" />
+    </div>
+    <ul id="menu-right" class="list-inline pull-left">
+      <li><a href="#menu" class="menu-button">Menu</a></li>
+      <li ng-controller="ScoreViewCtrl">
+        <a id="menu-score" href="#" class="menu-button">Score <span class="badge">6</span></a>
+          <div id="menu-score-content" class="hidden">
+            <ul>
+              <li ng-repeat="player in players | orderBy:score">
+                {{player.name}} <span class="badge">{{player.score}}</span>
+              </li>
+            </ul>
+          </div>
+      </li>
+    </ul>
+    <ul class="list-inline pull-right" style="margin-top: 5px;">
+      <li ng-controller="RoundViewCtrl">
+        <button id="menu-round" class="btn btn-default">
+          Round <span class="badge">3</span>
+        </button>
+        <div id="menu-round-content" class="hidden">
+          <ul>
+            <li ng-repeat="round in rounds | orderBy:number">
+              {{round.number}}
+              <button ng-if="!round.active" class="btn btn-default btn-xs">Review</button>
+              <span ng-if="round.active" class="label label-success">current</span>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="btn-group">
+          <a href="#/phase/event" class="btn btn-info">Event</a>
+          <a href="#/phase/cards" class="btn btn-default">Cards <span class="badge">4</span></a>
+          <a href="#/phase/movement" class="btn btn-default">Movement</a>
+          <a href="#/phase/review" class="btn btn-default">Review</a>
+        </div>
+      </li>
+      <li ng-controller="PlayerViewCtrl">
+        <button id="menu-player" class="btn btn-default">
+          Player <span class="badge">me</span>
+        </button>
+        <div id="menu-player-content" class="hidden">
+          <ul>
+            <li ng-repeat="player in players | orderBy:turnOrder">
+              <span class="label label-{{player.active ? 'success' : 'default'}} label-xs">
+                {{player.turnOrder}}
+              </span> - {{player.name}}
+            </li>
+          </ul>
+          In the next round Mary will start.
+        </div>
+      </li>
+    </ul><!--/.nav-collapse -->
+  </div>
+
+  <div ng-controller="PhaseCtrl" class="section-board event">
+    <div ng-view></div>
+  </div>
+
+</div><!-- /.end of section-main -->
+
+<div ng-controller="CowCtrl" id="section-info" class="container">
+  <h3>Cow Condition</h3>
+
+  <div ng-controller="CowStatsCtrl" class="container-fluid">
+    <div ng-repeat="stat in stats" class="row">
+      <div class="col-md-4">
+        <p>{{stat.name}} <span class="glyphicon glyphicon-info-sign clickable"></span></p>
+      </div>
+      <div class="col-md-8">
+        <span class="label label-{{stat.minType}} pull-left">{{stat.min}}</span>
+        <div class="progress pull-left" style="width: 70%">
+          <div class="progress-bar" role="progressbar"
+                aria-valuemin="{{stat.min}}" aria-valuemax="{{stat.max}}"
+                style="background-color: #{{stat.type()}};
+                width: {{((stat.value-stat.min)/(stat.max-stat.min)) * 100}}%;">
+                {{stat.value}}
+          </div>
+        </div>
+        <span class="label label-{{stat.maxType}} pull-left">{{stat.max}}</span>
+      </div>
+    </div>
+  </div>
+
+  <h5>Ingredients Values</h5>
+  <table ng-controller="IngredientValueCtrl" class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Resource</th>
+        <th ng-repeat="ingredient in ingredients" class="{{ingredient.name|lowercase}}">{{ingredient.name}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Milk</td>
+        <td ng-repeat="ingredient in ingredients" class="{{ingredient.name|lowercase}}">{{ingredient.milk}} pts</td>
+      </td>
+      <tr>
+        <td>Meat</td>
+        <td ng-repeat="ingredient in ingredients" class="{{ingredient.name|lowercase}}">{{ingredient.meat}} pts</td>
+      </td>
+      <tr>
+        <td>Muck</td>
+        <td ng-repeat="ingredient in ingredients" class="{{ingredient.name|lowercase}}">{{ingredient.muck}} pts</td>
+      </td>
+    </tbody>
+  </table>
+
+  <div ng-controller="CowEventsCtrl" class="panel panel-default">
+      <div class="panel-body">
+        <tabset justified="true">
+          <tab heading="Weather">
+            <h3>{{weather.title}}</h3>
+            <img class="image image-full" ng-src="assets/{{weather.img}}">
+            <div ng-bind-html="weather.content"></div>
+          </tab>
+          <tab heading="Disease">
+            <h3>{{disease.title}}</h3>
+            <img class="image image-full" ng-src="assets/{{disease.img}}">
+            <div ng-bind-html="disease.content"></div>
+          </tab>
+          <tab heading="Pregnancy">
+            <h3>{{pregnancy.title}}</h3>
+            <img class="image image-full" ng-src="assets/{{pregnancy.img}}">
+            <div ng-bind-html="pregnancy.content"></div>
+          </tab>
+        </tabset>
+      </div>
+    </div>
+</div>

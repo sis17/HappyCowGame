@@ -1,0 +1,2 @@
+class RationsController < ApplicationController
+end

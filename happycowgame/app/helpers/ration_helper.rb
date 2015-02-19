@@ -1,0 +1,2 @@
+module RationHelper
+end

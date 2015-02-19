@@ -1,0 +1,55 @@
+/* Resource Colours */
+.energy { background-color: #f0AD4E; color: #fff; }
+.protein { background-color: #D9534F; color: #fff; }
+.fibre { background-color: #5CB85C; color: #fff; }
+.water { background-color: #5BC0DE; color: #fff; }
+.oligos { background-color: #cc00cc; color: #fff; }
+
+/* Dice Structure */
+.die {
+  width: 40px;
+  height: 40px;
+
+  background-color: #FF9;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.die.water { background-color: #5BC0DE; }
+
+.die.die-1 {background-image: url('../images/dice-1.png');}
+.die.die-2 {background-image: url('../images/dice-2.png');}
+.die.die-3 {background-image: url('../images/dice-3.png');}
+.die.die-4 {background-image: url('../images/dice-4.png');}
+.die.die-5 {background-image: url('../images/dice-5.png');}
+.die.die-6 {background-image: url('../images/dice-6.png');}
+
+/* Ration Structure */
+.ration {
+  width: 40px;
+  height: 40px;
+
+  background-image: url('../images/ration.png');
+  background-color: #999;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.ration .ul {}
+
+/* Put some space between objects */
+.pad-5 {margin-left: 5px;}
+.pad-10 {margin-left: 10px;}
+
+/* Image border-radius and border and sizes */
+.image {
+  border: 1px solid #999;
+  border-radius: 5px;
+  margin: 5%;
+}
+
+.image-full { width: 90%; }
+.image-lg { width: 500px; }
+.image-md { width: 300px; }
+.image-sm { width: 100px; }
+.image-xs { wdith: 40px; }
