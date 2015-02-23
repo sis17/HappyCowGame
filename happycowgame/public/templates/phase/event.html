@@ -1,17 +1,16 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-4">
-      <img class="image image-full" ng-src="assets/event.png" alt="Event Image">
-    </div>
-    <div class="col-md-8">
-      <h4 class="media-heading">Constipation <span class="label label-default">Pathology</span></h4>
-      <p>You can only play the lowest dice for rations in the intestine.</p>
-      <p>This card stays on the board until it is replaced by another pathology or removed by a special card.</p>
-      <p><span class="label label-danger">-1 to Welfare</span></p>
+<div class="event">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4">
+        <img class="image image-full" ng-src="assets/{{round.event.image}}" alt="Event Image">
+      </div>
+      <div class="col-md-8">
+        <h4 class="media-heading">{{round.event.title}} <span class="label label-default">{{round.event.type}}</span></h4>
+        <div ng-bind-html="round.event.description"></div>
+      </div>
     </div>
   </div>
-</div>
-
-<div class="bar bar-bottom bar-light">
-  <button class="btn btn-success pull-right">Ok, move to Cards Phase</button>
+  <div ng-if="phase == 1" class="bar bar-bottom bar-light">
+    <button class="btn btn-success pull-right" ng-click="nextPhase()">Ok, move to Cards Phase</button>
+  </div>
 </div>

@@ -33,10 +33,12 @@
       </li>
       <li>
         <div class="btn-group">
-          <a href="#/phase/event" class="btn btn-info">Event</a>
-          <a href="#/phase/cards" class="btn btn-default">Cards <span class="badge">4</span></a>
-          <a href="#/phase/movement" class="btn btn-default">Movement</a>
-          <a href="#/phase/review" class="btn btn-default">Review</a>
+          <a href="#/phase/event" class="btn btn-{{phase == 1? 'info' : 'default'}}">Event</a>
+          <a href="#/phase/cards" class="btn btn-{{phase == 2? 'info' : 'default'}}">
+            Cards <span class="badge">4</span>
+          </a>
+          <a href="#/phase/movement" class="btn btn-{{phase == 3? 'info' : 'default'}}">Movement</a>
+          <a href="#/phase/review" class="btn btn-{{phase == 4? 'info' : 'default'}}">Review</a>
         </div>
       </li>
       <li ng-controller="PlayerViewCtrl">
@@ -57,7 +59,7 @@
     </ul><!--/.nav-collapse -->
   </div>
 
-  <div ng-controller="PhaseCtrl" class="section-board event">
+  <div ng-controller="PhaseCtrl" id="center-area">
     <div ng-view></div>
   </div>
 

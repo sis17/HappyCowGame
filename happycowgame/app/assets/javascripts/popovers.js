@@ -25,4 +25,13 @@ $(document).ready(function() {
       return $('#menu-player-content').html();
     }
   });
+
+  $('.ration-popover').popover({
+    container: 'body',
+    placement: 'bottom',
+    html: true,
+    content: function() {
+      return $(this).next().html();
+    }
+  });
 });

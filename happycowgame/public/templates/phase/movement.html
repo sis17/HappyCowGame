@@ -1,0 +1,58 @@
+<div class="movement">
+  <img id="game-board" draggable="true" src="assets/cow-background.png"
+      style="width: {{width}}px; left: {{left}}px; top: {{top}}px">
+
+  <div ng-repeat="ration in rations" class="ration ration-board clickable"
+        style="left: {{left+ration.position.centre_x}}px; top: {{top+ration.position.centre_y}}px">
+    <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.type}}"></div>
+  </div>
+
+  <script type="text/ng-template"  id="position_renderer.html">
+    <div ng-repeat="position in position.positions" ng-include="'position_renderer.html'"
+        class="move-position {{position.positions.length == 0 ? 'move-position-final' : ''}}"
+        style="left: {{left+position.centre_x}}px; top: {{top+position.centre_y}}px">
+    </div>
+  </script>
+  <div ng-repeat="position in positions" ng-include="'position_renderer.html'"
+        class="move-position move-position-first clickable"
+        style="left: {{left+position.centre_x}}px; top: {{top+position.centre_y}}px"
+        ng-click="moveRation(selectedRation, position)">
+  </div>
+
+  <div id="board-controls">
+    <div class="btn-group">
+      <button ng-click="zoomIn()" class="btn btn-default"><span class="glyphicon glyphicon-zoom-in"></span></button>
+      <button ng-click="zoomOut()" class="btn btn-default"><span class="glyphicon glyphicon-zoom-out"></span></button>
+    </div><br/>
+    <div class="btn-group">
+      <button ng-click="moveLeft()" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span></button>
+      <button ng-click="moveRight()" class="btn btn-default"><span class="glyphicon glyphicon-arrow-right"></span></button>
+    </div>
+    <div class="btn-group-vertical">
+      <button ng-click="moveUp()" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up"></span></button>
+      <button ng-click="moveDown()" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span></button>
+    </div>
+  </div>
+
+  <div ng-if="phase == 3" class="bar bar-bottom bar-light">
+    <div class="area area-{{movePhase == 1 ? 'in' : 'out'}} pull-left">
+      <div>
+        <div ng-repeat="ration in rations | orderBy : order" class="ration clickable pull-left pad-10"
+              ng-click="selectRation(ration)" style="opacity: {{ration.selected ? '1' : '0.6'}};">
+          <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.type}}"></div>
+        </div>
+      </div>
+      <button ng-if="selectedRation && movePhase == 1"
+              ng-click="getDice(selectedRation)" class="btn btn-default pull-right">Choose Ration</button>
+    </div>
+    <div class="area area-{{movePhase == 2 ? 'in' : 'out'}} pull-right">
+      <ul class="list-inline pull-right pad-10">
+        <li ng-repeat="dice in dices">
+          <a ng-click="selectDice(dice)" class="clickable">
+            <div class="die {{dice.type}} die-{{dice.value}}"></div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -18,8 +18,23 @@ services.factory('Round', ['$resource',
   }
 ]);
 
+services.factory('Action', ['$resource',
+  function($resource) {
+    return $resource('/actions/:id', {id: '@id'});
+  }
+]);
+
 services.factory('Ration', ['$resource',
   function($resource) {
-    return $resource('/rounds/:id', {id: '@id'});
+    var Ration = $resource('/rations/:id', {id: '@id'});
+    Ration.selected = true;
+    Ration.prototype.hasWater = function() {
+      for (i in this.ingredients) {
+        if (this.ingredients[i].type == 'water') {
+          return true;
+        }
+      }
+    };
+    return Ration;
   }
 ]);

@@ -1,93 +1,109 @@
-<div class="pull-right">
-        <span class="label label-default">Total <span class="badge">8</span></span>
-</div>
+<div class="cards">
+<h2>
+  Card Deck
+  <small>Total <span class="badge">{{cards.length}}</span></small>
+  <small>Actions <span class="badge">{{countActions()}}</span></small>
+  <small>Ingredients <span class="badge">{{countIngredients()}}</span></small>
+</h2>
+<div class="well well-sm">
+  <ul id="cards-list" class="list-inline">
+    <li ng-repeat="card in cards">
+      <h3>{{card.title}}</h3>
+      <img class="image image-full" ng-src="assets/{{card.image}}" alt="{{card.type}}"
+      data-toggle="modal" data-target="#cardModal-{{card.id}}">
 
-<h2>Card Deck</h2>
-<div ng-repeat="card in cards" id="cards-list" class="owl-carousel">
-        <div>
-          <h3>{{card.title}}</h3>
-          <img src="assets/{{card.image}}" alt="{{card.type}}" width="150">
-          <p>{{card.description}}</p>
-          <div ng-if="card.type != action" class="btn-group">
-            <button class="btn btn-info disabled">Use</button>
-            <button class="btn btn-danger disabled">Discard</button>
-          </div>
-          <div ng-if="card.type == action" class="btn-group">
-            <button class="btn btn-info disabled">Act</button>
-            <button class="btn btn-danger disabled">Discard</button>
-          </div>
-        </div>
-</div>
-
-<div class="modal fade" id="create-ration" tabindex="-1" role="dialog" aria-labelledby="create-ration-label" aria-hidden="true">
+      <!-- the modal for this card -->
+      <div class="modal fade" id="cardModal-{{card.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabel">Confirm Creation</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">{{card.title}}</h4>
             </div>
             <div class="modal-body">
-              <p>You are about to create a ration:
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="well well-sm water">
-                    <h4 class="text-center">Water</h4>
-                    <p>+1 movement dice</p>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="well well-sm">empty</div>
-                </div>
-                <div class="col-md-3">
-                  <div class="well well-sm">empty</div>
-                </div>
-                <div class="col-md-3">
-                  <div class="well well-sm">empty</div>
-                </div>
-              </div>
-              This ration has space for 3 more ingredients.</p>
-              <p>You will have 4 ingredients left. Do you want to continue?</p>
+              <img class="image image-md" ng-src="assets/{{card.image}}" alt="{{card.type}}">
+              <p>{{card.description}}</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Change</button>
-              <button type="button" class="btn btn-success">Create</button>
+              <button ng-if="phase == 2" class="btn btn-danger pull-left"
+                      ng-click="discardCard(card)">Discard</button>
+              <div class="btn-group">
+                <button class="btn btn-primary {{card.used || phase != 2 ? 'disabled' : ''}}"
+                        ng-click="useCard(card)">Use</button>
+                <button class="btn btn-info" data-dismiss="modal">Back</button>
+              </div>
             </div>
-          </div>
-        </div>
-</div>
-
-<div class="bar bar-bottom bar-light">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-3">
-            <p>Existing Rations</p>
-            <ul class="list-inline">
-                <li ng-repeat="ration in rations">
-                  <div class="ration clickable">
-                    <span ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.type}}"></span>
-                  </div>
-                </li>
-            </ul>
-          </div>
-          <div class="col-md-6">
-            <ul class="list-inline well well-white well-sm pull-left">
-              <li>
-                <div class="well well-sm water">
-                  water<br/>
-                  <button class="btn btn-default btn-xs">replace</button>
-                </div>
-              </li>
-              <li><div class="well well-sm">empty</div></li>
-              <li><div class="well well-sm">empty</div></li>
-              <li><div class="well well-sm">empty</div></li>
-            </ul>
-            <button class="btn btn-success" data-toggle="modal" data-target="#create-ration">Create</button>
-          </div>
-          <div class="col-md-3">
-            <button class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="End card actions">
-              Finished
-            </button>
           </div>
         </div>
       </div>
+    </li>
+  </ul>
+</div>
+
+<div ng-if="phase == 2" class="bar bar-bottom bar-light">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3">
+        <p>Existing Rations</p>
+        <div>
+          <div ng-repeat="ration in rations" class="ration ration-popover clickable pull-left pad-10" ng-click="getRation(1)">
+            <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.type}}"></div>
+          </div>
+          <div ng-repeat="ration in rations" class="hidden">
+            <p>Position: {{ration.position}}</p>
+            <ul>
+              <li ng-repeat="ingredient in ration.ingredients">
+                <span class="label {{ingredient.type}}"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="big-ration">
+          <div ng-repeat="ingredient in newRation.ingredients" class="ingredient {{ingredient.type}}">
+            <p>{{ingredient.type}}</p>
+            <button ng-if="ingredient.type != 'empty'" ng-click="newRation.replace(ingredient)" class="btn btn-default btn-xs">replace</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-success" data-toggle="modal" data-target="#create-ration">Create</button>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-success pull-right" ng-click="nextPhase()" data-toggle="tooltip" data-placement="top" title="End card actions">
+          Finished
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="create-ration" tabindex="-1" role="dialog" aria-labelledby="create-ration-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Confirm Creation</h4>
+        </div>
+        <div class="modal-body">
+          <p>You are about to create the following ration:</p>
+          <div class="big-ration big-ration-full">
+            <div ng-repeat="ingredient in newRation.ingredients" class="ingredient {{ingredient.type}}">
+              <p>{{ingredient.type}}</p>
+              <p>{{ingredientDescription(ingredient.type)}}</p>
+            </div>
+          </div>
+          <p ng-if="newRation.spaces() > 0">This ration has space for {{newRation.spaces()}} more ingredients.</p>
+          <p>You will have {{countUnusedIngredients()}} ingredients left. Do you want to continue?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Change</button>
+          <button ng-if="newRation.spaces() < 4" type="button" class="btn btn-success" ng-click="createRation()">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
