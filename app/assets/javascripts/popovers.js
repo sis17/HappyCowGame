@@ -1,4 +1,13 @@
 $(document).ready(function() {
+  $('#menu-menu').popover({
+    container: 'body',
+    placement: 'bottom',
+    html: true,
+    content: function() {
+      return $('#menu-menu-content').html();
+    }
+  });
+
   $('#menu-round').popover({
     container: 'body',
     placement: 'bottom',

@@ -9,7 +9,7 @@
   <ul id="cards-list" class="list-inline">
     <li ng-repeat="card in cards">
       <h3>{{card.title}}</h3>
-      <img class="image image-full" ng-src="assets/{{card.image}}" alt="{{card.type}}"
+      <img class="image image-full" ng-src="images/{{card.image}}" alt="{{card.type}}"
       data-toggle="modal" data-target="#cardModal-{{card.id}}">
 
       <!-- the modal for this card -->
@@ -23,7 +23,7 @@
               <h4 class="modal-title" id="myModalLabel">{{card.title}}</h4>
             </div>
             <div class="modal-body">
-              <img class="image image-md" ng-src="assets/{{card.image}}" alt="{{card.type}}">
+              <img class="image image-md" ng-src="images/{{card.image}}" alt="{{card.type}}">
               <p>{{card.description}}</p>
             </div>
             <div class="modal-footer">

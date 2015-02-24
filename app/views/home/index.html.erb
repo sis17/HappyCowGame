@@ -1,19 +1,27 @@
 <div id="section-main">
   <div ng-controller="MenuCtrl" class="bar bar-dark bar-top">
     <div class="pull-left">
-      <img class="cow-icon" alt="Happy Cow icon" src="assets/happycow.png" />
+      <img class="cow-icon" alt="Happy Cow icon" src="images/happycow.png" />
     </div>
     <ul id="menu-right" class="list-inline pull-left">
-      <li><a href="#menu" class="menu-button">Menu</a></li>
+      <li>
+        <button id="menu-menu" class="btn btn-default">Menu</button>
+        <div id="menu-menu-content" class="hidden">
+          <div class="btn-group btn-group-vertical">
+            <button class="btn btn-primary btn-sm">Main Menu</button>
+            <button class="btn btn-default btn-sm">Log Out</button>
+          </div>
+        </div>
+      </li>
       <li ng-controller="ScoreViewCtrl">
-        <a id="menu-score" href="#" class="menu-button">Score <span class="badge">6</span></a>
-          <div id="menu-score-content" class="hidden">
-            <ul>
-              <li ng-repeat="player in players | orderBy:score">
-                {{player.name}} <span class="badge">{{player.score}}</span>
+        <button id="menu-score" class="btn btn-default">Score <span class="badge">6</span></button>
+        <div id="menu-score-content" class="hidden">
+            <ul class="list-group">
+              <li ng-repeat="player in players | orderBy:score" class="list-group-item">
+                <span class="label player-{{player.id}}">{{player.name}}</span> <span class="badge">{{player.score}}</span>
               </li>
             </ul>
-          </div>
+        </div>
       </li>
     </ul>
     <ul class="list-inline pull-right" style="margin-top: 5px;">
@@ -22,8 +30,8 @@
           Round <span class="badge">3</span>
         </button>
         <div id="menu-round-content" class="hidden">
-          <ul>
-            <li ng-repeat="round in rounds | orderBy:number">
+          <ul class="list-group">
+            <li ng-repeat="round in rounds | orderBy:number" class="list-group-item">
               {{round.number}}
               <button ng-if="!round.active" class="btn btn-default btn-xs">Review</button>
               <span ng-if="round.active" class="label label-success">current</span>
@@ -46,11 +54,11 @@
           Player <span class="badge">me</span>
         </button>
         <div id="menu-player-content" class="hidden">
-          <ul>
-            <li ng-repeat="player in players | orderBy:turnOrder">
+          <ul class="list-group">
+            <li ng-repeat="player in players | orderBy:turnOrder" class="list-group-item">
               <span class="label label-{{player.active ? 'success' : 'default'}} label-xs">
                 {{player.turnOrder}}
-              </span> - {{player.name}}
+              </span> - <span class="label player-{{player.id}}">{{player.name}}</span>
             </li>
           </ul>
           In the next round Mary will start.
@@ -117,17 +125,17 @@
         <tabset justified="true">
           <tab heading="Weather">
             <h3>{{weather.title}}</h3>
-            <img class="image image-full" ng-src="assets/{{weather.img}}">
+            <img class="image image-full" ng-src="images/{{weather.img}}">
             <div ng-bind-html="weather.content"></div>
           </tab>
           <tab heading="Disease">
             <h3>{{disease.title}}</h3>
-            <img class="image image-full" ng-src="assets/{{disease.img}}">
+            <img class="image image-full" ng-src="images/{{disease.img}}">
             <div ng-bind-html="disease.content"></div>
           </tab>
           <tab heading="Pregnancy">
             <h3>{{pregnancy.title}}</h3>
-            <img class="image image-full" ng-src="assets/{{pregnancy.img}}">
+            <img class="image image-full" ng-src="images/{{pregnancy.img}}">
             <div ng-bind-html="pregnancy.content"></div>
           </tab>
         </tabset>
