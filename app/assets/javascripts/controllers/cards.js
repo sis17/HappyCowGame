@@ -1,6 +1,6 @@
 angular.module('happyCow').controller('CardsCtrl', [
-  '$scope', 'Card', 'Ration',
-  function($scope, Card, Ration) {
+  '$scope', '$location', 'Card', 'Ration',
+  function($scope, $location, Card, Ration) {
     $scope.cards = Card.query();
     $scope.rations = Ration.query();
     $scope.card = Card.get({id: 1});
@@ -96,5 +96,12 @@ angular.module('happyCow').controller('CardsCtrl', [
         $scope.newRation.setIngredients();
       }
     };
+
+    $scope.endPhase = function() {
+      // change the location of the router
+      $location.path('/phase/movement');
+      // change the phase
+      $scope.nextPhase();
+    }
   }
 ]);

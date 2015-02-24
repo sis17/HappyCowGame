@@ -21,7 +21,7 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     $scope.users = User.query();
 
     $scope.round = Round.get({id: 4});
-    $scope.phase = 1;
+    $scope.phase = 4;
 
     $scope.nextPhase = function() {
       if ($scope.phase <= 3) {
@@ -31,7 +31,6 @@ var gameCtrl = hcApp.controller('GameCtrl', [
         $scope.phase = 1;
       }
     }
-
     return $scope;
   }
 ]);

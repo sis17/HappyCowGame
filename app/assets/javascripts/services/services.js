@@ -24,6 +24,12 @@ services.factory('Action', ['$resource',
   }
 ]);
 
+services.factory('Record', ['$resource',
+  function($resource) {
+    return $resource('/records/:id', {id: '@id'});
+  }
+]);
+
 services.factory('Ration', ['$resource',
   function($resource) {
     var Ration = $resource('/rations/:id', {id: '@id'});

@@ -21,10 +21,8 @@
 }
 
 .review, .event {
-  padding-right: 20px;
-  padding-left: 20px;
-  overflow-y: scroll;
-  height: 75%;
+  width: 90%;
+  margin-left: 5%;
 }
 
 #game-board {

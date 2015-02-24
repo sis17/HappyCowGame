@@ -1,6 +1,6 @@
 var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
-  '$scope', 'Ration',
-  function($scope, Ration) {
+  '$scope', '$location', 'Ration',
+  function($scope, $location, Ration) {
     // bar controls
     $scope.movePhase = 1;
     $scope.rations = Ration.query();
@@ -55,8 +55,9 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       console.log(newPos);
       if (newPos.positions.length <= 0) {
         // moving to last phase
-        console.log('changing to phase 4')
-        $scope.phase = 4;
+        console.log('changing to phase 4');
+        $location.path('/phase/review');
+        $scope.nextPhase();
       }
 
       // update the possible positions

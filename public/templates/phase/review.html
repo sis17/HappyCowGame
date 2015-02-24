@@ -1,55 +1,55 @@
 <div class="review">
-  <h2>Review of Round 3 <button class="btn btn-success pull-right" ng-click="nextPhase()">Next Turn</button></h2>
+  <h2>Review of Round 3 <button class="btn btn-success pull-right" ng-click="endPhase()">Next Turn</button></h2>
   <p>There's no actions to make. Just take a perusal of what has happened this turn. When you're ready move on to the next turn.</p>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Players</th>
-        <th>Beginning Score</th>
-        <th>Ending Score</th>
-        <th>Number of Cards</th>
-        <th>Number of Rations</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Sampson</td><td>2</td><td>3</td><td>1</td><td>4</td>
-      </tr>
-      <tr>
-        <td>Mary</td><td>17</td><td>17</td><td>9</td><td>2</td>
-      </tr>
-      <tr>
-        <td>John</td><td>7</td><td>7</td><td>4</td><td>2</td>
-      </tr>
-      <tr>
-        <td>me</td><td>6</td><td>8</td><td>7</td><td>3</td>
-      </tr>
-    </tbody>
-  </table>
 
-  <h3>Event Phase</h3>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-4">
-        <img class="image image-full" ng-src="images/{{round.event.image}}" alt="Event Image">
+  <accordion close-others="true">
+    <accordion-group heading="Score Table" is-open="true">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Players</th>
+            <th>Beginning Score</th>
+            <th>Ending Score</th>
+            <th>Number of Cards</th>
+            <th>Number of Rations</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in users | orderBy:turnOrder" class="player-{{user.id}}">
+            <td>{{user.name}}</td><td>2</td><td>3</td><td>1</td><td>4</td>
+          </tr>
+        </tbody>
+      </table>
+    </accordion-group>
+
+    <accordion-group heading="Event Phase">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-4">
+            <img class="image image-full" ng-src="images/{{round.event.image}}" alt="Event Image">
+          </div>
+          <div class="col-md-8">
+            <h4 class="media-heading">{{round.event.title}} <span class="label label-default">{{round.event.type}}</span></h4>
+            <div ng-bind-html="round.event.description"></div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-8">
-        <h4 class="media-heading">{{round.event.title}} <span class="label label-default">{{round.event.type}}</span></h4>
-        <div ng-bind-html="round.event.description"></div>
-      </div>
+    </accordion-group>
+
+    <accordion-group heading="Cards Phase">
+      <dl ng-repeat="action in actions | filter:{phase_id:2}" class="dl-horizontal">
+        <dt>{{action.title}}</dt>
+        <dd ng-bind-html="action.description"></dd>
+      </dl>
+    </accordion-group>
+
+    <accordion-group heading="Movement Phase">
+      <dl ng-repeat="action in actions | filter:{phase_id:3}" class="dl-horizontal">
+        <dt>{{action.title}}</dt>
+        <dd ng-bind-html="action.description"></dd>
+      </dl>
+    </accordion-group>
+    <div>
+      <button class="btn btn-success pull-right" ng-click="endPhase()">Next Turn</button>
     </div>
   </div>
-
-  <h3>Cards Phase</h3>
-  <p>Sampson used drew 2 cards, and used 2 cards (<span class="label water">water</span> <span class="label fibre">fiber</span>) to make a ration.</p>
-  <p>Mary drew 2 cards.</p>
-  <p>John drew 2 cards. He layed an action card and stole a card from Sampson.</p>
-  <p>You drew 2 cards: <span class="label water">water</span> and <span class="label energy">energy</span>.</p>
-
-  <h3>Movement Phase</h3>
-  <p>More information</p>
-
-  <div>
-    <button class="btn btn-success pull-right" ng-click="nextPhase()">Next Turn</button>
-  </div>
-</div>

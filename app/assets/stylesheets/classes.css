@@ -17,12 +17,12 @@
 
 .die.water { background-color: #5BC0DE; }
 
-.die.die-1 {background-image: url('dice-1.png');}
-.die.die-2 {background-image: url('dice-2.png');}
-.die.die-3 {background-image: url('dice-3.png');}
-.die.die-4 {background-image: url('dice-4.png');}
-.die.die-5 {background-image: url('dice-5.png');}
-.die.die-6 {background-image: url('dice-6.png');}
+.die.die-1 {background-image: url('../images/dice-1.png');}
+.die.die-2 {background-image: url('../images/dice-2.png');}
+.die.die-3 {background-image: url('../images/dice-3.png');}
+.die.die-4 {background-image: url('../images/dice-4.png');}
+.die.die-5 {background-image: url('../images/dice-5.png');}
+.die.die-6 {background-image: url('../images/dice-6.png');}
 
 /* Ration Structure */
 .ration {
