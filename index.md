@@ -19,3 +19,9 @@ So it is a summary of what I've read while working on the project, and where mor
 This category of posts is my daily/weekly reports to keep on top of progress and remind myself what I have done when I write the report.
 
 [Progress category](categories.html#progress-ref)
+
+### Requirements Analysis
+[Here are](./requirements) various drafts of the requirements analysis documents for this project.
+
+### Design Documentation
+[Here are](./designs) various diagrams and drafts of project designs.

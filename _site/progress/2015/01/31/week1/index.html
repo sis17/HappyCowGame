@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Week 1 - 26th-30th January.</title>
+    
+    <meta name="author" content="Simeon Smith">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap styles -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional theme -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Sticky Footer -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bs-sticky-footer.css" rel="stylesheet">
+    
+    <!-- Custom styles -->
+    <link href="/assets/themes/bootstrap-3/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!-- Update these with your own images
+      <link rel="shortcut icon" href="images/favicon.ico">
+      <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+      <nav class="navbar navbar-default" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#jb-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Happy Cow Game</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="jb-navbar-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+
+
+
+          </ul>
+          <form class="navbar-form navbar-right" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+      <div class="container">
+        
+<div class="page-header">
+  <h1>Week 1 - 26th-30th January. </h1>
+</div>
+
+<div class="row post-full">
+  <div class="col-xs-12">
+    <div class="date">
+      <span>31 January 2015</span>
+    </div>
+    <div class="content">
+      <h3 id="research">Research</h3>
+
+<p>Most of the week was taken up looking into various web technologies. This was a preliminary step in order to decide how best to  implement a board game as a web application.</p>
+
+<p>I found various platforms for mobile and native apps that help with HTML5 and Javascript games, but nothing that specifically promised a platform for a web application based on a board game, and offered persistence of data so that players at different machines could take turns.</p>
+
+<p>Another league of possibilities was already existing board game platforms. Among these Vassal and BoardGameArena stood out. Vassal is a platform for distributing and playing board games with friends over several types of connections. However, it does not natively support game rules, players must carry these out themselves. BoardGameArena allows players to design games, and they will be automatically supported with login, a waiting room for players to join, ect. However, it’s documentation and set of existing games was quite limited.</p>
+
+<p>I therefore decided it would be best to build a standard web application geared to host a board game. I came across Single Page Applications (SPA) and found they were supported by various Javascript frameworks such as Backbone.js, and Angular.js. The standard procedure is to use these on the client side to simulate game play, while relying on a server-side RESTful framework written in Ruby on Rails (for example).</p>
+
+<p>I also looked into Node.js and some other technologies before sticking to the one above.</p>
+
+<h3 id="writing-and-outline">Writing and Outline</h3>
+
+<p>A required document in the module process is the outline specification: documentation to help us get started with planning and thinking about the project as a whole. This was fairly straightforward. We needed to write an overview of the project, a list of key and perhaps difficult tasks, and a list of deliverables.</p>
+
+<p>It was good to think about potentially challenging parts of the project. These include the database design, animation and control of the game through the user interface, and various other pages.</p>
+
+<p>The list of deliverables was harder to create. But after thinking about various challenging stages, and what documentation would be needed to work out what to do, I came up with a fairly normal set of deliverables: requirements analysis, design documentation, platform analysis, a user interface prototype, server and client side implementations, tests, maintenance documentation and the necessary final report.</p>
+
+<h3 id="setting-up-a-blog">Setting up a Blog</h3>
+
+<p>This was another task of the week. In order to implement the blog along side the github repository I would be using for the Happy Cow Game project, I decided to use github pages. Jekyll is a service that allows you to write blog entries in mark down, which are then compiled and can be uploaded to be parsed without the need for a server side language. So that is how these blog posts are written.</p>
+
+<h3 id="experiments-and-learning">Experiments and Learning</h3>
+
+<p>When looking into technologies I did a few tutorials to learn a bit more about them before committing to using them for an entire project. Among these were a Cappuccino tutorial to make a image rotator. Cappuccino and Objective-J are nice technologies, but not fully suited to the application I wanted to create. I then went on and discovered Backbone and Angular, Javascript libraries. After following a basic tutorial for angular, I implemented a small app I found as an example of Backbone, using the Angular framework. It is hosted <a href="here">http://users.aber.ac.uk/sis17/projects/todo</a>.</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="glyphicon glyphicon-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#progress-ref">
+    		progress <span>4</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+    
+  
+    <hr>
+    <ul class="pagination">
+    
+      <li class="prev"><a href="/research/framework/2015/01/30/creating-spa-bootstrap-and-angular" title="Creating an SPA with Bootstrap and AngularJs.">&laquo; Previous</a></li>
+    
+      <li><a href="/archive.html">Archive</a></li>
+    
+      <li class="next"><a href="/progress/2015/02/06/week2" title="Week 2 - 2nd-6th February.">Next &raquo;</a></li>
+    
+    </ul>
+    <hr>
+    
+  </div>
+</div>
+
+
+      </div>
+
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p>&copy; 2015 Simeon Smith
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </div>
+    </div>
+
+    
+
+
+    <!-- Latest compiled and minified JavaScript, requires jQuery 1.x (2.x not supported in IE8) -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/assets/themes/bootstrap-3/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>
+

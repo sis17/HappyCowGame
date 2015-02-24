@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="happycow">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Happy Cow Game">
+  <meta name="author" content="Simeon Smith">
+  <link rel="icon" href="assets/favicon.ico">
+
+  <title>The Happy Cow Game</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="assets/css/styles.css" rel="stylesheet">
+  <link href="assets/css/classes.css" rel="stylesheet">
+
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <script src="assets/bootstrap/assets/js/ie-emulation-modes-warning.js"></script>
+</head>
+
+<body>
+  <div id="section-main">
+    <div class="bar bar-top">
+      <div class="pull-left">
+        <img class="cow-icon" alt="Happy Cow icon" src="assets/images/happycow.png" />
+      </div>
+      <ul id="menu-right" class="list-inline pull-left">
+        <li><a href="#menu" class="menu-button">Menu</a></li>
+        <li>
+          <a id="menu-score" href="#" class="menu-button">Score <span class="badge">6</span></a>
+          <div id="menu-score-content" class="hidden">
+            <ul>
+              <li>Mary <span class="badge">17</span></li>
+              <li>John <span class="badge">7</span></li>
+              <li>me <span class="badge">6</span></li>
+              <li>Sampson <span class="badge">2</span></li>
+            </ul>
+          </div>
+        </li>
+        <li><a href="#messages" class="menu-button">Messages <span class="badge">1</span></a></li>
+      </ul>
+      <ul class="list-inline pull-right" style="margin-top: 5px;">
+        <li>
+          <button id="menu-round" class="btn btn-default">
+            Round <span class="badge">3</span>
+          </button>
+          <div id="menu-round-content" class="hidden">
+            <ul>
+              <li>Round 1 <button class="btn btn-default btn-sm">Review</button></li>
+              <li>Round 2 <button class="btn btn-default btn-sm">Review</button></li>
+              <li>Round 3 <span class="label label-success">Current Round</span></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button class="btn btn-info">Event</button>
+            <button class="btn btn-default disabled">Cards <span class="badge">4</span></button>
+            <button class="btn btn-default disabled">Movement</button>
+            <button class="btn btn-default disabled">Review</button>
+          </div>
+        </li>
+        <li>
+          <button id="menu-player" class="btn btn-default">
+            Player <span class="badge">me</span>
+          </button>
+          <div id="menu-player-content" class="hidden">
+            <ul>
+              <li><span class="label label-default">1st</span> - Sampson</li>
+              <li><span class="label label-default">2nd</span> - Mary</li>
+              <li><span class="label label-default">3rd</span> - John</li>
+              <li><span class="label label-success">4th</span> - me</li>
+            </ul>
+            In the next round Mary will start.
+          </div>
+        </li>
+      </ul><!--/.nav-collapse -->
+    </div>
+
+    <div class="section-board">
+      <div id="game-board" draggable="true"></div>
+
+      <div>
+        <div id="board-controls">
+          <div class="btn-group">
+            <div class="btn btn-default"><span class="">Zoom In</span></div>
+            <div class="btn btn-default"><span class="">Zoom Out</span></div>
+          </div>
+        </div>
+
+        <div class="alert alert-success alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          Welcome to the Happy Cow Game.
+        </div>
+      </div>
+
+      <div class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+              <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+    </div>
+
+    <div class="bar bar-bottom">
+      <div class="turn-control active">
+        <button class="btn btn-default">Event</button>
+        <button class="btn btn-info"><span class="glyphicon glyphicon-menu-right"></span></button>
+      </div>
+      <div class="turn-control">
+        <button class="btn btn-default disabled">Cards <span class="badge">4</span></button>
+        <button class="btn btn-default disabled">Make Ration</button>
+      </div>
+      <div class="turn-control active">
+        <ul class="list-inline pull-left pad-10">
+          <li><div class="ration clickable"></div></li>
+          <li><div class="ration clickable"></div></li>
+          <li><div class="ration clickable"></div></li>
+        </ul>
+        <button class="btn btn-default pull-left disabled">Confrim</button>
+        <ul class="list-inline pull-left pad-10">
+          <li><div class="die die-1"></div></li>
+          <li><div class="die die-5"></div></li>
+          <li><div class="die die-3 water"></div></li>
+        </ul>
+      </div>
+      <div class="turn-control last">
+        <button class="btn btn-default">End Turn</button>
+      </div>
+    </div>
+  </div><!-- /.end of section-main -->
+
+  <div id="section-info" class="container">
+    <h3>Cow Condition</h3>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4">
+          <p>Welfare <a href="#"><span class="glyphicon glyphicon-info-sign clickable"></span></a></p>
+        </div>
+        <div class="col-md-8">
+          <div class="progress welfare-progress">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+              0
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <p>Body Condition <a href="#"><span class="glyphicon glyphicon-info-sign clickable"></span></a></p>
+        </div>
+        <div class="col-md-8">
+          <div class="progress bodycondition-progress">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+              0
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <p>Rumen PH <a href="#"><span class="glyphicon glyphicon-info-sign clickable"></span></a></p>
+        </div>
+        <div class="col-md-8">
+          <div class="progress ph-progress">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+              6.0
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <p>Muck <a href="#"><span class="glyphicon glyphicon-info-sign clickable"></span></a></p>
+        </div>
+        <div class="col-md-8">
+          <div class="progress muck-progress">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+              0
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <p>Oligos <a href="#"><span class="glyphicon glyphicon-info-sign clickable"></span></a></p>
+        </div>
+        <div class="col-md-8">
+          <div class="progress oligos-progress">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="3" style="width: 0%;">
+              0
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h5>Ingredients Values</h5>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Resource</th>
+          <th class="energy">Energy</th>
+          <th class="protein">Protein</th>
+          <th class="fibre">Fibre</th>
+          <th class="water">Water</th>
+          <th class="oligos">Oligos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Milk</td>
+          <td class="energy">6 pts</td>
+          <td class="protein">3 pts</td>
+          <td class="fibre">2 pts</td>
+          <td class="water">1 pt</td>
+          <td class="oligos">10 pts</td>
+        </td>
+        <tr>
+          <td>Meat</td>
+          <td class="energy">2 pts</td>
+          <td class="protein">4 pts</td>
+          <td class="fibre">2 pts</td>
+          <td class="water">1 pt</td>
+          <td class="oligos">10 pts</td>
+        </td>
+        <tr>
+          <td>Muck</td>
+          <td class="energy">1 pt</td>
+          <td class="protein">1 pt</td>
+          <td class="fibre">1 pt</td>
+          <td class="water">1 pt</td>
+          <td class="oligos">1 pt</td>
+        </td>
+      </tbody>
+    </table>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4"><div class="well well-sm">No Pregnancy</div></div>
+        <div class="col-md-4"><div class="well well-sm">No Pathology</div></div>
+        <div class="col-md-4"><div class="well well-sm">Fine Weather</div></div>
+      </div>
+    </div>
+  </div><!-- /.end of section-info -->
+
+
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="assets/js/jquery.min.js"></script>
+
+  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="assets/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
+
+  <script>
+  $(document).ready(function() {
+    $('#menu-round').popover({
+      container: 'body',
+      placement: 'bottom',
+      html: true,
+      content: function() {
+        return $('#menu-round-content').html();
+      }
+    });
+
+    $('#menu-score').popover({
+      container: 'body',
+      placement: 'bottom',
+      html: true,
+      content: function() {
+        return $('#menu-score-content').html();
+      }
+    });
+
+    $('#menu-player').popover({
+      container: 'body',
+      placement: 'bottom',
+      html: true,
+      content: function() {
+        return $('#menu-player-content').html();
+      }
+    });
+  });
+  </script>
+</body>
+</html>

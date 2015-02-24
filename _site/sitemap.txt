@@ -8,6 +8,14 @@ http://username.github.io/rss.xml
 http://username.github.io/sitemap.txt
 http://username.github.io/tags.html
 
+http://username.github.io/progress/2015/02/21/week4
+http://username.github.io/progress/2015/02/14/week3
+http://username.github.io/progress/2015/02/06/week2
+http://username.github.io/progress/2015/01/31/week1
+http://username.github.io/research/framework/2015/01/30/creating-spa-bootstrap-and-angular
+http://username.github.io/research/framework/2015/01/30/comparing-client-side-frameworks
+http://username.github.io/design/2015/01/30/angular-over-backbone
+http://username.github.io/research/framework/2015/01/30/agular-tutorial
 http://username.github.io/design/2015/01/29/project-scope
 http://username.github.io/research/2015/01/29/paper-on-game-theory
 http://username.github.io/research/theory/2015/01/29/game-engines
