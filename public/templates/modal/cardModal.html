@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{card.title}}</h3>
+</div>
+<div class="modal-body">
+  <img class="image image-md" ng-src="assets/{{card.image}}" alt="{{card.type}}">
+  <p>{{card.description}}</p>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-danger pull-left" ng-click="discardCard(card.id)">Discard</button>
+  <div class="btn-group">
+    <button ng-if="card.type != 'action'" class="btn btn-primary" ng-click="addCardToRation(card)">Use</button>
+    <button ng-if="card.type == 'action'" class="btn btn-primary" ng-click="actOnCard(card)">Act</button>
+    <button class="btn btn-info" ng-click="close()">Back</button>
+  </div>
+</div>

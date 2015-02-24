@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Rails4Example</title>
+  <title>Happycowgame</title>
+  <script src="js/bower_components/angular/angular.js"></script>
+  <script src="js/bower_components/angular-resource/angular-resource.min.js"></script>
+  <script src="js/bower_components/angular-route/angular-route.min.js"></script>
+  <script src="js/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="js/bower_components/angular-modal-service/angular-modal-service.min.js"></script>
+
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-</head>
-<body>
 
+</head>
+<body ng-app="happyCow" ng-controller="GameCtrl">
+<style ng-repeat="user in users">
+  .player-{{user.id}} {
+    background-color: #{{user.colour}};
+  }
+</style>
 <%= yield %>
 
 </body>
