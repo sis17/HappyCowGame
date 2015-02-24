@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Week 3 - 9th-13th February.</title>
+    <title>Week 5 - 23rd-27th February.</title>
     
     <meta name="author" content="Simeon Smith">
 
@@ -130,22 +130,23 @@
       <div class="container">
         
 <div class="page-header">
-  <h1>Week 3 - 9th-13th February. </h1>
+  <h1>Week 5 - 23rd-27th February. </h1>
 </div>
 
 <div class="row post-full">
   <div class="col-xs-12">
     <div class="date">
-      <span>14 February 2015</span>
+      <span>24 February 2015</span>
     </div>
     <div class="content">
-      <p>Resources from this week are available <a href="http://sis17.github.io/HappyCowGame/designs/">here</a>.</p>
+      <h3 id="server-setup">Server Setup</h3>
+<p><a href="https://www.openshift.com/">RedHat Openshift</a> allows a user to host up to 3 simple-ish web applications for free. This suits the need of the project, as I need to deploy the game publicly in order for others, including Gabriel the client, to test.</p>
 
-<h3 id="design-documentation">Design Documentation</h3>
-<p>At the beginning of this week I began to make some HTML template pages to get a firmer idea of how they game would work. Such as how the client side would work, what resources were necessary to persist, ect. This was helpful, but made me want to dive straight into the development. I continued with the designs, however, and met more problems that were worthy of thinking about. When I start development, it should now be fairly simple to take the existing templates and work towards the plan of the design. I will almost certainly need to make changes along the way, but at least I have thought about most aspects and taken the time to write these thoughts down.</p>
+<p>Openshift provides start up frameworks and plug and use databases. So I chose Ruby on Rails 4, and MySQL 2. Even better, sites on Openshift are managed by GitHub integration. However, it requires the project is set up on Openshift, and then cloned. This involved creating a new rails application, cloning it to my machine, and then copying the work form last week into that new app.</p>
 
-<h3 id="database-design">Database Design</h3>
-<p>This was probably the most difficult part of the planning. It also has the largest effect on the structure of the project.</p>
+<p>Before I could do this however, Ruby Gems proved a nuisance. Installing the MySQL2 gem took some work and file changes, and depended on other gems which also took some file permission wrangling. In the end, everything was installed and worked, but of course, these are all unexpected trials which take time not accounted for.</p>
+
+<h3 id="back-end-database-models-and-controllers">Back-end Database, Models, and Controllers</h3>
 
     </div>
 
@@ -173,11 +174,11 @@
     <hr>
     <ul class="pagination">
     
-      <li class="prev"><a href="/progress/2015/02/06/week2" title="Week 2 - 2nd-6th February.">&laquo; Previous</a></li>
+      <li class="prev"><a href="/progress/2015/02/21/week4" title="Week 4 - 16th-21st February.">&laquo; Previous</a></li>
     
       <li><a href="/archive.html">Archive</a></li>
     
-      <li class="next"><a href="/progress/2015/02/21/week4" title="Week 4 - 16th-21st February.">Next &raquo;</a></li>
+      <li class="next disabled"><a>Next &rarr;</a>
     
     </ul>
     <hr>

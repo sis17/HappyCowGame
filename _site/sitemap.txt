@@ -8,6 +8,7 @@ http://username.github.io/rss.xml
 http://username.github.io/sitemap.txt
 http://username.github.io/tags.html
 
+http://username.github.io/progress/2015/02/24/wekk5
 http://username.github.io/progress/2015/02/21/week4
 http://username.github.io/progress/2015/02/14/week3
 http://username.github.io/progress/2015/02/06/week2
