@@ -1,24 +1,31 @@
 class RationsController < ApplicationController
+  before_filter :load_user
+
   def index
-    render json: [
-      {id:1, position: {id: 16, order:16, centre_x: 300, centre_y: 400, area_id: 1},
-        game_user_id: 1, ingredients: [{type:'water'}, {type:'energy'}]},
-      {id:2, position: {id: 5, order:5, centre_x: 100, centre_y: 100, area_id: 1},
-        game_user_id: 1, ingredients: [{type:'water'}, {type:'fiber'}]},
-      {id:3, position: {id: 23, order:23, centre_x: 350, centre_y: 400, area_id: 1},
-        game_user_id: 1, ingredients: [{type:'protein'}, {type:'oligos'}]}
-    ]
+    @rations = ration.includes({game_user: :user}, {ingredients: :ingredient_cat}, :position, :moves).all
+    render :json => @rations
   end
 
   def show
-    render json: {id:1,
-      postion: {id: 1, order:1, centre_x: 200, centre_y: 200, area_id: 1},
-      ingredients: [
-        {type: 'water'},
-        {type: 'water'},
-        {type: 'energy'},
-        {type: 'protien'},
-      ]
-    }
+    @ration = ration.includes({game_user: :user}, {ingredients: :ingredient_cat}, :position, :moves).find(params[:id])
+    render json: @ration
+  end
+
+  def update
+    @ration = Ration.find(params[:id])
+    @ration.update(params.require(:ration).permit(:position_id))
+
+    render json: @ration
+  end
+
+  private
+  def load_user
+    @game_user = GameUser.find(params[:game_user_id]) if params[:game_user_id]
+    #@game = Game.find(params[:game_id]) if params[:game_id]
+    #@rations = @user ? @user.rations : Ration.scoped
+  end
+
+  def ration
+    @game_user ? @game_user.rations : Ration
   end
 end

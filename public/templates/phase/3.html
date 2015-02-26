@@ -1,10 +1,10 @@
-<div class="movement">
+<div ng-controller="MovementCtrl" class="movement">
   <img id="game-board" draggable="true" src="images/cow-background.png"
       style="width: {{width}}px; left: {{left}}px; top: {{top}}px">
 
   <div ng-repeat="ration in rations" class="ration ration-board clickable"
         style="left: {{left+ration.position.centre_x}}px; top: {{top+ration.position.centre_y}}px">
-    <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.type}}"></div>
+    <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
   </div>
 
   <script type="text/ng-template"  id="position_renderer.html">
@@ -16,7 +16,7 @@
   <div ng-repeat="position in positions" ng-include="'position_renderer.html'"
         class="move-position move-position-first clickable"
         style="left: {{left+position.centre_x}}px; top: {{top+position.centre_y}}px"
-        ng-click="moveRation(selectedRation, position)">
+        ng-click="moveRation(position)">
   </div>
 
   <div id="board-controls">
@@ -34,24 +34,29 @@
     </div>
   </div>
 
-  <div ng-if="phase == 3" class="bar bar-bottom bar-light">
+  <div ng-if="checkPhase(3)" class="bar bar-bottom bar-light">
     <div class="area area-{{movePhase == 1 ? 'in' : 'out'}} pull-left">
       <div>
-        <div ng-repeat="ration in rations | orderBy : order" class="ration clickable pull-left pad-10"
-              ng-click="selectRation(ration)" style="opacity: {{ration.selected ? '1' : '0.6'}};">
-          <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.type}}"></div>
+        <div ng-repeat="ration in rations | orderBy : order" class="ration {{!move.ration.id ? 'clickable' : ''} pull-left pad-10"
+              ng-click="selectRation(ration)" style="opacity: {{ration.selected || ration.id == move.ration.id ? '1' : '0.6'}};">
+          <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
         </div>
       </div>
-      <button ng-if="selectedRation && movePhase == 1"
-              ng-click="getDice(selectedRation)" class="btn btn-default pull-right">Choose Ration</button>
+      <p ng-if="!move.ration.id">Select a ration to move.</p>
+      <button ng-if="!move.ration.id"
+              ng-click="confirmRation(selectedRation)" class="btn btn-default pull-right">Choose Ration</button>
     </div>
-    <div class="area area-{{movePhase == 2 ? 'in' : 'out'}} pull-right">
-      <ul class="list-inline pull-right pad-10">
-        <li ng-repeat="dice in dices">
-          <a ng-click="selectDice(dice)" class="clickable">
-            <div class="die {{dice.type}} die-{{dice.value}}"></div>
-          </a>
-        </li>
+    <div class="area pull-right">
+      <ul ng-if="move.dice1 > 0" class="list-inline pull-right pad-10">
+        <li><a ng-click="selectDice(1)" class="{{ !move.selected_die || move.selected_die == 1 ? 'clickable' : 'fade'}}">
+            <div class="die die-{{move.dice1}}"></div>
+        </a></li>
+        <li><a ng-click="selectDice(2)" class="{{ !move.selected_die || move.selected_die == 2 ? 'clickable' : 'fade'}}">
+            <div class="die die-{{move.dice1}}"></div>
+        </a></li>
+        <li ng-if="move.dice3 > 0"><a ng-click="selectDice(3)" class="{{ !move.selected_die || move.selected_die == 3 ? 'clickable' : 'fade'}}">
+            <div class="die water die-{{move.dice1}}"></div>
+        </a></li>
       </ul>
     </div>
   </div>

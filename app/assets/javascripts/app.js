@@ -1,5 +1,5 @@
 var hcApp = angular.module('happyCow', [
-  'ui.bootstrap', 'ngSanitize', 'ngRoute', 'angularModalService',
+  'ui.bootstrap', 'ngSanitize', 'ngRoute', 'restangular', 'angularModalService',
   'happyCowServices'
 ]);
 
@@ -26,3 +26,9 @@ hcApp.config(['$routeProvider',
         redirectTo: '/'
       });
   }]);
+
+hcApp.run(function($rootScope, $templateCache) {
+  $rootScope.$on('$viewContentLoaded', function() {
+    $templateCache.removeAll();
+  });
+});

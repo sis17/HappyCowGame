@@ -1,16 +1,24 @@
 angular.module('happyCow').controller('CardsCtrl', [
-  '$scope', '$location', 'Card', 'Ration',
-  function($scope, $location, Card, Ration) {
-    $scope.cards = Card.query();
-    $scope.rations = Ration.query();
-    $scope.card = Card.get({id: 1});
-    var cardModal;
-    var rationModal;
+  '$scope', '$location', 'Restangular',
+  function($scope, $location, Restangular) {
+    // get rations and cards
+    $scope.getCards = function() {
+      $scope.cards = Restangular.one('games', 1).one('game_users', 1).getList('cards').$object;
+    }
+    $scope.getRations = function() {
+      $scope.rations = Restangular.one('users', 1).one('game_users', 1).getList('rations').$object;
+    }
+
+    $scope.getCards();
+    $scope.getRations();
+
+    $scope.test = 'test true';
 
     $scope.newRation = {
-      ingredients: [{type: 'empty'},{type: 'empty'},{type: 'empty'},{type: 'empty'}],
+      ingredients: [{card:{category: 'empty'}},{card:{category: 'empty'}},{card:{category: 'empty'}},{card:{category: 'empty'}}],
       setIngredients: function() {
         this.ingredients = [];
+        console.log('setting ingredients');
         for (i in $scope.cards) {
           if ($scope.cards[i].used) {
             this.ingredients.push($scope.cards[i]);
@@ -18,13 +26,13 @@ angular.module('happyCow').controller('CardsCtrl', [
         }
 
         while (this.ingredients.length < 4) {
-          this.ingredients.push({type: 'empty'});
+          this.ingredients.push({card:{category: 'empty'}});
         }
       },
       spaces: function() {
         var count = 0;
         for (i in this.ingredients) {
-          if (this.ingredients[i].type == 'empty') {
+          if (this.ingredients[i].card.category == 'empty') {
             count++;
           }
         }
@@ -44,8 +52,9 @@ angular.module('happyCow').controller('CardsCtrl', [
     $scope.countUnusedIngredients = function() {
       var count = 0;
       for (i in $scope.cards) {
-        var card = $scope.cards[i];
-        if (card.type && card.type != 'action' && !$scope.cards[i].used) {
+        var guc = $scope.cards[i];
+        if (guc && guc.card && typeof guc === 'object' && guc.card.category != 'action' && !$scope.cards[i].used) {
+            console.log(guc);
             count++;
         }
       }
@@ -55,8 +64,9 @@ angular.module('happyCow').controller('CardsCtrl', [
     $scope.countIngredients = function() {
       var count = 0;
       for (i in $scope.cards) {
-        var card = $scope.cards[i];
-        if (card.type && card.type != 'action') {
+        var guc = $scope.cards[i];
+        if (guc && guc.card && typeof guc === 'object' && guc.card.category != 'action') {
+            console.log(game_user_card);
             count++;
         }
       }
@@ -66,30 +76,28 @@ angular.module('happyCow').controller('CardsCtrl', [
     $scope.countActions = function() {
       var count = 0;
       for (i in $scope.cards) {
-        var card = $scope.cards[i];
-        if (card.type && card.type == 'action') {
+        var game_user_card = $scope.cards[i];
+        if (game_user_card && typeof game_user_card === 'object'
+            && game_user_card.card.category && game_user_card.card.category == 'action') {
+            console.log(game_user_card);
             count++;
         }
       }
       return count;
     }
 
-    $scope.discardCard = function(cardId) {
-      console.log('performing discard card id:'+cardId);
-      Card.delete({id: cardId});
-      for (i in $scope.cards) {
-        if ($scope.cards[i].id == cardId) {
-          $scope.cards.splice(i,1);
-        }
-      }
-      $scope.cards = Card.query();
+    $scope.discardCard = function(card) {
+      console.log('performing discard card id:'+card);
+      // delete card
+      card.remove();
+      $scope.getCards();
     };
 
     $scope.useCard = function(card) {
-      if (card.type == 'action') {
+      if (card.card.category == 'action') {
         // the card is an action, so update the server and remove
-        Card.delete({id: card.id});
-        $scope.cards = Card.query();
+        card.remove();
+        $scope.getCards();
       } else {
         // the card is an ingredient, so mark as used
         card.used = true;
@@ -97,11 +105,5 @@ angular.module('happyCow').controller('CardsCtrl', [
       }
     };
 
-    $scope.endPhase = function() {
-      // change the location of the router
-      $location.path('/phase/movement');
-      // change the phase
-      $scope.nextPhase();
-    }
   }
 ]);

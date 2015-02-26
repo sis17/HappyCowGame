@@ -1,12 +1,52 @@
 Rails.application.routes.draw do
   #get 'home/index'
 
-  resources :users
-  resources :cards
-  resources :rations
-  resources :rounds
+  resources :users do
+    resources :game_users do
+      resources :rations
+      resources :games
+      resources :cards
+      resources :moves
+    end
+  end
+
+  resources :games do
+    resources :game_users do
+      resources :rations
+      resources :games
+      resources :cards
+      resources :moves
+    end
+    resources :cards
+    resources :rounds do
+      resources :moves
+    end
+  end
+
+  resources :cards do
+    resources :games
+    resources :users
+  end
+
+  resources :rations do
+    resources :ingredients
+    resources :moves
+  end
+
+  resources :rounds do
+    resources :events
+    resources :moves
+  end
+
+  resources :game_users do
+    resources :rations
+    resources :cards
+    resources :moves
+  end
+
   resources :actions
   resources :records
+  resources :moves
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

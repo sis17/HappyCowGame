@@ -1,34 +1,28 @@
 class CardsController < ApplicationController
+  before_filter :load_user
+
   def index
-    render json: [
-      {
-        id: 1, title: 'Energy', description: 'An Ingredient that can be used in rations. If more energy than water exists in the Rumen, the PH level decreases.',
-        image: 'cards/energy.png', type: 'energy', rating: 5, user_id: 1
-      },
-      {
-        id: 2, title: 'Protein', description: 'An Ingredient that can be used in rations. It scores most points when absorbed as Meat, and a good amount when absorbed as Milk.',
-        image: 'cards/protein.png', type: 'protein', rating: 5, user_id: 1
-      },
-      {
-        id: 3, title: 'Water', description: 'An Ingredient that can be used in rations. +1 to dice roll.',
-        image: 'cards/water.png', type: 'water', rating: 5, user_id: 1
-      },
-      {
-        id:4, title:'Acidodis/Alkalosis', description: 'Move the Rumen PH marker up or down 1-3 spaces. Your choice.',
-        image: 'cards/actions/acidodis.png', type: 'action', rating: 3.4, user_id: 1
-      }
-    ]
+    @cards = card.all
+    render :json => @cards.to_json(:include=>[
+      :card
+    ])
   end
 
   def show
-    render json: {
-      id:1,
-      title:'Acidodis/Alkalosis',
-      description: 'Move the Rumen PH marker up or down 1-3 spaces. Your choice.',
-      image: 'cards/actions/acidodis.png',
-      type: 'action',
-      rating: 3.4,
-      user_id: 1
-    }
+    @card = card.find(params[:id])
+    render json: @card.to_json(:include=>[
+      :card
+    ])
+  end
+
+  private
+  def load_user
+    @game_user = GameUser.find(params[:game_user_id]) if params[:game_user_id]
+    @game = Game.find(params[:game_id]) if params[:game_id]
+    #@rations = @user ? @user.rations : Ration.scoped
+  end
+
+  def card
+    @game_user ? @game_user.game_cards : (@game ? @game.game_cards : Card)
   end
 end

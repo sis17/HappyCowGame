@@ -17,8 +17,9 @@
         <button id="menu-score" class="btn btn-default">Score <span class="badge">6</span></button>
         <div id="menu-score-content" class="hidden">
             <ul class="list-group">
-              <li ng-repeat="player in players | orderBy:score" class="list-group-item">
-                <span class="label player-{{player.id}}">{{player.name}}</span> <span class="badge">{{player.score}}</span>
+              <li ng-repeat="game_user in game.game_users | orderBy:score" class="list-group-item">
+                <span class="label player-{{game_user.id}}">{{game_user.user.name}}</span>
+                <span class="badge">{{game_user.score}}</span>
               </li>
             </ul>
         </div>
@@ -31,34 +32,35 @@
         </button>
         <div id="menu-round-content" class="hidden">
           <ul class="list-group">
-            <li ng-repeat="round in rounds | orderBy:number" class="list-group-item">
+            <li ng-repeat="round in game.rounds | orderBy:number" class="list-group-item">
               {{round.number}}
-              <button ng-if="!round.active" class="btn btn-default btn-xs">Review</button>
-              <span ng-if="round.active" class="label label-success">current</span>
+              <button ng-if="!roundIsActive(round)" class="btn btn-default btn-xs">Review</button>
+              <span ng-if="roundIsActive(round)" class="label label-success">current</span>
             </li>
           </ul>
         </div>
       </li>
       <li>
         <div class="btn-group">
-          <a href="#/phase/event" class="btn btn-{{phase == 1? 'info' : 'default'}}">Event</a>
-          <a href="#/phase/cards" class="btn btn-{{phase == 2? 'info' : 'default'}}">
+          <a ng-click="changePhaseTemplate(1)" class="btn btn-{{game.round.current_phase == 1? 'info' : 'default'}}">Event</a>
+          <a ng-click="changePhaseTemplate(2)" class="btn btn-{{game.round.current_phase == 2? 'info' : 'default'}}">
             Cards <span class="badge">4</span>
           </a>
-          <a href="#/phase/movement" class="btn btn-{{phase == 3? 'info' : 'default'}}">Movement</a>
-          <a href="#/phase/review" class="btn btn-{{phase == 4? 'info' : 'default'}}">Review</a>
+          <a ng-click="changePhaseTemplate(3)" class="btn btn-{{game.round.current_phase == 3? 'info' : 'default'}}">Movement</a>
+          <a ng-click="changePhaseTemplate(4)" class="btn btn-{{game.round.current_phase == 4? 'info' : 'default'}}">Review</a>
         </div>
       </li>
+
       <li ng-controller="PlayerViewCtrl">
         <button id="menu-player" class="btn btn-default">
           Player <span class="badge">me</span>
         </button>
         <div id="menu-player-content" class="hidden">
           <ul class="list-group">
-            <li ng-repeat="player in players | orderBy:turnOrder" class="list-group-item">
-              <span class="label label-{{player.active ? 'success' : 'default'}} label-xs">
-                {{player.turnOrder}}
-              </span> - <span class="label player-{{player.id}}">{{player.name}}</span>
+            <li ng-repeat="game_user in game.game_users | orderBy:id" class="list-group-item">
+              <span class="label label-{{game_user.active ? 'success' : 'default'}} label-xs">
+                {{game_user.id}}
+              </span> - <span class="label player-{{game_user.id}}">{{game_user.user.name}}</span>
             </li>
           </ul>
           In the next round Mary will start.
@@ -68,7 +70,7 @@
   </div>
 
   <div ng-controller="PhaseCtrl" id="center-area">
-    <div ng-view></div>
+    <div ng-include="phaseTemplate"></div>
   </div>
 
 </div><!-- /.end of section-main -->

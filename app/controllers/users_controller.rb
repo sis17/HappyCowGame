@@ -1,14 +1,38 @@
 class UsersController < ApplicationController
+  #before_action :set_user, only: [:show, :edit, :update, :destroy]
+
   def index
-    render json: [
-    {id: 2, name: 'Mary', score: '17', turnOrder: 1, colour: 'f00', active: false},
-    {id: 1, name: 'Me', score: '6', turnOrder: 2, colour: '00f', active: true},
-    {id: 3, name: 'John', score: '7', turnOrder: 3, colour: '0f0', active: false},
-    {id: 4, name: 'Samson', score: '2', turnOrder: 4, colour: 'f0f', active: false}
-    ]
+    @users = User.includes(:game_users).order('name')
+    render :json => @users.to_json(:include => :game_users)
   end
 
   def show
-    render json: {id: 1, name: 'Me', score: '6', turnOrder: 2, colour: '00f', active: true}
+    @user = User.includes(:game_users, :games).find(params[:id])
+    render json: @user.to_json(:include => :game_users, :include => :games)
+  end
+
+  # GET /users/new
+  def new
+    @user = User.new
+  end
+
+  # GET /users/1/edit
+  def edit
+  end
+
+  # POST /users
+  # POST /users.json
+  # At the moment we are only allowing the admin user to create new
+  # accounts.
+  def create
+    @user = User.new(user_params)
+  end
+
+
+  private
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params.require(:user).permit(:email, :name, :password, :password_confirmation)
   end
 end

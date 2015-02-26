@@ -1,5 +1,4 @@
-<div class="review">
-  <h2>Review of Round 3 <button class="btn btn-success pull-right" ng-click="endPhase()">Next Turn</button></h2>
+<div  ng-controller="ReviewCtrl" class="review">
   <p>There's no actions to make. Just take a perusal of what has happened this turn. When you're ready move on to the next turn.</p>
 
   <accordion close-others="true">
@@ -50,6 +49,6 @@
       </dl>
     </accordion-group>
     <div>
-      <button class="btn btn-success pull-right" ng-click="endPhase()">Next Turn</button>
+      <button class="btn btn-success pull-right" ng-click="nextRound()">Next Turn</button>
     </div>
   </div>

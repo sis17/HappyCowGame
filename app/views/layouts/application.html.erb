@@ -7,6 +7,8 @@
   <script src="js/bower_components/angular-route/angular-route.min.js"></script>
   <script src="js/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
   <script src="js/bower_components/angular-modal-service/angular-modal-service.min.js"></script>
+  <script src="js/bower_components/lodash/dist/lodash.js"></script>
+  <script src="js/bower_components/restangular/src/restangular.js"></script>
 
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -14,10 +16,10 @@
 
 </head>
 <body ng-app="happyCow" ng-controller="GameCtrl">
-<style ng-repeat="user in users">
-  .player-{{user.id}} {
-    
-    background-color: #{{user.colour}};
+<style ng-repeat="game_user in game.game_users">
+  .player-{{game_user.id}} {
+
+    background-color: #{{game_user.colour}};
   }
 </style>
 <%= yield %>

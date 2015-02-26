@@ -8,10 +8,7 @@ var menuCtrl = angular.module('happyCow').controller('MenuCtrl', [
 menuCtrl.controller('ScoreViewCtrl', [
   '$scope', 'User',
   function($scope, User) {
-    /*var data = User.get({id: 1}, function(data) {
-      console.log(data);
-    });*/
-    $scope.players = User.query();
+    //$scope.players = User.query();
   }
 ]);
 
@@ -19,6 +16,10 @@ menuCtrl.controller('RoundViewCtrl', [
   '$scope', 'Round',
   function($scope, Round) {
     $scope.rounds = Round.query();
+
+    $scope.roundIsActive = function(round) {
+      return round.id == $scope.game.round.id;
+    }
   }
 ]);
 

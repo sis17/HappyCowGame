@@ -2,7 +2,15 @@ var services = angular.module('happyCowServices', ['ngResource']);
 
 services.factory('User', ['$resource',
   function($resource) {
-    return $resource('/users/:id', {id: '@id'});
+    return $resource('/users/:id', {id: '@id'}, {
+      cards: { method: "GET", }
+    });
+  }
+]);
+
+services.factory('Game', ['$resource',
+  function($resource) {
+    return $resource('/games/:id', {id: '@id'});
   }
 ]);
 
