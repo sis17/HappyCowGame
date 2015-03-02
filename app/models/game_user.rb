@@ -7,4 +7,13 @@ class GameUser < ActiveRecord::Base
 
   has_many :rations
   has_many :moves
+
+  def as_json(options={})
+    super(
+      :include=> [
+        {game: {:include => [:round]}},
+        :rations
+      ]
+    )
+  end
 end

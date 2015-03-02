@@ -4,7 +4,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     $scope.getMoves = function() {
       var moves = Restangular.one('games', 1).one('rounds', $scope.game.round.id).getList('moves').then(function(moves) {
-        var currentUser = $scope.getCurrentUser();
+        var currentUser = $scope.user.get();//CurrentUser();
         console.log('current user id: '+currentUser.id);
         for (i in moves) {
           var move = moves[i];

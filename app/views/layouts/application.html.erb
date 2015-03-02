@@ -9,13 +9,14 @@
   <script src="js/bower_components/angular-modal-service/angular-modal-service.min.js"></script>
   <script src="js/bower_components/lodash/dist/lodash.js"></script>
   <script src="js/bower_components/restangular/src/restangular.js"></script>
+  <script src="js/bower_components/ngstorage/ngStorage.js"></script>
 
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 
 </head>
-<body ng-app="happyCow" ng-controller="GameCtrl">
+<body ng-app="happyCow" ng-controller="BaseCtrl">
 <style ng-repeat="game_user in game.game_users">
   .player-{{game_user.id}} {
 

@@ -8,6 +8,8 @@
   overflow: hidden;
 }
 
+.bar-top .title {margin-top: 6px;}
+
 #center-area .event, .cards, .review {
   padding: 20px;
 }

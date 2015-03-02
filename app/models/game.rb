@@ -12,7 +12,11 @@ class Game < ActiveRecord::Base
   def as_json(options={})
     super(
       :include=> [
-        {round: {:include => [:event, :game_user]}},
+        {round: {:include => [:event,
+          {game_user: {:include => [
+            :user => {:only => [:name]}
+          ]}}
+        ]}},
         :rounds,
         {game_users: {:include => [
           :user => {:only => [:name]}

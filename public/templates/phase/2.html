@@ -1,13 +1,13 @@
 <div ng-controller="CardsCtrl" class="cards">
 <h2>
   Card Deck
-  <small>Total <span class="badge">{{cards.length}}</span></small>
+  <small>Total <span class="badge">{{cards.$object.length}}</span></small>
   <small>Actions <span class="badge">{{countActions()}}</span></small>
   <small>Ingredients <span class="badge">{{countIngredients()}}</span></small>
 </h2>
 <div class="well well-sm">
   <ul id="cards-list" class="list-inline">
-    <li ng-repeat="game_user_card in cards" class="{{game_user_card.used ? 'used' : ''}}">
+    <li ng-repeat="game_user_card in cards.$object" class="{{game_user_card.used ? 'used' : ''}}">
       <h3>{{game_user_card.card.title}}</h3>
       <img class="image image-full" ng-src="images/{{game_user_card.card.image}}" alt="{{game_user_card.card.category}}"
       data-toggle="modal" data-target="#cardModal-{{game_user_card.id}}">
@@ -27,10 +27,10 @@
               <p>{{game_user_card.card.description}}</p>
             </div>
             <div class="modal-footer">
-              <button ng-if="checkPhase(2)" class="btn btn-danger pull-left" data-dismiss="modal"
+              <button ng-if="game.checkPhase(2)" class="btn btn-danger pull-left" data-dismiss="modal"
                       ng-click="discardCard(game_user_card)">Discard</button>
               <div class="btn-group">
-                <button class="btn btn-primary {{game_user_card.used || !checkPhase(2) ? 'disabled' : ''}}" data-dismiss="modal"
+                <button class="btn btn-primary {{game_user_card.used || !game.checkPhase(2) ? 'disabled' : ''}}" data-dismiss="modal"
                         ng-click="useCard(game_user_card)">Use</button>
                 <button class="btn btn-info" data-dismiss="modal">Back</button>
               </div>
@@ -42,16 +42,16 @@
   </ul>
 </div>
 
-<div ng-if="checkPhase(2)" class="bar bar-bottom bar-light">
+<div ng-if="game.checkPhase(2)" class="bar bar-bottom bar-light">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-4">
         <p>Existing Rations</p>
         <div>
-          <div ng-repeat="ration in rations" class="ration ration-popover clickable pull-left pad-10" ng-click="getRation(1)">
+          <div ng-repeat="ration in rations.$object" class="ration ration-popover clickable pull-left pad-10">
             <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
           </div>
-          <div ng-repeat="ration in rations" class="hidden">
+          <div ng-repeat="ration in rations.$object" class="hidden">
             <p>Position: {{ration.position}}</p>
             <ul>
               <li ng-repeat="ingredient in ration.ingredients">
@@ -61,19 +61,20 @@
           </div>
         </div>
       </div>
-      <div class="col-md-5">
-        <div class="big-ration">
-          <div ng-repeat="ingredient in newRation.ingredients" class="ingredient {{ingredient.card.category}}">
-            <p>{{ingredient.card.category}}</p>
-            <button ng-if="ingredient.card.category != 'empty'" ng-click="newRation.replace(ingredient)" class="btn btn-default btn-xs">replace</button>
+      <div class="col-md-6">
+        <div ng-if="rations.$object.length < 4">
+          <div class="big-ration pull-left">
+            <div ng-repeat="ingredient in newRation.ingredients" class="ingredient {{ingredient.card.category}}">
+              <p>{{ingredient.card.category}}</p>
+              <button ng-if="ingredient.card.category != 'empty'" ng-click="newRation.replace(ingredient)" class="btn btn-default btn-xs">replace</button>
+            </div>
           </div>
+          <button class="btn btn-success pull-left" data-toggle="modal" data-target="#create-ration"
+                  style="height: 50px; margin-top: 8px; border-radius: 0px 5px 5px 0px;">Create</button>
         </div>
       </div>
-      <div class="col-md-1">
-        <button class="btn btn-success" data-toggle="modal" data-target="#create-ration">Create</button>
-      </div>
-      <div class="col-md-3">
-        <button class="btn btn-success pull-right" ng-click="nextPhase(3)" data-toggle="tooltip" data-placement="top" title="End card actions">
+      <div class="col-md-2">
+        <button class="btn btn-success pull-right" ng-click="game.nextPhase(3)" data-toggle="tooltip" data-placement="top" title="End card actions">
           Finished
         </button>
       </div>
@@ -100,7 +101,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Change</button>
-          <button ng-if="newRation.spaces() < 4" type="button" class="btn btn-success" ng-click="createRation()">Create</button>
+          <button ng-if="newRation.spaces() < 4" type="button" class="btn btn-success" ng-click="newRation.create()">Create</button>
         </div>
       </div>
     </div>

@@ -1,16 +1,9 @@
 angular.module('happyCow').controller('CardsCtrl', [
   '$scope', '$location', 'Restangular',
   function($scope, $location, Restangular) {
-    // get rations and cards
-    $scope.getCards = function() {
-      $scope.cards = Restangular.one('games', 1).one('game_users', 1).getList('cards').$object;
-    }
-    $scope.getRations = function() {
-      $scope.rations = Restangular.one('users', 1).one('game_users', 1).getList('rations').$object;
-    }
 
-    $scope.getCards();
-    $scope.getRations();
+    $scope.cards = $scope.user.getCards();
+    $scope.rations = $scope.user.getRations();
 
     $scope.test = 'test true';
 
@@ -19,9 +12,10 @@ angular.module('happyCow').controller('CardsCtrl', [
       setIngredients: function() {
         this.ingredients = [];
         console.log('setting ingredients');
-        for (i in $scope.cards) {
-          if ($scope.cards[i].used) {
-            this.ingredients.push($scope.cards[i]);
+        var cards = $scope.cards.$object;
+        for (i in cards) {
+          if (cards[i] && cards[i].used) {
+            this.ingredients.push(cards[i]);
           }
         }
 
@@ -39,22 +33,25 @@ angular.module('happyCow').controller('CardsCtrl', [
         return count;
       },
       replace: function(ingredient) {
-        for (i in $scope.cards) {
-          if ($scope.cards[i] == ingredient) {
-            $scope.cards[i].used = false;
+        for (i in $scope.cards.$object) {
+          if ($scope.cards.$object[i] == ingredient) {
+            $scope.cards.$object[i].used = false;
             this.setIngredients();
             break;
           }
         }
+      },
+      create: function() {
+        $scope.user.createRation(this.ingredients);
       }
     };
 
     $scope.countUnusedIngredients = function() {
       var count = 0;
-      for (i in $scope.cards) {
-        var guc = $scope.cards[i];
-        if (guc && guc.card && typeof guc === 'object' && guc.card.category != 'action' && !$scope.cards[i].used) {
-            console.log(guc);
+      var cards = $scope.cards.$object;
+      for (i in cards) {
+        var guc = cards[i];
+        if (guc && guc.card && typeof guc === 'object' && guc.card.category != 'action' && !guc.used) {
             count++;
         }
       }
@@ -63,10 +60,10 @@ angular.module('happyCow').controller('CardsCtrl', [
 
     $scope.countIngredients = function() {
       var count = 0;
-      for (i in $scope.cards) {
-        var guc = $scope.cards[i];
+      var cards = $scope.cards.$object;
+      for (i in cards) {
+        var guc = cards[i];
         if (guc && guc.card && typeof guc === 'object' && guc.card.category != 'action') {
-            console.log(game_user_card);
             count++;
         }
       }
@@ -75,11 +72,10 @@ angular.module('happyCow').controller('CardsCtrl', [
 
     $scope.countActions = function() {
       var count = 0;
-      for (i in $scope.cards) {
-        var game_user_card = $scope.cards[i];
-        if (game_user_card && typeof game_user_card === 'object'
-            && game_user_card.card.category && game_user_card.card.category == 'action') {
-            console.log(game_user_card);
+      var cards = $scope.cards.$object;
+      for (i in cards) {
+        var guc = cards[i];
+        if (guc && guc.card && typeof guc === 'object' && guc.card.category && guc.card.category == 'action') {
             count++;
         }
       }
@@ -96,8 +92,14 @@ angular.module('happyCow').controller('CardsCtrl', [
     $scope.useCard = function(card) {
       if (card.card.category == 'action') {
         // the card is an action, so update the server and remove
-        card.remove();
-        $scope.getCards();
+        //card.remove();
+        card.use = true;
+        card.patch().then(function(response) {
+          $scope.alert(response.message.title, response.message.message, response.message.type, 2);
+          $scope.cards = $scope.user.getCards();
+        }, function() {
+          $scope.alert('Card Not Used', 'An error occured and the card was not used.', 'danger', 2);
+        });
       } else {
         // the card is an ingredient, so mark as used
         card.used = true;

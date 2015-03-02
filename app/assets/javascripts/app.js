@@ -1,34 +1,39 @@
 var hcApp = angular.module('happyCow', [
-  'ui.bootstrap', 'ngSanitize', 'ngRoute', 'restangular', 'angularModalService',
+  'ui.bootstrap', 'ngSanitize', 'ngRoute', 'restangular', 'angularModalService', 'ngStorage',
   'happyCowServices'
 ]);
 
 hcApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
-      when('/phase/event', {
-        templateUrl: 'templates/phase/event.html',
-        controller: 'EventCtrl'
+      when('/login', {
+        templateUrl: 'templates/login.html',
+        controller: 'LoginCtrl'
       }).
-      when('/phase/cards', {
-        templateUrl: 'templates/phase/cards.html',
-        controller: 'CardsCtrl'
+      when('/register', {
+        templateUrl: 'templates/register.html',
+        controller: 'RegisterCtrl'
       }).
-      when('/phase/movement', {
-        templateUrl: 'templates/phase/movement.html',
-        controller: 'MovementCtrl'
+      when('/games', {
+        templateUrl: 'templates/games.html',
+        controller: 'GamesCtrl'
       }).
-      when('/phase/review', {
-        templateUrl: 'templates/phase/review.html',
-        controller: 'ReviewCtrl'
+      when('/games/new', {
+        templateUrl: 'templates/game_new.html',
+        controller: 'GameNewCtrl'
+      }).
+      when('/games/play', {
+        templateUrl: 'templates/game_play.html',
+        controller: 'GameCtrl'
       }).
       otherwise({
-        redirectTo: '/'
+        templateUrl: 'templates/welcome.html',
+        controller: 'WelcomeCtrl'
       });
   }]);
 
-hcApp.run(function($rootScope, $templateCache) {
+/*hcApp.run(function($rootScope, $templateCache) {
   $rootScope.$on('$viewContentLoaded', function() {
     $templateCache.removeAll();
   });
-});
+});*/

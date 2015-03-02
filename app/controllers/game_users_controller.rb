@@ -3,12 +3,12 @@ class GameUsersController < ApplicationController
 
   def index
     @game_users = game_user.all
-    render :json => @game_users
+    render :json => @game_users.as_json
   end
 
   def show
     @game_user = game_user.find(params[:id])
-    render json: @game_user
+    render json: @game_user.as_json
   end
 
   private

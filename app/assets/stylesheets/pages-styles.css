@@ -1,0 +1,24 @@
+#welcome {
+  padding: 10%;
+  padding-top: 75px;
+}
+#welcome .container, #games .container {
+  width: 100%;
+}
+#welcome .container .row div {
+  min-height: 300px;
+}
+
+.main-centre {
+  padding: 20%;
+  padding-top: 50px;
+}
+
+#games {
+  padding: 5%;
+}
+
+#games .game-review {
+  width: 100%;
+  height: 100%;
+}

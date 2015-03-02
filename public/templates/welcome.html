@@ -1,0 +1,25 @@
+<div class="bar bar-dark bar-top">
+  <div class="pull-left">
+    <img class="cow-icon pull-left" alt="Happy Cow icon" src="images/happycow.png" />
+    <h2 class="title pull-left">Welcome</h2>
+  </div>
+
+  <ul class="list-inline pull-right">
+    <li ng-repeat="menuItem in menu">
+      <a class="btn btn-default" ng-href="{{menuItem.link}}">{{menuItem.title}}</a>
+    </li>
+  </ul>
+</div>
+
+<div id="welcome" ng-controller="WelcomeCtrl">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="well"><a href="#/login" class="btn btn-lg btn-block btn-primary">Log In / Sign Up</a></div>
+      </div>
+      <div class="col-md-6">
+        <div class="well"><button class="btn btn-lg btn-block btn-default">Begin Group Game</button></div>
+      </div>
+    </div>
+  </div>
+</div>

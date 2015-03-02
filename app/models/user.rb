@@ -4,4 +4,15 @@ class User < ActiveRecord::Base
 
   has_many :rations
   has_many :rations, through: :game_users
+
+  def as_json(options={})
+    super(:only => [:name, :email, :experience, :id, :colour],
+      :include=> [
+        {game_users: {:include => [
+          :game,
+          :rations
+        ]}}
+      ]
+    )
+  end
 end

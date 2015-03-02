@@ -11,13 +11,24 @@ class UsersController < ApplicationController
     render json: @user.to_json(:include => :game_users, :include => :games)
   end
 
-  # GET /users/new
-  def new
-    @user = User.new
-  end
+  # GET /users/login
+  def login
+    if (params[:email] && params[:password])
+      @user = User.find_by email: params[:email]
+      if (@user.password == params[:password])
+        render json: { success: true, user: @user.as_json} and return
+      end
 
-  # GET /users/1/edit
-  def edit
+      render json: {
+        success: false,
+        message: {title: 'Wrong Password', text: 'Please try again, your password was incorrect.', type: 'danger'}
+      } and return
+    end
+
+    render json: {
+      success: false,
+      message: {title: 'Authorisation Failed', text: 'Your account does not exist, or you gave us the wrong email.', type: 'danger'}
+    } and return
   end
 
   # POST /users
