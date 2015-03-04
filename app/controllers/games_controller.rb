@@ -71,6 +71,8 @@ class GamesController < ApplicationController
         round_num += 1
       end
 
+      #create moves within rounds
+
       #create the cards
       @game.carddeck.cards.each do |card|
         game_card = GameCard.new

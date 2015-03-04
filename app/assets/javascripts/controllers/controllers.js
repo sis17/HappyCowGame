@@ -31,7 +31,7 @@ var baseCtrl = hcApp.controller('BaseCtrl', [
     }
 
     $scope.debug = function() {
-      return $scope.user.get();
+      //return $scope.user.get();
     }
 
   }
