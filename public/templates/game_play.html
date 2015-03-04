@@ -5,8 +5,8 @@
     </div>
     <ul id="menu-right" class="list-inline pull-left">
       <li>
-        <button id="menu-menu" class="btn btn-default">Menu</button>
-        <div id="menu-menu-content" class="hidden">
+        <button popup class="btn btn-default">Menu</button>
+        <div class="hidden">
           <div class="btn-group btn-group-vertical">
             <a href="#/games" class="btn btn-primary btn-sm">Game Menu</a>
             <button ng-click="user.logout()" class="btn btn-warning btn-sm">Log Out</button>
@@ -14,23 +14,24 @@
         </div>
       </li>
       <li ng-controller="ScoreViewCtrl">
-        <button id="menu-score" class="btn btn-default">Score <span class="badge">6</span></button>
-        <div id="menu-score-content" class="hidden">
+        <button popup class="btn btn-default">Score <span class="badge">6</span></button>
+        <div class="hidden">
             <ul class="list-group">
               <li ng-repeat="game_user in game.game_users | orderBy:score" class="list-group-item">
-                <span class="label player-{{game_user.id}}">{{game_user.user.name}}</span>
+                <span class="label label-default player-{{game_user.id}}">{{game_user.user.name}}</span>
                 <span class="badge">{{game_user.score}}</span>
               </li>
             </ul>
         </div>
       </li>
+      <li>{{game.name}}</li>
     </ul>
     <ul class="list-inline pull-right" style="margin-top: 5px;">
       <li ng-controller="RoundViewCtrl">
-        <button id="menu-round" class="btn btn-default">
+        <button popup class="btn btn-default">
           Round <span class="badge">3</span>
         </button>
-        <div id="menu-round-content" class="hidden">
+        <div class="hidden">
           <ul class="list-group">
             <li ng-repeat="round in game.rounds | orderBy:number" class="list-group-item">
               {{round.number}}
@@ -44,7 +45,7 @@
         <div class="btn-group">
           <a ng-click="changePhaseTemplate(1)" class="btn btn-{{game.round.current_phase == 1? 'info' : 'default'}}">Event</a>
           <a ng-click="changePhaseTemplate(2)" class="btn btn-{{game.round.current_phase == 2? 'info' : 'default'}}">
-            Cards <span class="badge">4</span>
+            Cards <span class="badge">{{user.countCards()}}</span>
           </a>
           <a ng-click="changePhaseTemplate(3)" class="btn btn-{{game.round.current_phase == 3? 'info' : 'default'}}">Movement</a>
           <a ng-click="changePhaseTemplate(4)" class="btn btn-{{game.round.current_phase == 4? 'info' : 'default'}}">Review</a>
@@ -52,10 +53,10 @@
       </li>
 
       <li ng-controller="PlayerViewCtrl">
-        <button id="menu-player" class="btn btn-default">
-          Player <span class="badge">me</span>
+        <button popup class="btn btn-default">
+          Player <span class="label label-default player-{{game.round.game_user.id}}">{{game.round.game_user.user.name}}</span>
         </button>
-        <div id="menu-player-content" class="hidden">
+        <div class="hidden">
           <ul class="list-group">
             <li ng-repeat="game_user in game.game_users | orderBy:id" class="list-group-item">
               <span class="label label-{{game_user.active ? 'success' : 'default'}} label-xs">
@@ -76,16 +77,6 @@
 </div><!-- /.end of section-main -->
 
 <div ng-controller="CowCtrl" id="section-info" class="container">
-  <div id="alerts">
-    <div ng-repeat="alert in alerts | orderBy:'-number' | limitTo:5"
-          class="alert alert-{{alert.type}} alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <strong>{{alert.title}}</strong> {{alert.message}}
-    </div>
-  </div>
-
   <h3>Cow Condition</h3>
 
   <div ng-controller="CowStatsCtrl" class="container-fluid">
@@ -113,21 +104,21 @@
     <thead>
       <tr>
         <th>Resource</th>
-        <th ng-repeat="ingredient in ingredients" class="{{ingredient.name|lowercase}}">{{ingredient.name}}</th>
+        <th ng-repeat="ing_cat in game.ingredient_cats" class="{{ing_cat.name}}">{{ing_cat.name}}</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>Milk</td>
-        <td ng-repeat="ingredient in ingredients" class="{{ingredient.name|lowercase}}">{{ingredient.milk}} pts</td>
+        <td ng-repeat="ing_cat in game.ingredient_cats" class="{{ing_cat.name}}">{{ing_cat.milk_score}} pts</td>
       </td>
       <tr>
         <td>Meat</td>
-        <td ng-repeat="ingredient in ingredients" class="{{ingredient.name|lowercase}}">{{ingredient.meat}} pts</td>
+        <td ng-repeat="ing_cat in game.ingredient_cats" class="{{ing_cat.name}}">{{ing_cat.meat_score}} pts</td>
       </td>
       <tr>
         <td>Muck</td>
-        <td ng-repeat="ingredient in ingredients" class="{{ingredient.name|lowercase}}">{{ingredient.muck}} pts</td>
+        <td ng-repeat="ing_cat in game.ingredient_cats" class="{{ing_cat.name}}">{{ing_cat.muck_score}} pts</td>
       </td>
     </tbody>
   </table>
@@ -135,71 +126,22 @@
   <div ng-controller="CowEventsCtrl" class="panel panel-default">
       <div class="panel-body">
         <tabset justified="true">
-          <tab heading="Weather">
+          <tab ng-if="weather" heading="Weather">
             <h3>{{weather.title}}</h3>
-            <img class="image image-full" ng-src="images/{{weather.img}}">
-            <div ng-bind-html="weather.content"></div>
+            <img class="image image-full" ng-src="images/{{weather.image}}">
+            <div ng-bind-html="weather.description"></div>
           </tab>
-          <tab heading="Disease">
+          <tab ng-if="disease" heading="Disease">
             <h3>{{disease.title}}</h3>
-            <img class="image image-full" ng-src="images/{{disease.img}}">
-            <div ng-bind-html="disease.content"></div>
+            <img class="image image-full" ng-src="images/{{disease.image}}">
+            <div ng-bind-html="disease.description"></div>
           </tab>
-          <tab heading="Pregnancy">
+          <tab ng-if="pregnancy" heading="Pregnancy">
             <h3>{{pregnancy.title}}</h3>
-            <img class="image image-full" ng-src="images/{{pregnancy.img}}">
-            <div ng-bind-html="pregnancy.content"></div>
+            <img class="image image-full" ng-src="images/{{pregnancy.image}}">
+            <div ng-bind-html="pregnancy.description"></div>
           </tab>
         </tabset>
       </div>
     </div>
 </div>
-
-<script>
-$(document).ready(function() {
-  $('#menu-menu').popover({
-    container: 'body',
-    placement: 'bottom',
-    html: true,
-    content: function() {
-      return $('#menu-menu-content').html();
-    }
-  });
-
-  $('#menu-round').popover({
-    container: 'body',
-    placement: 'bottom',
-    html: true,
-    content: function() {
-      return $('#menu-round-content').html();
-    }
-  });
-
-  $('#menu-score').popover({
-    container: 'body',
-    placement: 'bottom',
-    html: true,
-    content: function() {
-      return $('#menu-score-content').html();
-    }
-  });
-
-  $('#menu-player').popover({
-    container: 'body',
-    placement: 'bottom',
-    html: true,
-    content: function() {
-      return $('#menu-player-content').html();
-    }
-  });
-
-  $('.ration-popover').popover({
-    container: 'body',
-    placement: 'bottom',
-    html: true,
-    content: function() {
-      return $(this).next().html();
-    }
-  });
-});
-</script>

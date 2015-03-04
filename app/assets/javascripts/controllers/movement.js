@@ -3,9 +3,9 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
   function($scope, $location, Restangular) {
 
     $scope.getMoves = function() {
-      var moves = Restangular.one('games', 1).one('rounds', $scope.game.round.id).getList('moves').then(function(moves) {
-        var currentUser = $scope.user.get();//CurrentUser();
-        console.log('current user id: '+currentUser.id);
+      var moves = Restangular.one('games', $scope.game.id)
+                    .one('rounds', $scope.game.round.id).getList('moves').then(function(moves) {
+        var currentUser = $scope.$storage.user.game_user;
         for (i in moves) {
           var move = moves[i];
           if (move && move.game_user_id == currentUser.id) {
@@ -18,17 +18,21 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     // bar controls
     $scope.movePhase = 1;
-    $scope.rations = Restangular.one('games', 1).one('game_users', 1).getList('rations').$object;
+    $scope.rations = Restangular.one('games', $scope.game.id)
+                      .one('game_users', $scope.$storage.user.game_user.id).getList('rations').$object;
     $scope.selectedRation = null;
     $scope.getMoves();
 
     $scope.confirmRation = function(ration) {
       console.log('ration confirmed');
       $scope.move.ration_id = ration.id;
-      $scope.move.patch().then(function (move) {
-        $scope.move = move;
+      $scope.move.patch({confirm_ration:true, ration_id:ration.id}).then(function (response) {
+        if (response.move) {
+          $scope.move = response.move;
+        }
+        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
       }, function() {
-        console.log("There was an error saving");
+        $scope.alert('Ration Not Confirmed', 'An error occured and the ration was not confirmed.', 'warning', 2);
       });
     }
 

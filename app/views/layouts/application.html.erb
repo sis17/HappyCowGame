@@ -17,12 +17,23 @@
 
 </head>
 <body ng-app="happyCow" ng-controller="BaseCtrl">
-<style ng-repeat="game_user in game.game_users">
+<style ng-repeat="game_user in $storage.game.game_users">
   .player-{{game_user.id}} {
 
     background-color: #{{game_user.colour}};
   }
 </style>
+
+<div id="alerts">
+  <div ng-repeat="alert in alerts | orderBy:'-number' | limitTo:5"
+        class="alert alert-{{alert.type}} alert-dismissible" role="alert">
+    <button ng-click="clearAlert(alert.number)" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>{{alert.title}}</strong> {{alert.message}}
+  </div>
+</div>
+
 <%= yield %>
 
 </body>

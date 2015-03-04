@@ -20,15 +20,39 @@ class MovesController < ApplicationController
   def update
     # do a check to calculate the dice, and if the 3rd dice is needed
     #if (params[:move][:ration_id] > 0 && )
-    Move.update(params[:id], params.require(:move).permit(:ration_id, :selected_die))
-
     @move = move.find(params[:id])
-    render json: @move.to_json(:include => [
-      {ration: {:include => [:position]}},
-      :game_user
-    ])
-    #@move = move.find(params[:id])
-    #@move.update(params[:move])
+
+    if params[:confirm_ration] and params[:ration_id]
+      @move.ration_id = params[:ration_id]
+      @move.dice1 = rand(1..6)
+      @move.dice2 = rand(1..6)
+      #has_water = Ration.joins(:ingredients).joins(:ingredient_cats)
+      #                .where('ingredient_cats.name = "water" AND rations.id = ', params[:ration_id]).first
+      #if has_water
+      #  @move.dice3 = rand(1..6)
+      #end
+      @move.save
+      render json: {
+        success: true,
+        move: @move.as_json,
+        message: {title:'Ration Confirmed', message: 'The ration was selection was confirmed.', type:'success'}
+      } and return
+    end
+
+    if params[:select_dice]
+      @move.update(params.require(:move).permit(:selected_die))
+      render json: {
+        success: true,
+        move: @move.as_json,
+        message: {title:'Dice Confirmed', message: 'The dice was selection was confirmed.', type:'success'}
+      } and return
+    end
+
+    render json: {
+      success: false,
+      move: @move.as_json,
+      message: {title:'Move Not Made', message: 'No move was made, actions were not specified.', type:'warning'}
+    } and return
   end
 
   private

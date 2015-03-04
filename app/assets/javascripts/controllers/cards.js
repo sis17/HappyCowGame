@@ -42,7 +42,16 @@ angular.module('happyCow').controller('CardsCtrl', [
         }
       },
       create: function() {
-        $scope.user.createRation(this.ingredients);
+        //$scope.user.createRation(this.ingredients);
+        var ration = {game_user_id: $scope.$storage.user.game_user.id, ingredients: ingredients};
+        Restangular.all('rations').post({ration: ration, game_id: $scope.game.id}).then(function(response) {
+          $scope.alert(response.message.title, response.message.message, response.message.type, 2);
+          $scope.cards = $scope.user.getCards();
+          $scope.rations = $scope.user.getRations();
+          $scope.game.round.ration_created = true;
+        }, function() {
+          $scope.alert('Ration Not Created', 'An error occured and the ration was not created.', 'danger', 2);
+        });
       }
     };
 

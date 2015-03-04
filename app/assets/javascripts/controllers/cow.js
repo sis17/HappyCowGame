@@ -10,7 +10,7 @@ cowCtrl.controller('CowStatsCtrl', [
   function($scope) {
     $scope.stats = [
       {
-        name: 'Welfare', min: -7, minType: 'danger', max: 6, maxType: 'success', value: -2,
+        name: 'Welfare', min: -7, minType: 'danger', max: 6, maxType: 'success', value: $scope.game.cow.welfare,
         type: function() {
           if (this.value <= -5) { return 'd9534f'} //danger
           if (this.value <= -2) {return 'f0ad43'} //warning
@@ -19,7 +19,7 @@ cowCtrl.controller('CowStatsCtrl', [
         }
       },
       {
-        name: 'Body Condition', min: -3, minType: 'danger', max: 3, maxType: 'success', value: 2,
+        name: 'Body Condition', min: -3, minType: 'danger', max: 3, maxType: 'success', value: $scope.game.cow.body_condition,
         type: function() {
           if (this.value <= -1) { return 'd9534f'}
           if (this.value <= 0) {return '5bc0de'}
@@ -27,7 +27,7 @@ cowCtrl.controller('CowStatsCtrl', [
         }
       },
       {
-        name: 'Rumen PH', min: 4.8, minType: 'warning', max: 7.6, maxType: 'success', value: 5.4,
+        name: 'Rumen PH', min: 4.8, minType: 'warning', max: 7.6, maxType: 'success', value: $scope.game.cow.ph_marker,
         type: function() {
           if (this.value <= 5.6) { return 'f0ad43'}
           if (this.value <= 7.0) {return '5bc0de'}
@@ -35,13 +35,13 @@ cowCtrl.controller('CowStatsCtrl', [
         }
       },
       {
-        name: 'Muck', min: 0, minType: 'success', max: 6, maxType: 'danger', value: 3,
+        name: 'Muck', min: 0, minType: 'success', max: 6, maxType: 'danger', value: $scope.game.cow.muck_marker,
         type: function() {
           return 'f0ad43'; //warning
         }
       },
       {
-        name: 'Oligos', min: 0, minType: 'success', max: 3, maxType: 'danger', value: 1,
+        name: 'Oligos', min: 0, minType: 'success', max: 3, maxType: 'danger', value: $scope.game.cow.oligos_marker,
         type: function() {
           return 'danger'; //warning
         }
@@ -53,41 +53,23 @@ cowCtrl.controller('CowStatsCtrl', [
 cowCtrl.controller('IngredientValueCtrl', [
   '$scope',
   function($scope) {
-    $scope.ingredients = [
-      {name: 'Energy', milk: 6, meat: 2, muck: 1},
-      {name: 'Protein', milk: 3, meat: 4, muck: 1},
-      {name: 'Fiber', milk: 2, meat: 2, muck: 1},
-      {name: 'Water', milk: 1, meat: 1, muck: 1},
-      {name: 'Oligos', milk: 10, meat: 10, muck: 1}
-    ];
+    
   }
 ]);
 
 cowCtrl.controller('CowEventsCtrl', [
-  '$scope', '$sce',
-  function($scope, $sce) {
+  '$scope', '$sce', 'Restangular',
+  function($scope, $sce, Restangular) {
 
-    $scope.weather = {
-      title: 'It\'s Cold',
-      img: 'events/weather/cold-1.png',
-      content: $sce.trustAsHtml('<p>The cow eats one extra ration per turn.</p>'+
-      '<p>-1 to all rations when absorbed.</p>'+
-      '<p>This stays until replaced by another weather event.</p>')
-    };
+    if ($scope.game.cow.weather_id) {
+      $scope.weather = Restangular.one('events',$scope.game.cow.weather_id).get().$object;
+    }
+    if ($scope.game.cow.weather_id) {
+      $scope.disease = Restangular.one('events',$scope.game.cow.weather_id).get().$object;
+    }
 
-    $scope.disease = {
-      title: 'Constipation',
-      img: 'events/disease/constipation-1.png',
-      content: $sce.trustAsHtml('<p>Play only the lowest dice to move in the intestines.</p>'+
-      '<p>-1 to Welfare.</p>'+
-      '<p>This stays until replaced by another disease, or is cured.</p>')
-    };
-
-    $scope.pregnancy = {
-      title: 'The Cow is Pregnant',
-      img: 'events/pregnancy/yes-1.png',
-      content: $sce.trustAsHtml('<p>The milk position becomes another meat position, all the milk goes to the calf, so cannot earn points during pregnancy.</p>'+
-      '<p>This stays until the calf is born.</p>')
-    };
+    if ($scope.game.cow.pregnancy_id) {
+      $scope.pregnancy = Restangular.one('events',$scope.game.cow.pregnancy_id).get().$object;
+    }
   }
 ]);

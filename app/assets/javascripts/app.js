@@ -1,6 +1,6 @@
 var hcApp = angular.module('happyCow', [
   'ui.bootstrap', 'ngSanitize', 'ngRoute', 'restangular', 'angularModalService', 'ngStorage',
-  'happyCowServices'
+  'happyCowServices', 'happyCowDirectives'
 ]);
 
 hcApp.config(['$routeProvider',
@@ -13,6 +13,10 @@ hcApp.config(['$routeProvider',
       when('/register', {
         templateUrl: 'templates/register.html',
         controller: 'RegisterCtrl'
+      }).
+      when('/profile', {
+        templateUrl: 'templates/profile.html',
+        controller: 'ProfileCtrl'
       }).
       when('/games', {
         templateUrl: 'templates/games.html',

@@ -2,6 +2,7 @@
   <div class="pull-left">
     <img class="cow-icon pull-left" alt="Happy Cow icon" src="images/happycow.png" />
     <h2 class="title pull-left">My Games</h2>
+    {{debug()}}
   </div>
 
   <ul class="list-inline pull-right">
@@ -10,13 +11,13 @@
   </ul>
 </div>
 
-<div id="games" ng-controller="LoginCtrl">
+<div id="games" ng-controller="GamesCtrl">
   <div class="container">
     <div class="row">
       <div class="col-md-6"><h3>Games List</h3></div>
       <div class="col-md-6">
         <div class="btn-group pull-right">
-          <a href="#/games/new" class="btn btn-success">New Game</a>
+          <button ng-click="newGame()" class="btn btn-success">New Game</button>
         </div>
       </div>
     </div>
@@ -27,9 +28,16 @@
           <tr ng-repeat="game_user in game_users.$object" class="clickable" ng-click="selectGame(game_user)">
             <td><strong>Name: </strong>{{game_user.game.name}}</td>
             <td><strong>Score: </strong>{{game_user.score}}</td>
-            <td>
+            <td ng-if="game_user.game.stage == 1">
+              <span class="label label-success">Playing</span>
               <strong>Round: </strong>{{game_user.game.round.id}},
               <strong>Phase: </strong>{{translatePhase(game_user.game.round.current_phase)}}
+            </td>
+            <td ng-if="game_user.game.stage == 0">
+              <span class="label label-warning">Setup</span>
+            </td>
+            <td ng-if="game_user.game.stage > 1">
+              <span class="label label-info">Finished</span>
             </td>
           </tr>
         </table>
@@ -40,13 +48,13 @@
           <div class="container">
             <div class="row">
               <div class="col-md-6">
-                <table>
-                  <tr><th>Begin</th><td>{{game.start_time}}</td></tr>
-                  <tr><th>Round Number</th><td>{{game.rounds.length}}</td></tr>
-                  <tr><th>Current Round</th><td>{{game.round.number}}</td></tr>
-                  <tr><th>Current Phase</th><td>{{translatePhase(game.round.current_phase)}}</td></tr>
-                  <tr><th>Current Player</th><td>{{game.round.game_user.user.name}}</td></tr>
-                </table>
+                <dl>
+                  <dt>Begin Time</dt><dd>{{game.start_time | date:'d MMM yyyy @ h:mma'}}</dd>
+                  <dt>Round Number</dt><dd>{{game.rounds.length}}</dd>
+                  <dt>Current Round</dt><dd>{{game.round.number}}</dd>
+                  <dt>Current Phase</dt><dd>{{translatePhase(game.round.current_phase)}}</dd>
+                  <dt>Current Player</dt><dd>{{game.round.game_user.user.name}}</dd>
+                </dl>
               </div>
               <div class="col-md-6">
                 <h4>Players</h4>
@@ -60,7 +68,10 @@
             </div>
             <div class="row">
               <div class="col-md-6"><button class="btn btn-default">Stats</button></div>
-              <div class="col-md-6"><a href="#/games/play" class="btn btn-primary pull-right">Resume</a></div>
+              <div class="col-md-6">
+                <a ng-if="game.stage == 0" ng-click="finishSetup()" class="btn btn-success pull-right">Finish Setup</a>
+                <a ng-if="game.stage == 1" href="#/games/play" class="btn btn-primary pull-right">Resume</a>
+              </div>
             </div>
           </div>
         </div>

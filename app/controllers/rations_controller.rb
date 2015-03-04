@@ -33,7 +33,7 @@ class RationsController < ApplicationController
       @ration.save
 
       params[:ration][:ingredients].each do |ing|
-        @card = @game_user.cards.joins(:cards).where(category: ing[:card][:category]).first
+        @card = @game_user.game_cards.joins(:card).where("cards.category = ?", ing[:card][:category]).first
         if @card
           @card.destroy
         end

@@ -13,6 +13,7 @@ var baseCtrl = hcApp.controller('BaseCtrl', [
       },
       logout: function() {
         $scope.$storage.user = null;
+        $location.path('login')
       },
       get: function() {
         return $scope.$storage.user;
@@ -21,7 +22,16 @@ var baseCtrl = hcApp.controller('BaseCtrl', [
 
     $scope.alerts = [];
     $scope.alert = function(title, message, type, stick) {
-      $scope.alerts.push({number: $scope.alerts.length, title: title, message: message, type: type, stick: stick})
+      $scope.alerts.push({number: $scope.alerts.length, title: title, message: message, type: type, stick: stick});
+    }
+    $scope.clearAlert = function(id) {
+      if (id > -1) {
+        $scope.alerts.splice(id, 1);
+      }
+    }
+
+    $scope.debug = function() {
+      return $scope.user.get();
     }
 
   }

@@ -31,6 +31,22 @@ class UsersController < ApplicationController
     } and return
   end
 
+  def update
+    @user = User.find(params[:id])
+    if params[:profile]
+      @user.update(params.require(:profile).permit(:email, :name, :colour))
+      render json: {
+        success: true,
+        message: {title: 'Profile Saved', text: 'Your profile has been updated.', type: 'success'}
+      } and return
+    end
+
+    render json: {
+      success: false,
+      message: {title: 'You Must Update a Profile', text: 'You are not updating user details correctly, by editing your profile.', type: 'warning'}
+    } and return
+  end
+
   # POST /users
   # POST /users.json
   # At the moment we are only allowing the admin user to create new

@@ -6,8 +6,16 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     $scope.phaseTemplate = 'templates/phase/'+$scope.game.round.current_phase+'.html';
 
     $scope.user.getCards = function() {
-      return Restangular.one('games', $scope.game.id).one('game_users', $scope.$storage.user.game_user.id)
+      this.cards = Restangular.one('games', $scope.game.id).one('game_users', $scope.$storage.user.game_user.id)
               .getList('cards');
+      return this.cards;
+    }
+
+    $scope.user.countCards = function() {
+      if (!this.cards) {
+        return '';
+      }
+      return this.cards.$object.length;
     }
 
     $scope.user.getRations = function() {
@@ -16,7 +24,7 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     }
 
     $scope.user.createRation = function(ingredients) {
-      var ration = {game_user_id: $scope.$storage.user.id, ingredients: ingredients};
+      var ration = {game_user_id: $scope.$storage.user.game_user.id, ingredients: ingredients};
       Restangular.all('rations').post({ration: ration, game_id: $scope.game.id}).then(function(response) {
         $scope.alert(response.message.title, response.message.message, response.message.type, 2);
         $scope.cards = $scope.user.getCards();
@@ -28,26 +36,31 @@ var gameCtrl = hcApp.controller('GameCtrl', [
 
     $scope.game.nextTurn = function() {
       this.round_id++;
-      this.patch().then(function(game) {
-        $scope.game.round = game.round;
-        // eventually have to put a waiting bit in, depends on all users finishing
-        $scope.changePhaseTemplate(game.round.current_phase);
+
+      Restangular.all('rounds').post({round_id: $scope.game.round.id, game_user_id: $scope.$storage.user.id, complete: true})
+       .then(function(response) {
+        $scope.alert(response.message.title, response.message.message, response.message.type, 2);
+        if (response.success) {
+          $scope.game.round = response.round;
+          $scope.changePhaseTemplate(game.round.current_phase);
+        }
       }, function() {
-        console.log("There was an error moving to the next round");
+        $scope.alert('Action Not Saved', 'An error occured and the turn could not be finished.', 'danger', 2);
       });
     }
 
     $scope.game.nextPhase = function(phaseNum) {
       if (phaseNum) {
         if (phaseNum == $scope.game.round.current_phase + 1) {
-          console.log(this.round);
-          $scope.game.round.current_phase++;
-          console.log($scope.game.round)
-          $scope.game.round.patch().then(function(round) {
-            $scope.game.round = game.round;
-            $scope.changePhaseTemplate($scope.game.round.current_phase);
+          Restangular.all('rounds').post({round_id: $scope.game.round.id, game_user_id: $scope.$storage.user.id, phase_complete: true})
+           .then(function(response) {
+            $scope.alert(response.message.title, response.message.message, response.message.type, 2);
+              if (response.success) {
+                $scope.game.round = response.round;
+                $scope.changePhaseTemplate(game.round.current_phase);
+              }
           }, function() {
-            console.log("There was an error updating the round phase.");
+            $scope.alert('Action Not Saved', 'An error occured and the turn could not be finished.', 'danger', 2);
           });
         }
       }
@@ -55,6 +68,10 @@ var gameCtrl = hcApp.controller('GameCtrl', [
 
     $scope.game.checkPhase = function(phaseNum) {
       return $scope.game.round.current_phase == phaseNum;
+    }
+
+    $scope.game.checkTurn = function() {
+      return $scope.game.round.game_user_id == $scope.$storage.user.game_user.id;
     }
 
     $scope.changePhaseTemplate = function(num) {

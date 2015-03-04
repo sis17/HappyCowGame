@@ -14,8 +14,9 @@
   padding-top: 50px;
 }
 
-#games {
+#games, #profile {
   padding: 5%;
+  padding-top:1%;
 }
 
 #games .game-review {

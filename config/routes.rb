@@ -28,6 +28,10 @@ Rails.application.routes.draw do
     resources :users
   end
 
+  resources :carddecks do
+    resources :cards
+  end
+
   resources :rations do
     resources :ingredients
     resources :moves
@@ -47,10 +51,11 @@ Rails.application.routes.draw do
   resources :actions
   resources :records
   resources :moves
+  resources :events
 
   resources :positions
-  get 'graph' => 'positions#graph'
-  
+  get 'positions/:id/graph/:depth' => 'positions#graph'
+
   get 'login' => 'users#login'
   post 'login' => 'users#login'
 

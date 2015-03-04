@@ -1,3 +1,11 @@
+#alerts {
+  position: fixed;
+  top: 60px;
+  right: 50px;
+  width: 300px;
+  z-index: 10000;
+}
+
 #section-main {
   position:absolute;
   top:0px;

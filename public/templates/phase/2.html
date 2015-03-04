@@ -42,7 +42,7 @@
   </ul>
 </div>
 
-<div ng-if="game.checkPhase(2)" class="bar bar-bottom bar-light">
+<div ng-if="game.checkPhase(2) && game.checkTurn()" class="bar bar-bottom bar-light">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-4">

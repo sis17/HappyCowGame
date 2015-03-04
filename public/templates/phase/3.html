@@ -3,7 +3,7 @@
       style="width: {{width}}px; left: {{left}}px; top: {{top}}px">
 
   <div ng-repeat="ration in rations" class="ration ration-board clickable"
-        style="left: {{left+ration.position.centre_x}}px; top: {{top+ration.position.centre_y}}px">
+        style="left: {{left+ration.position.centre_x-10}}px; top: {{top+ration.position.centre_y-10}}px">
     <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
   </div>
 
@@ -34,7 +34,7 @@
     </div>
   </div>
 
-  <div ng-if="game.checkPhase(3)" class="bar bar-bottom bar-light">
+  <div ng-if="game.checkPhase(3) && game.checkTurn()" class="bar bar-bottom bar-light">
     <div class="area area-{{movePhase == 1 ? 'in' : 'out'}} pull-left">
       <div>
         <div ng-repeat="ration in rations | orderBy : order" class="ration {{!move.ration.id ? 'clickable' : ''} pull-left pad-10"
