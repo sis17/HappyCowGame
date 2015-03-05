@@ -1,6 +1,6 @@
 angular.module('happyCow').controller('CardsCtrl', [
-  '$scope', '$location', 'Restangular',
-  function($scope, $location, Restangular) {
+  '$scope', '$location', 'Restangular', '$modal',
+  function($scope, $location, Restangular, $modal) {
 
     $scope.cards = $scope.user.getCards();
     $scope.rations = $scope.user.getRations();
@@ -42,13 +42,13 @@ angular.module('happyCow').controller('CardsCtrl', [
         }
       },
       create: function() {
-        //$scope.user.createRation(this.ingredients);
-        var ration = {game_user_id: $scope.$storage.user.game_user.id, ingredients: ingredients};
+        var ration = {game_user_id: $scope.$storage.user.game_user.id, ingredients: this.ingredients};
         Restangular.all('rations').post({ration: ration, game_id: $scope.game.id}).then(function(response) {
           $scope.alert(response.message.title, response.message.message, response.message.type, 2);
           $scope.cards = $scope.user.getCards();
           $scope.rations = $scope.user.getRations();
           $scope.game.round.ration_created = true;
+          
         }, function() {
           $scope.alert('Ration Not Created', 'An error occured and the ration was not created.', 'danger', 2);
         });
@@ -116,5 +116,39 @@ angular.module('happyCow').controller('CardsCtrl', [
       }
     };
 
+    $scope.view = function (game_user_card) {
+      var modalInstance = $modal.open({
+        templateUrl: 'myModalContent.html',
+        controller: 'ViewCardCtrl',
+        resolve: {
+          card: function () {
+            return game_user_card;
+          },
+          game: function() {
+            return $scope.game;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (card) {
+        $scope.useCard(card);
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+      });
+    };
+
   }
 ]);
+
+angular.module('happyCow').controller('ViewCardCtrl', function ($scope, $modalInstance, card, game) {
+  $scope.card = card;
+  $scope.game = game;
+
+  $scope.use = function () {
+    $modalInstance.close($scope.card);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+});

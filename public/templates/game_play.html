@@ -14,7 +14,7 @@
         </div>
       </li>
       <li ng-controller="ScoreViewCtrl">
-        <button popup class="btn btn-default">Score <span class="badge">6</span></button>
+        <button popup class="btn btn-default">Score <span class="badge">{{$storage.user.game_user.score}}</span></button>
         <div class="hidden">
             <ul class="list-group">
               <li ng-repeat="game_user in game.game_users | orderBy:score" class="list-group-item">
@@ -33,10 +33,10 @@
         </button>
         <div class="hidden">
           <ul class="list-group">
-            <li ng-repeat="round in game.rounds | orderBy:number" class="list-group-item">
-              {{round.number}}
-              <button ng-if="!roundIsActive(round)" class="btn btn-default btn-xs">Review</button>
-              <span ng-if="roundIsActive(round)" class="label label-success">current</span>
+            <li ng-repeat="round in rounds | orderBy:number" class="list-group-item">
+              Round {{round.number}}
+              <button ng-if="!round.current" class="btn btn-default btn-xs">Review</button>
+              <span ng-if="round.current" class="label label-success">current</span>
             </li>
           </ul>
         </div>
@@ -64,7 +64,10 @@
               </span> - <span class="label player-{{game_user.id}}">{{game_user.user.name}}</span>
             </li>
           </ul>
-          In the next round Mary will start.
+          <p ng-if="nextPlayer">
+            In the next round <span class="label player-{{nextPlayer.id}}">{{nextPlayer.user.name}}</span>
+            will start.
+          </p>
         </div>
       </li>
     </ul><!--/.nav-collapse -->

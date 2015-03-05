@@ -3,7 +3,11 @@ var gameCtrl = hcApp.controller('GameCtrl', [
   function($scope, $sce, $location, Restangular) {
 
     $scope.game = $scope.$storage.game;
-    $scope.phaseTemplate = 'templates/phase/'+$scope.game.round.current_phase+'.html';
+    // initialise game
+    Restangular.one('games', $scope.$storage.game.id).get().then(function(game) {
+      $scope.game = game;
+      //$scope.phaseTemplate = 'templates/phase/'+$scope.game.round.current_phase+'.html';
+    });
 
     $scope.user.getCards = function() {
       this.cards = Restangular.one('games', $scope.game.id).one('game_users', $scope.$storage.user.game_user.id)
@@ -24,6 +28,7 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     }
 
     $scope.user.createRation = function(ingredients) {
+      console.log($scope.$storage.user.game_user);
       var ration = {game_user_id: $scope.$storage.user.game_user.id, ingredients: ingredients};
       Restangular.all('rations').post({ration: ration, game_id: $scope.game.id}).then(function(response) {
         $scope.alert(response.message.title, response.message.message, response.message.type, 2);
@@ -57,7 +62,7 @@ var gameCtrl = hcApp.controller('GameCtrl', [
             $scope.alert(response.message.title, response.message.message, response.message.type, 2);
               if (response.success) {
                 $scope.game.round = response.round;
-                $scope.changePhaseTemplate(game.round.current_phase);
+                $scope.changePhaseTemplate($scope.game.round.current_phase);
               }
           }, function() {
             $scope.alert('Action Not Saved', 'An error occured and the turn could not be finished.', 'danger', 2);
@@ -66,11 +71,45 @@ var gameCtrl = hcApp.controller('GameCtrl', [
       }
     }
 
-    $scope.game.checkPhase = function(phaseNum) {
-      return $scope.game.round.current_phase == phaseNum;
+    $scope.game.doneTurn = function() {
+      Restangular.all('games').post({
+        round_id: $scope.game.round.id,
+        game_user_id: $scope.$storage.user.id,
+        phase_complete: true
+      }).then(function(response) {
+          $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+          if (response.success) {
+              $scope.game.round = Restangular.one('rounds', response.round.id).get().$object;
+              $scope.changePhaseTemplate($scope.game.round.current_phase);
+          }
+      }, function() {
+        $scope.alert('Action Not Saved', 'An error occured and the turn could not be finished.', 'danger', 2);
+      });
     }
 
+    $scope.game.getCurrentRounds = function() {
+      var rounds = [];
+      for(i in $scope.game.rounds) {
+        round = $scope.game.rounds[i];
+        rounds.push(round);
+        if (round.id == $scope.game.round.id) {
+          rounds[i].current = true;
+          return rounds;
+        }
+      }
+    }
+
+    console.log($scope.game.round.current_phase);
+    console.log($scope.game.round.game_user_id);
+    $scope.game.canAct = function(phaseNum) {
+      return $scope.game.checkPhase(phaseNum) && $scope.game.checkTurn();
+    }
+    $scope.game.checkPhase = function(phaseNum) {
+      console.log('checking phase is : '+$scope.game.round.current_phase+' == '+phaseNum+' ?')
+      return $scope.game.round.current_phase == phaseNum;
+    }
     $scope.game.checkTurn = function() {
+      console.log('checking turn is : '+$scope.game.round.game_user_id+' == '+$scope.$storage.user.game_user.id+' ?')
       return $scope.game.round.game_user_id == $scope.$storage.user.game_user.id;
     }
 

@@ -7,11 +7,11 @@ var loginCtrl = hcApp.controller('LoginCtrl', [
 
     $scope.login = function(user) {
       Restangular.service('login').post({email: user.email, password: user.password}).then(function (response) {
-      
+
         console.log(response);
         if (response.success) {
           $scope.user.assign(response.user);
-          $location.path('games')
+          $location.path('games');
         } else {
           $scope.message = response.message.text;
         }

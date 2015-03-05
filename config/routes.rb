@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       resources :moves
     end
     resources :cards
+    resources :game_cards
     resources :rounds do
       resources :moves
     end

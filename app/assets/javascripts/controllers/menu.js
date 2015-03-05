@@ -6,26 +6,23 @@ var menuCtrl = angular.module('happyCow').controller('MenuCtrl', [
 ]);
 
 menuCtrl.controller('ScoreViewCtrl', [
-  '$scope', 'User',
-  function($scope, User) {
-    //$scope.players = User.query();
+  '$scope',
+  function($scope) {
   }
 ]);
 
 menuCtrl.controller('RoundViewCtrl', [
-  '$scope', 'Round',
-  function($scope, Round) {
-    $scope.rounds = Round.query();
-
-    $scope.roundIsActive = function(round) {
-      return round.id == $scope.game.round.id;
-    }
+  '$scope',
+  function($scope) {
+    $scope.rounds = $scope.game.getCurrentRounds();
   }
 ]);
 
 menuCtrl.controller('PlayerViewCtrl', [
-  '$scope', 'User',
-  function($scope, User) {
-    $scope.players = User.query();
+  '$scope',
+  function($scope) {
+    if ($scope.game.game_users[1]) {
+      $scope.nextPlayer = $scope.game.game_users[1];
+    }
   }
 ]);

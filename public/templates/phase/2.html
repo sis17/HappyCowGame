@@ -5,44 +5,41 @@
   <small>Actions <span class="badge">{{countActions()}}</span></small>
   <small>Ingredients <span class="badge">{{countIngredients()}}</span></small>
 </h2>
+
+<script type="text/ng-template" id="myModalContent.html">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="myModalLabel">{{card.card.title}}</h4>
+  </div>
+  <div class="modal-body">
+    <img class="image image-md" ng-src="images/{{card.card.image}}" alt="{{card.card.type}}">
+    <p>{{card.card.description}}</p>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary {{card.used || !game.checkPhase(2) ? 'disabled' : ''}}"
+              ng-click="use()">Use</button>
+      <button ng-click="cancel()" class="btn btn-info">Back</button>
+    </div>
+  </div>
+</script>
+
 <div class="well well-sm">
   <ul id="cards-list" class="list-inline">
-    <li ng-repeat="game_user_card in cards.$object" class="{{game_user_card.used ? 'used' : ''}}">
-      <h3>{{game_user_card.card.title}}</h3>
+    <li ng-repeat="game_user_card in cards.$object" ng-click="view(game_user_card)" class="{{game_user_card.used ? 'used' : ''}}">
+        <h3>
+          {{game_user_card.card.title}}
+          <button ng-if="game.canAct(2)" class="btn btn-danger btn-sm pull-right" ng-click="discardCard(card)">Discard</button>
+        </h3>
       <img class="image image-full" ng-src="images/{{game_user_card.card.image}}" alt="{{game_user_card.card.category}}"
       data-toggle="modal" data-target="#cardModal-{{game_user_card.id}}">
-
-      <!-- the modal for this card -->
-      <div class="modal fade" id="cardModal-{{game_user_card.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <h4 class="modal-title" id="myModalLabel">{{game_user_card.card.title}}</h4>
-            </div>
-            <div class="modal-body">
-              <img class="image image-md" ng-src="images/{{game_user_card.card.image}}" alt="{{game_user_card.card.type}}">
-              <p>{{game_user_card.card.description}}</p>
-            </div>
-            <div class="modal-footer">
-              <button ng-if="game.checkPhase(2)" class="btn btn-danger pull-left" data-dismiss="modal"
-                      ng-click="discardCard(game_user_card)">Discard</button>
-              <div class="btn-group">
-                <button class="btn btn-primary {{game_user_card.used || !game.checkPhase(2) ? 'disabled' : ''}}" data-dismiss="modal"
-                        ng-click="useCard(game_user_card)">Use</button>
-                <button class="btn btn-info" data-dismiss="modal">Back</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </li>
   </ul>
 </div>
 
-<div ng-if="game.checkPhase(2) && game.checkTurn()" class="bar bar-bottom bar-light">
+<div ng-if="game.canAct(2)" class="bar bar-bottom bar-light">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-4">
@@ -62,7 +59,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div ng-if="rations.$object.length < 4">
+        <div ng-if="rations.$object.length < 4 && !game.round.ration_created">
           <div class="big-ration pull-left">
             <div ng-repeat="ingredient in newRation.ingredients" class="ingredient {{ingredient.card.category}}">
               <p>{{ingredient.card.category}}</p>

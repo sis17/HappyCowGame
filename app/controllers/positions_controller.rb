@@ -11,24 +11,29 @@ class PositionsController < ApplicationController
 
   def graph
     if params[:id] and params[:depth]
-      render :json => getPosition(params[:id], params[:depth]) and return
+      @position = Position.find(params[:id])
+      #format.json  { render :json => @position, :methods => :graph(params[:depth].to_f)}
+      render json: get_position(@position, params[:depth].to_f) and return #get_position(params[:id], params[:depth].to_f) and return
     end
     render :json => [] and return
   end
 
   private
-  def getPosition(position_id, depth)
+  def get_position(position, depth)
+
     if depth > 0
-      @position = Position.find(position_id)
-      json = @postion.as_json
       positions = []
-      json.postions.each do |pos|
-        positions.push(getPosition(pos.id, --depth))
+      depth -= 1
+      # get recursive positions
+      position.positions.each do |pos|
+        positions.push(get_position(pos, depth))
       end
-      json.positions = positions
+      # attach the postions
+      json = ActiveSupport::JSON.decode(position.to_json)
+      json["positions"] = positions
       return json
     else
-      return {}
+      return position
     end
   end
 end

@@ -5,9 +5,6 @@ class GamesController < ApplicationController
   end
 
   def show
-    #@game = Game.find(params[:id])
-    #@gameuser = GameUser.where({game_id: @game.id}).offset(0).first
-    #render :json => @gameuser
     @game = Game.find(params[:id])
     render :json => @game.as_json
   end
@@ -15,9 +12,38 @@ class GamesController < ApplicationController
   def update
     @game = Game.find(params[:id])
     # do a check to see if the game is in the review phase, if so, allow update of round_id
-    if params[:next_turn] && @game.round.current_phase == 4
-      @game.round_id += 1
-      @game.save
+    if params[:done_turn]
+      # the user has finished doing what they can, move on to next turn, or phase, or round
+      if @game.round.current_phase == 4
+        #move on to the next turn
+        round = get_next_round(@game)
+        if round
+          @game.round = round
+          @game.save
+        else
+          #there are no more rounds!
+          render :json => {success:false,
+            message: {title:'The Game is Finished', text:'There are no more rounds.', type:'info'},
+            round:@round.as_json
+          } and return
+        end
+      else
+        # get the next player, or move to the next phase
+        nextPlayer = get_next_player(@game.round, @game.round.game_user)
+        messageText = ''
+        if nextPlayer.id == @round.starting_user_id
+          # if the phase has come back to the first player, move on the phase
+          @round.current_phase = @round.current_phase+1
+          messageText = ' the next phase, and '
+        end
+        @round.game_user = nextPlayer
+        @round.save
+
+        render :json => {success:true,
+          message: {title:'Turn Ended', text:'It is now '+messageText+@round.game_user.user.name+'\'s turn.', type:'info'},
+          round:@round.as_json
+        } and return
+      end
 
     elsif !params[:begin] && @game.stage == 0
       # update a game, before it is formally created
@@ -69,9 +95,15 @@ class GamesController < ApplicationController
           game_user_offset = 0;
         end
         round_num += 1
-      end
 
-      #create moves within rounds
+        #create moves within rounds
+        @game.game_users.each do |game_user|
+          move = Move.new
+          move.game_user_id = game_user.id
+          move.round_id = round.id
+          move.save
+        end
+      end
 
       #create the cards
       @game.carddeck.cards.each do |card|
@@ -83,12 +115,14 @@ class GamesController < ApplicationController
       end
 
       #give cards to each player
-      game_card_count = GameCard.count
+      game_card_count = GameCard.where({game_id: params[:game_id]}).count - 1
       @game.game_users.each do |game_user|
         card_count = 0
         while card_count < 4 do
-          game_card = GameCard.where({game_id: @game.id}).offset(rand(game_card_count)).first
-          game_user_card = GameUserCard.new(game_card: game_card, game_user: game_user)
+          game_card = GameCard.where({game_id: @game.id}).offset(rand(0..game_card_count)).last
+          game_user_card = GameUserCard.new
+          game_user_card.game_card_id = game_card.id
+          game_user_card.game_user_id = game_user.id
           game_user_card.save
           card_count += 1
         end
@@ -96,6 +130,12 @@ class GamesController < ApplicationController
 
       #create the cow
       cow = Cow.new
+      cow.ph_marker = 6.5
+      cow.body_condition = 0
+      cow.welfare = 0
+      cow.oligos_marker = 0
+      cow.muck_marker = 0
+      cow.save
       @game.cow = cow
 
       create_ingredient_cats(@game)
@@ -134,7 +174,32 @@ class GamesController < ApplicationController
     end
   end
 
+  def destroy
+    @game = Game.find(params[:id])
+    @game.destroy
+    render json: {
+      success: true
+    } and return
+  end
+
   private
+  def get_next_player(round, game_user)
+    users = round.game.game_users
+
+    currentUserIndex = false
+    users.each_with_index do |user, index|
+      if user.id == game_user.id
+        currentUserIndex = index
+      end
+    end
+
+    if users[currentUserIndex+1]
+      return users[currentUserIndex+1]
+    else
+      return users[0]
+    end
+  end
+
   def create_game_user(game, user_id)
     user = User.find(user_id)
     game_user = GameUser.where({game_id: game.id, user_id: user_id}).first
@@ -143,6 +208,7 @@ class GamesController < ApplicationController
       game_user.user = user
       game_user.game = game
       game_user.colour = user.colour
+      game_user.score = 0
       game_user.save
     end
     game_user

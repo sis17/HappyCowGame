@@ -11,12 +11,14 @@
     <div ng-repeat="position in position.positions" ng-include="'position_renderer.html'"
         class="move-position {{position.positions.length == 0 ? 'move-position-final' : ''}}"
         style="left: {{left+position.centre_x}}px; top: {{top+position.centre_y}}px">
+        {{pos.centre_x}}, {{pos.centre_y}}
     </div>
   </script>
-  <div ng-repeat="position in positions" ng-include="'position_renderer.html'"
+  <div ng-repeat="position in position.positions" ng-include="'position_renderer.html'"
         class="move-position move-position-first clickable"
         style="left: {{left+position.centre_x}}px; top: {{top+position.centre_y}}px"
         ng-click="moveRation(position)">
+        {{pos.centre_x}}, {{pos.centre_y}}
   </div>
 
   <div id="board-controls">
@@ -48,13 +50,13 @@
     </div>
     <div class="area pull-right">
       <ul ng-if="move.dice1 > 0" class="list-inline pull-right pad-10">
-        <li><a ng-click="selectDice(1)" class="{{ !move.selected_die || move.selected_die == 1 ? 'clickable' : 'fade'}}">
+        <li><a ng-click="selectDice(1, move.dice1)" class="{{ !move.selected_die || move.selected_die == 1 ? 'clickable' : 'fade-out'}}">
             <div class="die die-{{move.dice1}}"></div>
         </a></li>
-        <li><a ng-click="selectDice(2)" class="{{ !move.selected_die || move.selected_die == 2 ? 'clickable' : 'fade'}}">
+        <li><a ng-click="selectDice(2, move.dice1)" class="{{ !move.selected_die || move.selected_die == 2 ? 'clickable' : 'fade-out'}}">
             <div class="die die-{{move.dice1}}"></div>
         </a></li>
-        <li ng-if="move.dice3 > 0"><a ng-click="selectDice(3)" class="{{ !move.selected_die || move.selected_die == 3 ? 'clickable' : 'fade'}}">
+        <li ng-if="move.dice3 > 0"><a ng-click="selectDice(3, move.dice1)" class="{{ !move.selected_die || move.selected_die == 3 ? 'clickable' : 'fade-out'}}">
             <div class="die water die-{{move.dice1}}"></div>
         </a></li>
       </ul>

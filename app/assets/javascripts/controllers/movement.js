@@ -12,7 +12,6 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
             $scope.move = moves[i];
           }
         }
-        console.log($scope.move);
       });
     }
 
@@ -24,11 +23,10 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     $scope.getMoves();
 
     $scope.confirmRation = function(ration) {
-      console.log('ration confirmed');
       $scope.move.ration_id = ration.id;
       $scope.move.patch({confirm_ration:true, ration_id:ration.id}).then(function (response) {
         if (response.move) {
-          $scope.move = response.move;
+          $scope.move = Restangular.one('moves', $scope.move.id).get().$object;
         }
         $scope.alert(response.message.title, response.message.text, response.message.type, 2);
       }, function() {
@@ -52,50 +50,51 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       }
     }
 
-    $scope.selectDice = function(dieNum) {
+    $scope.selectDice = function(dieNum, dieValue) {
       if ($scope.move.ration_id > 0) {
         $scope.move.selected_die = dieNum;
         // do not update the selected die, it is not confirmed until movement
-
-        // load the possible positions
-        $scope.positions = [
-          {
-            id: 7, order:7, centre_x: 350, centre_y: 340, area_id: 2,
-            positions: [
-              {id: 8, order:8, centre_x: 350, centre_y: 300, area_id: 2, positions: []}
-            ]
-          }
-        ];
+        Restangular.one('positions', $scope.move.ration.position.id)
+                            .one('graph',dieValue).get().then(function(position) {
+          $scope.position = position;
+          console.log(position);
+        });
       }
     };
 
-    $scope.moveRation = function(newPos) {
-      // update the selected die
-      $scope.move.patch();
-      var ration = null;
+    $scope.getRation = function(ration_id) {
+      // get the ration on the board
       for (i in $scope.rations) {
-        if ($scope.rations[i].id && $scope.rations[i].id == $scope.move.ration.id) {
-          ration = $scope.rations[i];
-          break;
+        if ($scope.rations[i].id && $scope.rations[i].id == ration_id) {
+          return $scope.rations[i];
         }
       }
-      if (ration) {
-        //ration.position.centre_x = newPos.centre_x;
-        //ration.position.centre_y = newPos.centre_y;
-        ration.position = newPos
+      return null;
+    }
+
+    $scope.moveRation = function(newPos) {
+      // update the selected die
+      if (!$scope.move.dieSelected) {
+        $scope.move.dieSelected = true;
+        $scope.move.patch({selected_die:$scope.move.selected_die});
       }
 
+      var ration = $scope.getRation($scope.move.ration.id);
+      if (ration) {
+        ration.position = newPos
+      }
+      console.log(newPos);
       // test for the end of the phase
-      if (newPos.positions.length <= 0) {
+      if (!newPos.positions[0]) {
         // moving to last phase
         console.log('newPos id: '+newPos.id);
         ration.position_id = newPos.id;
         ration.patch();
-        $scope.nextPhase(4);
+        $scope.game.nextPhase(4);
       }
 
       // update the possible positions
-      $scope.positions = newPos.positions;
+      $scope.position = newPos;
     }
 
     // movement controls
