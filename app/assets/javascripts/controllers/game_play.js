@@ -6,7 +6,7 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     // initialise game
     Restangular.one('games', $scope.$storage.game.id).get().then(function(game) {
       $scope.game = game;
-      //$scope.phaseTemplate = 'templates/phase/'+$scope.game.round.current_phase+'.html';
+      $scope.phaseTemplate = 'templates/phase/'+$scope.game.round.current_phase+'.html';
     });
 
     $scope.user.getCards = function() {
@@ -118,6 +118,10 @@ var gameCtrl = hcApp.controller('GameCtrl', [
         console.log('loaded template: templates/phase/'+num+'.html');
         $scope.phaseTemplate = 'templates/phase/'+num+'.html';
       }
+    }
+
+    $scope.loadGame = function(game_id) {
+
     }
 
     return $scope;
