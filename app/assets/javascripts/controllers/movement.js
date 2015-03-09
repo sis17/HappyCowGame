@@ -83,14 +83,14 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       if (ration) {
         ration.position = newPos
       }
-      console.log(newPos);
-      // test for the end of the phase
-      if (!newPos.positions[0]) {
+
+      // test for the end of the turn
+      if (!newPos.positions) {
         // moving to last phase
-        console.log('newPos id: '+newPos.id);
+        console.log('done turn');
         ration.position_id = newPos.id;
         ration.patch();
-        $scope.game.nextPhase(4);
+        $scope.game.doneTurn();
       }
 
       // update the possible positions
@@ -98,7 +98,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     }
 
     // movement controls
-    $scope.width = 800;
+    $scope.width = 1000;
     $scope.left = 20;
     $scope.top = 50;
 

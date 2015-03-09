@@ -5,7 +5,7 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     $scope.game = $scope.$storage.game;
     // initialise game
     Restangular.one('games', $scope.$storage.game.id).get().then(function(game) {
-      $scope.game = game;
+      $scope.game.round = game.round;
       $scope.phaseTemplate = 'templates/phase/'+$scope.game.round.current_phase+'.html';
     });
 
@@ -72,15 +72,17 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     }
 
     $scope.game.doneTurn = function() {
-      Restangular.all('games').post({
+      Restangular.one('games', $scope.game.id).patch({
         round_id: $scope.game.round.id,
         game_user_id: $scope.$storage.user.id,
-        phase_complete: true
+        done_turn: true
       }).then(function(response) {
           $scope.alert(response.message.title, response.message.text, response.message.type, 2);
           if (response.success) {
-              $scope.game.round = Restangular.one('rounds', response.round.id).get().$object;
-              $scope.changePhaseTemplate($scope.game.round.current_phase);
+              Restangular.one('rounds', response.round.id).get().then(function(round) {
+                $scope.game.round = round;
+                $scope.changePhaseTemplate($scope.game.round.current_phase);
+              });
           }
       }, function() {
         $scope.alert('Action Not Saved', 'An error occured and the turn could not be finished.', 'danger', 2);
@@ -99,17 +101,15 @@ var gameCtrl = hcApp.controller('GameCtrl', [
       }
     }
 
-    console.log($scope.game.round.current_phase);
-    console.log($scope.game.round.game_user_id);
     $scope.game.canAct = function(phaseNum) {
       return $scope.game.checkPhase(phaseNum) && $scope.game.checkTurn();
     }
     $scope.game.checkPhase = function(phaseNum) {
-      console.log('checking phase is : '+$scope.game.round.current_phase+' == '+phaseNum+' ?')
+      //console.log('checking phase is : '+$scope.game.round.current_phase+' == '+phaseNum+' ?')
       return $scope.game.round.current_phase == phaseNum;
     }
     $scope.game.checkTurn = function() {
-      console.log('checking turn is : '+$scope.game.round.game_user_id+' == '+$scope.$storage.user.game_user.id+' ?')
+      //console.log('checking turn is : '+$scope.game.round.game_user_id+' == '+$scope.$storage.user.game_user.id+' ?')
       return $scope.game.round.game_user_id == $scope.$storage.user.game_user.id;
     }
 

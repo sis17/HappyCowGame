@@ -88,8 +88,8 @@
         <p>{{stat.name}} <span class="glyphicon glyphicon-info-sign clickable"></span></p>
       </div>
       <div class="col-md-8">
-        <span class="label label-{{stat.minType}} pull-left">{{stat.min}}</span>
-        <div class="progress pull-left" style="width: 70%">
+        <span class="label label-{{stat.minType}} cow-pl cow-pl-low">{{stat.min}}</span>
+        <div class="progress cow-progress" style="width: 70%">
           <div class="progress-bar" role="progressbar"
                 aria-valuemin="{{stat.min}}" aria-valuemax="{{stat.max}}"
                 style="background-color: #{{stat.type()}};
@@ -97,7 +97,7 @@
                 {{stat.value}}
           </div>
         </div>
-        <span class="label label-{{stat.maxType}} pull-left">{{stat.max}}</span>
+        <span class="label label-{{stat.maxType}} cow-pl cow-pl-high">{{stat.max}}</span>
       </div>
     </div>
   </div>
@@ -129,20 +129,26 @@
   <div ng-controller="CowEventsCtrl" class="panel panel-default">
       <div class="panel-body">
         <tabset justified="true">
-          <tab ng-if="weather" heading="Weather">
-            <h3>{{weather.title}}</h3>
-            <img class="image image-full" ng-src="images/{{weather.image}}">
-            <div ng-bind-html="weather.description"></div>
+          <tab heading="Weather">
+            <div ng-if="weather">
+              <h3>{{weather.title}}</h3>
+              <img class="image image-full" ng-src="images/{{weather.image}}">
+              <div ng-bind-html="weather.description"></div>
+            </div>
           </tab>
-          <tab ng-if="disease" heading="Disease">
-            <h3>{{disease.title}}</h3>
-            <img class="image image-full" ng-src="images/{{disease.image}}">
-            <div ng-bind-html="disease.description"></div>
+          <tab heading="Disease">
+            <div ng-if="disease">
+              <h3>{{disease.title}}</h3>
+              <img class="image image-full" ng-src="images/{{disease.image}}">
+              <div ng-bind-html="disease.description"></div>
+            </div>
           </tab>
-          <tab ng-if="pregnancy" heading="Pregnancy">
-            <h3>{{pregnancy.title}}</h3>
-            <img class="image image-full" ng-src="images/{{pregnancy.image}}">
-            <div ng-bind-html="pregnancy.description"></div>
+          <tab heading="Pregnancy">
+            <div ng-if="pregnancy">
+              <h3>{{pregnancy.title}}</h3>
+              <img class="image image-full" ng-src="images/{{pregnancy.image}}">
+              <div ng-bind-html="pregnancy.description"></div>
+            </div>
           </tab>
         </tabset>
       </div>

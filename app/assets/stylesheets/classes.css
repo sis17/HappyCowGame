@@ -144,3 +144,19 @@
   border: 2px solid #F5F5F5;
   border-radius: 5px;
 }
+
+.cow-progress {
+  float: left;
+  border-radius: 0px !important;
+}
+.cow-pl {
+  height: 20px;
+}
+.cow-pl-low {
+  float:left;
+  border-radius: 5px 0px 0px 5px !important;
+}
+.cow-pl-high {
+  float:left;
+  border-radius: 0px 5px 5px 0px !important;
+}

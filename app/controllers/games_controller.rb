@@ -16,13 +16,23 @@ class GamesController < ApplicationController
       # the user has finished doing what they can, move on to next turn, or phase, or round
       if @game.round.current_phase == 4
         #move on to the next turn
-        round = get_next_round(@game)
+        round = Round.where(game_id: @game.id, number: @game.round.number+1).first
         if round
           @game.round = round
           @game.save
+
+          # each player needs 2 more cards
+          @game.game_users.each do |game_user|
+            assign_cards(@game, game_user, 2)
+          end
+
+          render :json => {success:true,
+            message: {title:'Round Ended', text:'It is now '+@game.round.game_user.user.name+'`s turn.', type:'info'},
+            round:@game.round.as_json
+          } and return
         else
           #there are no more rounds!
-          render :json => {success:false,
+          render :json => {success:true,
             message: {title:'The Game is Finished', text:'There are no more rounds.', type:'info'},
             round:@round.as_json
           } and return
@@ -40,7 +50,7 @@ class GamesController < ApplicationController
         @round.save
 
         render :json => {success:true,
-          message: {title:'Turn Ended', text:'It is now '+messageText+@round.game_user.user.name+'\'s turn.', type:'info'},
+          message: {title:'Turn Ended', text:'It is now '+messageText+@round.game_user.user.name+'`s turn.', type:'info'},
           round:@round.as_json
         } and return
       end
@@ -83,7 +93,7 @@ class GamesController < ApplicationController
       while round_num <= round_count  do
         round = Round.new
         round.number = round_num
-        round.event = Event.offset(rand(Event.count)).first
+        round.event_id = Event.offset(rand(Event.count)).first.id
         round.current_phase = 2
         round.starting_user_id = GameUser.where({game_id: @game.id}).offset(game_user_offset).first.id
         round.game_user_id = round.starting_user_id
@@ -117,15 +127,16 @@ class GamesController < ApplicationController
       #give cards to each player
       game_card_count = GameCard.where({game_id: params[:game_id]}).count - 1
       @game.game_users.each do |game_user|
-        card_count = 0
-        while card_count < 4 do
-          game_card = GameCard.where({game_id: @game.id}).offset(rand(0..game_card_count)).last
-          game_user_card = GameUserCard.new
-          game_user_card.game_card_id = game_card.id
-          game_user_card.game_user_id = game_user.id
-          game_user_card.save
-          card_count += 1
-        end
+        assign_cards(@game, game_user, 4)
+        #card_count = 0
+        #while card_count < 4 do
+        #  game_card = GameCard.where({game_id: @game.id}).offset(rand(0..game_card_count)).first
+        #  game_user_card = GameUserCard.new
+        #  game_user_card.game_card_id = game_card.id
+        #  game_user_card.game_user_id = game_user.id
+        #  game_user_card.save
+        #  card_count += 1
+        #end
       end
 
       #create the cow
@@ -160,6 +171,8 @@ class GamesController < ApplicationController
     if params[:new] && params[:game]
       @game = Game.new(params.require(:game).permit(:name, :carddeck_id, :rounds_min, :rounds_max))
       @game.stage = 0
+      @game.rounds_min = 8
+      @game.rounds_max = 8
       @game.save
 
       params[:users].each do |user_id|
@@ -197,6 +210,18 @@ class GamesController < ApplicationController
       return users[currentUserIndex+1]
     else
       return users[0]
+    end
+  end
+
+  def assign_cards(game, game_user, number)
+    game_card_count = GameCard.where({game_id: game.id}).count - 1
+    while number > 0 do
+        game_card = GameCard.where({game_id: game.id}).offset(rand(0..game_card_count)).first
+        game_user_card = GameUserCard.new
+        game_user_card.game_card_id = game_card.id
+        game_user_card.game_user_id = game_user.id
+        game_user_card.save
+        number -= 1
     end
   end
 

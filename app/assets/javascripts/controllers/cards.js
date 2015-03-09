@@ -5,8 +5,6 @@ angular.module('happyCow').controller('CardsCtrl', [
     $scope.cards = $scope.user.getCards();
     $scope.rations = $scope.user.getRations();
 
-    $scope.test = 'test true';
-
     $scope.newRation = {
       ingredients: [{card:{category: 'empty'}},{card:{category: 'empty'}},{card:{category: 'empty'}},{card:{category: 'empty'}}],
       setIngredients: function() {
@@ -48,7 +46,7 @@ angular.module('happyCow').controller('CardsCtrl', [
           $scope.cards = $scope.user.getCards();
           $scope.rations = $scope.user.getRations();
           $scope.game.round.ration_created = true;
-          
+
         }, function() {
           $scope.alert('Ration Not Created', 'An error occured and the ration was not created.', 'danger', 2);
         });
@@ -101,7 +99,6 @@ angular.module('happyCow').controller('CardsCtrl', [
     $scope.useCard = function(card) {
       if (card.card.category == 'action') {
         // the card is an action, so update the server and remove
-        //card.remove();
         card.use = true;
         card.patch().then(function(response) {
           $scope.alert(response.message.title, response.message.message, response.message.type, 2);

@@ -30,8 +30,12 @@
             <td><strong>Score: </strong>{{game_user.score}}</td>
             <td ng-if="game_user.game.stage == 1">
               <span class="label label-success">Playing</span>
-              <strong>Round: </strong>{{game_user.game.round.id}},
+              <strong>Round: </strong>{{game_user.game.round.number}},
               <strong>Phase: </strong>{{translatePhase(game_user.game.round.current_phase)}}
+              <strong>Turn: </strong>
+                <span class="label" style="background-color: #{{game_user.game.round.game_user.colour}}">
+                  {{game_user.game.round.game_user.user.name}}
+                </span>
             </td>
             <td ng-if="game_user.game.stage == 0">
               <span class="label label-warning">Setup</span>

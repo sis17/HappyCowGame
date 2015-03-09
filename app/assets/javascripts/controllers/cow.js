@@ -8,6 +8,9 @@ var cowCtrl = angular.module('happyCow').controller('CowCtrl', [
 cowCtrl.controller('CowStatsCtrl', [
   '$scope',
   function($scope) {
+    $scope.$watchGroup( ['game.cow.welfare', 'game.cow.body_condition', 'game.cow.ph_marker', 'game.cow.oligos_marker', 'game.cow.muck_marker'],
+      function(newValue, oldValue) {
+        console.log('CowStatsCtrl: a cow change occured - '+newValue);
     $scope.stats = [
       {
         name: 'Welfare', min: -7, minType: 'danger', max: 6, maxType: 'success', value: $scope.game.cow.welfare,
@@ -47,13 +50,14 @@ cowCtrl.controller('CowStatsCtrl', [
         }
       }
     ];
+  });
   }
 ]);
 
 cowCtrl.controller('IngredientValueCtrl', [
   '$scope',
   function($scope) {
-    
+
   }
 ]);
 
@@ -64,8 +68,8 @@ cowCtrl.controller('CowEventsCtrl', [
     if ($scope.game.cow.weather_id) {
       $scope.weather = Restangular.one('events',$scope.game.cow.weather_id).get().$object;
     }
-    if ($scope.game.cow.weather_id) {
-      $scope.disease = Restangular.one('events',$scope.game.cow.weather_id).get().$object;
+    if ($scope.game.cow.disease_id) {
+      $scope.disease = Restangular.one('events',$scope.game.cow.disease_id).get().$object;
     }
 
     if ($scope.game.cow.pregnancy_id) {

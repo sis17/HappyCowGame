@@ -1,5 +1,5 @@
 <div ng-controller="MovementCtrl" class="movement">
-  <img id="game-board" draggable="true" src="images/cow-background.png"
+  <img id="game-board" draggable="true" src="images/cow-body.png"
       style="width: {{width}}px; left: {{left}}px; top: {{top}}px">
 
   <div ng-repeat="ration in rations" class="ration ration-board clickable"
@@ -9,7 +9,7 @@
 
   <script type="text/ng-template"  id="position_renderer.html">
     <div ng-repeat="position in position.positions" ng-include="'position_renderer.html'"
-        class="move-position {{position.positions.length == 0 ? 'move-position-final' : ''}}"
+        class="move-position {{position.positions.length == 0 || !position.positions ? 'move-position-final' : ''}}"
         style="left: {{left+position.centre_x}}px; top: {{top+position.centre_y}}px">
         {{pos.centre_x}}, {{pos.centre_y}}
     </div>

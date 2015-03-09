@@ -1,8 +1,12 @@
 angular.module('happyCow').controller('ReviewCtrl', [
-  '$scope', 'User', 'Action', 'Record',
-  function($scope, User, Action, Record) {
-    $scope.actions = Action.query();
-    $scope.users = User.query();
-    $scope.records = Record.query();
+  '$scope',
+  function($scope) {
+    //$scope.actions = $scope.game.round.actions;
+    //$scope.users = User.query();
+    //$scope.records = Record.query();
+
+    $scope.moveToNextTurn = function() {
+      
+    }
   }
 ]);

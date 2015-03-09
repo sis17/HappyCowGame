@@ -14,8 +14,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="user in users | orderBy:turnOrder" class="player-{{user.id}}">
-            <td>{{user.name}}</td><td>2</td><td>3</td><td>1</td><td>4</td>
+          <tr ng-repeat="game_user in game.game_users | orderBy:id" class="player-{{game_user.id}}">
+            <td>{{game_user.user.name}}</td><td>tbc</td><td>{{game_user.score}}</td><td>tbc</td><td>tbc</td>
           </tr>
         </tbody>
       </table>
@@ -36,19 +36,19 @@
     </accordion-group>
 
     <accordion-group heading="Cards Phase">
-      <dl ng-repeat="action in actions | filter:{phase_id:2}" class="dl-horizontal">
+      <dl ng-repeat="action in game.round.actions | filter:{phase_id:2}" class="dl-horizontal">
         <dt>{{action.title}}</dt>
         <dd ng-bind-html="action.description"></dd>
       </dl>
     </accordion-group>
 
     <accordion-group heading="Movement Phase">
-      <dl ng-repeat="action in actions | filter:{phase_id:3}" class="dl-horizontal">
+      <dl ng-repeat="action in game.round.actions | filter:{phase_id:3}" class="dl-horizontal">
         <dt>{{action.title}}</dt>
         <dd ng-bind-html="action.description"></dd>
       </dl>
     </accordion-group>
     <div>
-      <button class="btn btn-success pull-right" ng-click="nextRound()">Next Turn</button>
+      <button ng-if="game.canAct(4)" class="btn btn-success pull-right" ng-click="game.doneTurn()">Next Turn</button>
     </div>
   </div>
