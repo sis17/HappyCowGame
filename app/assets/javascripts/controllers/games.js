@@ -1,8 +1,6 @@
 var welcomeCtrl = hcApp.controller('GamesCtrl', [
   '$scope', '$location', 'Restangular',
   function($scope, $location, Restangular) {
-    //console.log($scope.$storage.user);
-    //$scope.game_users = $scope.user.getGameUsers();
     $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
 
     $scope.selectGame = function(game_user) {

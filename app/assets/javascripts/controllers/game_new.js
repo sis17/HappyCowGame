@@ -70,7 +70,6 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
     }
 
     $scope.abandon = function() {
-      console.log('destorying game: '+$scope.game.id);
       Restangular.one('games', $scope.game.id).remove().then(function() {
         $scope.$storage.game = {};
         $scope.alert('The Game Was Removed', 'The game has been removed.', 'success', 2);
@@ -122,22 +121,9 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
 
     $scope.getGame = function() {
       Restangular.one('games', $scope.game.id).get().then(function(game) {
+        $scope.$storage.game = game;
         $scope.game = game;
       });
     }
-
-    /*$scope.$watchGroup( ['game.rounds_min', 'game.rounds_max', 'game.name', 'game.carddeck_id'],
-      function(newValue, oldValue) {
-        console.log('game detail changed: '+oldValue+' to '+newValue);
-        $scope.game.patch({game:$scope.game}).then(function(response) {
-          if (response.success) {
-            //$scope.game = Restangular.one('games', $scope.game.id).get().$object;
-            $scope.alert('Game Saved', 'Your changes have been saved.', 'success', 2);
-          }
-        }, function() {
-          $scope.alert('Game Not Saved', 'Your changes have NOT been saved.', 'warning', 2);
-        });
-      }
-    );*/
   }
 ]);
