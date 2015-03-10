@@ -23,7 +23,7 @@ angular.module('happyCow').controller('CardsCtrl', [
       spaces: function() {
         var count = 0;
         for (i in this.ingredients) {
-          if (this.ingredients[i].game_card && this.ingredients[i].game_card.card.category == 'empty') {
+          if (!this.ingredients[i].game_card) {
             count++;
           }
         }
@@ -108,9 +108,33 @@ angular.module('happyCow').controller('CardsCtrl', [
       }
     };
 
+    $scope.confirmCreation = function () {
+      var modalInstance = $modal.open({
+        templateUrl: 'createRation.html',
+        controller: 'CreateRationCtrl',
+        resolve: {
+          ingredients: function () {
+            return $scope.newRation.ingredients;
+          },
+          unUsed: function() {
+            return $scope.countUnusedIngredients();
+          },
+          spaces: function() {
+            return $scope.newRation.spaces();
+          }
+        }
+      });
+
+      modalInstance.result.then(function () {
+        $scope.newRation.create();
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+      });
+    };
+
     $scope.view = function (game_user_card) {
       var modalInstance = $modal.open({
-        templateUrl: 'myModalContent.html',
+        templateUrl: 'cardDetails.html',
         controller: 'ViewCardCtrl',
         resolve: {
           game_user_card: function () {
@@ -154,6 +178,22 @@ angular.module('happyCow').controller('ViewCardCtrl', function ($scope, $modalIn
 
   $scope.use = function () {
     $modalInstance.close($scope.game_user_card, true);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+});
+
+angular.module('happyCow').controller('CreateRationCtrl', function ($scope, $modalInstance, ingredients, unUsed, spaces) {
+  console.log(spaces);
+  $scope.ingredients = ingredients;
+  $scope.unUsed = unUsed;
+  $scope.spaces = spaces;
+  $scope.canCreate = spaces < 4;
+
+  $scope.create = function () {
+    $modalInstance.close();
   };
 
   $scope.cancel = function () {

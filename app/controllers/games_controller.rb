@@ -117,6 +117,14 @@ class GamesController < ApplicationController
         end
       end
 
+      # set the last event as the slaughter house
+      last_round = @game.rounds.last
+      last_event = Event.where(category: 'end').first
+      if last_round and last_event
+        last_round.event_id = last_event.id
+        last_round.save
+      end
+
       #create the cards
       @game.carddeck.cards.each do |card|
         game_card = GameCard.new
@@ -182,7 +190,10 @@ class GamesController < ApplicationController
 
   def destroy
     @game = Game.find(params[:id])
-    @game.destroy_all
+    @game.game_users.each do |game_user|
+      game_user.destroy
+    end
+    @game.destroy
     render json: {
       success: true
     } and return

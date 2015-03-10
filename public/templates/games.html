@@ -71,9 +71,12 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-6"><button class="btn btn-default">Stats</button></div>
-              <div class="col-md-6">
-                <a ng-if="game.stage == 0" ng-click="finishSetup()" class="btn btn-success pull-right">Finish Setup</a>
+              <div class="col-md-4"><button class="btn btn-default">Stats</button></div>
+              <div class="col-md-8">
+                <div ng-if="game.stage == 0" class="btn-group pull-right">
+                  <button ng-click="abandon(game.id)" class="btn btn-warning">Abandon</button>
+                  <a ng-click="finishSetup()" class="btn btn-success">Finish Setup</a>
+                </div>
                 <a ng-if="game.stage == 1" href="#/games/play" class="btn btn-primary pull-right">Resume</a>
               </div>
             </div>

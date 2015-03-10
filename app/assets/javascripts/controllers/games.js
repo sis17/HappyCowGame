@@ -18,6 +18,17 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
       $location.path('games/new');
     }
 
+    $scope.abandon = function(game_id) {
+      Restangular.one('games', game_id).remove().then(function() {
+        $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
+        $scope.$storage.game = null;
+        $scope.game = null;
+        $scope.alert('The Game Was Removed', 'The game has been removed.', 'success', 2);
+      }, function() {
+        $scope.alert('Game Not Removed', 'The game could not be removed, it still exists.', 'warning', 2);
+      });
+    }
+
     $scope.newGame = function() {
       $scope.$storage.game = null;
       $location.path('games/new');

@@ -6,7 +6,7 @@
   <small>Ingredients <span class="badge">{{countIngredients()}}</span></small>
 </h2>
 
-<script type="text/ng-template" id="myModalContent.html">
+<script type="text/ng-template" id="cardDetails.html">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -15,7 +15,7 @@
   </div>
   <div class="modal-body">
     <img class="image image-md" ng-src="images/{{card.image}}" alt="{{card.type}}">
-    <p>{{card.description}}</p>
+    <p ng-bind-html="card.description"></p>
   </div>
   <div class="modal-footer">
   <button ng-if="game.canAct(2)" class="btn btn-danger btn-sm pull-left"
@@ -66,7 +66,7 @@
               <button ng-if="ingredient.game_card" ng-click="newRation.replace(ingredient)" class="btn btn-default btn-xs">replace</button>
             </div>
           </div>
-          <button class="btn btn-success pull-left" data-toggle="modal" data-target="#create-ration"
+          <button class="btn btn-success pull-left" ng-click="confirmCreation()"
                   style="height: 50px; margin-top: 8px; border-radius: 0px 5px 5px 0px;">Create</button>
         </div>
       </div>
@@ -77,31 +77,35 @@
       </div>
     </div>
   </div>
+</div>
+</div>
 
-  <div class="modal fade" id="create-ration" tabindex="-1" role="dialog" aria-labelledby="create-ration-label" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Confirm Creation</h4>
-        </div>
-        <div class="modal-body">
-          <p>You are about to create the following ration:</p>
-          <div class="big-ration big-ration-full">
-            <div ng-repeat="ingredient in newRation.ingredients" class="ingredient {{ingredient.game_card.card.category}}">
-              <p>{{ingredient.game_card.card.category}}</p>
-              <p>{{ingredient.game_card.card.description}}</p>
-            </div>
-          </div>
-          <p ng-if="newRation.spaces() > 0">This ration has space for {{newRation.spaces()}} more ingredients.</p>
-          <p>You will have {{countUnusedIngredients()}} ingredients left. Do you want to continue?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Change</button>
-          <button ng-if="newRation.spaces() < 4" type="button" class="btn btn-success" ng-click="newRation.create()">Create</button>
+<script type="text/ng-template" id="createRation.html">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title" id="createRationLabel">ConfirmCreation</h4>
+    </div>
+    <div class="modal-body">
+      <p>You are about to create the following ration:</p>
+      <div class="big-ration big-ration-full">
+        <div ng-repeat="ingredient in ingredients" class="ingredient {{ingredient.game_card.card.category}}">
+          <p>{{ingredient.game_card.card.category}}</p>
+          <p>{{ingredient.game_card.card.description}}</p>
         </div>
       </div>
+      <p ng-if="canCreate">This ration has space for {{spaces}} more ingredients.</p>
+      <p ng-if="canCreate">You will have {{unUsed}} ingredients left. Do you want to continue?</p>
+      <p ng-if="!canCreate">You need to add at least 1 ingredient to create a ration.</p>
     </div>
-  </div>
+    <div class="modal-footer">
+      <div class="btn-group">
+        <button ng-if="canCreate" type="button"
+                class="btn btn-success" ng-click="create()">Create</button>
+        <button type="button" class="btn btn-info" ng-click="cancel()">Back</button>
+      </div>
+    </div>
+</script>
 </div>
 </div>

@@ -22,12 +22,15 @@ var baseCtrl = hcApp.controller('BaseCtrl', [
 
     $scope.alerts = [];
     $scope.alert = function(title, message, type, stick) {
-      $scope.alerts.push({number: $scope.alerts.length, title: title, message: message, type: type, stick: stick});
+      $scope.alerts.push({
+        number: $scope.alerts.length,
+        msg: '<strong>'+title+'</strong> '+message,
+        type: type
+      });
+      console.log($scope.alerts);
     }
-    $scope.clearAlert = function(id) {
-      if (id > -1) {
-        $scope.alerts.splice(id, 1);
-      }
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
     }
 
     $scope.debug = function() {

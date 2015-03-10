@@ -60,7 +60,7 @@
           <ul class="list-group">
             <li ng-repeat="game_user in game.game_users | orderBy:id" class="list-group-item">
               <span class="label label-{{game_user.active ? 'success' : 'default'}} label-xs">
-                {{game_user.id}}
+                {{$index+1}}
               </span> - <span class="label player-{{game_user.id}}">{{game_user.user.name}}</span>
             </li>
           </ul>

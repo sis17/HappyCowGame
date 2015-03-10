@@ -1,9 +1,11 @@
 var gameNewCtrl = hcApp.controller('GameNewCtrl', [
   '$scope', '$location', 'Restangular',
   function($scope, $location, Restangular) {
-
+    var donePost = false;
     // if the game id doesn't exist, get the game setup
-    if (!$scope.$storage.game || !$scope.$storage.game.id) {
+    if (!donePost && (!$scope.$storage.game || !$scope.$storage.game.id)) {
+      donePost = true;
+
       Restangular.all('games').post({
         new: true,
         game: {
@@ -20,6 +22,7 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
             $scope.$storage.user.game_user = game.game_users[0];
             $scope.$storage.game = game;
             $scope.game = game;
+            $scope.game_users = Restangular.one('games', game.id).getList('game_users').$object;
           });
         } else {
           $scope.alert('Initalisation Failed', 'An error occured and the game could not be initialised.', 'warning', 2);
@@ -30,6 +33,7 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
 
     // if the game id exists, just get the game object
     } else {
+      $scope.game_users = Restangular.one('games', $scope.$storage.game.id).getList('game_users').$object;
       Restangular.one('games', $scope.$storage.game.id).get().then(function(game) {
         $scope.$storage.game = game;
         $scope.game = game;
@@ -42,6 +46,7 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
     $scope.decks = Restangular.all("carddecks").getList();
 
     $scope.create = function() {
+      $scope.created = true;
       var game_id = $scope.game.id;
       $scope.game.patch({begin:true}).then(function(response) {
         if (response.success) {
@@ -71,7 +76,7 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
 
     $scope.abandon = function() {
       Restangular.one('games', $scope.game.id).remove().then(function() {
-        $scope.$storage.game = {};
+        $scope.$storage.game = null;
         $scope.alert('The Game Was Removed', 'The game has been removed.', 'success', 2);
         $location.path('games');
       }, function() {
@@ -83,6 +88,7 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
       $scope.game.patch({users:[user.id]}).then(function(response) {
         if (response.success) {
           $scope.getGame();
+          $scope.game_users = Restangular.one('games', response.game.id).getList('game_users').$object;
           $scope.alert('Invitation Success', 'The player has been added to this game.', 'success', 2);
         } else {
           $scope.alert('Invitation Failed', 'The player has NOT been added to this game.', 'warning', 2);
