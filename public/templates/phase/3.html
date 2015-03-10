@@ -44,13 +44,14 @@
           <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
         </div>
       </div>
-      <p ng-if="!move.ration.id">Select a ration, then
+      <p ng-if="rations.length > 0 && !move.ration.id">Select a ration, then
         <button ng-if="!move.ration.id"
               ng-click="confirmRation(selectedRation)" class="btn btn-sm btn-primary">confirm</button>
               it to move.
       </p>
     </div>
     <div class="area pull-right">
+      <p ng-if="rations.length <= 0">You have no rations to move. <button ng-click="endMovementPhase()" class="btn btn-primary">Finish</button></p>
       <ul ng-if="move.dice1 > 0" class="list-inline pull-right pad-10">
         <li><a ng-click="selectDice(1, move.dice1)" class="{{ !move.selected_die || move.selected_die == 1 ? 'clickable' : 'fade-out'}}">
             <div class="die die-{{move.dice1}}"></div>

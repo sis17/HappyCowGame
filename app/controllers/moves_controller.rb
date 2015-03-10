@@ -26,16 +26,18 @@ class MovesController < ApplicationController
       @move.ration_id = params[:ration_id]
       @move.dice1 = rand(1..6)
       @move.dice2 = rand(1..6)
-      #has_water = Ration.joins(:ingredients).joins(:ingredient_cats)
-      #                .where('ingredient_cats.name = "water" AND rations.id = ', params[:ration_id]).first
-      #if has_water
-      #  @move.dice3 = rand(1..6)
-      #end
+      # check if the ration has water
+      has_water = Ration.joins(ingredients: [:ingredient_cat] )
+                    .where('ingredient_cats.name = "water" AND rations.id = ?', params[:ration_id]).first
+      if has_water
+        @move.dice3 = rand(1..6)
+      end
       @move.save
+
       render json: {
         success: true,
         move: @move.as_json,
-        message: {title:'Ration Confirmed', message: 'The ration was selection was confirmed.', type:'success'}
+        message: {title:'Ration Confirmed', text: 'The ration was selection was confirmed.', type:'success'}
       } and return
     end
 

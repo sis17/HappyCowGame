@@ -26,7 +26,9 @@
 
 <div id="alerts">
   <alert ng-repeat="alert in alerts | orderBy:'-number' | limitTo:5"
-          type="alert.type" close="closeAlert($index)" ng-bind-html="alert.msg"></alert>
+          type="alert.type" close="closeAlert($index)">
+    <div ng-bind-html="alert.msg"></div>
+  </alert>
 </div>
 
 <%= yield %>

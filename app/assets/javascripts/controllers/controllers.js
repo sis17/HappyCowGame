@@ -31,6 +31,7 @@ var baseCtrl = hcApp.controller('BaseCtrl', [
     }
     $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
+      console.log($scope.alerts);
     }
 
     $scope.debug = function() {

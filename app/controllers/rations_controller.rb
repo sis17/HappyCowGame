@@ -29,8 +29,26 @@ class RationsController < ApplicationController
     elsif params[:ration] and params[:ration][:game_user_id]
       allowed = true
       @ration = Ration.new(params.require(:ration).permit(:game_user_id))
-      @ration.position_id = 1
-      @ration.save
+
+      # find the first empty space in the trough
+      pos = 1
+      while pos <= 6
+        existingRation = Ration.where(position_id: pos, game_user_id: @game_user.id).first
+        if !existingRation
+          @ration.position_id = pos
+          pos = 6 # break out
+        end
+        pos += 1
+      end
+
+      if @ration.position_id > 0
+        @ration.save
+      else
+        render json: {
+            success: false,
+            message: {title:'No Room in the Trough', message: 'Your ration could not be created, all the spaces in the trough are taken.', type:'success'}
+        } and return
+      end
 
       params[:ration][:ingredients].each do |ing|
         puts ing
