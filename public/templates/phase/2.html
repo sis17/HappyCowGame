@@ -11,15 +11,17 @@
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="modal-title" id="myModalLabel">{{card.card.title}}</h4>
+    <h4 class="modal-title" id="myModalLabel">{{card.title}}</h4>
   </div>
   <div class="modal-body">
-    <img class="image image-md" ng-src="images/{{card.card.image}}" alt="{{card.card.type}}">
-    <p>{{card.card.description}}</p>
+    <img class="image image-md" ng-src="images/{{card.image}}" alt="{{card.type}}">
+    <p>{{card.description}}</p>
   </div>
   <div class="modal-footer">
+  <button ng-if="game.canAct(2)" class="btn btn-danger btn-sm pull-left"
+          ng-click="discard()">Discard</button>
     <div class="btn-group">
-      <button class="btn btn-primary {{card.used || !game.checkPhase(2) ? 'disabled' : ''}}"
+      <button class="btn btn-primary {{game_user_card.used || !game.canAct(2) ? 'disabled' : ''}}"
               ng-click="use()">Use</button>
       <button ng-click="cancel()" class="btn btn-info">Back</button>
     </div>
@@ -30,11 +32,9 @@
   <ul id="cards-list" class="list-inline">
     <li ng-repeat="game_user_card in cards.$object" ng-click="view(game_user_card)" class="{{game_user_card.used ? 'used' : ''}}">
         <h3>
-          {{game_user_card.card.title}}
-          <button ng-if="game.canAct(2)" class="btn btn-danger btn-sm pull-right" ng-click="discardCard(card)">Discard</button>
+          {{game_user_card.game_card.card.title}}
         </h3>
-      <img class="image image-full" ng-src="images/{{game_user_card.card.image}}" alt="{{game_user_card.card.category}}"
-      data-toggle="modal" data-target="#cardModal-{{game_user_card.id}}">
+      <img class="image image-full" ng-src="images/{{game_user_card.game_card.card.image}}" alt="{{game_user_card.game_card.card.category}}">
     </li>
   </ul>
 </div>
@@ -61,9 +61,9 @@
       <div class="col-md-6">
         <div ng-if="rations.$object.length < 4 && !game.round.ration_created">
           <div class="big-ration pull-left">
-            <div ng-repeat="ingredient in newRation.ingredients" class="ingredient {{ingredient.card.category}}">
-              <p>{{ingredient.card.category}}</p>
-              <button ng-if="ingredient.card.category != 'empty'" ng-click="newRation.replace(ingredient)" class="btn btn-default btn-xs">replace</button>
+            <div ng-repeat="ingredient in newRation.ingredients" class="ingredient {{ingredient.game_card.card.category}}">
+              <p>{{ingredient.game_card ? ingredient.game_card.card.category : 'empty'}}</p>
+              <button ng-if="ingredient.game_card" ng-click="newRation.replace(ingredient)" class="btn btn-default btn-xs">replace</button>
             </div>
           </div>
           <button class="btn btn-success pull-left" data-toggle="modal" data-target="#create-ration"
@@ -71,7 +71,7 @@
         </div>
       </div>
       <div class="col-md-2">
-        <button class="btn btn-success pull-right" ng-click="game.nextPhase(3)" data-toggle="tooltip" data-placement="top" title="End card actions">
+        <button class="btn btn-success pull-right" ng-click="game.doneTurn()" data-toggle="tooltip" data-placement="top" title="End card actions">
           Finished
         </button>
       </div>
@@ -88,9 +88,9 @@
         <div class="modal-body">
           <p>You are about to create the following ration:</p>
           <div class="big-ration big-ration-full">
-            <div ng-repeat="ingredient in newRation.ingredients" class="ingredient {{ingredient.card.category}}">
-              <p>{{ingredient.card.category}}</p>
-              <p>{{ingredient.card.description}}</p>
+            <div ng-repeat="ingredient in newRation.ingredients" class="ingredient {{ingredient.game_card.card.category}}">
+              <p>{{ingredient.game_card.card.category}}</p>
+              <p>{{ingredient.game_card.card.description}}</p>
             </div>
           </div>
           <p ng-if="newRation.spaces() > 0">This ration has space for {{newRation.spaces()}} more ingredients.</p>

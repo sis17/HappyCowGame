@@ -63,6 +63,6 @@ class MovesController < ApplicationController
   end
 
   def move
-    @game_user ? @game_user.moves : (@round ? @round.moves : Ration)
+    @game_user ? @game_user.moves : (@round ? @round.moves : Move)
   end
 end

@@ -44,9 +44,11 @@
           <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
         </div>
       </div>
-      <p ng-if="!move.ration.id">Select a ration to move.</p>
-      <button ng-if="!move.ration.id"
-              ng-click="confirmRation(selectedRation)" class="btn btn-default pull-right">Choose Ration</button>
+      <p ng-if="!move.ration.id">Select a ration, then
+        <button ng-if="!move.ration.id"
+              ng-click="confirmRation(selectedRation)" class="btn btn-sm btn-primary">confirm</button>
+              it to move.
+      </p>
     </div>
     <div class="area pull-right">
       <ul ng-if="move.dice1 > 0" class="list-inline pull-right pad-10">

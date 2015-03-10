@@ -4,6 +4,11 @@ class Round < ActiveRecord::Base
   belongs_to :game
   has_many :moves
 
+  def makeActive
+    # cause the event to happen
+    self.event.makeActive
+  end
+
   def as_json(options={})
     super(
       :include=> [

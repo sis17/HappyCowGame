@@ -23,15 +23,21 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     $scope.getMoves();
 
     $scope.confirmRation = function(ration) {
-      $scope.move.ration_id = ration.id;
-      $scope.move.patch({confirm_ration:true, ration_id:ration.id}).then(function (response) {
-        if (response.move) {
-          $scope.move = Restangular.one('moves', $scope.move.id).get().$object;
-        }
-        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
-      }, function() {
-        $scope.alert('Ration Not Confirmed', 'An error occured and the ration was not confirmed.', 'warning', 2);
-      });
+      if (!ration) {
+        // if no ration is selected, let the user know
+        $scope.alert('First Choose a Ration', 'You need to select a ration from the list, then press `Confirm`.', 'info', 2)
+      } else {
+        // a ration has been selected, so confirm it as chosen
+        $scope.move.ration_id = ration.id;
+        $scope.move.patch({confirm_ration:true, ration_id:ration.id}).then(function (response) {
+          if (response.move) {
+            $scope.move = Restangular.one('moves', $scope.move.id).get().$object;
+          }
+          $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+        }, function() {
+          $scope.alert('Ration Not Confirmed', 'An error occured and the ration was not confirmed.', 'warning', 2);
+        });
+      }
     }
 
     $scope.selectRation = function(ration) {

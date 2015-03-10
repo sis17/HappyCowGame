@@ -3,21 +3,17 @@ class CardsController < ApplicationController
 
   def index
     @cards = card.all
-    render :json => @cards.to_json(:include=>[
-      :card
-    ])
+    render :json => @cards.as_json
   end
 
   def show
     @card = card.find(params[:id])
-    render json: @card.to_json(:include=>[
-      :card
-    ])
+    render json: @card.as_json
   end
 
   def update
     if params[:game_user_id]
-      @game_user_card = card.find(params[:id])
+      @game_user_card = GameUserCard.find(params[:id])
 
       if params[:use]
         # do the use action
@@ -40,7 +36,7 @@ class CardsController < ApplicationController
 
   private
   def act_on_card(game_user_card, params)
-    card = @game_user_card.card
+    card = game_user_card.card
     success = false
     message = 'Default card message...'
 
@@ -54,7 +50,7 @@ class CardsController < ApplicationController
       ration.save
       success = true
 
-    elsif @card.title == 'Veterinarian'
+    elsif card.title == 'Veterinarian'
       message = 'Welfare marker moved to 0.'
       cow = game_user_card.game_user.game.cow
       disease = Event.where(id: cow.disease_id).first
@@ -89,6 +85,6 @@ class CardsController < ApplicationController
   end
 
   def card
-    @game_user ? @game_user.game_cards : (@game ? @game.game_cards : Card)
+    @game_user ? @game_user.game_user_cards : (@game ? @game.game_cards : Card)
   end
 end

@@ -33,15 +33,16 @@ class RationsController < ApplicationController
       @ration.save
 
       params[:ration][:ingredients].each do |ing|
-        @card = @game_user.game_cards.joins(:card).where("cards.category = ?", ing[:card][:category]).first
-        if @card
-          @card.destroy
-        end
-
-        @ingredient_cat = IngredientCat.where({name: ing[:card][:category], game_id: ing[:game_id]}).first
-        if @ingredient_cat
+        puts ing
+        if ing[:id]
+          @card = GameUserCard.find(ing[:id])
+          @ingredient_cat = IngredientCat.where({name: @card.game_card.card.category, game_id: @game_user.game.id}).first
+          puts @ingredient_cat
+          if @ingredient_cat
+            @card.destroy
             @ingredient = Ingredient.new({ration_id: @ration.id, ingredient_cat_id: @ingredient_cat.id})
             @ingredient.save
+          end
         end
       end
 

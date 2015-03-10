@@ -6,10 +6,9 @@ angular.module('happyCow').controller('CardsCtrl', [
     $scope.rations = $scope.user.getRations();
 
     $scope.newRation = {
-      ingredients: [{card:{category: 'empty'}},{card:{category: 'empty'}},{card:{category: 'empty'}},{card:{category: 'empty'}}],
+      ingredients: [{},{},{},{}],
       setIngredients: function() {
         this.ingredients = [];
-        console.log('setting ingredients');
         var cards = $scope.cards.$object;
         for (i in cards) {
           if (cards[i] && cards[i].used) {
@@ -18,13 +17,13 @@ angular.module('happyCow').controller('CardsCtrl', [
         }
 
         while (this.ingredients.length < 4) {
-          this.ingredients.push({card:{category: 'empty'}});
+          this.ingredients.push({});
         }
       },
       spaces: function() {
         var count = 0;
         for (i in this.ingredients) {
-          if (this.ingredients[i].card.category == 'empty') {
+          if (this.ingredients[i].game_card && this.ingredients[i].game_card.card.category == 'empty') {
             count++;
           }
         }
@@ -58,7 +57,8 @@ angular.module('happyCow').controller('CardsCtrl', [
       var cards = $scope.cards.$object;
       for (i in cards) {
         var guc = cards[i];
-        if (guc && guc.card && typeof guc === 'object' && guc.card.category != 'action' && !guc.used) {
+        if (guc && guc.game_card && typeof guc === 'object' &&
+            guc.game_card.card.category != 'action' && !guc.used) {
             count++;
         }
       }
@@ -70,7 +70,7 @@ angular.module('happyCow').controller('CardsCtrl', [
       var cards = $scope.cards.$object;
       for (i in cards) {
         var guc = cards[i];
-        if (guc && guc.card && typeof guc === 'object' && guc.card.category != 'action') {
+        if (guc && guc.game_card && typeof guc === 'object' && guc.game_card.card.category != 'action') {
             count++;
         }
       }
@@ -82,24 +82,19 @@ angular.module('happyCow').controller('CardsCtrl', [
       var cards = $scope.cards.$object;
       for (i in cards) {
         var guc = cards[i];
-        if (guc && guc.card && typeof guc === 'object' && guc.card.category && guc.card.category == 'action') {
+        if (guc && guc.game_card && typeof guc === 'object' &&
+            guc.game_card.card.category && guc.game_card.card.category == 'action') {
             count++;
         }
       }
       return count;
     }
 
-    $scope.discardCard = function(card) {
-      console.log('performing discard card id:'+card);
-      // delete card
-      card.remove();
-      $scope.getCards();
-    };
-
     $scope.useCard = function(card) {
-      if (card.card.category == 'action') {
+      console.log(card);
+      if (card.game_card.card.category == 'action') {
         // the card is an action, so update the server and remove
-        card.use = true;
+        card.used = true;
         card.patch().then(function(response) {
           $scope.alert(response.message.title, response.message.message, response.message.type, 2);
           $scope.cards = $scope.user.getCards();
@@ -118,16 +113,19 @@ angular.module('happyCow').controller('CardsCtrl', [
         templateUrl: 'myModalContent.html',
         controller: 'ViewCardCtrl',
         resolve: {
-          card: function () {
+          game_user_card: function () {
             return game_user_card;
           },
           game: function() {
             return $scope.game;
+          },
+          user: function() {
+            return $scope.user;
           }
         }
       });
 
-      modalInstance.result.then(function (card) {
+      modalInstance.result.then(function (card, use) {
         $scope.useCard(card);
       }, function () {
         console.log('Modal dismissed at: ' + new Date());
@@ -137,12 +135,25 @@ angular.module('happyCow').controller('CardsCtrl', [
   }
 ]);
 
-angular.module('happyCow').controller('ViewCardCtrl', function ($scope, $modalInstance, card, game) {
-  $scope.card = card;
+angular.module('happyCow').controller('ViewCardCtrl', function ($scope, $modalInstance, game_user_card, game, user) {
+  $scope.game_user_card = game_user_card;
+  $scope.card = game_user_card.game_card.card;
   $scope.game = game;
+  $scope.user = user;
+
+  $scope.discard = function () {
+    var r = confirm("Are you sure you want to delete the card: "+$scope.card.title);
+    if (r == true) {
+      console.log('performing discard card id:'+card.id);
+      // delete card
+      $scope.game_user_card.remove();
+      $scope.user.getCards();
+      $modalInstance.dismiss('Card discarded.');
+    }
+  };
 
   $scope.use = function () {
-    $modalInstance.close($scope.card);
+    $modalInstance.close($scope.game_user_card, true);
   };
 
   $scope.cancel = function () {

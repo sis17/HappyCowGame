@@ -1,12 +1,12 @@
 class GamesController < ApplicationController
   def index
     @games = Game.all
-    render :json => @games.as_json
+    render json: @games.as_json
   end
 
   def show
     @game = Game.find(params[:id])
-    render :json => @game.as_json
+    render json: @game.as_json
   end
 
   def update
@@ -19,6 +19,7 @@ class GamesController < ApplicationController
         round = Round.where(game_id: @game.id, number: @game.round.number+1).first
         if round
           @game.round = round
+          @game.round.makeActive
           @game.save
 
           # each player needs 2 more cards
@@ -39,7 +40,8 @@ class GamesController < ApplicationController
         end
       else
         # get the next player, or move to the next phase
-        nextPlayer = get_next_player(@game.round, @game.round.game_user)
+        @round = @game.round
+        nextPlayer = get_next_player(@round, @round.game_user)
         messageText = ''
         if nextPlayer.id == @round.starting_user_id
           # if the phase has come back to the first player, move on the phase
@@ -128,15 +130,6 @@ class GamesController < ApplicationController
       game_card_count = GameCard.where({game_id: params[:game_id]}).count - 1
       @game.game_users.each do |game_user|
         assign_cards(@game, game_user, 4)
-        #card_count = 0
-        #while card_count < 4 do
-        #  game_card = GameCard.where({game_id: @game.id}).offset(rand(0..game_card_count)).first
-        #  game_user_card = GameUserCard.new
-        #  game_user_card.game_card_id = game_card.id
-        #  game_user_card.game_user_id = game_user.id
-        #  game_user_card.save
-        #  card_count += 1
-        #end
       end
 
       #create the cow
@@ -216,11 +209,14 @@ class GamesController < ApplicationController
   def assign_cards(game, game_user, number)
     game_card_count = GameCard.where({game_id: game.id}).count - 1
     while number > 0 do
+        # get the card, and check that any cards exist
         game_card = GameCard.where({game_id: game.id}).offset(rand(0..game_card_count)).first
-        game_user_card = GameUserCard.new
-        game_user_card.game_card_id = game_card.id
-        game_user_card.game_user_id = game_user.id
-        game_user_card.save
+        if game_card
+          game_user_card = GameUserCard.new
+          game_user_card.game_card_id = game_card.id
+          game_user_card.game_user_id = game_user.id
+          game_user_card.save
+        end
         number -= 1
     end
   end
@@ -240,19 +236,36 @@ class GamesController < ApplicationController
   end
 
   def create_ingredient_cats(game)
-    ing_cat_water = IngredientCat.new(game: game, name: 'water', description: '+1 movement dice. Lowers PH in the Rumen if it exceeds energy.')
+    ing_cat_water = IngredientCat.new(
+      game: game, name: 'water',
+      description: '+1 movement dice. Lowers PH in the Rumen if it exceeds energy.',
+      milk_score: 1, meat_score: 1, muck_score: 1
+    )
     ing_cat_water.save
 
-    ing_cat_energy = IngredientCat.new(game: game, name: 'energy', description: 'Raises PH in the Rumen if it exceeds water. Scores high as milk.')
+    ing_cat_energy = IngredientCat.new(
+      game: game, name: 'energy',
+      description: 'Raises PH in the Rumen if it exceeds water. Scores high as milk.',
+      milk_score: 6, meat_score: 2, muck_score: 1
+    )
     ing_cat_energy.save
 
-    ing_cat_protein = IngredientCat.new(game: game, name: 'protein', description: 'Scores adequately as milk, and best as meat.')
+    ing_cat_protein = IngredientCat.new(
+      game: game, name: 'protein', description: 'Scores adequately as milk, and best as meat.',
+      milk_score: 3, meat_score: 4, muck_score: 1
+    )
     ing_cat_protein.save
 
-    ing_cat_fiber = IngredientCat.new(game: game, name: 'fiber', description: 'Allows pushing of rations with less fiber.')
+    ing_cat_fiber = IngredientCat.new(
+      game: game, name: 'fiber', description: 'Allows pushing of rations with less fiber.',
+      milk_score: 2, meat_score: 2, muck_score: 1
+    )
     ing_cat_fiber.save
 
-    ing_cat_oligos = IngredientCat.new(game: game, name: 'oligos', description: 'A special health booster. Scores very well the first time absorbed.')
+    ing_cat_oligos = IngredientCat.new(
+      game: game, name: 'oligos', description: 'A special health booster. Scores very well the first time absorbed.',
+      milk_score: 10, meat_score: 10, muck_score: 1
+    )
     ing_cat_oligos.save
   end
 end
