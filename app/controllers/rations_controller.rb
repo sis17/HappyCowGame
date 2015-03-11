@@ -3,7 +3,7 @@ class RationsController < ApplicationController
 
   def index
     @rations = ration.includes({game_user: :user}, {ingredients: :ingredient_cat}, :position, :moves).all
-    render :json => @rations
+    render json: @rations
   end
 
   def show
@@ -79,11 +79,11 @@ class RationsController < ApplicationController
   private
   def load_user
     @game_user = GameUser.find(params[:game_user_id]) if params[:game_user_id]
-    #@game = Game.find(params[:game_id]) if params[:game_id]
+    @game = Game.find(params[:game_id]) if params[:game_id]
     #@rations = @user ? @user.rations : Ration.scoped
   end
 
   def ration
-    @game_user ? @game_user.rations : Ration
+    @game_user ? @game_user.rations : (@game ? Ration.joins(game_user: [:game]).where('game_users.game_id = ?', @game.id) : Ration)
   end
 end

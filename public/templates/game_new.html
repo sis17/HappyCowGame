@@ -16,10 +16,11 @@
     <div class="row">
       <div class="col-md-6">
         <form>
-          <h3>
+          <h3 ng-if="user.isCreator(game)">
             <input ng-model="game.name" placeHolder="Game Name"/>
             <button class="btn btn-default" type="submit" ng-click="saveName(game.name)">Save</button>
           </h3>
+          <h3 ng-if="!user.isCreator(game)"><span class="small">Name: </span>{{game.name}}</h3>
         </form>
       </div>
       <div class="col-md-6">
@@ -37,7 +38,7 @@
             <td><span class="label label-default" style="background-color: #{{game_user.colour}};">sample</span></td>
           </tr>
         </table>
-        <button data-toggle="modal" data-target="#invite-modal" class="btn btn-default">Send Invite</button>
+        <button ng-if="user.isCreator(game)" data-toggle="modal" data-target="#invite-modal" class="btn btn-default">Send Invite</button>
       </div>
       <div class="col-md-6">
         <div ng-if="game">
@@ -47,7 +48,7 @@
             <div class="col-md-8">{{game.carddeck.name}} - rating: {{game.carddeck.rating}}</div>
             <div class="col-md-4">
               <div class="pull-right">
-                <button data-toggle="modal" data-target="#deck-modal" class="btn btn-default">Change</button>
+                <button ng-if="user.isCreator(game)" data-toggle="modal" data-target="#deck-modal" class="btn btn-default">Change</button>
               </div>
             </div>
           </div>
@@ -66,7 +67,7 @@
             </div>
             <div class="col-md-4">
               <div class="pull-right">
-                <button data-toggle="modal" data-target="#round-modal" class="btn btn-default">Change</button>
+                <button ng-if="user.isCreator(game)" data-toggle="modal" data-target="#round-modal" class="btn btn-default">Change</button>
               </div>
             </div>
           </div>
@@ -75,12 +76,13 @@
     </div>
     <hr />
     <div class="row bar">
-      <div class="btn-group pull-right">
+      <div ng-if="user.isCreator(game)" class="btn-group pull-right">
         <button ng-click="abandon()" class="btn btn-warning">Abandon</button>
         <button ng-click="create()" class="btn btn-success" {{created ? 'disabled' : ''}}>
           {{created ? 'Creating Game...' : 'Create'}}
         </button>
       </div>
+      <button ng-if="!user.isCreator(game)" ng-click="leave()" class="btn btn-warning pull-right">Leave</button>
     </div>
   </div>
 </div>
@@ -95,9 +97,12 @@
       <div class="modal-body">
         <p>Invite a player from the list below:</p>
         <ul>
-          <li ng-repeat="user in users.$object">
-            {{user.name}} - experience: {{user.experience}}
-            <button ng-click="inviteUser(user)" class="btn btn-default">Invite</button>
+          <li ng-repeat="user in users.$object" ng-if="canInvite(user)">
+            <p>
+              <span class="label" style="background-color:#{{user.colour}};">{{user.name}}</span>
+               - experience: <span class="badge">{{user.experience}}</span>
+              <button ng-click="inviteUser(user)" class="btn btn-default btn-xs pull-right">Invite</button>
+            </p>
           </li>
         </ul>
       </div>

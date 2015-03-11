@@ -10,8 +10,8 @@
       </div>
     </div>
   </div>
-  
-  <div ng-if="game.checkPhase(1)" class="bar bar-bottom bar-light">
-    <button class="btn btn-success pull-right" ng-click="game.nextPhase(2)">Ok, move to Cards Phase</button>
+
+  <div ng-if="!game.round.eventReviewed" class="bar bar-bottom bar-light">
+    <button class="btn btn-success pull-right" ng-click="goToCardsPhase()">Ok, move to Cards Phase</button>
   </div>
 </div>

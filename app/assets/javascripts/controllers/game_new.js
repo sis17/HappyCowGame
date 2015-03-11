@@ -14,10 +14,10 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
           rounds_min: 8,
           rounds_max: 8
         },
-        users: [$scope.$storage.user.id]
+        user_id: $scope.$storage.user.id
       }).then(function(response) {
+        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
         if (response.success) {
-          $scope.alert('Game Initialised', 'Now simply fill in information to get setup.', 'success', 2);
           Restangular.one('games', response.game.id).get().then(function(game) {
             $scope.$storage.user.game_user = game.game_users[0];
             $scope.$storage.game = game;
@@ -83,6 +83,16 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
         $scope.alert('Game Not Removed', 'The game was not removed, it still exists.', 'warning', 2);
       });
     }
+    $scope.leave = function() {
+      game_user_id = $scope.$storage.user.game_user.id;
+      Restangular.one('game_users', game_user_id).remove().then(function(response) {
+        $scope.$storage.game = null;
+        $location.path('games');
+        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+      }, function() {
+        $scope.alert('Leaving Failed', 'You cannot currently leave this game.', 'warning', 2);
+      });
+    }
 
     $scope.inviteUser = function(user) {
       $scope.game.patch({users:[user.id]}).then(function(response) {
@@ -96,6 +106,20 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
       }, function() {
         $scope.alert('Invitation Failed', 'The player has NOT been added to this game.', 'warning', 2);
       });
+    }
+    $scope.canInvite = function(user) {
+      if (user.id == $scope.$storage.user.id) {
+        return false;
+      }
+      if ($scope.game_users) {
+        for (i in $scope.game_users) {
+          var game_user = $scope.game_users[i];
+          if (game_user && game_user.user_id && game_user.user_id == user.id) {
+            return false;
+          }
+        }
+      }
+      return true;
     }
 
     $scope.useDeck = function(deck) {

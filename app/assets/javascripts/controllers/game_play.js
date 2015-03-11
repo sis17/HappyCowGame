@@ -72,6 +72,7 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     }
 
     $scope.game.doneTurn = function() {
+      var roundId = $scope.game.round.id;
       Restangular.one('games', $scope.game.id).patch({
         round_id: $scope.game.round.id,
         game_user_id: $scope.$storage.user.id,
@@ -81,7 +82,12 @@ var gameCtrl = hcApp.controller('GameCtrl', [
           if (response.success) {
               Restangular.one('rounds', response.round.id).get().then(function(round) {
                 $scope.game.round = round;
-                $scope.changePhaseTemplate($scope.game.round.current_phase);
+                if (roundId != round.id) {
+                  // at the start of the phase we want to look at the event
+                  $scope.changePhaseTemplate(1);
+                } else {
+                  $scope.changePhaseTemplate($scope.game.round.current_phase);
+                }
               });
           }
       }, function() {

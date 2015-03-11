@@ -168,24 +168,31 @@ class GamesController < ApplicationController
   # POST /games.json
   def create
     @game
+    @user = User.find(params[:user_id])
 
-    if params[:new] && params[:game]
+    if params[:new] and params[:game] and @user
       @game = Game.new(params.require(:game).permit(:name, :carddeck_id, :rounds_min, :rounds_max))
       @game.stage = 0
       @game.rounds_min = 8
       @game.rounds_max = 8
+      @game.creater_id = @user.id
       @game.save
 
-      params[:users].each do |user_id|
-        create_game_user(@game, user_id)
-      end
+      #params[:users].each do |user_id|
+      create_game_user(@game, @user.id)
+      #end
 
       render json: {
         success: true,
         game: @game.as_json,
-        message: {title:'Game Save Succeeded', message:'The game was saved.', type:'success'}
+        message: {title:'Game Initialised', text:'Now simply fill in information to get setup.', type:'success'}
       } and return
     end
+
+    render json: {
+      success: false,
+      message: {title:'Game Initialisation Failed', text:'A creator and minimum game details were not provided.', type:'warning'}
+    } and return
   end
 
   def destroy
@@ -193,9 +200,11 @@ class GamesController < ApplicationController
     @game.game_users.each do |game_user|
       game_user.destroy
     end
+    name = @game.name
     @game.destroy
     render json: {
-      success: true
+      success: true,
+      message: {title:'Game Removed', text:'The game called `'+name+'` has been removed.', type:'success'}
     } and return
   end
 

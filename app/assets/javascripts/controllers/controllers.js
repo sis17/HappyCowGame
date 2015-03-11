@@ -17,6 +17,12 @@ var baseCtrl = hcApp.controller('BaseCtrl', [
       },
       get: function() {
         return $scope.$storage.user;
+      },
+      isCreator: function(game) {
+        if (game && game.creater_id) {
+          return $scope.$storage.user.id == game.creater_id;
+        }
+        return false;
       }
     };
 

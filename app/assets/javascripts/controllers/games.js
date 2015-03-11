@@ -13,19 +13,35 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
       });
     }
 
+    $scope.unselectGame = function() {
+      $scope.$storage.user.game_user = null;
+      $scope.game = null;
+      $scope.$storage.game = null;
+    }
+
     $scope.finishSetup = function() {
       $scope.$storage.game = $scope.game;
       $location.path('games/new');
     }
 
     $scope.abandon = function(game_id) {
-      Restangular.one('games', game_id).remove().then(function() {
+      Restangular.one('games', game_id).remove().then(function(response) {
         $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
-        $scope.$storage.game = null;
-        $scope.game = null;
-        $scope.alert('The Game Was Removed', 'The game has been removed.', 'success', 2);
+        $scope.unselectGame();
+        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
       }, function() {
         $scope.alert('Game Not Removed', 'The game could not be removed, it still exists.', 'warning', 2);
+      });
+    }
+
+    $scope.leave = function() {
+      game_user_id = $scope.$storage.user.game_user.id;
+      Restangular.one('game_users', game_user_id).remove().then(function(response) {
+        $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
+        $scope.unselectGame();
+        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+      }, function() {
+        $scope.alert('Leaving Failed', 'You cannot currently leave this game.', 'warning', 2);
       });
     }
 

@@ -74,10 +74,15 @@
               <div class="col-md-4"><button class="btn btn-default">Stats</button></div>
               <div class="col-md-8">
                 <div ng-if="game.stage == 0" class="btn-group pull-right">
-                  <button ng-click="abandon(game.id)" class="btn btn-warning">Abandon</button>
-                  <a ng-click="finishSetup()" class="btn btn-success">Finish Setup</a>
+                  <button ng-if="user.isCreator(game)" ng-click="abandon(game.id)" class="btn btn-warning">Abandon</button>
+                  <a ng-click="finishSetup()" class="btn btn-success">
+                    {{user.isCreator(game)? 'Finish' : 'View'}} Setup
+                  </a>
                 </div>
-                <a ng-if="game.stage == 1" href="#/games/play" class="btn btn-primary pull-right">Resume</a>
+                <div ng-if="game.stage == 1" class="btn-group pull-right">
+                  <button ng-click="leave()" class="btn btn-warning">Leave</button>
+                  <a href="#/games/play" class="btn btn-primary">Resume</a>
+                </div>
               </div>
             </div>
           </div>

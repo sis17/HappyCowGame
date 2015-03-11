@@ -26,13 +26,17 @@
 
 /* Ration Structure */
 .ration {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   padding: 0px;
 
   background-color: #999;
-  border: 1px solid #000;
+  border: 2px solid #000;
   border-radius: 5px;
+}
+
+.ration.selected {
+  border-color: #00ff00;
 }
 
 .ration.ration-board {

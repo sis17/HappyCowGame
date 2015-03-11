@@ -1,12 +1,13 @@
 class Game < ActiveRecord::Base
   has_many :game_users
   has_many :users, through: :game_user
+  has_many :users, foreign_key: 'creater_id'
   has_many :ingredient_cats
   has_many :rounds
 
   belongs_to :carddeck
   belongs_to :round
-  belongs_to :round, :foreign_key => "round_id"
+  belongs_to :round, foreign_key: "round_id"
   belongs_to :cow
 
   has_many :ingredient_cats

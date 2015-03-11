@@ -19,6 +19,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     $scope.movePhase = 1;
     $scope.rations = Restangular.one('games', $scope.game.id)
                       .one('game_users', $scope.$storage.user.game_user.id).getList('rations').$object;
+    $scope.allRations = Restangular.one('games', $scope.game.id).getList('rations').$object;
     $scope.selectedRation = null;
     $scope.getMoves();
 
