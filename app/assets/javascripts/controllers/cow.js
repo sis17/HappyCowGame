@@ -8,9 +8,10 @@ var cowCtrl = angular.module('happyCow').controller('CowCtrl', [
 cowCtrl.controller('CowStatsCtrl', [
   '$scope',
   function($scope) {
-    $scope.$watchGroup( ['game.cow.welfare', 'game.cow.body_condition', 'game.cow.ph_marker', 'game.cow.oligos_marker', 'game.cow.muck_marker'],
-      function(newValue, oldValue) {
+
+    $scope.$watch('game.cow', function(newValue, oldValue) {
         console.log('CowStatsCtrl: a cow change occured - '+newValue);
+        if ($scope.game) {
     $scope.stats = [
       {
         name: 'Welfare', min: -7, minType: 'danger', max: 6, maxType: 'success', value: $scope.game.cow.welfare,
@@ -50,7 +51,9 @@ cowCtrl.controller('CowStatsCtrl', [
         }
       }
     ];
-  });
+      }
+    });
+
   }
 ]);
 
@@ -64,16 +67,20 @@ cowCtrl.controller('IngredientValueCtrl', [
 cowCtrl.controller('CowEventsCtrl', [
   '$scope', '$sce', 'Restangular',
   function($scope, $sce, Restangular) {
-
-    if ($scope.game.cow.weather_id) {
-      $scope.weather = Restangular.one('events',$scope.game.cow.weather_id).get().$object;
-    }
-    if ($scope.game.cow.disease_id) {
-      $scope.disease = Restangular.one('events',$scope.game.cow.disease_id).get().$object;
-    }
-
-    if ($scope.game.cow.pregnancy_id) {
-      $scope.pregnancy = Restangular.one('events',$scope.game.cow.pregnancy_id).get().$object;
-    }
+    $scope.$watch('game.cow.weather_id', function() {
+       console.log('cow weather has changed');
+       if ($scope.game && $scope.game.cow.weather_id)
+          $scope.weather = Restangular.one('events',$scope.game.cow.weather_id).get().$object;
+    });
+    $scope.$watch('game.cow.disease_id', function() {
+       console.log('cow disease has changed');
+       if ($scope.game && $scope.game.cow.disease_id)
+          $scope.disease = Restangular.one('events',$scope.game.cow.disease_id).get().$object;
+    });
+    $scope.$watch('game.cow.pregnancy_id', function() {
+       console.log('cow pregnancy has changed');
+       if ($scope.game && $scope.game.cow.pregnancy_id)
+          $scope.pregnancy = Restangular.one('events', $scope.game.cow.pregnancy_id).get().$object;
+    });
   }
 ]);

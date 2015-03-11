@@ -14,15 +14,15 @@ menuCtrl.controller('ScoreViewCtrl', [
 menuCtrl.controller('RoundViewCtrl', [
   '$scope',
   function($scope) {
-    $scope.rounds = $scope.game.getCurrentRounds();
+    
   }
 ]);
 
 menuCtrl.controller('PlayerViewCtrl', [
   '$scope',
   function($scope) {
-    if ($scope.game.game_users[1]) {
-      $scope.nextPlayer = $scope.game.game_users[1];
-    }
+    //if ($scope.game.game_users[1]) {
+    //  $scope.nextPlayer = $scope.game.game_users[1];
+    //}
   }
 ]);

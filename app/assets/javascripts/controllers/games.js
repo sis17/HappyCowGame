@@ -7,7 +7,6 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
       Restangular.one('games', game_user.game.id).get().then(function(game) {
         $scope.$storage.user.game_user = game_user;
         $scope.game = game;
-        $scope.$storage.game = game;
       }, function() {
         $scope.alert('Game Not Found', 'Sorry about this, but we can\'t find that game.', 'danger', 2);
       });
@@ -48,6 +47,26 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
     $scope.newGame = function() {
       $scope.$storage.game = null;
       $location.path('games/new');
+    }
+
+    $scope.countFinished = function() {
+      var count = 0;
+      for (i in $scope.game_users.$object) {
+        if ($scope.game_users.$object[i] && $scope.game_users.$object[i].game && $scope.game_users.$object[i].game.stage > 1) {
+          count++;
+        }
+      }
+      return count;
+    }
+
+    $scope.countPlaying = function() {
+      var count = 0;
+      for (i in $scope.game_users.$object) {
+        if ($scope.game_users.$object[i] && $scope.game_users.$object[i].game && $scope.game_users.$object[i].game.stage == 1) {
+          count++;
+        }
+      }
+      return count;
     }
 
     $scope.translatePhase = function(phaseNum) {

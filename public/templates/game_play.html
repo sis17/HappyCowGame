@@ -131,6 +131,7 @@
         <tabset justified="true">
           <tab heading="Weather">
             <div ng-if="weather">
+              <p ng-if="!weather">No special weather forcast.</p>
               <h3>{{weather.title}}</h3>
               <img class="image image-full" ng-src="images/{{weather.image}}">
               <div ng-bind-html="weather.description"></div>
@@ -138,6 +139,7 @@
           </tab>
           <tab heading="Disease">
             <div ng-if="disease">
+              <p ng-if="!disease">The cow is not suffering from a disease.</p>
               <h3>{{disease.title}}</h3>
               <img class="image image-full" ng-src="images/{{disease.image}}">
               <div ng-bind-html="disease.description"></div>
@@ -145,6 +147,7 @@
           </tab>
           <tab heading="Pregnancy">
             <div ng-if="pregnancy">
+              <p ng-if="!pregnancy">The cow is not currently pregnant.</p>
               <h3>{{pregnancy.title}}</h3>
               <img class="image image-full" ng-src="images/{{pregnancy.image}}">
               <div ng-bind-html="pregnancy.description"></div>

@@ -25,23 +25,25 @@
     <div class="row">
       <div class="col-md-7">
         <table class="table">
-          <tr ng-repeat="game_user in game_users.$object" class="clickable" ng-click="selectGame(game_user)">
-            <td><strong>Name: </strong>{{game_user.game.name}}</td>
-            <td><strong>Score: </strong>{{game_user.score}}</td>
-            <td ng-if="game_user.game.stage == 1">
-              <span class="label label-success">Playing</span>
-              <strong>Round: </strong>{{game_user.game.round.number}},
-              <strong>Phase: </strong>{{translatePhase(game_user.game.round.current_phase)}}
-              <strong>Turn: </strong>
+          <tr>
+            <th>Name</th><th>Score</th><th>Stage</th>
+            <th>Players</th><th>Round</th><th>Phase</th><th>Turn</th>
+          </tr>
+          <tr ng-repeat="game_user in game_users.$object | orderBy:'-game.start_time'" class="clickable" ng-click="selectGame(game_user)">
+            <td>{{game_user.game.name}}</td>
+            <td>{{game_user.score}}</td>
+            <td>
+              <span ng-if="game_user.game.stage < 1" class="label label-warning">Setup</span>
+              <span ng-if="game_user.game.stage == 1" class="label label-success">Playing</span>
+              <span ng-if="game_user.game.stage > 1 " class="label label-info">Finished</span>
+            </td>
+            <td>{{game_user.game.game_users.length}}</td>
+            <td>{{game_user.game.round.number}}</td>
+            <td>{{translatePhase(game_user.game.round.current_phase)}}</td>
+            <td>
                 <span class="label" style="background-color: #{{game_user.game.round.game_user.colour}}">
                   {{game_user.game.round.game_user.user.name}}
                 </span>
-            </td>
-            <td ng-if="game_user.game.stage == 0">
-              <span class="label label-warning">Setup</span>
-            </td>
-            <td ng-if="game_user.game.stage > 1">
-              <span class="label label-info">Finished</span>
             </td>
           </tr>
         </table>
@@ -81,7 +83,7 @@
                 </div>
                 <div ng-if="game.stage == 1" class="btn-group pull-right">
                   <button ng-click="leave()" class="btn btn-warning">Leave</button>
-                  <a href="#/games/play" class="btn btn-primary">Resume</a>
+                  <a href="#/games/play/{{game.id}}" class="btn btn-primary">Resume</a>
                 </div>
               </div>
             </div>
@@ -92,7 +94,9 @@
     <hr />
     <div class="row">
       <div class="col-md-12">
-        Total: <span class="badge">{{game_users.$object.length}}</span> | Playing: | Finished:
+        Total: <span class="badge">{{game_users.$object.length}}</span> |
+        Playing: <span class="badge">{{countPlaying()}}</span> |
+        Finished: <span class="badge">{{countFinished()}}</span>
       </div>
     </div>
   </div>

@@ -1,16 +1,9 @@
 var gameCtrl = hcApp.controller('GameCtrl', [
-  '$scope', '$sce', '$location', 'Restangular',
-  function($scope, $sce, $location, Restangular) {
-
-    $scope.game = $scope.$storage.game;
-    // initialise game
-    Restangular.one('games', $scope.$storage.game.id).get().then(function(game) {
-      $scope.game.round = game.round;
-      $scope.phaseTemplate = 'templates/phase/'+$scope.game.round.current_phase+'.html';
-    });
+  '$scope', '$sce', '$location', 'Restangular', '$routeParams',
+  function($scope, $sce, $location, Restangular, $routeParams) {
 
     $scope.user.getCards = function() {
-      this.cards = Restangular.one('games', $scope.game.id).one('game_users', $scope.$storage.user.game_user.id)
+      this.cards = Restangular.one('games', $routeParams.gameId).one('game_users', $scope.$storage.user.game_user.id)
               .getList('cards');
       return this.cards;
     }
@@ -23,21 +16,30 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     }
 
     $scope.user.getRations = function() {
-      return Restangular.one('users', $scope.game.id).one('game_users', $scope.$storage.user.game_user.id)
+      return Restangular.one('users', $routeParams.gameId).one('game_users', $scope.$storage.user.game_user.id)
               .getList('rations');
     }
 
     $scope.user.createRation = function(ingredients) {
-      console.log($scope.$storage.user.game_user);
       var ration = {game_user_id: $scope.$storage.user.game_user.id, ingredients: ingredients};
-      Restangular.all('rations').post({ration: ration, game_id: $scope.game.id}).then(function(response) {
+      Restangular.all('rations').post({ration: ration, game_id: $routeParams.gameId}).then(function(response) {
         $scope.alert(response.message.title, response.message.message, response.message.type, 2);
         $scope.cards = $scope.user.getCards();
-        $scope.game.round.ration_created = true;
+        if ($scope.game.round)
+          $scope.game.round.ration_created = true;
       }, function() {
         $scope.alert('Ration Not Created', 'An error occured and the ration was not created.', 'danger', 2);
       });
     }
+
+// initialise game
+console.log($routeParams.gameId);
+Restangular.one('games', $routeParams.gameId).get().then(function(game) {
+      $scope.game = game;
+
+      $scope.phaseTemplate = 'templates/phase/'+game.round.current_phase+'.html';
+
+      $scope.nextPlayer = $scope.game.game_users[1];
 
     $scope.game.nextTurn = function() {
       this.round_id++;
@@ -111,13 +113,14 @@ var gameCtrl = hcApp.controller('GameCtrl', [
       return $scope.game.checkPhase(phaseNum) && $scope.game.checkTurn();
     }
     $scope.game.checkPhase = function(phaseNum) {
-      //console.log('checking phase is : '+$scope.game.round.current_phase+' == '+phaseNum+' ?')
       return $scope.game.round.current_phase == phaseNum;
     }
     $scope.game.checkTurn = function() {
-      //console.log('checking turn is : '+$scope.game.round.game_user_id+' == '+$scope.$storage.user.game_user.id+' ?')
       return $scope.game.round.game_user_id == $scope.$storage.user.game_user.id;
     }
+
+    $scope.rounds = $scope.game.getCurrentRounds();
+});
 
     $scope.changePhaseTemplate = function(num) {
       if (!isNaN(num)) {
@@ -125,12 +128,6 @@ var gameCtrl = hcApp.controller('GameCtrl', [
         $scope.phaseTemplate = 'templates/phase/'+num+'.html';
       }
     }
-
-    $scope.loadGame = function(game_id) {
-
-    }
-
-    return $scope;
   }
 ]);
 

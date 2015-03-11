@@ -16,7 +16,8 @@ class GameUser < ActiveRecord::Base
           {round: {:include => [
             {game_user: {:include => [:user  => {:only => [:id, :name]}]}}
           ]}},
-          :cow
+          :cow,
+          :game_users
         ]}},
         :rations,
         :game_cards,

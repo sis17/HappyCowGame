@@ -22,11 +22,11 @@ hcApp.config(['$routeProvider',
         templateUrl: 'templates/games.html',
         controller: 'GamesCtrl'
       }).
-      when('/games/new', {
+      when('/games/new/:gameId', {
         templateUrl: 'templates/game_new.html',
         controller: 'GameNewCtrl'
       }).
-      when('/games/play', {
+      when('/games/play/:gameId', {
         templateUrl: 'templates/game_play.html',
         controller: 'GameCtrl'
       }).
@@ -35,9 +35,3 @@ hcApp.config(['$routeProvider',
         controller: 'WelcomeCtrl'
       });
   }]);
-
-/*hcApp.run(function($rootScope, $templateCache) {
-  $rootScope.$on('$viewContentLoaded', function() {
-    $templateCache.removeAll();
-  });
-});*/
