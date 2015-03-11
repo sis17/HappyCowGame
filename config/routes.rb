@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   resources :records
   resources :moves
   resources :events
+  #resources :cows
 
   resources :positions
   get 'positions/:id/graph/:depth' => 'positions#graph'

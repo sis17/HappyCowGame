@@ -13,6 +13,11 @@ class Cow < ActiveRecord::Base
     end
   end
 
+  def increase_oligos(type)
+    self.oligos_marker += 1
+    self.save
+  end
+
   def as_json(options={})
     super(
       :include=> [

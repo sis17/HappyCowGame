@@ -95,10 +95,12 @@ angular.module('happyCow').controller('CardsCtrl', [
       if (card.game_card.card.category == 'action') {
         // the card is an action, so update the server and remove
         card.used = true;
-        card.patch().then(function(response) {
-          $scope.alert(response.message.title, response.message.message, response.message.type, 2);
+        card.patch({use:true}).then(function(response) {
+          $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+          $scope.game.update();
           $scope.cards = $scope.user.getCards();
         }, function() {
+          card.used = false;
           $scope.alert('Card Not Used', 'An error occured and the card was not used.', 'danger', 2);
         });
       } else {

@@ -148,7 +148,11 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       // test for the end of the turn
       if (newPos.links.length == 0 || $scope.movementsLeft <= 0) { // improve this to check if there's allowed movements left
         ration.position_id = newPos.id;
-        ration.patch();
+        ration.patch().then(function(response) {
+          if (response.message) {
+            $scope.alert(response.message.title, response.message.text, response.message.type, 0);
+          }
+        });
         $scope.endMovementPhase();
       }
 

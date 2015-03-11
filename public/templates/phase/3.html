@@ -17,7 +17,7 @@
   <div ng-repeat="pos in graph.traverse(position.id)" ng-if="pos.depth > 0"
         class="move-position {{pos.depth == 1 ? 'move-position-first' : ''}} clickable"
         style="left: {{left+pos.centre_x}}px; top: {{top+pos.centre_y}}px; padding-left:3px;"
-        ng-click="moveRation(pos.id)">{{pos.depth}}
+        ng-click="moveRation(pos.id)">{{(6-movementsLeft) + pos.depth}}
   </div>
 
   <div id="board-controls">

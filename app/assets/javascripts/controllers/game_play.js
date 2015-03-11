@@ -41,7 +41,7 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
 
       $scope.nextPlayer = $scope.game.game_users[1];
 
-    $scope.game.nextTurn = function() {
+    /*$scope.game.nextTurn = function() {
       this.round_id++;
 
       Restangular.all('rounds').post({round_id: $scope.game.round.id, game_user_id: $scope.$storage.user.id, complete: true})
@@ -71,6 +71,13 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
           });
         }
       }
+    }*/
+
+    $scope.game.update = function() {
+      Restangular.one('cows', this.cow.id).get().then(function(game) {
+        $scope.game.cow = game.cow;
+        $scope.game.round = game.round;
+      });
     }
 
     $scope.game.doneTurn = function() {

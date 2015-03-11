@@ -15,7 +15,15 @@ class RationsController < ApplicationController
     @ration = Ration.find(params[:id])
     @ration.update(params.require(:ration).permit(:position_id))
 
-    render json: @ration
+    response = {ration: @ration}
+
+    # consume the ration if on one of the meat, milk or muck squares
+    pos = params[:ration][:position_id]
+    if pos == 78 or pos == 86 or pos == 95
+      response = @ration.game_user.game.finish_ration(@ration)
+    end
+
+    render json: response and return
   end
 
   def create

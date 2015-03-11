@@ -43,6 +43,56 @@ class Game < ActiveRecord::Base
     #...
   end
 
+  def finish_ration(ration)
+    type = 'something'
+    if ration.position_id == 78 # milk
+      if self.cow.pregnancy_id > 0
+        type = 'meat'
+      else
+        type = "milk"
+      end
+    end
+    if ration.position_id == 86 # meat
+      type = "meat"
+    end
+    if ration.position_id == 95 # muck
+      type = "muck"
+    end
+
+    if type != 'something'
+      score = 0
+      ingredients = ''
+      ration.ingredients.each do |ingredient|
+        ingredients += "#{ingredient.ingredient_cat.name}, "
+        score += ingredient.ingredient_cat.get_score(type)
+      end
+      ration.game_user.score += score
+      ration.game_user.save
+
+      ration.destroy
+
+      return {
+        success: true,
+        ration: nil,
+        message: {
+          title: 'Ration Consumed',
+          text: "Your ration was consumed as #{type}, you gained #{score} points for: #{ingredients}",
+          type: 'success'
+        }
+      }
+    end
+
+    return {
+      success: false,
+      ration: ration,
+      message: {
+        title: 'Ration Not Consumed',
+        text: "Your ration could not be consumed, we didn`t recognise what it is being consumed as.",
+        type: 'warning'
+      }
+    }
+  end
+
   def assign_cards(game_user, number)
     game_card_count = GameCard.where({game_id: self.id}).count - 1
     while number > 0 do
