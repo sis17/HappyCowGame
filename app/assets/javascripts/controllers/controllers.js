@@ -33,11 +33,9 @@ var baseCtrl = hcApp.controller('BaseCtrl', [
         msg: '<strong>'+title+'</strong> '+message,
         type: type
       });
-      console.log($scope.alerts);
     }
     $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
-      console.log($scope.alerts);
     }
 
     $scope.debug = function() {

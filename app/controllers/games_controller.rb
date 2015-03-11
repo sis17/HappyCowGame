@@ -33,7 +33,9 @@ class GamesController < ApplicationController
           } and return
         else
           #there are no more rounds!
-          render :json => {success:true,
+          @game.stage = 2
+          @game.save
+          render :json => {success:false,
             message: {title:'The Game is Finished', text:'There are no more rounds.', type:'info'},
             round:@round.as_json
           } and return

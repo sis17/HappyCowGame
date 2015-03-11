@@ -9,17 +9,15 @@
   </div>
 
   <script type="text/ng-template"  id="position_renderer.html">
-    <div ng-repeat="position in position.positions" ng-include="'position_renderer.html'"
-        class="move-position {{position.positions.length == 0 || !position.positions ? 'move-position-final' : ''}}"
-        style="left: {{left+position.centre_x}}px; top: {{top+position.centre_y}}px">
-        {{pos.centre_x}}, {{pos.centre_y}}
+    <div ng-repeat="pos in graph.traverse(pos.id)" ng-include="'position_renderer.html'"
+        class="move-position {{pos.links <= 0 || !pos.links ? 'move-position-final' : ''}}"
+        style="left: {{left+pos.centre_x}}px; top: {{top+pos.centre_y}}px">
     </div>
   </script>
-  <div ng-repeat="position in position.positions" ng-include="'position_renderer.html'"
-        class="move-position move-position-first clickable"
-        style="left: {{left+position.centre_x}}px; top: {{top+position.centre_y}}px"
-        ng-click="moveRation(position)">
-        {{pos.centre_x}}, {{pos.centre_y}}
+  <div ng-repeat="pos in graph.traverse(position.id)" ng-if="pos.depth > 0"
+        class="move-position {{pos.depth == 1 ? 'move-position-first' : ''}} clickable"
+        style="left: {{left+pos.centre_x}}px; top: {{top+pos.centre_y}}px; padding-left:3px;"
+        ng-click="moveRation(pos.id)">{{pos.depth}}
   </div>
 
   <div id="board-controls">
@@ -60,11 +58,11 @@
           <li><a ng-click="selectDice(1, move.dice1)" class="{{ !move.selected_die || move.selected_die == 1 ? 'clickable' : 'fade-out'}}">
               <div class="die die-{{move.dice1}}"></div>
           </a></li>
-          <li><a ng-click="selectDice(2, move.dice1)" class="{{ !move.selected_die || move.selected_die == 2 ? 'clickable' : 'fade-out'}}">
-              <div class="die die-{{move.dice1}}"></div>
+          <li><a ng-click="selectDice(2, move.dice2)" class="{{ !move.selected_die || move.selected_die == 2 ? 'clickable' : 'fade-out'}}">
+              <div class="die die-{{move.dice2}}"></div>
           </a></li>
-          <li ng-if="move.dice3 > 0"><a ng-click="selectDice(3, move.dice1)" class="{{ !move.selected_die || move.selected_die == 3 ? 'clickable' : 'fade-out'}}">
-              <div class="die water die-{{move.dice1}}"></div>
+          <li ng-if="move.dice3 > 0"><a ng-click="selectDice(3, move.dice3)" class="{{ !move.selected_die || move.selected_die == 3 ? 'clickable' : 'fade-out'}}">
+              <div class="die water die-{{move.dice3}}"></div>
           </a></li>
         </ul>
       </div>
