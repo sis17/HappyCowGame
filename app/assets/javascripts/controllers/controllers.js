@@ -1,6 +1,6 @@
 var baseCtrl = hcApp.controller('BaseCtrl', [
-  '$scope', '$sce', '$location', 'Restangular', '$localStorage',
-  function($scope, $sce, $location, Restangular, $localStorage) {
+  '$scope', '$sce', '$location', 'Restangular', '$localStorage', '$timeout',
+  function($scope, $sce, $location, Restangular, $localStorage, $timeout) {
     $scope.$storage = $localStorage;
     if (!$scope.$storage.user) {
       $location.path('login');
@@ -28,11 +28,17 @@ var baseCtrl = hcApp.controller('BaseCtrl', [
 
     $scope.alerts = [];
     $scope.alert = function(title, message, type, stick) {
-      $scope.alerts.push({
+      var index = $scope.alerts.push({
         number: $scope.alerts.length,
         msg: '<strong>'+title+'</strong> '+message,
         type: type
-      });
+      }) - 1;
+
+      if (stick > 0) {
+        $timeout(function() {
+          $scope.closeAlert(index);
+        }, (stick)*1000);
+      }
     }
     $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
