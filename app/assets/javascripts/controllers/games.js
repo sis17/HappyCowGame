@@ -4,18 +4,21 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
     $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
 
     $scope.selectGame = function(game_user) {
-      Restangular.one('games', game_user.game.id).get().then(function(game) {
-        $scope.$storage.user.game_user = game_user;
-        $scope.game = game;
-      }, function() {
-        $scope.alert('Game Not Found', 'Sorry about this, but we can\'t find that game.', 'danger', 2);
-      });
+      if (game_user.game && game_user.game.id) {
+        Restangular.one('games', game_user.game.id).get().then(function(game) {
+          $scope.$storage.user.game_user = game_user;
+          $scope.game = game;
+        }, function() {
+          $scope.alert('Game Not Found', 'Sorry about this, but we can\'t find that game.', 'danger', 2);
+        });
+      } else {
+        $scope.alert('No Game Exists', 'Sorry, we can\'t find your game for you, it may have been deleted', 'warning', 0);
+      }
     }
 
     $scope.unselectGame = function() {
       $scope.$storage.user.game_user = null;
       $scope.game = null;
-      $scope.$storage.game = null;
     }
 
     $scope.abandon = function(game_id) {

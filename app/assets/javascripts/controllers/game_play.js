@@ -41,7 +41,9 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
       $scope.nextPlayer = $scope.game.game_users[1];
 
     $scope.game.update = function() {
-      $scope.$storage.user.game_user = Restangular.one('game_users', $scope.$storage.user.game_user.id).get().$object;
+      Restangular.one('game_users', $scope.$storage.user.game_user.id).get().then(function(game_user) {
+        $scope.$storage.user.game_user = game_user;
+      });
       Restangular.one('cows', this.cow.id).get().then(function(game) {
         $scope.game.cow = game.cow;
         $scope.game.round = game.round;

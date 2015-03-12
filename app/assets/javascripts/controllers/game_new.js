@@ -4,6 +4,8 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
     // get the game
     //$scope.game_users = Restangular.one('games', $routeParams.gameId).getList('game_users').$object;
     Restangular.one('games', $routeParams.gameId).get().then(function(game) {
+      $scope.$storage.user.game_user = game.game_users[0];
+      console.log($scope.$storage.user.game_user);
       $scope.game = game;
     });
 
