@@ -77,13 +77,13 @@
               <div class="col-md-8">
                 <div ng-if="game.stage == 0" class="btn-group pull-right">
                   <button ng-if="user.isCreator(game)" ng-click="abandon(game.id)" class="btn btn-warning">Abandon</button>
-                  <a ng-click="finishSetup()" class="btn btn-success">
+                  <a ng-href="#/games/new/{{game.id}}" class="btn btn-success">
                     {{user.isCreator(game)? 'Finish' : 'View'}} Setup
                   </a>
                 </div>
                 <div ng-if="game.stage == 1" class="btn-group pull-right">
                   <button ng-click="leave()" class="btn btn-warning">Leave</button>
-                  <a href="#/games/play/{{game.id}}" class="btn btn-primary">Resume</a>
+                  <a ng-href="#/games/play/{{game.id}}" class="btn btn-primary">Resume</a>
                 </div>
               </div>
             </div>

@@ -149,6 +149,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       if (newPos.links.length == 0 || $scope.movementsLeft <= 0) { // improve this to check if there's allowed movements left
         ration.position_id = newPos.id;
         ration.patch().then(function(response) {
+          $scope.game.update();
           if (response.message) {
             $scope.alert(response.message.title, response.message.text, response.message.type, 0);
           }

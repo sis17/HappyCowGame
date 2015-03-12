@@ -33,7 +33,6 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     }
 
 // initialise game
-console.log($routeParams.gameId);
 Restangular.one('games', $routeParams.gameId).get().then(function(game) {
       $scope.game = game;
 
@@ -41,39 +40,8 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
 
       $scope.nextPlayer = $scope.game.game_users[1];
 
-    /*$scope.game.nextTurn = function() {
-      this.round_id++;
-
-      Restangular.all('rounds').post({round_id: $scope.game.round.id, game_user_id: $scope.$storage.user.id, complete: true})
-       .then(function(response) {
-        $scope.alert(response.message.title, response.message.message, response.message.type, 2);
-        if (response.success) {
-          $scope.game.round = response.round;
-          $scope.changePhaseTemplate(game.round.current_phase);
-        }
-      }, function() {
-        $scope.alert('Action Not Saved', 'An error occured and the turn could not be finished.', 'danger', 2);
-      });
-    }
-
-    $scope.game.nextPhase = function(phaseNum) {
-      if (phaseNum) {
-        if (phaseNum == $scope.game.round.current_phase + 1) {
-          Restangular.all('rounds').post({round_id: $scope.game.round.id, game_user_id: $scope.$storage.user.id, phase_complete: true})
-           .then(function(response) {
-            $scope.alert(response.message.title, response.message.message, response.message.type, 2);
-              if (response.success) {
-                $scope.game.round = response.round;
-                $scope.changePhaseTemplate($scope.game.round.current_phase);
-              }
-          }, function() {
-            $scope.alert('Action Not Saved', 'An error occured and the turn could not be finished.', 'danger', 2);
-          });
-        }
-      }
-    }*/
-
     $scope.game.update = function() {
+      $scope.$storage.user.game_user = Restangular.one('game_users', $scope.$storage.user.game_user.id).get().$object;
       Restangular.one('cows', this.cow.id).get().then(function(game) {
         $scope.game.cow = game.cow;
         $scope.game.round = game.round;

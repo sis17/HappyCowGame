@@ -4,6 +4,7 @@ class IngredientCat < ActiveRecord::Base
 
   def get_score(type)
     # work out the score
+    score = 0
     if type == 'milk'
       score = self.milk_score
     end

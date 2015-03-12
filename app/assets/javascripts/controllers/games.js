@@ -18,11 +18,6 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
       $scope.$storage.game = null;
     }
 
-    $scope.finishSetup = function() {
-      $scope.$storage.game = $scope.game;
-      $location.path('games/new');
-    }
-
     $scope.abandon = function(game_id) {
       Restangular.one('games', game_id).remove().then(function(response) {
         $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
@@ -45,8 +40,23 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
     }
 
     $scope.newGame = function() {
-      $scope.$storage.game = null;
-      $location.path('games/new');
+      Restangular.all('games').post({
+        new: true,
+        game: {
+          name: '',
+          carddeck_id: 1,
+          rounds_min: 8,
+          rounds_max: 8
+        },
+        user_id: $scope.$storage.user.id
+      }).then(function(response) {
+        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+        if (response.success) {
+          $location.path('games/new/'+response.game.id);
+        }
+      }, function() {
+        $scope.alert('Initalisation Failed', 'An error occured and the game could not be initialised.', 'warning', 2);
+      });
     }
 
     $scope.countFinished = function() {
