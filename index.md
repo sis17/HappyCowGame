@@ -25,3 +25,6 @@ This category of posts is my daily/weekly reports to keep on top of progress and
 
 ### Design Documentation
 [Here are](./designs) various diagrams and drafts of project designs.
+
+### Mid-Project Demonstration
+[Here is](./mid-project-demonstration) the information for my demonstration.
