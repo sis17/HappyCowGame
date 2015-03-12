@@ -34,6 +34,23 @@ class CardsController < ApplicationController
     } and return
   end
 
+  def destroy
+    
+    if params[:game_user_id]
+      @card = GameUserCard.find(params[:id])
+      @card.destroy
+      render json: {
+        success: true,
+        message: {title: 'Card Discarded', text:'', type:'success'}
+      } and return
+    end
+
+    render json: {
+      success: false,
+      message: {title: 'Card Not Discarded', text:'You cannot discard that type of card.', type:'warning'}
+    } and return
+  end
+
   private
 
   def load_user

@@ -17,12 +17,6 @@
 
 </head>
 <body ng-app="happyCow" ng-controller="BaseCtrl">
-<style ng-repeat="game_user in $storage.game.game_users">
-  .player-{{game_user.id}} {
-
-    background-color: #{{game_user.colour}};
-  }
-</style>
 
 <div id="alerts">
   <alert ng-repeat="alert in alerts | orderBy:'-number' | limitTo:5"

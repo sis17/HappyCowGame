@@ -1,4 +1,11 @@
 <div ng-controller="GameCtrl" id="section-main">
+<style ng-repeat="game_user in game.game_users">
+  .player-{{game_user.id}} {
+
+    background-color: #{{game_user.colour}};
+  }
+</style>
+
   <div ng-controller="MenuCtrl" class="bar bar-dark bar-top">
     <div class="pull-left">
       <img class="cow-icon" alt="Happy Cow icon" src="images/happycow.png" />
@@ -61,11 +68,11 @@
             <li ng-repeat="game_user in game.game_users | orderBy:id" class="list-group-item">
               <span class="label label-{{game_user.active ? 'success' : 'default'}} label-xs">
                 {{$index+1}}
-              </span> - <span class="label player-{{game_user.id}}">{{game_user.user.name}}</span>
+              </span> - <span class="label label-default player-{{game_user.id}}">{{game_user.user.name}}</span>
             </li>
           </ul>
           <p ng-if="nextPlayer">
-            In the next round <span class="label player-{{nextPlayer.id}}">{{nextPlayer.user.name}}</span>
+            In the next round <span class="label label-default player-{{nextPlayer.id}}">{{nextPlayer.user.name}}</span>
             will start.
           </p>
         </div>

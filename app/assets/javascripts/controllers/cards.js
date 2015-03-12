@@ -170,9 +170,13 @@ angular.module('happyCow').controller('ViewCardCtrl', function ($scope, $modalIn
   $scope.discard = function () {
     var r = confirm("Are you sure you want to delete the card: "+$scope.card.title);
     if (r == true) {
-      console.log('performing discard card id:'+card.id);
+      console.log('performing discard card id:'+$scope.game_user_card.id);
       // delete card
-      $scope.game_user_card.remove();
+      $scope.game_user_card.remove();/*.then(function(response) {
+        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+      }, function() {
+        $scope.alert('Card Not Discarded', 'An error occured and the card was not discarded.', 'warning', 2);
+      });*/
       $scope.user.getCards();
       $modalInstance.dismiss('Card discarded.');
     }
