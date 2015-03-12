@@ -1,6 +1,6 @@
 var gameCtrl = hcApp.controller('GameCtrl', [
-  '$scope', '$sce', '$location', 'Restangular', '$routeParams',
-  function($scope, $sce, $location, Restangular, $routeParams) {
+  '$scope', '$sce', '$location', 'Restangular', '$routeParams', '$timeout',
+  function($scope, $sce, $location, Restangular, $routeParams, $timeout) {
 
     $scope.user.getCards = function() {
       this.cards = Restangular.one('games', $routeParams.gameId).one('game_users', $scope.$storage.user.game_user.id)
@@ -41,12 +41,17 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
       $scope.nextPlayer = $scope.game.game_users[1];
 
     $scope.game.update = function() {
+      var current_game_user = $scope.game.round.game_user;
       Restangular.one('game_users', $scope.$storage.user.game_user.id).get().then(function(game_user) {
         $scope.$storage.user.game_user = game_user;
       });
-      Restangular.one('cows', this.cow.id).get().then(function(game) {
+      Restangular.one('games', $routeParams.gameId).get().then(function(game) {
         $scope.game.cow = game.cow;
         $scope.game.round = game.round;
+        // check if a player has updated their turn
+        /*if (game.round.game_user.id != current_game_user.id) {
+          $scope.alert('Turn Change', 'It is now '+current_game_user.user.name+'`s turn.', 'info', 2);
+        }*/
       });
     }
 
@@ -97,6 +102,17 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
     }
 
     $scope.rounds = $scope.game.getCurrentRounds();
+
+    // Function to replicate setInterval using $timeout service.
+    $scope.intervalFunction = function(){
+      $timeout(function() {
+        $scope.game.update();
+        $scope.intervalFunction();
+      }, 5000)
+    };
+
+    // Kick off the interval
+    $scope.intervalFunction();
 });
 
     $scope.changePhaseTemplate = function(num) {
