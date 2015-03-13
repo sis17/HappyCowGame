@@ -10,7 +10,7 @@ cowCtrl.controller('CowStatsCtrl', [
   function($scope) {
 
     $scope.$watch('game.cow', function(newValue, oldValue) {
-        console.log('CowStatsCtrl: a cow change occured - '+newValue);
+        //console.log('CowStatsCtrl: a cow change occured - '+newValue);
         if ($scope.game) {
     $scope.stats = [
       {
@@ -68,17 +68,17 @@ cowCtrl.controller('CowEventsCtrl', [
   '$scope', '$sce', 'Restangular',
   function($scope, $sce, Restangular) {
     $scope.$watch('game.cow.weather_id', function() {
-       console.log('cow weather has changed');
+       //console.log('cow weather has changed');
        if ($scope.game && $scope.game.cow.weather_id)
           $scope.weather = Restangular.one('events',$scope.game.cow.weather_id).get().$object;
     });
     $scope.$watch('game.cow.disease_id', function() {
-       console.log('cow disease has changed');
+       //console.log('cow disease has changed');
        if ($scope.game && $scope.game.cow.disease_id)
           $scope.disease = Restangular.one('events',$scope.game.cow.disease_id).get().$object;
     });
     $scope.$watch('game.cow.pregnancy_id', function() {
-       console.log('cow pregnancy has changed');
+       //console.log('cow pregnancy has changed');
        if ($scope.game && $scope.game.cow.pregnancy_id)
           $scope.pregnancy = Restangular.one('events', $scope.game.cow.pregnancy_id).get().$object;
     });

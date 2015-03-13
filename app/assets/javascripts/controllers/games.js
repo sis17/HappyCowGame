@@ -1,6 +1,6 @@
 var welcomeCtrl = hcApp.controller('GamesCtrl', [
-  '$scope', '$location', 'Restangular',
-  function($scope, $location, Restangular) {
+  '$scope', '$location', 'Restangular', 'notice',
+  function($scope, $location, Restangular, notice) {
     $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
 
     $scope.selectGame = function(game_user) {
@@ -9,10 +9,10 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
           $scope.$storage.user.game_user = game_user;
           $scope.game = game;
         }, function() {
-          $scope.alert('Game Not Found', 'Sorry about this, but we can\'t find that game.', 'danger', 2);
+          notice('Game Not Found', 'Sorry about this, but we can\'t find that game.', 'danger', 2);
         });
       } else {
-        $scope.alert('No Game Exists', 'Sorry, we can\'t find your game for you, it may have been deleted', 'warning', 0);
+        notice('No Game Exists', 'Sorry, we can\'t find your game for you, it may have been deleted', 'warning', 0);
       }
     }
 
@@ -25,9 +25,9 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
       Restangular.one('games', game_id).remove().then(function(response) {
         $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
         $scope.unselectGame();
-        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+        notice(response.message.title, response.message.text, response.message.type, 2);
       }, function() {
-        $scope.alert('Game Not Removed', 'The game could not be removed, it still exists.', 'warning', 2);
+        notice('Game Not Removed', 'The game could not be removed, it still exists.', 'warning', 2);
       });
     }
 
@@ -36,9 +36,9 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
       Restangular.one('game_users', game_user_id).remove().then(function(response) {
         $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
         $scope.unselectGame();
-        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+        notice(response.message.title, response.message.text, response.message.type, 2);
       }, function() {
-        $scope.alert('Leaving Failed', 'You cannot currently leave this game.', 'warning', 2);
+        notice('Leaving Failed', 'You cannot currently leave this game.', 'warning', 2);
       });
     }
 
@@ -53,12 +53,12 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
         },
         user_id: $scope.$storage.user.id
       }).then(function(response) {
-        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+        notice(response.message.title, response.message.text, response.message.type, 2);
         if (response.success) {
           $location.path('games/new/'+response.game.id);
         }
       }, function() {
-        $scope.alert('Initalisation Failed', 'An error occured and the game could not be initialised.', 'warning', 2);
+        notice('Initalisation Failed', 'An error occured and the game could not be initialised.', 'warning', 2);
       });
     }
 

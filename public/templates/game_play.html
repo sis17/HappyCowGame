@@ -12,12 +12,16 @@
     </div>
     <ul id="menu-right" class="list-inline pull-left">
       <li>
-        <button popup class="btn btn-default">Menu</button>
-        <div class="hidden">
-          <div class="btn-group btn-group-vertical">
-            <a href="#/games" class="btn btn-primary btn-sm">Game Menu</a>
-            <button ng-click="user.logout()" class="btn btn-warning btn-sm">Log Out</button>
-          </div>
+        <div class="btn-group menu-drop" dropdown>
+          <button class="btn btn-default" dropdown-toggle>
+            Menu <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><button ng-click="instructions()" class="btn btn-success btn-sm dropdown-menu-button">Instructions</button></li>
+            <li class="divider"></li>
+            <li><a href="#/games" class="btn btn-primary btn-sm dropdown-menu-button">Game Menu</a></li>
+            <li><button ng-click="user.logout()" class="btn btn-warning btn-sm dropdown-menu-button">Log Out</button></li>
+          </ul>
         </div>
       </li>
       <li ng-controller="ScoreViewCtrl">

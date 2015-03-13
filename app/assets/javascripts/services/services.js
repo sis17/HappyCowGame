@@ -1,54 +1,45 @@
 var services = angular.module('happyCowServices', ['ngResource']);
 
-services.factory('User', ['$resource',
-  function($resource) {
-    return $resource('/users/:id', {id: '@id'}, {
-      cards: { method: "GET", }
-    });
-  }
-]);
+services.factory('notice', ['$timeout', '$document', function($timeout, $document) {
+  var notices = $('#notices');
+  return function(title, message, type, stick) {
+    var number = parseInt(notices.data('number'));
+    notices.data('number',++number);
+    var msg = '<strong>'+title+'</strong> '+message;
+    notices.prepend(
+      '<div id="alert-'+(number)+'" class="alert alert-'+type+' alert-dismissible" role="alert">'+
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+          '<span aria-hidden="true">&times;</span></button>'+msg+
+      '</div>'
+    );
 
-services.factory('Game', ['$resource',
-  function($resource) {
-    return $resource('/games/:id', {id: '@id'});
-  }
-]);
-
-services.factory('Card', ['$resource',
-  function($resource) {
-    return $resource('/cards/:id', {id: '@id'});
-  }
-]);
-
-services.factory('Round', ['$resource',
-  function($resource) {
-    return $resource('/rounds/:id', {id: '@id'});
-  }
-]);
-
-services.factory('Action', ['$resource',
-  function($resource) {
-    return $resource('/actions/:id', {id: '@id'});
-  }
-]);
-
-services.factory('Record', ['$resource',
-  function($resource) {
-    return $resource('/records/:id', {id: '@id'});
-  }
-]);
-
-services.factory('Ration', ['$resource',
-  function($resource) {
-    var Ration = $resource('/rations/:id', {id: '@id'});
-    Ration.selected = true;
-    Ration.prototype.hasWater = function() {
-      for (i in this.ingredients) {
-        if (this.ingredients[i].type == 'water') {
-          return true;
-        }
+    if (stick > 0) {
+      $timeout(function() {
+        console.log('removing alert number '+number);
+        notices.find('#alert-'+number).remove();
+      }, (stick)*1000);
+    }
+  };
+      /*if (!$localStorage.alerts) {
+        $localStorage.alerts = [];
       }
-    };
-    return Ration;
-  }
-]);
+      var index = $localStorage.alerts.push({
+        number: $scope.alerts.length,
+        msg: '<strong>'+title+'</strong> '+message,
+        type: type
+      }) - 1;
+      // clear the alert after a number of seconds
+      if (stick > 0) {
+        $timeout(function() {
+          $scope.closeAlert(index);
+        }, (stick)*1000);
+      }
+    },
+    get: function() {
+      return $localStorage.alerts
+    },
+    close: function(index) {
+      $localStorage.alerts.splice(index, 1);
+    }
+  };*/
+ }]);

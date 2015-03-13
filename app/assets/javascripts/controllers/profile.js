@@ -1,6 +1,6 @@
 hcApp.controller('ProfileCtrl', [
-  '$scope', '$location', 'Restangular',
-  function($scope, $location, Restangular) {
+  '$scope', '$location', 'Restangular', 'notice',
+  function($scope, $location, Restangular, notice) {
 
     $scope.saveProfile = function() {
       profile = {
@@ -10,9 +10,9 @@ hcApp.controller('ProfileCtrl', [
       }
 
       Restangular.one('users', $scope.$storage.user.id).patch({profile:profile}).then(function(response) {
-        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+        notice(response.message.title, response.message.text, response.message.type, 2);
       }, function() {
-        $scope.alert('Profile Not Saved', 'Sorry, but we can\'t save your profile right now.', 'warning', 2);
+        notice('Profile Not Saved', 'Sorry, but we can\'t save your profile right now.', 'warning', 2);
       })
     }
   }

@@ -63,7 +63,7 @@ class Game < ActiveRecord::Base
       score = 0
       ingredients = ''
       ration.ingredients.each do |ingredient|
-        ingredients += "#{ingredient.ingredient_cat.name}, "
+        ingredients += "<span class='label #{ingredient.ingredient_cat.name}'>#{ingredient.ingredient_cat.name}</span>, "
         score += ingredient.ingredient_cat.get_score(type)
       end
       ration.game_user.score += score

@@ -1,6 +1,6 @@
 var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
-  '$scope', '$location', 'Restangular',
-  function($scope, $location, Restangular) {
+  '$scope', '$location', 'Restangular', 'notice',
+  function($scope, $location, Restangular, notice) {
 
     $scope.getMoves = function() {
       var moves = Restangular.one('games', $scope.game.id)
@@ -28,7 +28,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     $scope.confirmRation = function(ration) {
       if (!ration) {
         // if no ration is selected, let the user know
-        $scope.alert('First Choose a Ration', 'You need to select a ration from the list, then press `Confirm`.', 'info', 2)
+        notice('First Choose a Ration', 'You need to select a ration from the list, then press `Confirm`.', 'info', 2)
       } else {
         // a ration has been selected, so confirm it as chosen
         $scope.move.ration_id = ration.id;
@@ -36,9 +36,9 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
           if (response.move) {
             $scope.move = Restangular.one('moves', $scope.move.id).get().$object;
           }
-          $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+          notice(response.message.title, response.message.text, response.message.type, 2);
         }, function() {
-          $scope.alert('Ration Not Confirmed', 'An error occured and the ration was not confirmed.', 'warning', 2);
+          notice('Ration Not Confirmed', 'An error occured and the ration was not confirmed.', 'warning', 2);
         });
       }
     }
@@ -151,7 +151,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
         ration.patch().then(function(response) {
           $scope.game.update();
           if (response.message) {
-            $scope.alert(response.message.title, response.message.text, response.message.type, 0);
+            notice(response.message.title, response.message.text, response.message.type, 0);
           }
         });
         $scope.endMovementPhase();
@@ -180,10 +180,10 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       $scope.width -= 50;
       $scope.left += 25;
     }
-    $scope.moveLeft = function() {
+    $scope.moveRight = function() {
       $scope.left -= 25;
     }
-    $scope.moveRight = function() {
+    $scope.moveLeft = function() {
       $scope.left += 25;
     }
     $scope.moveUp = function() {

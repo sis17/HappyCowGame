@@ -1,4 +1,4 @@
-#alerts {
+#notices {
   position: fixed;
   top: 60px;
   right: 50px;
@@ -120,6 +120,17 @@ a.menu-button:hover {
 .bar.bar-bottom .area.area-out { opacity: 0.3; }
 
 #card-carousel .carousel-control.left, .carousel-control.right { background-image: none;}
+
+/* Menu Drop */
+.dropdown-menu {
+  padding: 10px !important;
+}
+.dropdown-menu-button {
+  width: 100% !important;
+  margin-top: 2px !important;
+  height: 28px !important;
+  color: #FFFFFF !important;
+}
 
 /* Bootstrap changes */
 .clickable, .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }

@@ -1,6 +1,6 @@
-var baseCtrl = hcApp.controller('BaseCtrl', [
-  '$scope', '$sce', '$location', 'Restangular', '$localStorage', '$timeout',
-  function($scope, $sce, $location, Restangular, $localStorage, $timeout) {
+var baseCtrl = angular.module('happyCow').controller('BaseCtrl', [
+  '$scope', '$sce', '$location', 'Restangular', '$localStorage', 'notice', '$modal',
+  function($scope, $sce, $location, Restangular, $localStorage, notice, $modal) {
     $scope.$storage = $localStorage;
     if (!$scope.$storage.user) {
       $location.path('login');
@@ -26,22 +26,25 @@ var baseCtrl = hcApp.controller('BaseCtrl', [
       }
     };
 
-    $scope.alerts = [];
-    $scope.alert = function(title, message, type, stick) {
-      var index = $scope.alerts.push({
-        number: $scope.alerts.length,
-        msg: '<strong>'+title+'</strong> '+message,
-        type: type
-      }) - 1;
 
-      if (stick > 0) {
-        $timeout(function() {
-          $scope.closeAlert(index);
-        }, (stick)*1000);
-      }
-    }
-    $scope.closeAlert = function(index) {
-      $scope.alerts.splice(index, 1);
+
+    $scope.instructions = function() {
+      var modalInstance = $modal.open({
+        templateUrl: 'instructions.html',
+        controller: 'InstructionsCtrl',
+        size: 'lg',
+        resolve: {
+          user: function () {
+            return $scope.user;
+          }
+        }
+      });
+
+      modalInstance.result.then(function () {
+        // do nothing
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
     }
 
     $scope.debug = function() {

@@ -1,6 +1,6 @@
 var loginCtrl = hcApp.controller('LoginCtrl', [
-  '$scope', '$location', 'Restangular',
-  function($scope, $location, Restangular) {
+  '$scope', '$location', 'Restangular', 'notice',
+  function($scope, $location, Restangular, notice) {
     if (!$scope.user) {
       $scope.user = {};
     }
@@ -16,7 +16,7 @@ var loginCtrl = hcApp.controller('LoginCtrl', [
           $scope.message = response.message.text;
         }
       }, function() {
-        $scope.message = {title: '', text: "The request could not be completed.", type: 'danger'};
+        notice('Uh Oh', 'The request could not be completed.', 'danger', 4);
       });
     }
   }

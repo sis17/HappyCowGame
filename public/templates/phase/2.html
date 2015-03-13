@@ -6,6 +6,22 @@
   <small>Ingredients <span class="badge">{{countIngredients()}}</span></small>
 </h2>
 
+<script type="text/ng-template" id="cardDiscard.html">
+  <div class="modal-header">
+    <h4 class="modal-title">Are you sure?</h4>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to discard the card '{{game_user_card.game_card.card.title}}'?</p>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-danger {{game_user_card.used ? 'disabled' : ''}}"
+              ng-click="discard()">Yes</button>
+      <button ng-click="cancel()" class="btn btn-info">Back</button>
+    </div>
+  </div>
+</script>
+
 <script type="text/ng-template" id="cardDetails.html">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -18,8 +34,6 @@
     <p ng-bind-html="card.description"></p>
   </div>
   <div class="modal-footer">
-  <button ng-if="game.canAct(2)" class="btn btn-danger btn-sm pull-left"
-          ng-click="discard()">Discard</button>
     <div class="btn-group">
       <button class="btn btn-primary {{game_user_card.used || !game.canAct(2) ? 'disabled' : ''}}"
               ng-click="use()">Use</button>
@@ -30,11 +44,16 @@
 
 <div class="well well-sm">
   <ul id="cards-list" class="list-inline">
-    <li ng-repeat="game_user_card in cards.$object" ng-click="view(game_user_card)" class="{{game_user_card.used ? 'used' : ''}}">
+    <li ng-repeat="game_user_card in cards.$object" class="{{game_user_card.used ? 'used' : ''}}">
         <h3>
           {{game_user_card.game_card.card.title}}
         </h3>
-      <img class="image image-full" ng-src="images/{{game_user_card.game_card.card.image}}" alt="{{game_user_card.game_card.card.category}}">
+      <img class="image image-full" ng-src="images/{{game_user_card.game_card.card.image}}"
+            alt="{{game_user_card.game_card.card.category}}" ng-click="view(game_user_card)">
+      <div>
+        <button class="btn btn-danger btn-sm pull-left" ng-click="discard(game_user_card)">Discard</button>
+        <button class="btn btn-info btn-sm pull-right" ng-click="view(game_user_card)">Details</button>
+      </div>
     </li>
   </ul>
 </div>
@@ -71,9 +90,11 @@
         </div>
       </div>
       <div class="col-md-2">
-        <button class="btn btn-success pull-right" ng-click="game.doneTurn()" data-toggle="tooltip" data-placement="top" title="End card actions">
+        <button ng-if="cards.$object.length <= 9" class="btn btn-success pull-right" ng-click="game.doneTurn()"
+                data-toggle="tooltip" data-placement="top" title="End card actions">
           Finished
         </button>
+        <p ng-if="cards.$object.length > 9">You must discard cards to continue.</p>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 angular.module('happyCow').controller('CardsCtrl', [
-  '$scope', '$location', 'Restangular', '$modal',
-  function($scope, $location, Restangular, $modal) {
+  '$scope', '$location', 'Restangular', '$modal', 'notice',
+  function($scope, $location, Restangular, $modal, notice) {
 
     $scope.cards = $scope.user.getCards();
     $scope.rations = $scope.user.getRations();
@@ -41,13 +41,14 @@ angular.module('happyCow').controller('CardsCtrl', [
       create: function() {
         var ration = {game_user_id: $scope.$storage.user.game_user.id, ingredients: this.ingredients};
         Restangular.all('rations').post({ration: ration, game_id: $scope.game.id}).then(function(response) {
-          $scope.alert(response.message.title, response.message.message, response.message.type, 2);
+          notice(response.message.title, response.message.message, response.message.type, 2);
           $scope.cards = $scope.user.getCards();
           $scope.rations = $scope.user.getRations();
+          $scope.newRation.ingredients = [{},{},{},{}];
           $scope.game.round.ration_created = true;
 
         }, function() {
-          $scope.alert('Ration Not Created', 'An error occured and the ration was not created.', 'danger', 2);
+          notice('Ration Not Created', 'An error occured and the ration was not created.', 'danger', 2);
         });
       }
     };
@@ -96,12 +97,12 @@ angular.module('happyCow').controller('CardsCtrl', [
         // the card is an action, so update the server and remove
         card.used = true;
         card.patch({use:true}).then(function(response) {
-          $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+          notice(response.message.title, response.message.text, response.message.type, 2);
           $scope.game.update();
           $scope.cards = $scope.user.getCards();
         }, function() {
           card.used = false;
-          $scope.alert('Card Not Used', 'An error occured and the card was not used.', 'danger', 2);
+          notice('Card Not Used', 'An error occured and the card was not used.', 'danger', 2);
         });
       } else {
         // the card is an ingredient, so mark as used
@@ -151,8 +152,37 @@ angular.module('happyCow').controller('CardsCtrl', [
         }
       });
 
-      modalInstance.result.then(function (card, use) {
+      modalInstance.result.then(function (card) {
         $scope.useCard(card);
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+      });
+    };
+
+    $scope.discardCard = function (game_user_card) {
+      console.log('performing discard card id:'+game_user_card.id);
+      // delete card
+      game_user_card.remove().then(function(response) {
+          notice(response.message.title, response.message.text, response.message.type, 2);
+          $scope.cards = $scope.user.getCards();
+      }, function() {
+          notice('Card Not Discarded', 'An error occured and the card was not discarded.', 'warning', 2);
+      });
+    };
+
+    $scope.discard = function (game_user_card) {
+      var modalInstance = $modal.open({
+        templateUrl: 'cardDiscard.html',
+        controller: 'DiscardCardCtrl',
+        resolve: {
+          game_user_card: function () {
+            return game_user_card;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (card) {
+        $scope.discardCard(card);
       }, function () {
         console.log('Modal dismissed at: ' + new Date());
       });
@@ -161,48 +191,48 @@ angular.module('happyCow').controller('CardsCtrl', [
   }
 ]);
 
-angular.module('happyCow').controller('ViewCardCtrl', function ($scope, $modalInstance, game_user_card, game, user) {
-  $scope.game_user_card = game_user_card;
-  $scope.card = game_user_card.game_card.card;
-  $scope.game = game;
-  $scope.user = user;
+angular.module('happyCow').controller('ViewCardCtrl',
+  function (notice, $scope, $modalInstance, game_user_card, game, user) {
+    $scope.game_user_card = game_user_card;
+    $scope.card = game_user_card.game_card.card;
+    $scope.game = game;
+    $scope.user = user;
 
-  $scope.discard = function () {
-    var r = confirm("Are you sure you want to delete the card: "+$scope.card.title);
-    if (r == true) {
-      console.log('performing discard card id:'+$scope.game_user_card.id);
-      // delete card
-      $scope.game_user_card.remove();/*.then(function(response) {
-        $scope.alert(response.message.title, response.message.text, response.message.type, 2);
-      }, function() {
-        $scope.alert('Card Not Discarded', 'An error occured and the card was not discarded.', 'warning', 2);
-      });*/
-      $scope.user.getCards();
-      $modalInstance.dismiss('Card discarded.');
-    }
-  };
+    $scope.use = function () {
+      $modalInstance.close($scope.game_user_card, true);
+    };
 
-  $scope.use = function () {
-    $modalInstance.close($scope.game_user_card, true);
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
 });
 
-angular.module('happyCow').controller('CreateRationCtrl', function ($scope, $modalInstance, ingredients, unUsed, spaces) {
-  console.log(spaces);
-  $scope.ingredients = ingredients;
-  $scope.unUsed = unUsed;
-  $scope.spaces = spaces;
-  $scope.canCreate = spaces < 4;
+angular.module('happyCow').controller('DiscardCardCtrl',
+  function (notice, $scope, $modalInstance, game_user_card) {
+    $scope.game_user_card = game_user_card;
 
-  $scope.create = function () {
-    $modalInstance.close();
-  };
+    $scope.discard = function () {
+      $modalInstance.close($scope.game_user_card, true);
+    };
 
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('happyCow').controller('CreateRationCtrl',
+  function (notice, $scope, $modalInstance, ingredients, unUsed, spaces) {
+    console.log(spaces);
+    $scope.ingredients = ingredients;
+    $scope.unUsed = unUsed;
+    $scope.spaces = spaces;
+    $scope.canCreate = spaces < 4;
+
+    $scope.create = function () {
+      $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
 });

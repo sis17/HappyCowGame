@@ -18,14 +18,109 @@
 </head>
 <body ng-app="happyCow" ng-controller="BaseCtrl">
 
-<div id="alerts">
-  <alert ng-repeat="alert in alerts | orderBy:'-number' | limitTo:5"
-          type="alert.type" close="closeAlert($index)">
-    <div ng-bind-html="alert.msg"></div>
-  </alert>
-</div>
+<div id="notices" data-number="0"></div>
 
 <%= yield %>
 
 </body>
+
+<script type="text/ng-template" id="instructions.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Game Instructions</h3>
+        </div>
+        <div class="modal-body">
+          <accordion>
+            <accordion-group heading="Game Setup" is-open="true">
+              <p>
+                Once logged in, you are presented with a list of games, if you re involved in any. To view details about
+                these games, click on one. From the details panel which appears you may choose to
+                <span class="label label-info">Resume</span> which will take you to a page where you can play the game, or
+                <span class="label label-warning">Leave</span> if you have lost intrest in the game and do not want to play again.
+              </p>
+              <p>
+                Anyone can create a new game. To do this click on the <span class="label label-success">New Game</span> button.
+                That will take you to a screen where you can setup a game, and when ready, <span class="label label-success">Begin</span>.
+                During game setup you can:
+                <ul>
+                  <li><span class="label label-default">Invite</span> other players, </li>
+                  <li>Choose which <span class="label label-default">Card Deck</span> to play with. The default card deck is chosen
+                  for you, as this one is the original cards chosen by the game creator. The card deck decides which cards players will be given during the game.</li>
+                  <li>A <span class="label label-default">Round</span> is a section of the game in which every player has a turn in each of the phases (Event, Cards, Movement adn Review).
+                  A game can be a set number of rounds, or you can choose to make it unknown and let the game choose how long it will be by setting a minimum and maximum number of rounds.</li>
+                </ul>
+              </p>
+              <p>You do not have to begin a game straight away. Once setup is started, the game will appear in your games list.</p>
+            </accordion-group>
+            <accordion-group heading="Aim of the Game">
+              <p>
+                The aim of the game is to score points by passing ingredients through the cows digestion. Each player gains ingredients as cards, and must combine them into rations.
+                Once a ration is created the player begins to move it through the digestive system until it is absorbed as <span class="label label-info">Milk</span>,
+                <span class="label label-danger">Meat</span> or <span class="label label-warning">Muck</span> (if it leaves the cow).
+              </p>
+              <p>
+                The game is both <span class="label label-info">collaborative</span> and <span class="label label-default">competitive</span>.
+                It is collaborative because all players are feeding ingredients to the same cow, if the cows heath is badly effected it may die
+                and the game will end. It is also compeditive, however, as the player with the most points at the end of the game will win (unless they kill the cow).
+              </p>
+              <p>
+                Information about the <span class="label label-info">Cow</span> is shown on the right as you play the game. It is worth keeping and eye on the different
+                statistics displayed here.
+                <ul>
+                  <li><strong>Welfare</strong> This markes the overall healthiness of the cow, and ranges from <span class="label label-danger">-7</span>
+                      to <span class="label label-success">6</span>. Welfare effects the points you gain for ingredients when absorbed. When the cow is quite ill, it will eat less.</li>
+                  <li><strong>Body Condition</strong> This marks how fat the cow is. It ranges from <span class="label label-danger">-3</span>
+                      to <span class="label label-success">3</span>. Do not let it become too fat or lean, both will adversly effect its welfare.</li>
+                  <li><strong>Rumen PH</strong> This marks the acidity in the cows Rumen. It ranges from <span class="label label-warning">4.8</span>
+                      to <span class="label label-success">7.6</span>. Low or hight PH levels cause slow ration movement and damaged welfare. The PH is effected
+                      by the balance of <span class="label label-default water">water</span> to <span class="label label-default energy">energy</span> in the rumen.</li>
+                  <li><strong>Oligos Marker</strong> This records how much oligos has been absorbed by the cow. Oligos is a health booster that can be fed to cows, but its affects soon level
+                      off and it goes from helping, to harming the cow. The first oligos absorbed gains <span class="label label-info">10 points</span>, but the second only gains
+                      <span class="label label-success">2 points</span> and after that <span class="label label-success">1 point</span>. The second oligos absorbed, and any after, decrease the cows welfare.</li>
+                  <li><strong>Muck Marker</strong> This records the number of rations that have passed through the cow, and scored points as muck. As muck increases, the cows welfare decreases.</li>
+                </ul>
+              </p>
+            </accordion-group>
+            <accordion-group heading="Events Phase">
+              <p>Each round begins with the <strong>Events Phase</strong>. No actions can be taken, but the event will most likely effect the cow, or how cards or rations are played.</p>
+              <p>Once happy that you know what the event is, you can move to the cards phase. You can always see the event again, by clicking the <span class="label label-default">Event</span> button on the top menu bar.</p>
+              <p>As well as 'one off' events, that make an impact, there are <span class="label label-info">3</span> types of events that remain, effecting the cow until removed: <span class="label label-default">weather events</span>,
+                <span class="label label-default">disease events</span> and <span class="label label-default">pregnancy</span>. Any of these events currently effecting the cow can be viewed at the bottom of the cow information section.</p>
+            </accordion-group>
+            <accordion-group heading="Cards Phase">
+              <p>In this phase you may carry out actions and create ingredients using your cards. You gain <span class="label label-info">2</span> cards a round,
+                and cannot have more than <span class="label label-info">9</span> when finishing your turn in the cards phase.</p>
+              <p>There are two types of cards, <span class="label label-default">Action</span> cards and <span class="label label-default">Ingredient</span> cards. Action
+              cards perform a one-off action, described on the card. Ingredients are used to build rations, which you can then move through the cow.</p>
+              <p>To use or create a card, or to discard it if you have too many, click on the card and a popup with options will become available.  When you use an
+              action card, the resut will take effect straight away. When using an ingredient card, however, it is placed in the ration preparation area. When you are
+              happy with the number of ingredients in the ration preparation area, you can choose to create the ration. Be careful what ingredients you place in a ration,
+              as certain combinations can be dangerous for the cow.</p>
+            </accordion-group>
+            <accordion-group heading="Movement Phase">
+              <p>If you have rations, in this phase you may move them through the cow.</p>
+              <p>First you must select a ration to move and confirm it. This is done by clicking on a ration in the control bar at the bottom of the screen.</p>
+              <p>Once you have confirmed a ration, you will be presented with <span class="label label-default">2</span> (or <span class="label label-default">3</span> if your ration contains water)
+                dice values. These give you options of how far you must move your selected ration. If a <span class="label label-info">double</span> is rolled, you must move the
+                number of both dice if you chose either.</p>
+              <p>When you click on a dice, the possible positions you can move it to will appear. To move the dice click on one of the first <span class="label label-info">blue</span> positions.
+                As you click your ration will move, and the positions will update. Up to the point when you begin moving the ration, you can change youre <span class="label label-default">choice</span> of dice.
+                Once you have finished all the moves for a dice, your turn will automatically end.</p>
+              <p><span class="label label-default">The Trough</span> When rations are created, they are placed in order in the trough. The cow will only eat <span class="label label-info">2</span> rations a round,
+                the rest must remain in the trough. However, a ration does not have to move from the trough.</p>
+              <p><span class="label label-default">The Oesophagus</span> This is a one-way area, rations can only move towards the rumen.</p>
+              <p><span class="label label-default">The Rumen</span> This is where digestion begins, food is churned about. Rations can move in any direction. Beware the <span class="label label-danger">motile</span>
+                elements. These are lumps that move haphazardly around the rumen. If they land on your ration an ingredient will be digested and knocked out. Another thing to be aware of is <span class="label water">water</span> and
+                <span class="label energy">energy</span> levels in the rumen. If the total number of <span class="label water">water</span> ingredients is greater than <span class="label energy">energy</span> the rumen PH will decrease
+                every round, if the ration is the other way the PH will increase.</p>
+              <p><span class="label label-default">The Intestines</span> Here rations are finally absorbed, or otherwise ejected from the cow. To be absorbed as <span class="label label-info">milk</span> or
+                <span class="label label-danger">meat</span> the ration must <strong>finish</strong> the turn on the milk or meat positions. Otherwise they are not absorbed, and can only score points as muck.
+                The intestines are a one-way area.</p>
+            </accordion-group>
+          </accordion>
+          <p>Happy cow game!</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" ng-click="cancel()">OK</button>
+        </div>
+    </script>
 </html>

@@ -1,6 +1,6 @@
 var gameCtrl = hcApp.controller('GameCtrl', [
-  '$scope', '$sce', '$location', 'Restangular', '$routeParams', '$timeout',
-  function($scope, $sce, $location, Restangular, $routeParams, $timeout) {
+  '$scope', '$sce', '$location', 'Restangular', '$routeParams', '$timeout', 'notice',
+  function($scope, $sce, $location, Restangular, $routeParams, $timeout, notice) {
 
     $scope.user.getCards = function() {
       this.cards = Restangular.one('games', $routeParams.gameId).one('game_users', $scope.$storage.user.game_user.id)
@@ -23,12 +23,12 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     $scope.user.createRation = function(ingredients) {
       var ration = {game_user_id: $scope.$storage.user.game_user.id, ingredients: ingredients};
       Restangular.all('rations').post({ration: ration, game_id: $routeParams.gameId}).then(function(response) {
-        $scope.alert(response.message.title, response.message.message, response.message.type, 2);
+        notice(response.message.title, response.message.message, response.message.type, 2);
         $scope.cards = $scope.user.getCards();
         if ($scope.game.round)
           $scope.game.round.ration_created = true;
       }, function() {
-        $scope.alert('Ration Not Created', 'An error occured and the ration was not created.', 'danger', 2);
+        notice('Ration Not Created', 'An error occured and the ration was not created.', 'danger', 2);
       });
     }
 
@@ -48,10 +48,6 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
       Restangular.one('games', $routeParams.gameId).get().then(function(game) {
         $scope.game.cow = game.cow;
         $scope.game.round = game.round;
-        // check if a player has updated their turn
-        /*if (game.round.game_user.id != current_game_user.id) {
-          $scope.alert('Turn Change', 'It is now '+current_game_user.user.name+'`s turn.', 'info', 2);
-        }*/
       });
     }
 
@@ -62,7 +58,7 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
         game_user_id: $scope.$storage.user.id,
         done_turn: true
       }).then(function(response) {
-          $scope.alert(response.message.title, response.message.text, response.message.type, 2);
+        notice(response.message.title, response.message.text, response.message.type, 2);
           if (response.success) {
               Restangular.one('rounds', response.round.id).get().then(function(round) {
                 $scope.game.round = round;
@@ -75,7 +71,7 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
               });
           }
       }, function() {
-        $scope.alert('Action Not Saved', 'An error occured and the turn could not be finished.', 'danger', 2);
+        notice('Action Not Saved', 'An error occured and the turn could not be finished.', 'danger', 2);
       });
     }
 
