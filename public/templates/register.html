@@ -11,36 +11,36 @@
   </ul>
 </div>
 
-<div id="login" class="main-centre" ng-controller="LoginCtrl">
+<div id="login" class="main-centre" ng-controller="RegisterCtrl">
   <div class="well">
-    <form class="form-horizontal">
+    <form novalidate class="form-horizontal">
       <div class="form-group">
         <label for="email" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-10">
-          <input type="email" class="form-control" id="email" placeholder="Email">
+          <input ng-model="user.email" type="email" class="form-control" placeholder="Email" required>
         </div>
       </div>
       <div class="form-group">
         <label for="name" class="col-sm-2 control-label">Name</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="name" placeholder="Name">
+          <input ng-model="user.name" type="text" class="form-control" placeholder="Name" required>
         </div>
       </div>
       <div class="form-group">
         <label for="password" class="col-sm-2 control-label">Password</label>
         <div class="col-sm-10">
-          <input type="password" class="form-control" id="password" placeholder="Password">
+          <input ng-model="user.password" type="password" class="form-control" placeholder="Password" required>
         </div>
       </div>
       <div class="form-group">
         <label for="password-conf" class="col-sm-2 control-label">Confirm Password</label>
         <div class="col-sm-10">
-          <input type="password" class="form-control" id="password-conf" placeholder="">
+          <input ng-model="user.password_conf" type="password" class="form-control" placeholder="" required>
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn btn-primary">Register</button>
+          <button ng-click="register(user)" class="btn btn-primary">Register</button>
           <a href="#/login" class="btn btn-default pull-right">Sign in</a>
         </div>
       </div>

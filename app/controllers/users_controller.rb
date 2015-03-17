@@ -59,7 +59,20 @@ class UsersController < ApplicationController
   # At the moment we are only allowing the admin user to create new
   # accounts.
   def create
-    @user = User.new(user_params)
+    @user = User.new(params.require(:user).permit(:email, :name, :password))
+    if @user
+      @user.save
+      render json: {
+        success: true,
+        user: @user,
+        message: {title: 'Account Created', text: 'Your account has been created. Pleaes remember your details.', type: 'success'}
+      } and return
+    end
+
+    render json: {
+      success: false,
+      message: {title: 'You Must Update a Profile', text: 'You are not updating user details correctly, by editing your profile.', type: 'warning'}
+    } and return
   end
 
 
