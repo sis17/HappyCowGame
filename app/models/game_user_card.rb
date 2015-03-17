@@ -8,7 +8,7 @@ class GameUserCard < ActiveRecord::Base
     message = 'Default card message...'
     failed_text = 'Sorry, the card could not be played, we`re still working on a condition for it.'
 
-    # up the rumen ph by 1.5 (2 points)
+    # up the rumen ph by 1.5
     if card.uri == 'acidodis_plus'
       ph_marker = self.game_user.game.cow.increase_ph_marker(3)
       message = "The PH in the cow`s rumen increased to #{ph_marker}."
@@ -76,11 +76,9 @@ class GameUserCard < ActiveRecord::Base
       end
       success = true
 
-    # the oligos marker moves to 0, if already there -1 welfare (2 points)
+    # the oligos marker moves to 0, if already there -1 welfare
     elsif card.uri == 'deficiency'
-      message = 'You gained 2 points. '
-      self.game_user.score += 2
-      self.game_user.save
+      message = 'The cow`s oligos marker has been set to 0. '
       cow = self.game_user.game.cow
       if cow.oligos_marker == 0
         cow.decrease_welfare(1)
@@ -139,6 +137,12 @@ class GameUserCard < ActiveRecord::Base
     end
 
     if success
+      #award the card points
+      if card.points > 0
+        message += " You gained #{card.points} points. "
+        self.game_user.score += card.points
+        self.game_user.save
+      end
       self.destroy
       return {
         success: true,
