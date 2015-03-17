@@ -121,7 +121,8 @@ class Game < ActiveRecord::Base
         :cow,
         :ingredient_cats,
         {game_users: {:include => [
-          :user => {:only => [:name]}
+          user: {:only => [:name]},
+          rations: {:include => [:ingredients]}
         ]}}
       ]
     )

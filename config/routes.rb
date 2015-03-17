@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       resources :cards
       resources :moves
     end
+    resources :positions
     resources :cards
     resources :game_cards
     resources :rations
@@ -58,6 +59,7 @@ Rails.application.routes.draw do
 
   resources :positions
   get 'positions/:id/graph/:depth' => 'positions#graph'
+  get 'games/:game_id/positions/:id/graph/:depth' => 'positions#graph'
 
   get 'login' => 'users#login'
   post 'login' => 'users#login'

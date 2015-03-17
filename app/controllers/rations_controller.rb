@@ -20,7 +20,7 @@ class RationsController < ApplicationController
       # slide all other rations down the trough
       @ration.game_user.game.game_users.each do |game_user|
         game_user.rations.each do |ration|
-          if ration.position.area_id == 1
+          if ration.position.area_id == 1 and ration.position.id != 1
             ration.position_id -= 1
             ration.save
           end
@@ -69,7 +69,7 @@ class RationsController < ApplicationController
       # find the first empty space in the trough
       pos = 1
       while pos <= 6
-        existingRation = Ration.where(position_id: pos, game_user_id: @game_user.id).first
+        existingRation = Ration.joins(:game_user).where(position_id: pos, game_users: {game_id:@game_user.game_id}).first
         if !existingRation
           @ration.position_id = pos
           pos = 6 # break out

@@ -65,7 +65,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       if ($scope.move.ration_id > 0) {
         $scope.move.selected_die = dieNum;
         // do not update the selected die, it is not confirmed until movement
-        Restangular.one('positions', $scope.move.ration.position.id)
+        Restangular.one('games', $scope.game.id).one('positions', $scope.move.ration.position.id)
                             .one('graph',dieValue).get().then(function(position) {
           $scope.position = position; // position of the ration
           $scope.movementsLeft = dieValue;
