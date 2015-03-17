@@ -79,7 +79,7 @@ class Cow < ActiveRecord::Base
     return self.set_ph_marker(self.ph_marker + (amount / 5))
   end
   def decrease_ph_marker(amount)
-    reutrn self.set_ph_marker(self.ph_marker - (amount / 5))
+    return self.set_ph_marker(self.ph_marker - (amount / 5))
   end
   def set_ph_marker(amount)
     if amount < 7.6 and amount > 5
