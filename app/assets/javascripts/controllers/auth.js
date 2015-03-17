@@ -13,7 +13,7 @@ var loginCtrl = hcApp.controller('LoginCtrl', [
           $scope.user.assign(response.user);
           $location.path('games');
         } else {
-          $scope.message = response.message.text;
+          notice(response.message.title, response.message.text, response.message.type, 5)
         }
       }, function() {
         notice('Uh Oh', 'The request could not be completed.', 'danger', 4);

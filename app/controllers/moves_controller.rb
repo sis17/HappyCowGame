@@ -24,15 +24,8 @@ class MovesController < ApplicationController
 
     if params[:confirm_ration] and params[:ration_id]
       @move.ration_id = params[:ration_id]
-      @move.dice1 = rand(1..6)
-      @move.dice2 = rand(1..6)
-      # check if the ration has water
-      has_water = Ration.joins(ingredients: [:ingredient_cat] )
-                    .where('ingredient_cats.name = "water" AND rations.id = ?', params[:ration_id]).first
-      if has_water
-        @move.dice3 = rand(1..6)
-      end
       @move.save
+      @move.set_dice
 
       render json: {
         success: true,

@@ -13,6 +13,21 @@ class RationsController < ApplicationController
 
   def update
     @ration = Ration.find(params[:id])
+
+    #check if the ration is in the trough, to slide others down
+    old_pos = @ration.position
+    if old_pos.area_id == 1
+      # slide all other rations down the trough
+      @ration.game_user.game.game_users.each do |game_user|
+        game_user.rations.each do |ration|
+          if ration.position.area_id == 1
+            ration.position_id -= 1
+            ration.save
+          end
+        end
+      end
+    end
+
     @ration.update(params.require(:ration).permit(:position_id))
 
     response = {ration: @ration}
@@ -28,15 +43,28 @@ class RationsController < ApplicationController
 
   def create
     @game_user = GameUser.find(params[:ration][:game_user_id])
+    current_round = @game_user.game.round
 
-    if @game_user.rations.count >= 4
+    # check a ration hasn't already been created this round
+    already_created_ration = Ration.where(game_user_id: @game_user.id, round_created_id: current_round.id).first
+    if already_created_ration
+      render json: {
+        success: false,
+        message: {title:'Ration Not Created', message: 'You can only create one ration a turn, you already created one earlier.', type:'warning'}
+      } and return
+
+    # check the user doesn't have too many rations already
+    elsif @game_user.rations.count >= 4
       render json: {
         success: false,
         message: {title:'Ration Not Created', message: 'You have too many rations to create another.', type:'warning'}
       } and return
+
+    # if passed above, create the ration
     elsif params[:ration] and params[:ration][:game_user_id]
       allowed = true
       @ration = Ration.new(params.require(:ration).permit(:game_user_id))
+      @ration.round_created_id = current_round.id
 
       # find the first empty space in the trough
       pos = 1

@@ -51,6 +51,13 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
       });
     }
 
+    $scope.game.updateOnDoneTurn = function() {
+      // update rations for movement screen
+      Restangular.one('games', $scope.game.id).getList('rations').then(function(rations) {
+        $scope.allRations = rations;
+      });
+    }
+
     $scope.game.doneTurn = function() {
       var roundId = $scope.game.round.id;
       Restangular.one('games', $scope.game.id).patch({
@@ -70,6 +77,8 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
                 }
               });
           }
+          // updates to be done when turns finish
+          $scope.game.updateOnDoneTurn();
       }, function() {
         notice('Action Not Saved', 'An error occured and the turn could not be finished.', 'danger', 2);
       });

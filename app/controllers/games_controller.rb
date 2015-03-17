@@ -18,6 +18,8 @@ class GamesController < ApplicationController
         #move on to the next turn
         round = Round.where(game_id: @game.id, number: @game.round.number+1).first
         if round
+          @game.cow.turn_effects
+          
           @game.round = round
           @game.round.makeActive
           @game.save

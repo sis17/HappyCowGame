@@ -16,30 +16,8 @@ services.factory('notice', ['$timeout', '$document', function($timeout, $documen
     if (stick > 0) {
       $timeout(function() {
         console.log('removing alert number '+number);
-        notices.find('#alert-'+number).remove();
+        notices.find('#alert-'+number).fadeOut().remove();
       }, (stick)*1000);
     }
   };
-      /*if (!$localStorage.alerts) {
-        $localStorage.alerts = [];
-      }
-      var index = $localStorage.alerts.push({
-        number: $scope.alerts.length,
-        msg: '<strong>'+title+'</strong> '+message,
-        type: type
-      }) - 1;
-      // clear the alert after a number of seconds
-      if (stick > 0) {
-        $timeout(function() {
-          $scope.closeAlert(index);
-        }, (stick)*1000);
-      }
-    },
-    get: function() {
-      return $localStorage.alerts
-    },
-    close: function(index) {
-      $localStorage.alerts.splice(index, 1);
-    }
-  };*/
- }]);
+}]);

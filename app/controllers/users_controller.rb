@@ -15,14 +15,21 @@ class UsersController < ApplicationController
   def login
     if (params[:email] && params[:password])
       @user = User.find_by email: params[:email]
-      if (@user.password == params[:password])
-        render json: { success: true, user: @user.as_json} and return
-      end
+      if @user
+        if @user.password == params[:password]
+          render json: { success: true, user: @user.as_json} and return
+        end
 
-      render json: {
-        success: false,
-        message: {title: 'Wrong Password', text: 'Please try again, your password was incorrect.', type: 'danger'}
-      } and return
+        render json: {
+          success: false,
+          message: {title: 'Wrong Password', text: 'Please try again, your password was incorrect.', type: 'danger'}
+        } and return
+      else
+        render json: {
+          success: false,
+          message: {title: 'Not an Account', text: 'Please try again with a diffrent email, it was not recognised.', type: 'danger'}
+        } and return
+      end
     end
 
     render json: {

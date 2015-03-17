@@ -50,6 +50,18 @@ angular.module('happyCow').controller('CardsCtrl', [
         }, function() {
           notice('Ration Not Created', 'An error occured and the ration was not created.', 'danger', 2);
         });
+      },
+      show: function() {
+        if ($scope.rations.$object && $scope.rations.$object.length >= 4) {
+          return false;
+        }
+        for (i in $scope.rations.$object) {
+          var r = $scope.rations.$object[i];
+          if (r && r.round_created_id && r.round_created_id == $scope.game.round.id) {
+            return false;
+          }
+        }
+        return true;
       }
     };
 

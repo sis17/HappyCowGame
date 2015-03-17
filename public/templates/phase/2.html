@@ -1,10 +1,35 @@
 <div ng-controller="CardsCtrl" class="cards">
 <h2>
-  Card Deck
+  Your Hand
   <small>Total <span class="badge">{{cards.$object.length}}</span></small>
   <small>Actions <span class="badge">{{countActions()}}</span></small>
   <small>Ingredients <span class="badge">{{countIngredients()}}</span></small>
+  <button ng-if="game.checkPhase(2)" class="btn btn-default pull-right" data-toggle="modal" data-target="#help-modal">Help!</button>
 </h2>
+
+<div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Cards Phase: Help</h4>
+      </div>
+      <div class="modal-body">
+        <p>During this phase you can play cards from your hand, which is the list visible below. There are two types of
+        cards: <span class="label label-default">Ingredient</span> cards which you can create a ration with, and
+        <span class="label label-default">Action</span> cards, which have a specific result when played. You cannot move
+        on from this phase until you have 9 cards or less.</p>
+        <p>To use a card, select it, and in the pop-up click the 'Use' button.</p>
+        <p>To create a ration (a group of ingredients) select several ingredients, and when ready, click create by the
+          ration container in the middle of the control bar. You will be asked to confirm your choice, then the ration
+          will be created with the chosen ingredients.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script type="text/ng-template" id="cardDiscard.html">
   <div class="modal-header">
@@ -78,7 +103,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div ng-if="rations.$object.length < 4 && !game.round.ration_created">
+        <div ng-if="newRation.show()">
           <div class="big-ration pull-left">
             <div ng-repeat="ingredient in newRation.ingredients" class="ingredient {{ingredient.game_card.card.category}}">
               <p>{{ingredient.game_card ? ingredient.game_card.card.category : 'empty'}}</p>
