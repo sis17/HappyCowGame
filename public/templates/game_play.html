@@ -40,14 +40,14 @@
     </ul>
     <ul class="list-inline pull-right" style="margin-top: 5px;">
       <li ng-controller="RoundViewCtrl">
-        <button popup class="btn btn-default">
-          Round <span class="badge">{{game.round.number}}</span>
-        </button>
-        <div class="hidden">
-          <ul class="list-group">
-            <li ng-repeat="round in rounds | orderBy:number" class="list-group-item">
-              Round {{round.number}}
-              <button ng-if="!round.current" class="btn btn-default btn-xs">Review</button>
+        <div class="btn-group menu-drop" dropdown>
+          <button class="btn btn-default" dropdown-toggle>
+            Round <span class="badge">{{game.round.number}}</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li ng-repeat="round in rounds | orderBy:number" class="">
+              <span class="label label-default">Round {{round.number}}</span>
+              <button ng-if="!round.current" ng-click="review(round)" class="btn btn-default btn-xs">Review</button>
               <span ng-if="round.current" class="label label-success">current</span>
             </li>
           </ul>
@@ -169,3 +169,73 @@
       </div>
     </div>
 </div>
+
+<script type="text/ng-template" id="reviewRound.html">
+<div class="modal-header">
+  <h4 class="modal-title">Review: Round {{round.number}}</h4>
+</div>
+<div class="modal-body">
+<accordion close-others="true">
+  <!--<accordion-group heading="Score Table" is-open="true">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Players</th>
+          <th>Beginning Score</th>
+          <th>Ending Score</th>
+          <th>Number of Cards</th>
+          <th>Number of Rations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="game_user in game.game_users | orderBy:id" class="player-{{game_user.id}}">
+          <td>{{game_user.user.name}}</td><td>tbc</td><td>{{game_user.score}}</td><td>tbc</td><td>tbc</td>
+        </tr>
+      </tbody>
+    </table>
+  </accordion-group>-->
+
+  <accordion-group heading="Event Phase">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4">
+          <img class="image image-full" ng-src="images/{{round.event.image}}" alt="Event Image">
+        </div>
+        <div class="col-md-8">
+          <h4 class="media-heading">{{round.event.title}} <span class="label label-default">{{round.event.category}}</span></h4>
+          <div ng-bind-html="round.event.description"></div>
+        </div>
+      </div>
+    </div>
+  </accordion-group>
+
+  <accordion-group heading="Cards Phase">
+    <dl ng-repeat="action in round.actions | filter:{phase:2}" class="dl-horizontal">
+      <dt>
+        <span class="label label-default player-{{action.game_user_id}}">{{action.game_user.user.name}}</span>
+        {{action.title}}
+      </dt>
+      <dd>
+        <span ng-bind-html="action.description"></span>
+      </dd>
+    </dl>
+  </accordion-group>
+
+  <accordion-group heading="Movement Phase">
+    <dl ng-repeat="action in round.actions | filter:{phase:3}" class="dl-horizontal">
+      <dt>
+        <span class="label label-default player-{{action.game_user_id}}">{{action.game_user.user.name}}</span>
+        {{action.title}}
+      </dt>
+      <dd>
+        <span ng-bind-html="action.description"></span>
+      </dd>
+    </dl>
+  </accordion-group>
+</accordion>
+<div class="modal-footer">
+  <div class="btn-group">
+    <button ng-click="cancel()" class="btn btn-default">Close</button>
+  </div>
+</div>
+</script>

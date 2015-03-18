@@ -104,17 +104,16 @@ angular.module('happyCow').controller('CardsCtrl', [
     }
 
     $scope.useCard = function(card) {
-      console.log(card);
       if (card.game_card.card.category == 'action') {
         // the card is an action, so update the server and remove
         card.used = true;
         card.patch({use:true}).then(function(response) {
-          notice(response.message.title, response.message.text, response.message.type, 2);
+          notice(response.message.title, response.message.text, response.message.type, 6);
           $scope.game.update();
           $scope.cards = $scope.user.getCards();
         }, function() {
           card.used = false;
-          notice('Card Not Used', 'An error occured and the card was not used.', 'danger', 2);
+          notice('Card Not Used', 'An error occured and the card was not used.', 'danger', 3);
         });
       } else {
         // the card is an ingredient, so mark as used

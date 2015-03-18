@@ -29,7 +29,10 @@ class RationsController < ApplicationController
     end
 
     @ration.update(params.require(:ration).permit(:position_id))
-
+    action = Action.new
+    action.set('Moved a Ration', 'They moved a ration with '+@ration.describe_ingredients+', from position '+old_pos+' to position '+@ration.position.id+'.',
+      @ration.game_user.game.round_id, 3, @ration.game_user.id
+    )
     response = {ration: @ration}
 
     # consume the ration if on one of the meat, milk or muck squares
@@ -79,6 +82,10 @@ class RationsController < ApplicationController
 
       if @ration.position_id > 0
         @ration.save
+        action = Action.new
+        action.set('Created a Ration', 'They created a ration with '+@ration.describe_ingredients+'.',
+          @ration.game_user.game.round_id, 2, @ration.game_user.id
+        )
       else
         render json: {
             success: false,

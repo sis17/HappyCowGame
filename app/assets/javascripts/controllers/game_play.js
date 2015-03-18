@@ -23,7 +23,7 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     $scope.user.createRation = function(ingredients) {
       var ration = {game_user_id: $scope.$storage.user.game_user.id, ingredients: ingredients};
       Restangular.all('rations').post({ration: ration, game_id: $routeParams.gameId}).then(function(response) {
-        notice(response.message.title, response.message.message, response.message.type, 2);
+        notice(response.message.title, response.message.message, response.message.type, 4);
         $scope.cards = $scope.user.getCards();
         if ($scope.game.round)
           $scope.game.round.ration_created = true;
@@ -65,12 +65,13 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
         game_user_id: $scope.$storage.user.id,
         done_turn: true
       }).then(function(response) {
-        notice(response.message.title, response.message.text, response.message.type, 2);
+        notice(response.message.title, response.message.text, response.message.type, 4);
           if (response.success) {
               Restangular.one('rounds', response.round.id).get().then(function(round) {
                 $scope.game.round = round;
                 if (roundId != round.id) {
                   // at the start of the phase we want to look at the event
+                  // update motile peices
                   $scope.changePhaseTemplate(1);
                 } else {
                   $scope.changePhaseTemplate($scope.game.round.current_phase);

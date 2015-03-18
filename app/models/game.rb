@@ -61,14 +61,18 @@ class Game < ActiveRecord::Base
 
     if type != 'something'
       score = 0
-      ingredients = ''
       ration.ingredients.each do |ingredient|
-        ingredients += "<span class='label #{ingredient.ingredient_cat.name}'>#{ingredient.ingredient_cat.name}</span>, "
         score += ingredient.ingredient_cat.get_score(type)
       end
       ration.game_user.score += score
       ration.game_user.save
 
+      action = Action.new
+      action.set('Ration Absorbed', 'Their ration was absorbed as '+type+', and gained '+score+' points for '+ration.describe_ingredients+'.',
+        self.round_id, 3, ration.game_user.id
+      )
+
+      ingredients = ration.describe_ingredients
       ration.destroy
 
       return {
@@ -114,6 +118,11 @@ class Game < ActiveRecord::Base
         {round: {:include => [:event,
           {game_user: {:include => [
             :user => {:only => [:id, :name, :experience]}
+          ]}},
+          {actions: {:include => [
+            {game_user: {:include => [
+              :user => {:only => [:id, :name]}
+            ]}}
           ]}}
         ]}},
         :rounds,

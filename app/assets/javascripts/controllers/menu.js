@@ -11,12 +11,41 @@ menuCtrl.controller('ScoreViewCtrl', [
   }
 ]);
 
-menuCtrl.controller('RoundViewCtrl', [
-  '$scope',
-  function($scope) {
-    
+angular.module('happyCow').controller('RoundViewCtrl', [
+  '$scope', '$modal', 'Restangular',
+  function($scope, $modal, Restangular) {
+    $scope.review = function (round) {
+      Restangular.one('rounds', round.id).get().then(function(roundData) {
+        var modalInstance = $modal.open({
+          templateUrl: 'reviewRound.html',
+          controller: 'RoundReviewCtrl',
+          size: 'lg',
+          resolve: {
+            round: function () {
+              return roundData;
+            }
+          }
+        });
+
+        modalInstance.result.then(function () {}, function () {
+          console.log('Modal dismissed at: ' + new Date());
+        });
+      });
+    };
   }
 ]);
+angular.module('happyCow').controller('RoundReviewCtrl',
+  function ($scope, $modalInstance, round) {
+    $scope.round = round;
+
+    $scope.ok = function () {
+      $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+});
 
 menuCtrl.controller('PlayerViewCtrl', [
   '$scope',

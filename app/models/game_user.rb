@@ -8,6 +8,7 @@ class GameUser < ActiveRecord::Base
 
   has_many :rations
   has_many :moves
+  has_many :actions
 
   def as_json(options={})
     super(

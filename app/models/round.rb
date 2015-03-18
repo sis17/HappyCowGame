@@ -3,6 +3,7 @@ class Round < ActiveRecord::Base
   belongs_to :game_user
   belongs_to :game
   has_many :moves
+  has_many :actions
 
   def makeActive
     # cause the event to happen

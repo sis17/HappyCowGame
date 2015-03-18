@@ -143,6 +143,11 @@ class GameUserCard < ActiveRecord::Base
         self.game_user.score += card.points
         self.game_user.save
       end
+      #record the action
+      action = Action.new
+      action.set('Used a Card', "They used the card #{card.title}, with the result: #{message}.",
+        self.game_user.game.round.id, 2, self.game_user.id
+      )
       self.destroy
       return {
         success: true,
