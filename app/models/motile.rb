@@ -6,11 +6,14 @@ class Motile < ActiveRecord::Base
     messages = []
     moves = 3
     while moves > 0 do
-      i = rand(self.position.positions.length)
-      self.position = self.position.positions.find(i)
+      ids = []
+      self.position.positions.each do |position|
+        ids.push(position.id)
+      end
+      self.position = Position.find(ids[rand(ids.length)])
       self.save
       #remove an ingredient from colliding rations
-      rations = Ration.joins(:game_user).where(position_id: self.position_id, game_user: {game: self.game_id})
+      rations = Ration.joins(:game_user).where(position_id: self.position_id, game_users: {game_id: self.game.id})
       rations.each do |ration|
         ingredient = Ingredient.where(ration_id: ration.id).first
         name = ingredient.ingredient_cat.name

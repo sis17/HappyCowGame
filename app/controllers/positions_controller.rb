@@ -54,6 +54,10 @@ class PositionsController < ApplicationController
       rations.each do |ration|
         taken_positions[ration.position.id] = ration.position.id
       end
+      motiles = Motile.where(game_id: @game.id)
+      motiles.each do |motile|
+        taken_positions[motile.position.id] = motile.position.id
+      end
     end
     return taken_positions
   end

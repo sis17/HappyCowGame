@@ -30,7 +30,7 @@ class RationsController < ApplicationController
 
     @ration.update(params.require(:ration).permit(:position_id))
     action = Action.new
-    action.set('Moved a Ration', 'They moved a ration with '+@ration.describe_ingredients+', from position '+old_pos+' to position '+@ration.position.id+'.',
+    action.set('Moved a Ration', 'They moved a ration with '+@ration.describe_ingredients+', from position '+old_pos.id.to_s+' to position '+@ration.position.id.to_s+'.',
       @ration.game_user.game.round_id, 3, @ration.game_user.id
     )
     response = {ration: @ration}

@@ -39,13 +39,12 @@ class GamesController < ApplicationController
           success = true
           messages.push({
               title: 'Round Finished',
-              text: 'It is Round '+@game.round.number+', and is now '+@game.round.game_user.user.name+'`s turn.',
+              text: 'It is Round '+@game.round.number.to_s+', and is now '+@game.round.game_user.user.name+'`s turn.',
               type: 'info', time: 5
           })
         else
           #there are no more rounds!
-          @game.stage = 2
-          @game.save
+          @game.finish
           success = false
           messages.push({
               title: 'Game Finished', text: 'There are no more rounds.',

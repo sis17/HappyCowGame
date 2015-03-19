@@ -113,6 +113,32 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def finish
+    if self.stage == 1
+      self.stage = 2
+      # give every player a bit of experience
+      score = 0
+      winner = nil
+      self.game_users.each do |game_user|
+        game_user.user.experience += 1
+        game_user.user.save
+        if game_user.score > score
+          # how to establish a tie?
+          score = game_user.score
+          winner = game_user
+        end
+      end
+
+      # if there is a winner, and more than one player, give them a bonus
+      if winner and self.game_users.length > 1
+        winner.user.experience += 2
+        winner.user.save
+      end
+
+      self.save
+    end
+  end
+
   def as_json(options={})
     super(
       :include=> [

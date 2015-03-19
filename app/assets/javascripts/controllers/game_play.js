@@ -48,6 +48,7 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
       Restangular.one('games', $routeParams.gameId).get().then(function(game) {
         $scope.game.cow = game.cow;
         $scope.game.round = game.round;
+        $scope.game.motiles = game.motiles;
       });
     }
 
@@ -67,7 +68,7 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
       }).then(function(response) {
         notice(response.messages);
           if (response.success) {
-              Restangular.one('rounds', response.round.id).get().then(function(round) {
+              Restangular.one('rounds', response.game.round.id).get().then(function(round) {
                 $scope.game.round = round;
                 if (roundId != round.id) {
                   // at the start of the phase we want to look at the event

@@ -14,16 +14,19 @@ class GameUsersController < ApplicationController
   def destroy
     @game_user = GameUser.find(params[:id])
     @game = @game_user.game
-    message = 'You have successfully left `'+@game.name+'` game.'
+    messages = []
+    messages.push({title:'You`ve Left', text:'You have successfully left `'+@game.name+'` game.', type:'success', time:2})
 
     @game_user.destroy
     if @game.game_users.count <= 0
-      message += ' The game was consequently deleted.'
+      messages.push({title:'Game Deleted', text:'There were no more players. The game was consequently deleted.',
+        type:'info', time:5})
       @game.destroy
     end
+    
     render json: {
       success: true,
-      message: {title:'You have left', text:message, type:'success'}
+      messages: messages
     } and return
   end
 
