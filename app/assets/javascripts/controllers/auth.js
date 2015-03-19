@@ -7,11 +7,10 @@ var loginCtrl = hcApp.controller('LoginCtrl', [
 
     $scope.login = function(user) {
       Restangular.service('login').post({email: user.email, password: user.password}).then(function (response) {
+        notice(response.messages)
         if (response.success) {
           $scope.user.assign(response.user);
           $location.path('games');
-        } else {
-          notice(response.message.title, response.message.text, response.message.type, 5)
         }
       }, function() {
         notice('Uh Oh', 'The request could not be completed.', 'warning', 4);
@@ -38,13 +37,13 @@ var registerCtrl = hcApp.controller('RegisterCtrl', [
         notice('Oops', 'Please make sure your password and confirmation password match.', 'warning', 4);
       } else {
         Restangular.all('users').post({user:user}).then(function(response) {
-          notice(response.message.title, response.message.text, response.message.type, 5);
+          notice(response.messages);
           if (response.success && response.user) {
             $scope.user.assign(response.user);
             $location.path('games');
           }
         }, function() {
-          notice('Uh Oh', 'The request could not be completed.', 'warning', 4);
+          notice('Uh Oh', 'An error occured. Registration could not be completed.', 'warning', 4);
         });
       }
     }

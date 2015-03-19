@@ -10,7 +10,10 @@ class GamesController < ApplicationController
   end
 
   def update
+    messages = []
+    success = false
     @game = Game.find(params[:id])
+
     # do a check to see if the game is in the review phase, if so, allow update of round_id
     if params[:done_turn]
       # the user has finished doing what they can, move on to next turn, or phase, or round
@@ -19,7 +22,11 @@ class GamesController < ApplicationController
         round = Round.where(game_id: @game.id, number: @game.round.number+1).first
         if round
           @game.cow.turn_effects
-          
+          # move the motiles
+          @game.motiles.each do |motile|
+            messages.concat(motile.move)
+          end
+
           @game.round = round
           @game.round.makeActive
           @game.save
@@ -29,18 +36,21 @@ class GamesController < ApplicationController
             assign_cards(@game, game_user, 2)
           end
 
-          render :json => {success:true,
-            message: {title:'Round Ended', text:'It is now '+@game.round.game_user.user.name+'`s turn.', type:'info'},
-            round:@game.round.as_json
-          } and return
+          success = true
+          messages.push({
+              title: 'Round Finished',
+              text: 'It is Round '+@game.round.number+', and is now '+@game.round.game_user.user.name+'`s turn.',
+              type: 'info', time: 5
+          })
         else
           #there are no more rounds!
           @game.stage = 2
           @game.save
-          render :json => {success:false,
-            message: {title:'The Game is Finished', text:'There are no more rounds.', type:'info'},
-            round:@round.as_json
-          } and return
+          success = false
+          messages.push({
+              title: 'Game Finished', text: 'There are no more rounds.',
+              type: 'info', time: 5
+          })
         end
       else
         # get the next player, or move to the next phase
@@ -55,10 +65,11 @@ class GamesController < ApplicationController
         @round.game_user = nextPlayer
         @round.save
 
-        render :json => {success:true,
-          message: {title:'Turn Ended', text:'It is now '+messageText+@round.game_user.user.name+'`s turn.', type:'info'},
-          round:@round.as_json
-        } and return
+        success = true
+        messages.push({
+            title: 'Turn Ended', text: 'It is now '+messageText+@round.game_user.user.name+'`s turn.',
+            type: 'info', time: 5
+        })
       end
 
     elsif !params[:begin] && @game.stage == 0
@@ -67,25 +78,53 @@ class GamesController < ApplicationController
       # update the game details
       if params[:name]
         @game.name = params[:name]
+        messages.push({
+            title: 'Game Changed', text: 'The game name was changed to '+@game.name+'.',
+            type: 'success', time: 2
+        })
       end
       if params[:carddeck_id]
-        @game.carddeck_id = params[:carddeck_id]
+        carddeck = CardDeck.find(params[:carddeck_id])
+        if carddeck
+          @game.carddeck_id = params[:carddeck_id]
+          messages.push({
+              title: 'Game Changed', text: 'The game card deck was changed to '+carddeck.name+'.',
+              type: 'success', time: 2
+          })
+        end
       end
       if params[:rounds_min]
         @game.rounds_min = params[:rounds_min]
+        messages.push({
+            title: 'Game Changed', text: "The minimum number of rounds was changed to #{@game.rounds_max.to_s}.",
+            type: 'success', time: 2
+        })
       end
       if params[:rounds_max]
         @game.rounds_max = params[:rounds_max]
+        messages.push({
+            title: 'Game Changed', text: "The maximum number of rounds was changed to #{@game.rounds_max.to_s}.",
+            type: 'success', time: 2
+        })
       end
       #@game.update(params.require(:game).permit(:name, :carddeck_id, :rounds_min, :rounds_max))
 
       # update any new users
       if params[:users]
         params[:users].each do |user_id|
+          game_user = GameUser.find(user_id)
           create_game_user(@game, user_id)
+          if game_user
+            messages.push({
+                title: 'User Added', text: 'The user '+game_user.user.name+' was added to the game.',
+                type: 'success', time: 2
+            })
+          end
         end
       end
+
       @game.save
+      success = true
 
     elsif params[:begin] && @game.stage == 0
       # formally create a game, move it to stage 1
@@ -129,6 +168,16 @@ class GamesController < ApplicationController
         last_round.save
       end
 
+      #create 3 motile pieces
+      count = 3
+      while count > 0 do
+        motile = Motile.new
+        motile.game_id = @game.id
+        motile.position_id = Position.where(area_id:3).offset(rand(Position.where(area_id:3).count)).first.id
+        motile.save
+        count -= 1
+      end
+
       #create the cards
       @game.carddeck.cards.each do |card|
         game_card = GameCard.new
@@ -160,17 +209,26 @@ class GamesController < ApplicationController
       @game.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
       @game.round = Round.where({game_id: @game.id}).first
       @game.save
+
+      success = true
+      messages.push({
+          title: 'Game Begun',
+          text: 'The game was successfully begun.',
+          type: 'success', time: 2
+      })
     end
 
     render json: {
-      success: true,
+      success: success,
       game: @game.as_json,
-      message: {title:'Game Save Succeeded', message:'The game was saved.', type:'success'}
+      messages: messages
     } and return
   end
 
   # POST /games.json
   def create
+    messages = []
+    success = false
     @game
     @user = User.find(params[:user_id])
 
@@ -186,29 +244,48 @@ class GamesController < ApplicationController
       create_game_user(@game, @user.id)
       #end
 
-      render json: {
-        success: true,
-        game: @game.as_json,
-        message: {title:'Game Initialised', text:'Now simply fill in information to get setup.', type:'success'}
-      } and return
+      success = true
+      messages.push({
+        title:'Game Initialised', text:'Now simply fill in information to get setup.', type:'success', time: 4
+      })
+    else
+      messages.push({
+        title:'Game Initialisation Failed', text:'A creator and minimum game details were not provided.',
+        type:'warning', time: 4
+      })
     end
 
     render json: {
-      success: false,
-      message: {title:'Game Initialisation Failed', text:'A creator and minimum game details were not provided.', type:'warning'}
+      success: success,
+      game: @game.as_json,
+      messages: messages
     } and return
   end
 
   def destroy
+    messages = []
+    success = false
     @game = Game.find(params[:id])
-    @game.game_users.each do |game_user|
-      game_user.destroy
+    if @game
+      @game.game_users.each do |game_user|
+        game_user.destroy
+      end
+      name = if @game.name.length > 0 then 'called `'+@game.name+'`' else 'with no name' end
+      @game.destroy
+      success = true
+      messages.push({
+        title:'Game Removed', text:'The game '+name+' has been removed.',
+        type:'success', time: 2
+      })
+    else
+      messages.push({
+        title:'Game Not Removed', text:'We couldn`t find that game, you`ve probably already deleted it.',
+        type:'warning', time: 4
+      })
     end
-    name = @game.name
-    @game.destroy
     render json: {
-      success: true,
-      message: {title:'Game Removed', text:'The game called `'+name+'` has been removed.', type:'success'}
+      success: success,
+      messages: messages
     } and return
   end
 

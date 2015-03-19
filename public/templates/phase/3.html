@@ -8,6 +8,9 @@
     <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
   </div>
 
+  <img ng-repeat="motile in game.motiles" ng-src="images/motile.png" class="motile clickable"
+        style="left: {{left+motile.position.centre_x-10}}px; top: {{top+motile.position.centre_y-10}}px;" />
+
   <script type="text/ng-template"  id="position_renderer.html">
     <div ng-repeat="pos in graph.traverse(pos.id)" ng-include="'position_renderer.html'"
         class="move-position {{pos.links <= 0 || !pos.links ? 'move-position-final' : ''}}"

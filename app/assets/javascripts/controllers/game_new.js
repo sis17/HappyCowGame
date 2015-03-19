@@ -27,11 +27,9 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
 
     $scope.saveName = function(name) {
       $scope.game.patch({name: name}).then(function(response) {
+        notice(response.messages)
         if (response.success) {
           $scope.getGame();
-          notice('Name Saved', 'The game name has been updated.', 'success', 2);
-        } else {
-          notice('Name Not Saved', 'The game name was not updated.', 'warning', 2);
         }
       }, function() {
         notice('Name Not Saved', 'The game name was not updated.', 'warning', 2);
@@ -40,7 +38,7 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
 
     $scope.abandon = function() {
       Restangular.one('games', $scope.game.id).remove().then(function(response) {
-        notice(response.message.title, response.message.text, response.message.type, 2);
+        notice(response.messages);
         $location.path('games');
       }, function() {
         notice('Game Not Removed', 'The game was not removed, it still exists.', 'warning', 2);
@@ -49,7 +47,7 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
     $scope.leave = function() {
       game_user_id = $scope.$storage.user.game_user.id;
       Restangular.one('game_users', game_user_id).remove().then(function(response) {
-        notice(response.message.title, response.message.text, response.message.type, 2);
+        notice(response.messages);
         $location.path('games');
       }, function() {
         notice('Leaving Failed', 'You cannot currently leave this game.', 'warning', 2);
@@ -60,8 +58,7 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
       $scope.game.patch({users:[user.id]}).then(function(response) {
         if (response.success) {
           $scope.getGame();
-          //$scope.game_users = Restangular.one('games', response.game.id).getList('game_users').$object;
-          notice('Invitation Success', 'The player has been added to this game.', 'success', 2);
+          notice(response.messages);
         } else {
           notice('Invitation Failed', 'The player has NOT been added to this game.', 'warning', 2);
         }
@@ -88,7 +85,7 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
       $scope.game.patch({carddeck_id:deck.id}).then(function(response) {
         if (response.success) {
           $scope.getGame();
-          notice('Rounds Changed', 'The number of rounds has been changed.', 'success', 2);
+          notice(response.messages);
         } else {
           notice('Rounds Not Changed', 'The number of rounds has NOT been changed.', 'warning', 2);
         }
@@ -102,7 +99,7 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
         function(response) {
           if (response.success) {
             $scope.getGame();
-            notice('Rounds Changed', 'The number of rounds has been changed.', 'success', 2);
+            notice(response.messages);
           } else {
             notice('Rounds Not Changed', 'The number of rounds has NOT been changed.', 'warning', 2);
           }
@@ -116,12 +113,5 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
         $scope.game = game;
       });
     }
-
-    $scope.$watch('game.game_users', function() {
-      console.log('games_users has changed.');
-    });
-    $scope.$watchGroup(['game.rounds_min', 'game.rounds_max'], function() {
-      console.log('game rounds has changed.');
-    });
   }
 ]);

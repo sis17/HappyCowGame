@@ -4,6 +4,7 @@ class Game < ActiveRecord::Base
   has_many :users, foreign_key: 'creater_id'
   has_many :ingredient_cats
   has_many :rounds
+  has_many :motiles
 
   belongs_to :carddeck
   belongs_to :round
@@ -128,6 +129,9 @@ class Game < ActiveRecord::Base
         :rounds,
         :carddeck,
         :cow,
+        {motiles: {:include => [
+          :position
+        ]}},
         :ingredient_cats,
         {game_users: {:include => [
           user: {:only => [:name]},

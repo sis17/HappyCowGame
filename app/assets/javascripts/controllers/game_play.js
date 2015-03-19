@@ -65,7 +65,7 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
         game_user_id: $scope.$storage.user.id,
         done_turn: true
       }).then(function(response) {
-        notice(response.message.title, response.message.text, response.message.type, 4);
+        notice(response.messages);
           if (response.success) {
               Restangular.one('rounds', response.round.id).get().then(function(round) {
                 $scope.game.round = round;

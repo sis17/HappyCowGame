@@ -1,5 +1,6 @@
 class Position < ActiveRecord::Base
   has_many :rations
+  has_many :motiles
 
   has_and_belongs_to_many(:positions,
     :join_table => "next_positions",

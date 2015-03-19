@@ -24,6 +24,13 @@
 .die.die-5 {background-image: url('../images/dice-5.png');}
 .die.die-6 {background-image: url('../images/dice-6.png');}
 
+.motile {
+  position: fixed;
+  z-index: 0;
+  width:30;
+  height:30;
+}
+
 /* Ration Structure */
 .ration {
   width: 42px;

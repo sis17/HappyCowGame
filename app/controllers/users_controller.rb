@@ -17,24 +17,27 @@ class UsersController < ApplicationController
       @user = User.find_by email: params[:email]
       if @user
         if @user.password == params[:password]
-          render json: { success: true, user: @user.as_json} and return
+          success = true
+          render json: { success: true, user: @user.as_json, messages: []} and return
+        else
+
         end
 
         render json: {
           success: false,
-          message: {title: 'Wrong Password', text: 'Please try again, your password was incorrect.', type: 'danger'}
+          messages: [{title: 'Wrong Password', text: 'Please try again, your password was incorrect.', type: 'danger'}]
         } and return
       else
         render json: {
           success: false,
-          message: {title: 'Not an Account', text: 'Please try again with a diffrent email, it was not recognised.', type: 'danger'}
+          messages: [{title: 'Not an Account', text: 'Please try again with a diffrent email, it was not recognised.', type: 'danger'}]
         } and return
       end
     end
 
     render json: {
       success: false,
-      message: {title: 'Authorisation Failed', text: 'Your account does not exist, or you gave us the wrong email.', type: 'danger'}
+      messages: [{title: 'Authorisation Failed', text: 'Your account does not exist, or you gave us the wrong email.', type: 'danger'}]
     } and return
   end
 
@@ -59,19 +62,32 @@ class UsersController < ApplicationController
   # At the moment we are only allowing the admin user to create new
   # accounts.
   def create
-    @user = User.new(params.require(:user).permit(:email, :name, :password))
-    if @user
-      @user.save
-      render json: {
-        success: true,
-        user: @user,
-        message: {title: 'Account Created', text: 'Your account has been created. Pleaes remember your details.', type: 'success'}
-      } and return
+    success = false
+    user = nil
+    messages = []
+
+    existing_user = User.find_by email: params[:user][:email]
+    if existing_user
+      messages.push({title: 'User Account Exists', text: 'We already have an account registered for that email, try signing in.', type: 'warning', time: 6})
+    else
+      @user = User.new(params.require(:user).permit(:email, :name, :password))
+      if @user
+        @user.experience = 0
+        @user.colour = "%06x" % (rand * 0xffffff)
+        @user.save
+        render json: {
+          success: true,
+          user: @user,
+          messages: [{title: 'Account Created', text: 'Your account has been created. Pleaes remember your details.', type: 'success', time: 4}]
+        } and return
+      end
+      messages.push({title: 'Oops', text: 'The account could not be created, make sure you enter all necessary details.', type: 'warning', time: 5})
     end
 
     render json: {
-      success: false,
-      message: {title: 'You Must Update a Profile', text: 'You are not updating user details correctly, by editing your profile.', type: 'warning'}
+      success: success,
+      user: user,
+      messages: messages
     } and return
   end
 

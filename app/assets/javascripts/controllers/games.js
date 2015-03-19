@@ -25,7 +25,7 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
       Restangular.one('games', game_id).remove().then(function(response) {
         $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
         $scope.unselectGame();
-        notice(response.message.title, response.message.text, response.message.type, 2);
+        notice(response.messages);
       }, function() {
         notice('Game Not Removed', 'The game could not be removed, it still exists.', 'warning', 2);
       });
@@ -36,7 +36,7 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
       Restangular.one('game_users', game_user_id).remove().then(function(response) {
         $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
         $scope.unselectGame();
-        notice(response.message.title, response.message.text, response.message.type, 2);
+        notice(response.messages);
       }, function() {
         notice('Leaving Failed', 'You cannot currently leave this game.', 'warning', 2);
       });
@@ -53,7 +53,7 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
         },
         user_id: $scope.$storage.user.id
       }).then(function(response) {
-        notice(response.message.title, response.message.text, response.message.type, 2);
+        notice(response.messages);
         if (response.success) {
           $location.path('games/new/'+response.game.id);
         }
