@@ -19,9 +19,6 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     $scope.movePhase = 1;
     $scope.rations = Restangular.one('games', $scope.game.id)
                       .one('game_users', $scope.$storage.user.game_user.id).getList('rations').$object;
-    Restangular.one('games', $scope.game.id).getList('rations').then(function(rations) {
-      $scope.allRations = rations;
-    });
     $scope.selectedRation = null;
     $scope.getMoves();
 
@@ -123,9 +120,10 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     $scope.getRation = function(ration_id) {
       // get the ration on the board
-      for (i in $scope.allRations) {
-        if ($scope.allRations[i].id && $scope.allRations[i].id == ration_id) {
-          return $scope.allRations[i];
+      var allRations = $scope.game.getAllRations()
+      for (i in allRations) {
+        if (allRations[i].id && allRations[i].id == ration_id) {
+          return allRations[i];
         }
       }
       return null;
@@ -178,7 +176,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       // test for the end of the turn
       if (newPos.links.length == 0 || $scope.movementsLeft <= 0) { // improve this to check if there's allowed movements left
         ration.position_id = newPos.id;
-        ration.patch().then(function(response) {
+        Restangular.one("rations", ration.id).patch({ration: ration}).then(function(response) {
           $scope.game.update();
           if (response.message) {
             notice(response.message.title, response.message.text, response.message.type, 0);
@@ -193,7 +191,6 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     $scope.endMovementPhase = function() {
       // moving to last phase
-      console.log('done turn');
       $scope.game.doneTurn();
     }
 

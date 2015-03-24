@@ -276,9 +276,12 @@ class Game < ActiveRecord::Base
           :position
         ]}},
         :ingredient_cats,
-        {game_users: {:include => [
-          user: {:only => [:name]},
-          rations: {:include => [:ingredients]}
+        {game_users: {include: [
+          {rations: {include: [
+            {ingredients: {include: [:ingredient_cat]}}, 
+            :position
+          ]}},
+          user: {only: [:name]}
         ]}}
       ]
     )

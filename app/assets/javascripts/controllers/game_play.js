@@ -49,15 +49,25 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
         $scope.game.cow = game.cow;
         $scope.game.round = game.round;
         $scope.game.motiles = game.motiles;
+        $scope.game.allRations = $scope.game.getAllRations();
       });
     }
 
     $scope.game.updateOnDoneTurn = function() {
       // update rations for movement screen
-      Restangular.one('games', $scope.game.id).getList('rations').then(function(rations) {
-        $scope.allRations = rations;
-      });
+      
     }
+
+    $scope.game.getAllRations = function() {
+      var allRations = [];
+      for (i in $scope.game.game_users) {
+        for (j in $scope.game.game_users[i].rations) {
+          allRations.push($scope.game.game_users[i].rations[j])
+        }
+      }
+      return allRations;
+    }
+    $scope.game.allRations = $scope.game.getAllRations();
 
     $scope.game.doneTurn = function() {
       var roundId = $scope.game.round.id;
