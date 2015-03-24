@@ -1,0 +1,39 @@
+event_dis_con:
+  title: Constipation
+  category: disease
+  uri: dis_con
+
+event_dis_dir:
+  title: Diarrhea
+  category: disease
+  uri: dis_dir
+
+event_dis_mad:
+  title: Mad Cow Crisis
+  category: disease
+  uri: dis_mad
+
+event_wth_cld:
+  title: Cold Weather
+  category: weather
+  uri: wth_cld
+
+event_wth_hot:
+  title: It's Hot
+  category: weather
+  uri: wth_hot
+
+event_wth_gdw:
+  title: Good Weather
+  category: weather
+  uri: wth_gdw
+
+event_prg:
+  title: The Cow is Pregnant
+  category: pregnancy
+  uri: prg
+
+event_end:
+  title: Slaughter House
+  category: end
+  uri: end

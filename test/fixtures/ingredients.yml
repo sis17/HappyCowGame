@@ -1,0 +1,24 @@
+
+water1:
+  ingredient_cat: two_watercategory
+  ration: ration1_twosimeon
+
+water2:
+  ingredient_cat: two_watercategory
+  ration: ration1_twosimeon
+
+energy1:
+  ingredient_cat: two_energycategory
+  ration: ration2_twosimeon
+
+energy2:
+  ingredient_cat: two_energycategory
+  ration: ration1_tworuth
+
+energy3:
+  ingredient_cat: two_energycategory
+  ration: ration1_tworuth
+
+oligos1:
+  ingredient_cat: two_oligoscategory
+  ration: ration2_tworuth

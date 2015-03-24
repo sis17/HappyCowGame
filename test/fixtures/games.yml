@@ -3,9 +3,19 @@
 one:
   start_time: 2015-02-24 11:52:05
   end_time: 2015-02-24 11:52:05
-  stage: 1
+  stage: 0
+  name: CreatingGame
+  carddeck: basic
+  rounds_min: 5
+  rounds_max: 5
 
 two:
   start_time: 2015-02-24 11:52:05
   end_time: 2015-02-24 11:52:05
   stage: 1
+  name: PlayingGame
+  round: round1
+  cow: twocow
+  rounds_min: 5
+  rounds_max: 5
+  carddeck: basic

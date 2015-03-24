@@ -1,0 +1,20 @@
+
+ration1_twosimeon:
+  game_user: twosimeon
+  position: pos1
+  round_created_id: 1
+
+ration2_twosimeon:
+  game_user: twosimeon
+  position: pos2
+  round_created_id: 2
+
+ration1_tworuth:
+  game_user: tworuth
+  position: pos3
+  round_created_id: 1
+
+ration2_tworuth:
+  game_user: tworuth
+  position: pos4
+  round_created_id: 2

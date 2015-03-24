@@ -1,0 +1,165 @@
+card_energy:
+  title: Energy
+  category: energy
+  rating: 5
+  user: simeon
+  points: 0
+  carddecks: basic
+
+card_protein:
+  title: Protein
+  category: protein
+  rating: 5
+  user: simeon
+  points: 0
+  carddecks: basic
+
+card_fiber:
+  title: Fiber
+  category: fiber
+  rating: 5
+  user: simeon
+  points: 0
+  carddecks: basic
+
+card_water:
+  title: Water
+  category: water
+  rating: 5
+  user: simeon
+  points: 0
+  carddecks: basic
+
+card_oligos:
+  title: Oligos
+  category: oligos
+  rating: 5
+  user: simeon
+  points: 0
+  carddecks: basic
+
+card_acidodis_plus:
+  title: Acidodis
+  category: action
+  rating: 5
+  user: simeon
+  points: 2
+  uri: acidodis_plus
+  carddecks: basic
+
+card_acidodis_minus:
+  title: Acidodis
+  category: action
+  rating: 5
+  user: simeon
+  points: 2
+  uri: acidodis_minus
+  carddecks: basic
+
+card_rumination:
+  title: Rumination
+  category: action
+  rating: 5
+  user: simeon
+  points: 0
+  uri: rumination
+  carddecks: basic
+
+card_thief:
+  title: We've Been Conned
+  category: action
+  rating: 5
+  user: simeon
+  points: 0
+  uri: thief
+  carddecks: basic
+
+card_vet:
+  title: Veterinarian
+  category: action
+  rating: 5
+  user: simeon
+  points: 0
+  uri: vet
+  carddecks: basic
+
+card_clean:
+  title: Clean Stables
+  category: action
+  rating: 5
+  user: simeon
+  points: 0
+  uri: clean_stables
+  carddecks: basic
+
+card_activists:
+  title: Animal Welfare Activists
+  category: action
+  rating: 5
+  user: simeon
+  points: 2
+  uri: activists
+  carddecks: basic
+
+card_deficiency:
+  title: Deficiency
+  category: action
+  rating: 5
+  user: simeon
+  points: 2
+  uri: deficiency
+  carddecks: basic
+
+card_insurance:
+  title: Medical Insurance
+  category: action
+  rating: 5
+  user: simeon
+  points: 2
+  uri: medical_insurance
+  carddecks: basic
+
+card_saponins:
+  title: Saponins
+  category: action
+  rating: 5
+  user: simeon
+  points: 2
+  uri: saponins
+  carddecks: basic
+
+card_probiotics:
+  title: Probiotics
+  category: action
+  rating: 5
+  user: simeon
+  points: 2
+  uri: probiotics
+  carddecks: basic
+
+card_improvements:
+  title: Farm Improvements
+  category: action
+  rating: 5
+  user: simeon
+  points: 2
+  uri: farm_improvements
+  carddecks: basic
+
+card_bioreacotor:
+  title: Waste Management
+  category: action
+  rating: 5
+  user: simeon
+  points: 2
+  uri: bioreactor
+  carddecks: basic
+
+card_sugar_grass:
+  title: High Sugar Grass
+  category: action
+  rating: 5
+  user: simeon
+  points: 2
+  uri: high_sugar_grass
+  carddecks: basic

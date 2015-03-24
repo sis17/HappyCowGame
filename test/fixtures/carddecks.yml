@@ -1,0 +1,5 @@
+basic:
+  user: simeon
+  rating: 5
+  name: BasicDeck
+  cards: card_energy, card_protein, card_fiber, card_water, card_oligos, card_acidodis_plus, card_acidodis_minus, card_rumination, card_thief, card_vet, card_clean, card_activists, card_deficiency, card_insurance, card_saponins, card_probiotics, card_improvements, card_bioreacotor, card_sugar_grass

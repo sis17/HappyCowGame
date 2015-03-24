@@ -1,17 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  email: MyString
-  name: MyString
-  colour: MyString
+simeon:
+  email: sis17@aber.ac.uk
+  name: Simeon
+  colour: ff0000
   experience: 1
-  password: MyString
-  salt: MyString
+  password: test
+  salt: something
 
-two:
-  email: MyString
-  name: MyString
-  colour: MyString
+ruth:
+  email: rmc3@aber.ac.uk
+  name: Ruth
+  colour: 00ff00
   experience: 1
-  password: MyString
-  salt: MyString
+  password: test
+  salt: something

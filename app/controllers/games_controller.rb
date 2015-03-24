@@ -54,7 +54,7 @@ class GamesController < ApplicationController
       else
         # get the next player, or move to the next phase
         @round = @game.round
-        nextPlayer = get_next_player(@round, @round.game_user)
+        nextPlayer = @game.get_next_player
         messageText = ''
         if nextPlayer.id == @round.starting_user_id
           # if the phase has come back to the first player, move on the phase
@@ -128,93 +128,21 @@ class GamesController < ApplicationController
     elsif params[:begin] && @game.stage == 0
       # formally create a game, move it to stage 1
       @game = Game.find(params[:id])
-      @game.stage = 1
+      success = @game.begin
 
-      #create the rounds
-      game_user_offset = 0
-      round_count = rand(@game.rounds_min..@game.rounds_max)
-      round_num = 1
-      while round_num <= round_count  do
-        round = Round.new
-        round.number = round_num
-        round.event_id = Event.offset(rand(Event.count)).first.id
-        round.current_phase = 2
-        round.starting_user_id = GameUser.where({game_id: @game.id}).offset(game_user_offset).first.id
-        round.game_user_id = round.starting_user_id
-        round.game = @game
-        round.save
-
-        game_user_offset += 1
-        if game_user_offset >= @game.game_users.count
-          game_user_offset = 0;
-        end
-        round_num += 1
-
-        #create moves within rounds
-        @game.game_users.each do |game_user|
-          move = Move.new
-          move.game_user_id = game_user.id
-          move.round_id = round.id
-          move.save
-        end
+      if success
+        messages.push({
+            title: 'Game Begun',
+            text: 'The game was successfully begun.',
+            type: 'success', time: 2
+        })
+      else
+        messages.push({
+            title: 'Game Launch Failed',
+            text: 'You cannot currently begin this game, sorry.',
+            type: 'warning', time: 5
+        })
       end
-
-      # set the last event as the slaughter house
-      last_round = @game.rounds.last
-      last_event = Event.where(category: 'end').first
-      if last_round and last_event
-        last_round.event_id = last_event.id
-        last_round.save
-      end
-
-      #create 3 motile pieces
-      count = 3
-      while count > 0 do
-        motile = Motile.new
-        motile.game_id = @game.id
-        motile.position_id = Position.where(area_id:3).offset(rand(Position.where(area_id:3).count)).first.id
-        motile.save
-        count -= 1
-      end
-
-      #create the cards
-      @game.carddeck.cards.each do |card|
-        game_card = GameCard.new
-        game_card.game = @game
-        game_card.card = card
-        game_card.quantity = if card.category == 'action' then 1 else 3 end
-        game_card.save
-      end
-
-      #give cards to each player
-      game_card_count = GameCard.where({game_id: params[:game_id]}).count - 1
-      @game.game_users.each do |game_user|
-        assign_cards(@game, game_user, 4)
-      end
-
-      #create the cow
-      cow = Cow.new
-      cow.ph_marker = 6.5
-      cow.body_condition = 0
-      cow.welfare = 0
-      cow.oligos_marker = 0
-      cow.muck_marker = 0
-      cow.save
-      @game.cow = cow
-
-      create_ingredient_cats(@game)
-
-      time = Time.new
-      @game.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
-      @game.round = Round.where({game_id: @game.id}).first
-      @game.save
-
-      success = true
-      messages.push({
-          title: 'Game Begun',
-          text: 'The game was successfully begun.',
-          type: 'success', time: 2
-      })
     end
 
     render json: {
@@ -289,22 +217,6 @@ class GamesController < ApplicationController
   end
 
   private
-  def get_next_player(round, game_user)
-    users = round.game.game_users
-
-    currentUserIndex = false
-    users.each_with_index do |user, index|
-      if user.id == game_user.id
-        currentUserIndex = index
-      end
-    end
-
-    if users[currentUserIndex+1]
-      return users[currentUserIndex+1]
-    else
-      return users[0]
-    end
-  end
 
   def assign_cards(game, game_user, number)
     game_card_count = GameCard.where({game_id: game.id}).count - 1

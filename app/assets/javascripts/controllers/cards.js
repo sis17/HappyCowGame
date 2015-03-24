@@ -41,7 +41,7 @@ angular.module('happyCow').controller('CardsCtrl', [
       create: function() {
         var ration = {game_user_id: $scope.$storage.user.game_user.id, ingredients: this.ingredients};
         Restangular.all('rations').post({ration: ration, game_id: $scope.game.id}).then(function(response) {
-          notice(response.message.title, response.message.message, response.message.type, 2);
+          notice(response.messages);
           $scope.cards = $scope.user.getCards();
           $scope.rations = $scope.user.getRations();
           $scope.newRation.ingredients = [{},{},{},{}];

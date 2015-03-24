@@ -34,13 +34,10 @@ class MovesController < ApplicationController
       } and return
     end
 
-    if params[:select_dice]
-      @move.update(params.require(:move).permit(:selected_die))
-      render json: {
-        success: true,
-        move: @move.as_json,
-        message: {title:'Dice Confirmed', message: 'The dice was selection was confirmed.', type:'success'}
-      } and return
+    if params[:select_dice] and params[:move][:selected_die]
+      response = @move.select_dice(params[:move][:selected_die])
+      #@move.update(params.require(:move).permit(:selected_die))
+      render json: response and return
     end
 
     render json: {

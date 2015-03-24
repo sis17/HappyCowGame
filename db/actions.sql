@@ -1,0 +1,11 @@
+BEGIN TRANSACTION;
+DROP TABLE IF EXISTS "actions";
+CREATE TABLE "actions" ("id" INTEGER PRIMARY KEY  NOT NULL  UNIQUE , "round_id" INTEGER, "phase" INTEGER, "game_user_id" INTEGER, "title" VARCHAR, "description" TEXT);
+INSERT INTO "actions" VALUES(1,149,2,44,'Created a Ration','They created a ration with .');
+INSERT INTO "actions" VALUES(2,149,2,44,'Discarded a Card','They discarded the card We''ve Been Conned!.');
+INSERT INTO "actions" VALUES(3,149,3,44,'Moved a Ration','They moved a ration with <span class=''label energy''>ingredient.ingredient_cat.name</span> , from position #<Position:0xb47c8e40> to position 11.');
+INSERT INTO "actions" VALUES(4,157,2,40,'Created a Ration','They created a ration with .');
+INSERT INTO "actions" VALUES(5,160,2,40,'Created a Ration','They created a ration with .');
+INSERT INTO "actions" VALUES(6,161,2,40,'Used a Card','They used the card Rumination, with the result: A random ration was moved back to the mouth..');
+INSERT INTO "actions" VALUES(7,161,2,40,'Used a Card','They used the card Acidodis/Alkalosis, with the result: The PH in the cow`s rumen decreased to 6.5. You gained 2 points. .');
+COMMIT;

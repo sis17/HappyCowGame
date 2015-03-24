@@ -1,0 +1,31 @@
+pos1:
+  area_id: 1
+  order: 1
+
+pos2:
+  area_id: 1
+  order: 2
+
+pos3:
+  area_id: 1
+  order: 3
+
+pos4:
+  area_id: 1
+  order: 4
+
+pos5:
+  area_id: 1
+  order: 5
+
+pos6:
+  area_id: 1
+  order: 6
+
+pos7:
+  area_id: 2
+  order: 7
+
+pos_rumen:
+  area_id: 3
+  order: 55

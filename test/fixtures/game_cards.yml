@@ -1,0 +1,94 @@
+gc1:
+  game: two
+  card: card_energy
+  quantity: 5
+
+gc2:
+  game: two
+  card: card_protein
+  quantity: 5
+
+gc3:
+  game: two
+  card: card_fiber
+  quantity: 5
+
+gc4:
+  game: two
+  card: card_water
+  quantity: 5
+
+gc5:
+  game: two
+  card: card_oligos
+  quantity: 5
+
+gc6:
+  game: two
+  card: card_acidodis_plus
+  quantity: 2
+
+gc7:
+  game: two
+  card: card_acidodis_minus
+  quantity: 2
+
+gc8:
+  game: two
+  card: card_rumination
+  quantity: 2
+
+gc9:
+  game: two
+  card: card_theif
+  quantity: 2
+
+gc10:
+  game: two
+  card: card_vet
+  quantity: 2
+
+gc11:
+  game: two
+  card: card_clean
+  quantity: 1
+
+gc12:
+  game: two
+  card: card_activists
+  quantity: 1
+
+gc13:
+  game: two
+  card: card_deficiency
+  quantity: 2
+
+gc14:
+  game: two
+  card: card_insurance
+  quantity: 2
+
+gc15:
+  game: two
+  card: card_saponins
+  quantity: 1
+
+gc16:
+  game: two
+  card: card_probiotics
+  quantity: 2
+
+gc17:
+  game: two
+  card: card_improvements
+  quantity: 2
+
+gc18:
+  game: two
+  card: card_managment
+  quantity: 2
+
+gc19:
+  game: two
+  card: card_sugar_grass
+  quantity: 2

@@ -1,0 +1,28 @@
+
+two_watercategory:
+  name: water
+  milk_score: 1
+  meat_score: 1
+  muck_score: 1
+  game: two
+
+two_energycategory:
+  name: energy
+  milk_score: 6
+  meat_score: 2
+  muck_score: 1
+  game: two
+
+two_protiencategory:
+  name: protein
+  milk_score: 3
+  meat_score: 4
+  muck_score: 1
+  game: two
+
+two_oligoscategory:
+  name: oligos
+  milk_score: 10
+  meat_score: 10
+  muck_score: 1
+  game: two
