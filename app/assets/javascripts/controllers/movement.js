@@ -1,6 +1,6 @@
 var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
-  '$scope', '$location', 'Restangular', 'notice',
-  function($scope, $location, Restangular, notice) {
+  '$scope', '$location', 'Restangular', 'notice', '$timeout',
+  function($scope, $location, Restangular, notice, $timeout) {
 
     $scope.getMoves = function() {
       var moves = Restangular.one('games', $scope.game.id)
@@ -143,9 +143,37 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
       var newPos = $scope.graph[newPosId];
       var ration = $scope.getRation($scope.move.ration.id);
+
       if (ration) {
-        ration.position = newPos
+        $scope.animateRation(ration, newPos); // when finished it will save the position
       }
+    }
+
+    $scope.animateRation = function(ration, newPos){
+      $scope.sectionsCount = 300/20;
+      var distanceX = newPos.centre_x - ration.position.centre_x;
+      var distanceY = newPos.centre_y - ration.position.centre_y;
+      $scope.animateX = distanceX/$scope.sectionsCount // the X distance to travel each interval
+      $scope.animateY = distanceY/$scope.sectionsCount // the Y distance to travel each interval
+      $scope.currentSection = 1;
+      animateLoop(ration, newPos)
+    };
+
+    var animateLoop = function(ration, newPos) {
+      $timeout(function() {
+        ration.position.centre_x += $scope.animateX;
+        ration.position.centre_y += $scope.animateY;
+        $scope.currentSection++;
+        if ($scope.currentSection <= $scope.sectionsCount) {
+          animateLoop(ration, newPos); // go through the loop again
+        } else {
+          $scope.updateRation(ration, newPos); // finish the animation and move on
+        }
+      }, $scope.sectionsCount)
+    }
+
+    $scope.updateRation = function(ration, newPos) {
+      ration.position = newPos
 
       // test for the end of the turn
       if (newPos.links.length == 0 || $scope.movementsLeft <= 0) { // improve this to check if there's allowed movements left
