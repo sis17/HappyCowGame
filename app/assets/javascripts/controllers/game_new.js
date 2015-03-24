@@ -54,9 +54,18 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
       });
     }
 
-    $scope.inviteUser = function(user) {
+    $scope.selectUser = function($item, $model, $label) {
+      $scope.selectedUser = $item;
+    }
+    $scope.unselectUser = function() {
+      $scope.selectedUser = null;
+    }
+
+    $scope.inviteUser = function() {
+      user = $scope.selectedUser;
       $scope.game.patch({users:[user.id]}).then(function(response) {
         if (response.success) {
+          $scope.selectedUser = null;
           $scope.getGame();
           notice(response.messages);
         } else {
@@ -66,19 +75,29 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
         notice('Invitation Failed', 'The player has NOT been added to this game.', 'warning', 2);
       });
     }
-    $scope.canInvite = function(user) {
-      if (user.id == $scope.$storage.user.id) {
-        return false;
-      }
-      if ($scope.game.game_users) {
-        for (i in $scope.game.game_users) {
-          var game_user = $scope.game.game_users[i];
-          if (game_user && game_user.user_id && game_user.user_id == user.id) {
-            return false;
+    $scope.availableUsers = function() {
+      users = []
+      for (i in $scope.users.$object) {
+        user = $scope.users.$object[i]
+        if (user) {
+          canAdd = true
+          if (user.id == $scope.$storage.user.id) {
+            canAdd = false;
+          }
+          if ($scope.game.game_users) {
+            for (i in $scope.game.game_users) {
+              var game_user = $scope.game.game_users[i];
+              if (game_user && game_user.user_id && game_user.user_id == user.id) {
+                canAdd = false;
+              }
+            }
+          }
+          if (canAdd) {
+            users.push(user)
           }
         }
       }
-      return true;
+      return users;
     }
 
     $scope.useDeck = function(deck) {

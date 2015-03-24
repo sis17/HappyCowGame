@@ -1,5 +1,5 @@
 hcApp.controller('ProfileCtrl', [
-  '$scope', '$location', 'Restangular', 'notice',
+  '$scope', '$location', 'Restangular', 'notice', 
   function($scope, $location, Restangular, notice) {
 
     $scope.saveProfile = function() {

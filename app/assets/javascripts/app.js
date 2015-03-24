@@ -1,5 +1,5 @@
 var hcApp = angular.module('happyCow', [
-  'ui.bootstrap', 'ngSanitize', 'ngRoute', 'restangular', 'angularModalService', 'ngStorage',
+  'ui.bootstrap', 'ngSanitize', 'ngRoute', 'restangular', 'angularModalService', 'ngStorage', 'colorpicker.module',
   'happyCowServices', 'happyCowDirectives'
 ]);
 
