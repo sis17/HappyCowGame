@@ -20,6 +20,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     $scope.rations = Restangular.one('games', $scope.game.id)
                       .one('game_users', $scope.$storage.user.game_user.id).getList('rations').$object;
     $scope.selectedRation = null;
+    $scope.game.getAllRations();
     $scope.getMoves();
 
     $scope.visitedPositions = {}; // positions that the ration can't revisit
@@ -120,7 +121,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     $scope.getRation = function(ration_id) {
       // get the ration on the board
-      var allRations = $scope.game.getAllRations()
+      var allRations = $scope.game.allRations;
       for (i in allRations) {
         if (allRations[i].id && allRations[i].id == ration_id) {
           return allRations[i];

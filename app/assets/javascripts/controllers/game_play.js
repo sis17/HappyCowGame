@@ -41,33 +41,31 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
       $scope.nextPlayer = $scope.game.game_users[1];
 
     $scope.game.update = function() {
-      var current_game_user = $scope.game.round.game_user;
-      Restangular.one('game_users', $scope.$storage.user.game_user.id).get().then(function(game_user) {
-        $scope.$storage.user.game_user = game_user;
-      });
-      Restangular.one('games', $routeParams.gameId).get().then(function(game) {
-        $scope.game.cow = game.cow;
-        $scope.game.round = game.round;
-        $scope.game.motiles = game.motiles;
-        $scope.game.allRations = $scope.game.getAllRations();
-      });
+      if ($scope.game.round) {
+        var current_game_user = $scope.game.round.game_user;
+        Restangular.one('game_users', $scope.$storage.user.game_user.id).get().then(function(game_user) {
+          $scope.$storage.user.game_user = game_user;
+        });
+        Restangular.one('games', $routeParams.gameId).get().then(function(game) {
+          $scope.game.cow = game.cow;
+          $scope.game.round = game.round;
+          $scope.game.motiles = game.motiles;
+          $scope.game.getAllRations();
+        });
+      }
     }
 
     $scope.game.updateOnDoneTurn = function() {
       // update rations for movement screen
-      
+      $scope.game.allRations = $scope.game.getAllRations();
     }
 
     $scope.game.getAllRations = function() {
-      var allRations = [];
-      for (i in $scope.game.game_users) {
-        for (j in $scope.game.game_users[i].rations) {
-          allRations.push($scope.game.game_users[i].rations[j])
-        }
-      }
-      return allRations;
+      Restangular.one('games',$scope.game.id).getList('rations').then(function(rations) {
+        $scope.game.allRations = rations;
+      });
     }
-    $scope.game.allRations = $scope.game.getAllRations();
+    $scope.game.getAllRations();
 
     $scope.game.doneTurn = function() {
       var roundId = $scope.game.round.id;

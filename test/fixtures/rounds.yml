@@ -3,5 +3,29 @@ round1:
   number: 1
   current_phase: 2
   game_user: twosimeon
-  game: one
+  game: two
+  starting_user: twosimeon
+
+round2:
+  event: event_wth_cld
+  number: 2
+  current_phase: 2
+  game_user: twosimeon
+  game: two
+  starting_user: twosimeon
+
+round3:
+  event: event_wth_cld
+  number: 3
+  current_phase: 2
+  game_user: twosimeon
+  game: two
+  starting_user: twosimeon
+
+round4:
+  event: event_wth_cld
+  number: 4
+  current_phase: 2
+  game_user: twosimeon
+  game: two
   starting_user: twosimeon

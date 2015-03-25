@@ -21,7 +21,7 @@ class Game < ActiveRecord::Base
     game_user_offset = 0
     round_count = rand(self.rounds_min..self.rounds_max)
     round_num = 1
-    while round_num < round_count  do
+    while round_num <= round_count  do
       round = Round.new
       round.number = round_num
       round.event_id = Event.offset(rand(Event.count)).first.id
@@ -68,7 +68,6 @@ class Game < ActiveRecord::Base
     end
 
     #give cards to each player
-    game_card_count = GameCard.where({game: self}).count - 1
     self.game_users.each do |game_user|
       self.assign_cards(game_user, 4)
     end
@@ -106,7 +105,7 @@ class Game < ActiveRecord::Base
 
     #time = Time.new
     self.start_time = Time.new.strftime("%Y-%m-%d %H:%M:%S")
-    self.round = Round.where({game: self}).first
+    self.round = Round.where({game: self}).order(:number).first
 
     self.stage = 1
     self.save
@@ -219,18 +218,40 @@ class Game < ActiveRecord::Base
   end
 
   def assign_cards(game_user, number)
-    game_card_count = GameCard.where({game_id: self.id}).count - 1
+    # assemble the right proportion of card ids in a balance
+    actions = GameCard.joins(:card).where("cards.category = 'action'").all.shuffle[1..self.card_balance('action')]
+    ingredients = GameCard.joins(:card).where("cards.category = 'action'").all.shuffle[1..self.card_balance('ingredient')]
+    game_card_ids = []
+    actions.each do |game_card|
+      game_card_ids.push(game_card.id)
+    end
+    ingredients.each do |game_card|
+      game_card_ids.push(game_card.id)
+    end
+
     while number > 0 do
-        # get the card, and check that any cards exist
-        game_card = GameCard.where({game_id: self.id}).offset(rand(0..game_card_count)).first
-        if game_card
-          game_user_card = GameUserCard.new
-          game_user_card.game_card_id = game_card.id
-          game_user_card.game_user_id = game_user.id
-          game_user_card.save
-        end
+        game_user_card = GameUserCard.new
+        game_user_card.game_card_id = game_card_ids[rand(0..game_card_ids.length-1)]
+        game_user_card.game_user_id = game_user.id
+        game_user_card.save
+
         number -= 1
     end
+  end
+
+  def card_balance(type)
+    round_percent = 0.1
+    round_percent = self.round.number / self.rounds.length if self.rounds.length > 0 and self.round
+    if type == 'action'
+      return 4 if round_percent > 0.75
+      return 2 if round_percent > 0.5
+      return 1
+    elsif type == 'ingredient'
+      return 0 if round_percent > 0.75
+      return 2 if round_percent > 0.5
+      return 3
+    end
+    return 0
   end
 
   def finish
@@ -278,7 +299,7 @@ class Game < ActiveRecord::Base
         :ingredient_cats,
         {game_users: {include: [
           {rations: {include: [
-            {ingredients: {include: [:ingredient_cat]}}, 
+            {ingredients: {include: [:ingredient_cat]}},
             :position
           ]}},
           user: {only: [:name]}

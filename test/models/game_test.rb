@@ -199,4 +199,12 @@ class GameTest < ActiveSupport::TestCase
     simeon = game.game_users[0]
     assert_equal(1, simeon.user.experience, "User1 has experience of 1")
   end
+
+  test "card balance" do
+    game = games(:two)
+    # in it's first quater
+    assert_equal(1, game.card_balance('action'), "1 action card is the balance");
+    assert_equal(3, game.card_balance('ingredient'), "3 ingredient cards is the balance");
+    assert_equal(0, game.card_balance('nothing'), "0 is the balance for an unknown category");
+  end
 end
