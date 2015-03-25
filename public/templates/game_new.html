@@ -17,8 +17,7 @@
       <div class="col-md-6">
         <form>
           <h3 ng-if="user.isCreator(game)">
-            <input ng-model="game.name" placeHolder="Game Name"/>
-            <button class="btn btn-default" type="submit" ng-click="saveName(game.name)">Save</button>
+            <input ng-model="game.name" ng-keyup="saveName(game.name)" placeHolder="Game Name"/>
           </h3>
           <h3 ng-if="!user.isCreator(game)"><span class="small">Name: </span>{{game.name}}</h3>
         </form>

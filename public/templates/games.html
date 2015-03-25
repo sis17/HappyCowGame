@@ -59,7 +59,12 @@
                   <dt>Round Number</dt><dd>{{game.rounds.length}}</dd>
                   <dt>Current Round</dt><dd>{{game.round.number}}</dd>
                   <dt>Current Phase</dt><dd>{{translatePhase(game.round.current_phase)}}</dd>
-                  <dt>Current Player</dt><dd>{{game.round.game_user.user.name}}</dd>
+                  <dt>Current Player</dt>
+                    <dd>
+                      <span class="label label-default" style="background-color:{{game.round.game_user.colour}};">
+                        {{game.round.game_user.user.name}}
+                      </span>
+                    </dd>
                 </dl>
               </div>
               <div class="col-md-6">
@@ -103,3 +108,22 @@
     </div>
   </div>
 </div>
+
+<script type="text/ng-template" id="leaveGame.html">
+  <div class="modal-header">
+    <h4 class="modal-title">Are you sure?</h4>
+  </div>
+  <div class="modal-body">
+    <p>
+      Are you sure you want to leave the game '{{game.name}}'?
+      <span ng-if="game.stage == 0">You cannot rejoin the game without being re-invited.</span>
+      <span ng-if="game.stage > 0">This game has begun, so there is no way to rejoin it.</span>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-danger" ng-click="yes()">Yes</button>
+      <button ng-click="cancel()" class="btn btn-info">No</button>
+    </div>
+  </div>
+</script>

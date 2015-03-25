@@ -27,10 +27,10 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
 
     $scope.saveName = function(name) {
       $scope.game.patch({name: name}).then(function(response) {
-        notice(response.messages)
-        if (response.success) {
-          $scope.getGame();
-        }
+        //notice(response.messages)
+        //if (response.success) {
+          //$scope.getGame();
+        //}
       }, function() {
         notice('Name Not Saved', 'The game name was not updated.', 'warning', 2);
       });

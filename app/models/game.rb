@@ -24,7 +24,8 @@ class Game < ActiveRecord::Base
     while round_num <= round_count  do
       round = Round.new
       round.number = round_num
-      round.event_id = Event.offset(rand(Event.count)).first.id
+      event_id = Event.offset(rand(Event.count)).first.id
+      if event_id != 8 then round.event_id = event_id else round.event_id = 7 end
       round.current_phase = 2
       round.starting_user_id = GameUser.where({game_id: self.id}).offset(game_user_offset).first.id
       round.game_user_id = round.starting_user_id

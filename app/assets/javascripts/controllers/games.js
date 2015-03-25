@@ -1,6 +1,6 @@
 var welcomeCtrl = hcApp.controller('GamesCtrl', [
-  '$scope', '$location', 'Restangular', 'notice',
-  function($scope, $location, Restangular, notice) {
+  '$scope', '$location', 'Restangular', 'notice', '$modal',
+  function($scope, $location, Restangular, notice, $modal) {
     $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
 
     $scope.selectGame = function(game_user) {
@@ -31,16 +31,30 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
       });
     }
 
-    $scope.leave = function() {
-      game_user_id = $scope.$storage.user.game_user.id;
-      Restangular.one('game_users', game_user_id).remove().then(function(response) {
-        $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
-        $scope.unselectGame();
-        notice(response.messages);
-      }, function() {
-        notice('Leaving Failed', 'You cannot currently leave this game.', 'warning', 2);
+    $scope.leave = function () {
+      var modalInstance = $modal.open({
+        templateUrl: 'leaveGame.html',
+        controller: 'LeaveGameCtrl',
+        resolve: {
+          game: function () {
+            return $scope.game;
+          }
+        }
       });
-    }
+
+      modalInstance.result.then(function (game) {
+        game_user_id = $scope.$storage.user.game_user.id;
+        Restangular.one('game_users', game_user_id).remove().then(function(response) {
+          $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
+          $scope.unselectGame();
+          notice(response.messages);
+        }, function() {
+          notice('Leaving Failed', 'You cannot currently leave this game.', 'warning', 2);
+        });
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+      });
+    };
 
     $scope.newGame = function() {
       Restangular.all('games').post({
@@ -96,3 +110,16 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
     }
   }
 ]);
+
+angular.module('happyCow').controller('LeaveGameCtrl',
+  function (notice, $scope, $modalInstance, game) {
+    $scope.game = game;
+
+    $scope.yes = function () {
+      $modalInstance.close($scope.game);
+    };
+
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+});
