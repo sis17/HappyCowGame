@@ -15,8 +15,22 @@
   border-radius: 5px;
 }
 
+.die.die-double-left {
+  margin-right: -8px;
+  border: 2px solid #000;
+  border-radius: 5px 0px 0px 5px;
+  border-right: none;
+}
+.die.die-double-right {
+  margin-left: -8px;
+  border: 2px solid #000;
+  border-radius: 0px 5px 5px 0px;
+  border-left: none;
+}
+
 .die.water { background-color: #5BC0DE; }
 
+.die.die- {background-color: #D9534F;}
 .die.die-1 {background-image: url('../images/dice-1.png');}
 .die.die-2 {background-image: url('../images/dice-2.png');}
 .die.die-3 {background-image: url('../images/dice-3.png');}

@@ -8,7 +8,7 @@ class Motile < ActiveRecord::Base
     while moves > 0 do
       ids = []
       self.position.positions.each do |position|
-        ids.push(position.id)
+        ids.push(position.id) if position.area_id == 3
       end
       self.position = Position.find(ids[rand(ids.length)])
       self.save

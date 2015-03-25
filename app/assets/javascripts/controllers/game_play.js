@@ -43,6 +43,7 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
     $scope.game.update = function() {
       if ($scope.game.round) {
         var current_game_user = $scope.game.round.game_user;
+        var current_game_stage = $scope.game.stage;
         Restangular.one('game_users', $scope.$storage.user.game_user.id).get().then(function(game_user) {
           $scope.$storage.user.game_user = game_user;
         });
@@ -50,6 +51,13 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
           $scope.game.cow = game.cow;
           $scope.game.round = game.round;
           $scope.game.motiles = game.motiles;
+          if ($scope.game.stage != game.stage) {
+            if ($scope.game.stage == 4) {
+              notice('The Cow Died!', 'That`s the end of the game, next time take better care of the cow.', 'danger', 10)
+            } else if ($scope.game.stage == 2) {
+              notice('The Game is Finished', 'That`s the end of the game.', 'info', 10)
+            }
+          }
         });
       }
     }
@@ -106,7 +114,7 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
     }
 
     $scope.game.canAct = function(phaseNum) {
-      return $scope.game.checkPhase(phaseNum) && $scope.game.checkTurn();
+      return $scope.game.stage == 1 && $scope.game.checkPhase(phaseNum) && $scope.game.checkTurn();
     }
     $scope.game.checkPhase = function(phaseNum) {
       return $scope.game.round.current_phase == phaseNum;

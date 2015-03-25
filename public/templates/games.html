@@ -35,7 +35,7 @@
             <td>
               <span ng-if="game_user.game.stage < 1" class="label label-warning">Setup</span>
               <span ng-if="game_user.game.stage == 1" class="label label-success">Playing</span>
-              <span ng-if="game_user.game.stage > 1 " class="label label-info">Finished</span>
+              <span ng-if="game_user.game.stage > 1 " class="label label-{{game_user.game.stage == 2 ? 'info' : 'danger' }}">Finished</span>
             </td>
             <td>{{game_user.game.game_users.length}}</td>
             <td>{{game_user.game.round.number}}</td>

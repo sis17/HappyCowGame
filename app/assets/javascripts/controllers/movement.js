@@ -62,16 +62,18 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     $scope.selectDice = function(dieNum, dieValue) {
       $scope.game.getAllRations();
+      if ((dieNum == 1 || dieNum == 2 ) && $scope.move.dice1 == $scope.move.dice2) {
+        dieValue *= 2;
+      }
+
       if ($scope.move.ration_id > 0) {
         $scope.move.selected_die = dieNum;
         // do not update the selected die, it is not confirmed until movement
         Restangular.one('games', $scope.game.id).one('positions', $scope.move.ration.position.id)
-                            .one('graph',dieValue).get().then(function(position) {
-          $scope.position = position; // position of the ration
+                            .one('graph',dieValue).get().then(function(graph) {
+          $scope.position = graph[$scope.move.ration.position.id]; // position of the ration
           $scope.movementsLeft = dieValue;
-          // assemble the positions
-          $scope.graph = {};
-          buildGraph($scope.graph, position);
+          $scope.graph = graph;
           $scope.graph.traverse = function(posId) {
             var depth = 0;
             var positions = [];
@@ -100,26 +102,6 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
         });
       }
     };
-
-    var buildGraph = function(graph, position) {
-      // create the position, if not already there
-      if (!graph[position.id]) {
-        graph[position.id] = position;
-        graph[position.id].links = {};
-      }
-      // add any links
-      if (position.positions) {
-        for (i in position.positions) {
-          if (position.positions[i] && position.positions[i].id) {
-            // add the links to the current position
-            var linkId = position.positions[i].id;
-            graph[position.id].links[linkId] = linkId;
-            // add the next position, if it doesn't already exist
-            buildGraph(graph, position.positions[i]);
-          }
-        }
-      }
-    }
 
     $scope.getRation = function(ration_id) {
       // get the ration on the board

@@ -52,11 +52,13 @@
       <div ng-if="move.dice1 > 0" >
         <p class="pull-left" style="width: 50%;">Select a dice, then click on it's route on the board to move the ration.</p>
         <ul class="list-inline pull-right pad-10">
-          <li><a ng-click="selectDice(1, move.dice1)" class="{{ !move.selected_die || move.selected_die == 1 ? 'clickable' : 'fade-out'}}">
-              <div class="die die-{{move.dice1}}"></div>
-          </a></li>
-          <li><a ng-click="selectDice(2, move.dice2)" class="{{ !move.selected_die || move.selected_die == 2 ? 'clickable' : 'fade-out'}}">
-              <div class="die die-{{move.dice2}}"></div>
+          <li>
+            <a ng-click="selectDice(1, move.dice1)" class="{{ !move.selected_die || move.selected_die == 1 || move.dice1 == move.dice2 ? 'clickable' : 'fade-out'}}">
+              <div class="die die-{{move.dice1}} {{move.dice1 == move.dice2 ? 'die-double-left' : ''}}"></div>
+            </a>
+          </li>
+          <li><a ng-click="selectDice(2, move.dice2)" class="{{ !move.selected_die || move.selected_die == 2 || move.dice1 == move.dice2 ? 'clickable' : 'fade-out'}}">
+              <div class="die die-{{move.dice2}} {{move.dice1 == move.dice2 ? 'die-double-right' : ''}}"></div>
           </a></li>
           <li ng-if="move.dice3 > 0"><a ng-click="selectDice(3, move.dice3)" class="{{ !move.selected_die || move.selected_die == 3 ? 'clickable' : 'fade-out'}}">
               <div class="die water die-{{move.dice3}}"></div>

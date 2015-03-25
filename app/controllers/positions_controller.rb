@@ -15,7 +15,9 @@ class PositionsController < ApplicationController
     if params[:id] and params[:depth]
       @position = Position.find(params[:id])
       taken_positions = get_taken_positions()
-      graph = get_position(@position, params[:depth].to_f, taken_positions)
+      #graph = get_position(@position, params[:depth].to_f, taken_positions
+      graph = Hash.new
+      build_graph(graph, @position, params[:depth].to_f, taken_positions)
       render json: graph and return
       #render json: get_position(@position, params[:depth].to_f) and return #get_position(params[:id], params[:depth].to_f) and return
     end
@@ -23,6 +25,33 @@ class PositionsController < ApplicationController
   end
 
   private
+
+  def build_graph(graph, position, depth, taken_positions)
+    depth -= 1
+    # create the position, if not already there
+    if !graph[position.id]
+      graph[position.id] = {}
+      graph[position.id]['id'] = position.id;
+      graph[position.id]['area_id'] = position.area_id;
+      graph[position.id]['order'] = position.order;
+      graph[position.id]['centre_x'] = position.centre_x;
+      graph[position.id]['centre_y'] = position.centre_y;
+      graph[position.id]['links'] = {};
+    end
+
+    # add any links
+    if depth >= 1 and position.positions
+      position.positions.each do |pos|
+        if !taken_positions[pos.id]
+          # add the links to the current position
+          graph[position.id]['links'][pos.id] = pos.id;
+          # add the next position, if it doesn't already exist
+          build_graph(graph, pos, depth, taken_positions)
+        end
+      end
+    end
+  end
+
   def get_position(position, depth, taken_positions)
     # set this position as visited
     depth -= 1
@@ -48,7 +77,7 @@ class PositionsController < ApplicationController
   end
 
   def get_taken_positions
-    taken_positions = {}
+    taken_positions = Hash.new
     if @game
       rations = Ration.joins(:game_user).where(game_users: {game_id:@game.id})
       rations.each do |ration|

@@ -31,7 +31,7 @@ class GameUser < ActiveRecord::Base
     # check there is space for the ration
     if ration.position_id < 0
       messages.push({
-        title:'No Room in the Trough', message: 'Your ration could not be created, all the spaces in the trough are taken.',
+        title:'No Room in the Trough', text: 'Your ration could not be created, all the spaces in the trough are taken.',
         type:'success', time: 5
       })
       return {success: false, messages: messages}
@@ -40,7 +40,7 @@ class GameUser < ActiveRecord::Base
     #check the user has cards
     if ration_params[:ingredients].length <= 0
       messages.push({
-        title:'You Need Ingredients', message: 'You must use at least one ingredient to create a ration, you submitted none.',
+        title:'You Need Ingredients', text: 'You must use at least one ingredient to create a ration, you submitted none.',
         type:'warning', time: 5
       })
       return {success: false, messages: messages}
@@ -58,7 +58,7 @@ class GameUser < ActiveRecord::Base
         if self.game.cow.check_mad and ingredient_cat.name == 'protein' # if the mad cow disease is in action
           ration.destroy # remove the ration again
           messages.push({
-            title:'Illegal Protein', message: 'During the Mad Cow Crisis you cannot play protein cards. Your ration was not created.',
+            title:'Illegal Protein', text: 'During the Mad Cow Crisis you cannot play protein cards. Your ration was not created.',
             type:'danger', time: 0
           })
           return {success: false, messages: messages}
@@ -69,7 +69,7 @@ class GameUser < ActiveRecord::Base
           # an ingredient was not found
           ration.destroy # remove the ration again
           messages.push({
-            title:'Missing Ingredient', message: 'Your ration could not be created because an ingredient you submitted could not be found in your hand.',
+            title:'Missing Ingredient', text: 'Your ration could not be created because an ingredient you submitted could not be found in your hand.',
             type:'warning', time: 6
           })
           return {success: false, messages: messages}
