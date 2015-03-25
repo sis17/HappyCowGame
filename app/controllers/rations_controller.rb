@@ -44,14 +44,14 @@ class RationsController < ApplicationController
     already_created_ration = Ration.where(game_user_id: @game_user.id, round_created_id: current_round.id).first
     if already_created_ration
       messages.push({
-        title:'Ration Not Created', message: 'You can only create one ration a turn, you already created one earlier.',
+        title:'Ration Not Created', text: 'You can only create one ration a turn, you already created one earlier.',
         type:'warning', time:4
       })
 
     # check the user doesn't have too many rations already
     elsif @game_user.rations.count >= 4
       messages.push({
-        title:'Ration Not Created', message: 'You have too many rations to create another.', type:'warning', time: 4
+        title:'Ration Not Created', text: 'You have too many rations to create another.', type:'warning', time: 4
       })
 
     # if passed above, create the ration
@@ -63,7 +63,7 @@ class RationsController < ApplicationController
       render json: response and return
     else
       messages.push({
-        title:'Ration Not Created', message: 'Not enough ration details were specified.',
+        title:'Ration Not Created', text: 'Not enough ration details were specified.',
         type: 'warning', time: 4
       })
     end

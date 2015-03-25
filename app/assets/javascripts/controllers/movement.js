@@ -44,6 +44,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     }
 
     $scope.selectRation = function(ration) {
+      $scope.game.getAllRations();
       // only allow the select if the ration is not set
       if ($scope.move.ration_id <= 0) {
         for (i in $scope.rations) {
@@ -60,6 +61,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     }
 
     $scope.selectDice = function(dieNum, dieValue) {
+      $scope.game.getAllRations();
       if ($scope.move.ration_id > 0) {
         $scope.move.selected_die = dieNum;
         // do not update the selected die, it is not confirmed until movement
@@ -179,6 +181,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
         ration.position_id = newPos.id;
         Restangular.one("rations", ration.id).patch({ration: ration}).then(function(response) {
           $scope.game.update();
+          $scope.game.getAllRations();
           if (response.message) {
             notice(response.message.title, response.message.text, response.message.type, 0);
           }

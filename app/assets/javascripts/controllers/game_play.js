@@ -50,14 +50,13 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
           $scope.game.cow = game.cow;
           $scope.game.round = game.round;
           $scope.game.motiles = game.motiles;
-          $scope.game.getAllRations();
         });
       }
     }
 
     $scope.game.updateOnDoneTurn = function() {
       // update rations for movement screen
-      $scope.game.allRations = $scope.game.getAllRations();
+      $scope.game.getAllRations();
     }
 
     $scope.game.getAllRations = function() {

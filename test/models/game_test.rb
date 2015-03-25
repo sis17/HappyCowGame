@@ -206,5 +206,8 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(1, game.card_balance('action'), "1 action card is the balance");
     assert_equal(3, game.card_balance('ingredient'), "3 ingredient cards is the balance");
     assert_equal(0, game.card_balance('nothing'), "0 is the balance for an unknown category");
+    game.round = rounds(:round4)
+    assert_equal(4, game.card_balance('action'), "4 action cards is the balance");
+    assert_equal(0, game.card_balance('ingredient'), "0 ingredient cards is the balance");
   end
 end

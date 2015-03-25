@@ -33,7 +33,7 @@ class GamesController < ApplicationController
 
           # each player needs 2 more cards
           @game.game_users.each do |game_user|
-            assign_cards(@game, game_user, 2)
+            @game.assign_cards(game_user, 2)
           end
 
           success = true
