@@ -4,15 +4,6 @@ class Cow < ActiveRecord::Base
   belongs_to :event, foreign_key: 'disease_id'
   belongs_to :event, foreign_key: 'weather_id'
 
-  #def initialize(attributes = {})
-  #  @ph_marker = 6.5
-  #  @body_condition = 0
-  #  @welfare = 0
-  #  @oligos_marker = 0
-  #  @muck_marker = 0
-  #  return self
-  #end
-
   def turn_effects
     #check water and energy in the rumen
     water = 0
@@ -104,7 +95,7 @@ class Cow < ActiveRecord::Base
     # set max and min
     amount = 7.6 if amount > 7.6
     amount = 5 if amount < 5
-    self.ph_marker = amount
+    self.ph_marker = amount.round(1)
     self.save
     return self.ph_marker
   end
