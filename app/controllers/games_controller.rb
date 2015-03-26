@@ -79,7 +79,7 @@ class GamesController < ApplicationController
         @game.name = params[:name]
         messages.push({
             title: 'Game Changed', text: 'The game name was changed to '+@game.name+'.',
-            type: 'success', time: 2
+            type: 'success', time: 4
         })
       end
       if params[:carddeck_id]
@@ -88,7 +88,7 @@ class GamesController < ApplicationController
           @game.carddeck_id = params[:carddeck_id]
           messages.push({
               title: 'Game Changed', text: 'The game card deck was changed to '+carddeck.name+'.',
-              type: 'success', time: 2
+              type: 'success', time: 4
           })
         end
       end

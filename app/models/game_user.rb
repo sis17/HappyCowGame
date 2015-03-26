@@ -59,7 +59,7 @@ class GameUser < ActiveRecord::Base
           ration.destroy # remove the ration again
           messages.push({
             title:'Illegal Protein', text: 'During the Mad Cow Crisis you cannot play protein cards. Your ration was not created.',
-            type:'danger', time: 0
+            type:'danger', time: 6
           })
           return {success: false, messages: messages}
         elsif ingredient_cat
@@ -89,8 +89,8 @@ class GameUser < ActiveRecord::Base
       )
 
       messages.push({
-        title:'Ration Created', message: 'Your ration was created with '+ration.describe_ingredients+'.',
-        type:'success', time: 4
+        title:'Ration Created', text: 'Your ration was created with '+ration.describe_ingredients+'.',
+        type:'success', time: 6
       })
 
     return {success: true, messages: messages}

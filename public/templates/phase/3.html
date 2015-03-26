@@ -6,9 +6,10 @@
   <div id="game-board-rumen" class="game-board-item below" style="left: {{left+275}}px; top: {{top+55}}px;
         background-color:rgb(255,{{ph_colour}},{{ph_colour}})"></div>
 
-  <div class="game-board-item below milk-background"
+  <div class="game-board-item below {{game.cow.pregnancy_id > 0 ? 'meat' : 'milk'}}-background"
         style="left: {{left+680}}px; top: {{top+170}}px; width: 40px; height: 34px;"></div>
-  <div class="game-board-item top milk" style="left: {{left+655}}px; top: {{top+205}}px;">milk</div>
+  <div class="game-board-item top {{game.cow.pregnancy_id > 0 ? 'meat' : 'milk'}}"
+        style="left: {{left+655}}px; top: {{top+205}}px;">milk</div>
   <div class="game-board-item below meat-background"
         style="left: {{left+730}}px; top: {{top+280}}px; width: 60px; height: 45px;"></div>
   <div class="game-board-item top meat" style="left: {{left+695}}px; top: {{top+297}}px;">meat</div>

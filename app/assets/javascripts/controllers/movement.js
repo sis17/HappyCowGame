@@ -52,8 +52,8 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
             $scope.rations[i].selected = false;
         }
         // move to the ration
-        $scope.top = 50 + 100 - ration.position.centre_y;
-        $scope.left = 20 + 100 - ration.position.centre_x;
+        $scope.top = 50 + 100 - (ration.position.centre_y/2);
+        $scope.left = 20 + 100 - (ration.position.centre_x/2);
 
         ration.selected = true;
         $scope.selectedRation = ration;
@@ -62,44 +62,50 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     $scope.selectDice = function(dieNum, dieValue) {
       $scope.game.getAllRations();
-      if ((dieNum == 1 || dieNum == 2 ) && $scope.move.dice1 == $scope.move.dice2) {
-        dieValue *= 2;
-      }
-
-      if ($scope.move.ration_id > 0) {
-        $scope.move.selected_die = dieNum;
-        // do not update the selected die, it is not confirmed until movement
-        Restangular.one('games', $scope.game.id).one('positions', $scope.move.ration.position.id)
-                            .one('graph',dieValue).get().then(function(graph) {
-          $scope.position = graph[$scope.move.ration.position.id]; // position of the ration
-          $scope.movementsLeft = dieValue;
-          $scope.graph = graph;
-          $scope.graph.traverse = function(posId) {
-            var depth = 0;
-            var positions = [];
-            check = {};
-            check[posId] = posId;
-            var links = this[posId].links;
-            while (depth <= $scope.movementsLeft) { // only look for links if there's enough movements left
-              ++depth;
-              var nextLinks = {};
-              for (i in links) {
-                if (this[i] && !check[i]) {
-                  var pos = this[i];
-                  // prepare links for next depth
-                  for (i in pos.links) {
-                    nextLinks[i] = i;
-                  }
-                  check[pos.id] = pos.id;
-                  pos.depth = depth;
-                  positions.push(pos);
-                }
-              }
-              links = nextLinks;
-            }
-            return positions;
-          }
+      if (dieValue <= 0) {
+        Restangular.one('events',$scope.game.cow.disease_id).get().then(function(event) {
+          notice('Die Cannot Be Used', 'Due to the event: '+event.title+', the die you selected is out of play.', 'danger', 6);
         });
+      } else {
+        if ((dieNum == 1 || dieNum == 2 ) && $scope.move.dice1 == $scope.move.dice2) {
+          dieValue *= 2;
+        }
+
+        if ($scope.move.ration_id > 0) {
+          $scope.move.selected_die = dieNum;
+          // do not update the selected die, it is not confirmed until movement
+          Restangular.one('games', $scope.game.id).one('positions', $scope.move.ration.position.id)
+                              .one('graph',dieValue).get().then(function(graph) {
+            $scope.position = graph[$scope.move.ration.position.id]; // position of the ration
+            $scope.movementsLeft = dieValue;
+            $scope.graph = graph;
+            $scope.graph.traverse = function(posId) {
+              var depth = 0;
+              var positions = [];
+              check = {};
+              check[posId] = posId;
+              var links = this[posId].links;
+              while (depth <= $scope.movementsLeft) { // only look for links if there's enough movements left
+                ++depth;
+                var nextLinks = {};
+                for (i in links) {
+                  if (this[i] && !check[i]) {
+                    var pos = this[i];
+                    // prepare links for next depth
+                    for (i in pos.links) {
+                      nextLinks[i] = i;
+                    }
+                    check[pos.id] = pos.id;
+                    pos.depth = depth;
+                    positions.push(pos);
+                  }
+                }
+                links = nextLinks;
+              }
+              return positions;
+            }
+          });
+        }
       }
     };
 
