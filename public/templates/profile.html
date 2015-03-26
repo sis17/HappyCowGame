@@ -30,19 +30,19 @@
               <input type="text" ng-model="$storage.user.name" class="form-control" id="name" placeholder="Name">
             </div>
           </div>
-          <!--
+
           <div class="form-group">
             <label for="password" class="col-sm-2 control-label">Password</label>
             <div class="col-sm-10">
-              <input type="password" ng-model="$storage.user.password" class="form-control" id="password" placeholder="Password">
+              <input type="password" ng-model="passwordNew" class="form-control" id="password" placeholder="Password">
             </div>
           </div>
           <div class="form-group">
             <label for="password-conf" class="col-sm-2 control-label">Confrim Password</label>
             <div class="col-sm-10">
-              <input type="password" ng-model="password-conf" class="form-control" id="password-conf" placeholder="Confrim Password">
+              <input type="password" ng-model="passwordConf" class="form-control" id="password-conf" placeholder="Confrim Password">
             </div>
-          </div>  -->
+          </div>
         </div>
 
         <div class="col-md-6">
@@ -50,10 +50,16 @@
             <label for="colour" class="col-sm-2 control-label">Colour</label>
             <div class="col-sm-10">
               <input colorpicker type="text" ng-model="$storage.user.colour" class="form-control pull-left" style="width:70px;">
-              <div class="colour-sample pull-left" style="background-color:{{$storage.user.colour}};">
+              <div class="colour-sample pull-left" style="background-color:{{$storage.user.colour}};"></div>
             </div>
           </div>
-        </div>
+
+          <div class="form-group">
+            <label for="experience" class="col-sm-2 control-label">Experience</label>
+            <div class="col-sm-10">
+              <p style="margin-top: 3px;"><span class="badge">{{$storage.user.experience}}</span></p>
+            </div>
+          </div>
       </div>
     </div>
     <hr />
