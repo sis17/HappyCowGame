@@ -210,4 +210,19 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(4, game.card_balance('action'), "4 action cards is the balance");
     assert_equal(0, game.card_balance('ingredient'), "0 ingredient cards is the balance");
   end
+
+  test "add game user" do
+    game = Game.new
+    user = users(:simeon)
+    game_user = game.create_game_user(user.id)
+    assert_equal(game_user.user.id, user.id, "The new game user has the same user id as the user.")
+    assert_equal(game_user.colour, user.colour, "The new game user has the same colour as the user.")
+
+    game_user = game.create_game_user(0)
+    assert_not(game_user, "The create game user method returned false")
+
+    user = users(:ruth)
+    game_user = game.create_game_user(user.id)
+    assert_equal('Ruth', game_user.user.name, "The new game user has the name Ruth.")
+  end
 end

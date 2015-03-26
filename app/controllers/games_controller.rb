@@ -111,8 +111,7 @@ class GamesController < ApplicationController
       # update any new users
       if params[:users]
         params[:users].each do |user_id|
-          game_user = GameUser.find(user_id)
-          create_game_user(@game, user_id)
+          game_user = @game.create_game_user(user_id)
           if game_user
             messages.push({
                 title: 'User Added', text: 'The user '+game_user.user.name+' was added to the game.',
@@ -167,9 +166,7 @@ class GamesController < ApplicationController
       @game.creater_id = @user.id
       @game.save
 
-      #params[:users].each do |user_id|
-      create_game_user(@game, @user.id)
-      #end
+      @game.create_game_user(@user.id)
 
       success = true
       messages.push({
@@ -231,20 +228,6 @@ class GamesController < ApplicationController
         end
         number -= 1
     end
-  end
-
-  def create_game_user(game, user_id)
-    user = User.find(user_id)
-    game_user = GameUser.where({game_id: game.id, user_id: user_id}).first
-    if !game_user
-      game_user = GameUser.new()
-      game_user.user = user
-      game_user.game = game
-      game_user.colour = user.colour
-      game_user.score = 0
-      game_user.save
-    end
-    game_user
   end
 
   def create_ingredient_cats(game)

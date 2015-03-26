@@ -110,6 +110,18 @@ class Game < ActiveRecord::Base
     return true
   end
 
+  def create_game_user(user_id)
+    return false if !User.exists?(user_id)
+    user = User.find(user_id)
+
+    game_user = GameUser.where({game: self, user: user}).take
+    if !game_user
+      game_user = GameUser.new(game: self, user: user, colour: user.colour, score: 0)
+      game_user.save
+    end
+    return game_user
+  end
+
   def get_next_player
     currentUserIndex = false
     self.game_users.each_with_index do |user, index|
