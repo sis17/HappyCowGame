@@ -95,7 +95,7 @@ class GamesController < ApplicationController
       if params[:rounds_min]
         @game.rounds_min = params[:rounds_min]
         messages.push({
-            title: 'Game Changed', text: "The minimum number of rounds was changed to #{@game.rounds_max.to_s}.",
+            title: 'Game Changed', text: "The minimum number of rounds was changed to #{@game.rounds_min.to_s}.",
             type: 'success', time: 2
         })
       end

@@ -114,6 +114,7 @@ var gameNewCtrl = hcApp.controller('GameNewCtrl', [
     }
 
     $scope.updateRounds = function() {
+      console.log($scope.game.rounds_min);
       $scope.game.patch({rounds_min:$scope.game.rounds_min, rounds_max:$scope.game.rounds_max}).then(
         function(response) {
           if (response.success) {
