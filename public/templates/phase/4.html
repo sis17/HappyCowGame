@@ -58,7 +58,12 @@
         </dd>
       </dl>
     </accordion-group>
-    <div>
+
+    <div class="well" style="margin-top: 10px; height: 70px;">
       <button ng-if="game.canAct(4)" class="btn btn-success pull-right" ng-click="game.doneTurn()">Next Turn</button>
+      <div ng-if="game.stage > 1" class="btn-group pull-right">
+        <a ng-href="#/games/review/{{game.id}}" class="btn btn-info">Review Game</a>
+        <a ng-href="#/games" class="btn btn-default">Games List</a>
+      </div>
     </div>
   </div>

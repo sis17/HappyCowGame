@@ -30,6 +30,10 @@ hcApp.config(['$routeProvider',
         templateUrl: 'templates/game_play.html',
         controller: 'GameCtrl'
       }).
+      when('/games/review/:gameId', {
+        templateUrl: 'templates/game_review.html',
+        controller: 'GameReviewCtrl'
+      }).
       otherwise({
         templateUrl: 'templates/welcome.html',
         controller: 'WelcomeCtrl'

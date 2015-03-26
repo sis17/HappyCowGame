@@ -1,0 +1,30 @@
+<div class="bar bar-dark bar-top">
+  <div class="pull-left">
+    <img class="cow-icon pull-left" alt="Happy Cow icon" src="images/happycow.png" />
+    <h2 class="title pull-left">Game Review</h2>
+  </div>
+
+  <ul class="list-inline pull-right">
+    <li><a href="#/games" class="btn btn-default">Game List</a></li>
+    <li><a href="#/profile" class="btn btn-default">Profile</a></li>
+    <li><button ng-click="user.logout()" class="btn btn-warning">Logout</button></li>
+  </ul>
+</div>
+
+<div id="games" ng-controller="GameReviewCtrl">
+  <h2>Game: {{game.name}}</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+
+      </div>
+      <div class="col-md-6">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+      </div>
+    </div>
+  </div>
+</div>
