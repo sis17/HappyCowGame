@@ -74,6 +74,21 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
     }
     $scope.game.getAllRations();
 
+    $scope.game.countIngredientsInArea = function(type, areaId) {
+      count = 0;
+      for (i in $scope.game.allRations) {
+        var ration = $scope.game.allRations[i]
+        if (ration && ration.position && ration.position.area_id == areaId) {
+          for (j in ration.ingredients) {
+            if (ration.ingredients[j].ingredient_cat.name == type) {
+              count++;
+            }
+          }
+        }
+      }
+      return count;
+    }
+
     $scope.game.doneTurn = function() {
       var roundId = $scope.game.round.id;
       Restangular.one('games', $scope.game.id).patch({

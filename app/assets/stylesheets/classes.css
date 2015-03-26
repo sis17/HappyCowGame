@@ -64,7 +64,7 @@
   position: fixed;
   top: 50px;
   left: 20px;
-  z-index: 0;
+  z-index: 4;
 }
 
 .ration .ration-ingredient {
@@ -100,7 +100,7 @@
   position: fixed;
   top: 50px;
   left: 20px;
-  z-index: 0;
+  z-index: 4;
   width: 20px;
   height: 20px;
   border: 2px solid #000;
@@ -185,3 +185,17 @@
   float:left;
   border-radius: 0px 5px 5px 0px !important;
 }
+
+.game-board-item {
+  position: fixed;
+}
+.game-board-item.top {
+  z-index: 2;
+}
+.game-board-item.below {
+  z-index: -2;
+}
+.milk {color: #00FFFF;}
+.milk-background {background-color: #00FFFF;}
+.meat, .meat-background {color: #FF0000;}
+.meat-background {background-color: #FF0000;}

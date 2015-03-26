@@ -220,19 +220,16 @@ class Game < ActiveRecord::Base
     actions = GameCard.joins(:card).where("cards.category = 'action'").all.shuffle[1..self.card_balance('action')]
     ingredients = GameCard.joins(:card).where("cards.category != 'action'").all.shuffle[1..self.card_balance('ingredient')]
     game_card_ids = []
-    puts "action pick: "+actions.length.to_s
-    puts "ingredient pick: "+ingredients.length.to_s
     actions.each do |game_card|
       game_card_ids.push(game_card.id)
     end
     ingredients.each do |game_card|
       game_card_ids.push(game_card.id)
     end
-    puts "together pick: "+game_card_ids.length.to_s
+
     while number > 0 do
         game_user_card = GameUserCard.new
         game_user_card.game_card_id = game_card_ids[rand(0..game_card_ids.length-1)]
-        puts "chosen id: "+game_user_card.game_card_id.to_s
         game_user_card.game_user_id = game_user.id
         game_user_card.save
 

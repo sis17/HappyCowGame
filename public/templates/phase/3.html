@@ -1,6 +1,41 @@
 <div ng-controller="MovementCtrl" class="movement">
-  <img id="game-board" draggable="true" src="images/cow-body.png"
+  <img id="game-board" class="game-board-item" src="images/cow-body-{{game.cow.body_condition < -1 ? 'thin' : (game.cow.body_condition > 1 ? 'fat' : 'normal')}}.png"
       style="width: {{width}}px; left: {{left}}px; top: {{top}}px">
+  <img class="game-board-item top" src="images/happycow{{game.cow.welfare > 4 ? '-happy' : (game.cow.welfare < -2 ? '-ill' : (game.cow.welfare < -5 ? '-veryill' : ''))}}.png"
+      style="left: {{left+8}}px; top: {{top+205}}px; width:165px;">
+  <div id="game-board-rumen" class="game-board-item below" style="left: {{left+275}}px; top: {{top+55}}px;
+        background-color:rgb(255,{{ph_colour}},{{ph_colour}})"></div>
+
+  <div class="game-board-item below milk-background"
+        style="left: {{left+680}}px; top: {{top+170}}px; width: 40px; height: 34px;"></div>
+  <div class="game-board-item top milk" style="left: {{left+655}}px; top: {{top+205}}px;">milk</div>
+  <div class="game-board-item below meat-background"
+        style="left: {{left+730}}px; top: {{top+280}}px; width: 60px; height: 45px;"></div>
+  <div class="game-board-item top meat" style="left: {{left+695}}px; top: {{top+297}}px;">meat</div>
+
+  <div popup class="game-board-item top" style="left: {{left+310}}px; top: {{top+260}}px; width: 200px;">
+      <span class="label label-{{rumenStat.minType}} cow-pl cow-pl-low">{{rumenStat.min}}</span>
+      <div class="progress cow-progress" style="width: 70%">
+        <div class="progress-bar" role="progressbar"
+          aria-valuemin="{{rumenStat.min}}" aria-valuemax="{{rumenStat.max}}"
+          style="background-color: #{{rumenStat.type()}};
+          width: {{((rumenStat.value-rumenStat.min)/(rumenStat.max-rumenStat.min)) * 100}}%;">
+          {{rumenStat.value}}
+        </div>
+    </div>
+    <span class="label label-{{rumenStat.maxType}} cow-pl cow-pl-high">{{rumenStat.max}}</span>
+  </div>
+  <div class="hidden">
+    <h4>Rumen PH Levels</h4>
+    <p>are affected by the balance of water and energy.</p>
+    <p>
+      Current balance: <span class="label water">{{game.countIngredientsInArea('water',3)}}</span> /
+      <span class="label energy">{{game.countIngredientsInArea('energy',3)}}</span> -
+      <span class="label label-default">
+        {{game.countIngredientsInArea('water',3) - game.countIngredientsInArea('energy',3)}} a turn
+      </span>
+    </p>
+  </div>
 
   <div ng-repeat="ration in game.allRations" class="ration ration-board clickable {{ration.selected || ration.id == move.ration.id ? 'selected' : ''}}"
         style="left: {{left+ration.position.centre_x-10}}px; top: {{top+ration.position.centre_y-10}}px;

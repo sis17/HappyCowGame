@@ -43,6 +43,11 @@
   width: 1000px;
   z-index: -1;
 }
+#game-board-rumen {
+  width: 280px;
+  height: 210px;
+  border-radius: 25px;
+}
 
 #board-controls {
   position: absolute;

@@ -1,112 +1,114 @@
-<div ng-controller="GameCtrl" id="section-main">
-<style ng-repeat="game_user in game.game_users">
-  .player-{{game_user.id}} {
+<div ng-controller="GameCtrl">
+  <div ng-controller="CowCtrl">
+    <div id="section-main">
+    <style ng-repeat="game_user in game.game_users">
+    .player-{{game_user.id}} {
 
-    background-color: {{game_user.colour}};
-  }
-</style>
+      background-color: {{game_user.colour}};
+    }
+    </style>
 
-  <div ng-controller="MenuCtrl" class="bar bar-dark bar-top">
-    <div class="pull-left">
-      <img class="cow-icon" alt="Happy Cow icon" src="images/happycow.png" />
-    </div>
-    <ul id="menu-right" class="list-inline pull-left">
-      <li>
-        <div class="btn-group menu-drop" dropdown>
-          <button class="btn btn-default" dropdown-toggle>
-            Menu <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <li><button ng-click="instructions()" class="btn btn-success btn-sm dropdown-menu-button">Instructions</button></li>
-            <li class="divider"></li>
-            <li><a href="#/games" class="btn btn-primary btn-sm dropdown-menu-button">Game Menu</a></li>
-            <li><button ng-click="user.logout()" class="btn btn-warning btn-sm dropdown-menu-button">Log Out</button></li>
-            <li><button ng-click="reportIssue()" class="btn btn-info btn-sm dropdown-menu-button">Report Issue</button></li>
-          </ul>
-        </div>
-      </li>
-      <li ng-controller="ScoreViewCtrl">
-        <button popup class="btn btn-default">Score <span class="badge">{{$storage.user.game_user.score}}</span></button>
-        <div class="hidden">
+    <div ng-controller="MenuCtrl" class="bar bar-dark bar-top">
+      <div class="pull-left">
+        <img class="cow-icon" alt="Happy Cow icon" src="images/happycow.png" />
+      </div>
+      <ul id="menu-right" class="list-inline pull-left">
+        <li>
+          <div class="btn-group menu-drop" dropdown>
+            <button class="btn btn-default" dropdown-toggle>
+              Menu <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><button ng-click="instructions()" class="btn btn-success btn-sm dropdown-menu-button">Instructions</button></li>
+              <li class="divider"></li>
+              <li><a href="#/games" class="btn btn-primary btn-sm dropdown-menu-button">Game Menu</a></li>
+              <li><button ng-click="user.logout()" class="btn btn-warning btn-sm dropdown-menu-button">Log Out</button></li>
+              <li><button ng-click="reportIssue()" class="btn btn-info btn-sm dropdown-menu-button">Report Issue</button></li>
+            </ul>
+          </div>
+        </li>
+        <li ng-controller="ScoreViewCtrl">
+          <button popup class="btn btn-default">Score <span class="badge">{{$storage.user.game_user.score}}</span></button>
+          <div class="hidden">
             <ul class="list-group">
               <li ng-repeat="game_user in game.game_users | orderBy:score" class="list-group-item">
                 <span class="label label-default player-{{game_user.id}}">{{game_user.user.name}}</span>
                 <span class="badge">{{game_user.score}}</span>
               </li>
             </ul>
-        </div>
-      </li>
-      <li>{{game.name}}</li>
-    </ul>
-    <ul class="list-inline pull-right" style="margin-top: 5px;">
-      <li ng-controller="RoundViewCtrl">
-        <div class="btn-group menu-drop" dropdown>
-          <button class="btn btn-default" dropdown-toggle>
-            Round <span class="badge">{{game.round.number}}</span>
+          </div>
+        </li>
+        <li>{{game.name}}</li>
+      </ul>
+      <ul class="list-inline pull-right" style="margin-top: 5px;">
+        <li ng-controller="RoundViewCtrl">
+          <div class="btn-group menu-drop" dropdown>
+            <button class="btn btn-default" dropdown-toggle>
+              Round <span class="badge">{{game.round.number}}</span>
+            </button>
+            <ul class="dropdown-menu">
+              <li ng-repeat="round in rounds | orderBy:number" class="">
+                <span class="label label-default">Round {{round.number}}</span>
+                <button ng-if="!round.current" ng-click="review(round)" class="btn btn-default btn-xs">Review</button>
+                <span ng-if="round.current" class="label label-success">current</span>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <a ng-click="changePhaseTemplate(1)" class="btn btn-{{game.round.current_phase == 1? 'info' : 'default'}}">Event</a>
+            <a ng-click="changePhaseTemplate(2)" class="btn btn-{{game.round.current_phase == 2? 'info' : 'default'}}">
+              Cards <span class="badge">{{user.countCards()}}</span>
+            </a>
+            <a ng-click="changePhaseTemplate(3)" class="btn btn-{{game.round.current_phase == 3? 'info' : 'default'}}">Movement</a>
+            <a ng-click="changePhaseTemplate(4)" class="btn btn-{{game.round.current_phase == 4? 'info' : 'default'}}">Review</a>
+          </div>
+        </li>
+
+        <li ng-controller="PlayerViewCtrl">
+          <button popup class="btn btn-default">
+            Player <span class="label label-default player-{{game.round.game_user.id}}">{{game.round.game_user.user.name}}</span>
           </button>
-          <ul class="dropdown-menu">
-            <li ng-repeat="round in rounds | orderBy:number" class="">
-              <span class="label label-default">Round {{round.number}}</span>
-              <button ng-if="!round.current" ng-click="review(round)" class="btn btn-default btn-xs">Review</button>
-              <span ng-if="round.current" class="label label-success">current</span>
-            </li>
-          </ul>
+          <div class="hidden">
+            <ul class="list-group">
+              <li ng-repeat="game_user in game.game_users | orderBy:id" class="list-group-item">
+                <span class="label label-{{game_user.active ? 'success' : 'default'}} label-xs">
+                  {{$index+1}}
+                </span> - <span class="label label-default player-{{game_user.id}}">{{game_user.user.name}}</span>
+              </li>
+            </ul>
+            <p ng-if="nextPlayer">
+              In the next round <span class="label label-default player-{{nextPlayer.id}}">{{nextPlayer.user.name}}</span>
+              will start.
+            </p>
+          </div>
+        </li>
+      </ul><!--/.nav-collapse -->
+    </div>
+
+    <div ng-controller="PhaseCtrl" id="center-area">
+      <div ng-include="phaseTemplate"></div>
+    </div>
+
+  </div><!-- /.end of section-main -->
+
+  <div id="section-info" class="container">
+    <h3>Cow Condition</h3>
+
+    <div class="container-fluid">
+      <div ng-repeat="stat in stats" class="row">
+        <div class="col-md-4">
+          <p>{{stat.name}} <span class="glyphicon glyphicon-info-sign clickable"></span></p>
         </div>
-      </li>
-      <li>
-        <div class="btn-group">
-          <a ng-click="changePhaseTemplate(1)" class="btn btn-{{game.round.current_phase == 1? 'info' : 'default'}}">Event</a>
-          <a ng-click="changePhaseTemplate(2)" class="btn btn-{{game.round.current_phase == 2? 'info' : 'default'}}">
-            Cards <span class="badge">{{user.countCards()}}</span>
-          </a>
-          <a ng-click="changePhaseTemplate(3)" class="btn btn-{{game.round.current_phase == 3? 'info' : 'default'}}">Movement</a>
-          <a ng-click="changePhaseTemplate(4)" class="btn btn-{{game.round.current_phase == 4? 'info' : 'default'}}">Review</a>
-        </div>
-      </li>
-
-      <li ng-controller="PlayerViewCtrl">
-        <button popup class="btn btn-default">
-          Player <span class="label label-default player-{{game.round.game_user.id}}">{{game.round.game_user.user.name}}</span>
-        </button>
-        <div class="hidden">
-          <ul class="list-group">
-            <li ng-repeat="game_user in game.game_users | orderBy:id" class="list-group-item">
-              <span class="label label-{{game_user.active ? 'success' : 'default'}} label-xs">
-                {{$index+1}}
-              </span> - <span class="label label-default player-{{game_user.id}}">{{game_user.user.name}}</span>
-            </li>
-          </ul>
-          <p ng-if="nextPlayer">
-            In the next round <span class="label label-default player-{{nextPlayer.id}}">{{nextPlayer.user.name}}</span>
-            will start.
-          </p>
-        </div>
-      </li>
-    </ul><!--/.nav-collapse -->
-  </div>
-
-  <div ng-controller="PhaseCtrl" id="center-area">
-    <div ng-include="phaseTemplate"></div>
-  </div>
-
-</div><!-- /.end of section-main -->
-
-<div ng-controller="CowCtrl" id="section-info" class="container">
-  <h3>Cow Condition</h3>
-
-  <div ng-controller="CowStatsCtrl" class="container-fluid">
-    <div ng-repeat="stat in stats" class="row">
-      <div class="col-md-4">
-        <p>{{stat.name}} <span class="glyphicon glyphicon-info-sign clickable"></span></p>
-      </div>
-      <div class="col-md-8">
-        <span class="label label-{{stat.minType}} cow-pl cow-pl-low">{{stat.min}}</span>
-        <div class="progress cow-progress" style="width: 70%">
-          <div class="progress-bar" role="progressbar"
-                aria-valuemin="{{stat.min}}" aria-valuemax="{{stat.max}}"
-                style="background-color: #{{stat.type()}};
-                width: {{((stat.value-stat.min)/(stat.max-stat.min)) * 100}}%;">
-                {{stat.value}}
+        <div class="col-md-8">
+          <span class="label label-{{stat.minType}} cow-pl cow-pl-low">{{stat.min}}</span>
+          <div class="progress cow-progress" style="width: 70%">
+            <div class="progress-bar" role="progressbar"
+            aria-valuemin="{{stat.min}}" aria-valuemax="{{stat.max}}"
+            style="background-color: #{{stat.type()}};
+            width: {{((stat.value-stat.min)/(stat.max-stat.min)) * 100}}%;">
+            {{stat.value}}
           </div>
         </div>
         <span class="label label-{{stat.maxType}} cow-pl cow-pl-high">{{stat.max}}</span>
@@ -139,103 +141,105 @@
   </table>
 
   <div ng-controller="CowEventsCtrl" class="panel panel-default">
-      <div class="panel-body">
-        <tabset justified="true">
-          <tab heading="Weather">
-            <div ng-if="weather">
-              <p ng-if="!weather">No special weather forcast.</p>
-              <h3>{{weather.title}}</h3>
-              <img class="image image-full" ng-src="images/{{weather.image}}">
-              <div ng-bind-html="weather.description"></div>
-            </div>
-          </tab>
-          <tab heading="Disease">
-            <div ng-if="disease">
-              <p ng-if="!disease">The cow is not suffering from a disease.</p>
-              <h3>{{disease.title}}</h3>
-              <img class="image image-full" ng-src="images/{{disease.image}}">
-              <div ng-bind-html="disease.description"></div>
-            </div>
-          </tab>
-          <tab heading="Pregnancy">
-            <div ng-if="pregnancy">
-              <p ng-if="!pregnancy">The cow is not currently pregnant.</p>
-              <h3>{{pregnancy.title}}</h3>
-              <img class="image image-full" ng-src="images/{{pregnancy.image}}">
-              <div ng-bind-html="pregnancy.description"></div>
-            </div>
-          </tab>
-        </tabset>
-      </div>
+    <div class="panel-body">
+      <tabset justified="true">
+        <tab heading="Weather">
+          <div ng-if="weather">
+            <p ng-if="!weather">No special weather forcast.</p>
+            <h3>{{weather.title}}</h3>
+            <img class="image image-full" ng-src="images/{{weather.image}}">
+            <div ng-bind-html="weather.description"></div>
+          </div>
+        </tab>
+        <tab heading="Disease">
+          <div ng-if="disease">
+            <p ng-if="!disease">The cow is not suffering from a disease.</p>
+            <h3>{{disease.title}}</h3>
+            <img class="image image-full" ng-src="images/{{disease.image}}">
+            <div ng-bind-html="disease.description"></div>
+          </div>
+        </tab>
+        <tab heading="Pregnancy">
+          <div ng-if="pregnancy">
+            <p ng-if="!pregnancy">The cow is not currently pregnant.</p>
+            <h3>{{pregnancy.title}}</h3>
+            <img class="image image-full" ng-src="images/{{pregnancy.image}}">
+            <div ng-bind-html="pregnancy.description"></div>
+          </div>
+        </tab>
+      </tabset>
     </div>
+  </div>
+</div>
+</div>
 </div>
 
 <script type="text/ng-template" id="reviewRound.html">
 <div class="modal-header">
-  <h4 class="modal-title">Review: Round {{round.number}}</h4>
+<h4 class="modal-title">Review: Round {{round.number}}</h4>
 </div>
 <div class="modal-body">
 <accordion close-others="true">
-  <!--<accordion-group heading="Score Table" is-open="true">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Players</th>
-          <th>Beginning Score</th>
-          <th>Ending Score</th>
-          <th>Number of Cards</th>
-          <th>Number of Rations</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="game_user in game.game_users | orderBy:id" class="player-{{game_user.id}}">
-          <td>{{game_user.user.name}}</td><td>tbc</td><td>{{game_user.score}}</td><td>tbc</td><td>tbc</td>
-        </tr>
-      </tbody>
-    </table>
-  </accordion-group>-->
+<!--<accordion-group heading="Score Table" is-open="true">
+<table class="table">
+<thead>
+<tr>
+<th>Players</th>
+<th>Beginning Score</th>
+<th>Ending Score</th>
+<th>Number of Cards</th>
+<th>Number of Rations</th>
+</tr>
+</thead>
+<tbody>
+<tr ng-repeat="game_user in game.game_users | orderBy:id" class="player-{{game_user.id}}">
+<td>{{game_user.user.name}}</td><td>tbc</td><td>{{game_user.score}}</td><td>tbc</td><td>tbc</td>
+</tr>
+</tbody>
+</table>
+</accordion-group>-->
 
-  <accordion-group heading="Event Phase">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-4">
-          <img class="image image-full" ng-src="images/{{round.event.image}}" alt="Event Image">
-        </div>
-        <div class="col-md-8">
-          <h4 class="media-heading">{{round.event.title}} <span class="label label-default">{{round.event.category}}</span></h4>
-          <div ng-bind-html="round.event.description"></div>
-        </div>
-      </div>
-    </div>
-  </accordion-group>
+<accordion-group heading="Event Phase">
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-4">
+<img class="image image-full" ng-src="images/{{round.event.image}}" alt="Event Image">
+</div>
+<div class="col-md-8">
+<h4 class="media-heading">{{round.event.title}} <span class="label label-default">{{round.event.category}}</span></h4>
+<div ng-bind-html="round.event.description"></div>
+</div>
+</div>
+</div>
+</accordion-group>
 
-  <accordion-group heading="Cards Phase">
-    <dl ng-repeat="action in round.actions | filter:{phase:2}" class="dl-horizontal">
-      <dt>
-        <span class="label label-default player-{{action.game_user_id}}">{{action.game_user.user.name}}</span>
-        {{action.title}}
-      </dt>
-      <dd>
-        <span ng-bind-html="action.description"></span>
-      </dd>
-    </dl>
-  </accordion-group>
+<accordion-group heading="Cards Phase">
+<dl ng-repeat="action in round.actions | filter:{phase:2}" class="dl-horizontal">
+<dt>
+<span class="label label-default player-{{action.game_user_id}}">{{action.game_user.user.name}}</span>
+{{action.title}}
+</dt>
+<dd>
+<span ng-bind-html="action.description"></span>
+</dd>
+</dl>
+</accordion-group>
 
-  <accordion-group heading="Movement Phase">
-    <dl ng-repeat="action in round.actions | filter:{phase:3}" class="dl-horizontal">
-      <dt>
-        <span class="label label-default player-{{action.game_user_id}}">{{action.game_user.user.name}}</span>
-        {{action.title}}
-      </dt>
-      <dd>
-        <span ng-bind-html="action.description"></span>
-      </dd>
-    </dl>
-  </accordion-group>
+<accordion-group heading="Movement Phase">
+<dl ng-repeat="action in round.actions | filter:{phase:3}" class="dl-horizontal">
+<dt>
+<span class="label label-default player-{{action.game_user_id}}">{{action.game_user.user.name}}</span>
+{{action.title}}
+</dt>
+<dd>
+<span ng-bind-html="action.description"></span>
+</dd>
+</dl>
+</accordion-group>
 </accordion>
 <div class="modal-footer">
-  <div class="btn-group">
-    <button ng-click="cancel()" class="btn btn-default">Close</button>
-  </div>
+<div class="btn-group">
+<button ng-click="cancel()" class="btn btn-default">Close</button>
+</div>
 </div>
 </script>

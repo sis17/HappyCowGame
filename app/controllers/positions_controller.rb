@@ -14,12 +14,9 @@ class PositionsController < ApplicationController
   def graph
     if params[:id] and params[:depth]
       @position = Position.find(params[:id])
-      taken_positions = get_taken_positions()
-      #graph = get_position(@position, params[:depth].to_f, taken_positions
       graph = Hash.new
-      build_graph(graph, @position, params[:depth].to_f, taken_positions)
+      build_graph(graph, @position, params[:depth].to_f, get_taken_positions)
       render json: graph and return
-      #render json: get_position(@position, params[:depth].to_f) and return #get_position(params[:id], params[:depth].to_f) and return
     end
     render :json => [] and return
   end
@@ -40,7 +37,7 @@ class PositionsController < ApplicationController
     end
 
     # add any links
-    if depth >= 1 and position.positions
+    if depth >= 0 and position.positions
       position.positions.each do |pos|
         if !taken_positions[pos.id]
           # add the links to the current position
@@ -52,30 +49,6 @@ class PositionsController < ApplicationController
     end
   end
 
-  def get_position(position, depth, taken_positions)
-    # set this position as visited
-    depth -= 1
-    if depth >= 1
-      positions = []
-      # get recursive positions
-      position.positions.each do |pos|
-        if !taken_positions[pos.id]
-          positions.push(get_position(pos, depth, taken_positions))
-        end
-      end
-
-      # attach the postions
-      json = ActiveSupport::JSON.decode(position.to_json)
-      json[:depth] = depth
-      json["positions"] = positions
-      return json
-    else
-      pos = ActiveSupport::JSON.decode(position.to_json)#position
-      pos[:depth] = depth
-      return pos
-    end
-  end
-
   def get_taken_positions
     taken_positions = Hash.new
     if @game
@@ -83,7 +56,7 @@ class PositionsController < ApplicationController
       rations.each do |ration|
         taken_positions[ration.position.id] = ration.position.id
       end
-      motiles = Motile.where(game_id: @game.id)
+      motiles = Motile.where(game: @game)
       motiles.each do |motile|
         taken_positions[motile.position.id] = motile.position.id
       end

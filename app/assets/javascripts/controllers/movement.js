@@ -80,7 +80,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
             check = {};
             check[posId] = posId;
             var links = this[posId].links;
-            while (depth < $scope.movementsLeft) { // only look for links if there's enough movements left
+            while (depth <= $scope.movementsLeft) { // only look for links if there's enough movements left
               ++depth;
               var nextLinks = {};
               for (i in links) {
@@ -179,6 +179,10 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       // moving to last phase
       $scope.game.doneTurn();
     }
+
+    $scope.$watch('game.cow.ph_marker', function(newValue, oldValue) {
+      $scope.ph_colour = 128 - Math.round((Math.abs($scope.game.cow.ph_marker-6.5)*100));
+    });
 
     // movement controls
     $scope.width = 1000;

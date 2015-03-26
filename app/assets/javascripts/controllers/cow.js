@@ -1,17 +1,20 @@
 var cowCtrl = angular.module('happyCow').controller('CowCtrl', [
   '$scope',
   function($scope) {
-    return $scope;
-  }
-]);
-
-cowCtrl.controller('CowStatsCtrl', [
-  '$scope',
-  function($scope) {
 
     $scope.$watch('game.cow', function(newValue, oldValue) {
         //console.log('CowStatsCtrl: a cow change occured - '+newValue);
         if ($scope.game) {
+          $scope.rumenStat = {
+            name: 'Rumen PH', min: 4.8, minType: 'warning', max: 7.6, maxType: 'success', value: $scope.game.cow.ph_marker,
+            type: function() {
+              if (this.value <= 5.6) { return 'f0ad43'}
+              if (this.value <= 7.0) {return '5bc0de'}
+              else {return '5cb85c'}
+            }
+          }
+
+
     $scope.stats = [
       {
         name: 'Welfare', min: -7, minType: 'danger', max: 6, maxType: 'success', value: $scope.game.cow.welfare,
@@ -30,14 +33,7 @@ cowCtrl.controller('CowStatsCtrl', [
           else {return '5cb85c'}
         }
       },
-      {
-        name: 'Rumen PH', min: 4.8, minType: 'warning', max: 7.6, maxType: 'success', value: $scope.game.cow.ph_marker,
-        type: function() {
-          if (this.value <= 5.6) { return 'f0ad43'}
-          if (this.value <= 7.0) {return '5bc0de'}
-          else {return '5cb85c'}
-        }
-      },
+      $scope.rumenStat,
       {
         name: 'Muck', min: 0, minType: 'success', max: 6, maxType: 'danger', value: $scope.game.cow.muck_marker,
         type: function() {
