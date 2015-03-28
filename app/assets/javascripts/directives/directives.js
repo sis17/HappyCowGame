@@ -7,7 +7,11 @@ var directives = angular.module('happyCowDirectives', [])
       return function($scope, $element, $attributes) {
           var options = {
               content: function() {
-                return $($element).next().html();
+                if ($attributes.template && $attributes.template.length > 0) {
+                  return $('#'+$attributes.template).html();
+                } else {
+                  return $($element).next().html();
+                }
               },
               container: 'body',
               placement: 'bottom',

@@ -145,8 +145,11 @@ class Game < ActiveRecord::Base
       ration.ingredients.each do |ingredient|
         score += ingredient.ingredient_cat.get_score(type)
         self.cow.increase_oligos_marker(1) if ingredient.ingredient_cat.name == 'oligos' and type != 'muck' # increase amount of oligos
+        score -= 1 if self.cow.welfare <= -5 # -1 point if the welfare is less than -5
       end
       score -= 1 if self.cow.check_cold # -1 point for rations absorbed when it's cold
+      score -= 1 if self.cow.welfare <= -3 and self.cow.welfare >= -4 # -1 point if the welfare is -3 or -4
+      score += 1 if self.cow.welfare >= 3 # +1 point if the welfare is greater than 3
       ration.game_user.score += score
       ration.game_user.save
 

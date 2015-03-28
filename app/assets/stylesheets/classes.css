@@ -15,17 +15,13 @@
   border-radius: 5px;
 }
 
-.die.die-double-left {
-  margin-right: -8px;
-  border: 2px solid #000;
-  border-radius: 5px 0px 0px 5px;
-  border-right: none;
+.die.die-double {
+  width: 80px;
+  border-radius: 5px 5px 5px 5px;
 }
-.die.die-double-right {
-  margin-left: -8px;
-  border: 2px solid #000;
-  border-radius: 0px 5px 5px 0px;
-  border-left: none;
+.die.die-triple {
+  width: 120px;
+  border-radius: 5px 5px 5px 5px;
 }
 
 .die.water { background-color: #5BC0DE; }
@@ -82,7 +78,8 @@
   border-radius: 10px;
   height: 70px;
   width: 280px;
-  overflow:hidden;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .big-ration-full {
   width: 100%;
@@ -136,6 +133,7 @@
   clear: both;
   width: 100%;
   min-height: 50px;
+  z-index: 10;
 }
 .bar.bar-top {
   top: 0px;
@@ -173,9 +171,11 @@
 .cow-progress {
   float: left;
   border-radius: 0px !important;
+  width: 70%;
 }
 .cow-pl {
   height: 20px;
+  width: 15%;
 }
 .cow-pl-low {
   float:left;
@@ -184,6 +184,34 @@
 .cow-pl-high {
   float:left;
   border-radius: 0px 5px 5px 0px !important;
+}
+
+.cow-stats-head {
+  border: 1px solid;
+  border-radius: 5px;
+  margin-top: 5px;
+  padding-top: 5px;
+  height: 33px;
+  width: 100%;
+}
+.cow-stats-head .cow-stats-title {
+  float:left;
+  padding-left: 5px;
+  height: 20px;
+}
+.cow-stats-head .cow-stats-bar {
+  float:right;
+  width: 200px;
+  height:20px;
+  padding-right: 5px;
+}
+.cow-stats-body {
+  border: 1px solid;
+  border-radius: 0px 0px 5px 5px;
+  border-top: none;
+  margin-top: -5px;
+  padding: 5px;
+  margin-bottom: 5px;
 }
 
 .game-board-item {

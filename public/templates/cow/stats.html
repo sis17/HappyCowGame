@@ -1,0 +1,179 @@
+<div id="welfare-stats" class="cow-stats-head">
+  <div class="cow-stats-title">
+    <p>{{welfareStat.name}}
+      <a ng-click="showWelfare == 'hidden' ? showWelfare = '' : showWelfare = 'hidden'"
+      class="glyphicon glyphicon-info-sign clickable" template="popup_welfare"></a>
+    </p>
+  </div>
+  <div class="cow-stats-bar">
+    <span class="label label-{{welfareStat.minType}} cow-pl cow-pl-low">{{welfareStat.min}}</span>
+    <div class="progress cow-progress">
+      <div class="progress-bar" role="progressbar"
+      aria-valuemin="{{welfareStat.min}}" aria-valuemax="{{welfareStat.max}}"
+      style="background-color: #{{welfareStat.type()}};
+      width: {{((welfareStat.value - welfareStat.min)/(welfareStat.max - welfareStat.min)) * 100}}%;">
+      {{welfareStat.value}}</div>
+    </div>
+    <span class="label label-{{welfareStat.maxType}} cow-pl cow-pl-high">{{welfareStat.max}}</span>
+  </div>
+</div>
+<div class="cow-stats-body {{showWelfare}}">
+  <div id="popup_welfare">
+    <p>Welfare is affected by extreme body condition or rumen PH levels. As muck and oligos intake increases, welfare suffers. Disiease and card actions also affect welfare.</p>
+    <p>The effects of welfare:</p>
+    <ul>
+      <li><span class="badge">5</span> - <span class="label label-success">+1pt</span> per ration absorbed</li>
+      <li><span class="badge">4</span> - <span class="label label-success">+1pt</span> per ration absorbed</li>
+      <li><span class="badge">3</span> - <span class="label label-success">+1pt</span> per ration absorbed</li>
+      <li>...</li>
+      <li><span class="badge">-3</span> - cow eats <span class="label label-warning">-1</span> ration, <span class="label label-danger">-1pt</span> per ration absorbed</li>
+      <li><span class="badge">-4</span> - cow eats <span class="label label-warning">-1</span> ration, <span class="label label-danger">-1pt</span> per ration absorbed</li>
+      <li><span class="badge">-5</span> - <span class="label label-danger">cow doesn't eat</span>, <span class="label label-danger">-1pt</span> per ingredient absorbed</li>
+      <li><span class="badge">-6</span> - <span class="label label-danger">cow doesn't eat</span>, <span class="label label-danger">-1pt</span> per ingredient absorbed</li>
+      <li><span class="badge">-7</span> - <span class="label label-danger">cow dies</span></li>
+    </ul>
+  </div>
+</div>
+
+<div id="body-condition-stats" class="cow-stats-head">
+  <div class="cow-stats-title">
+    <p>{{bodyConditionStat.name}}
+      <a ng-click="showBodyCondition == 'hidden' ? showBodyCondition = '' : showBodyCondition = 'hidden'"
+      class="glyphicon glyphicon-info-sign clickable"></a>
+    </p>
+  </div>
+  <div class="cow-stats-bar">
+    <span class="label label-{{bodyConditionStat.minType}} cow-pl cow-pl-low">{{bodyConditionStat.min}}</span>
+    <div class="progress cow-progress" style="width: 70%">
+      <div class="progress-bar" role="progressbar"
+      aria-valuemin="{{bodyConditionStat.min}}" aria-valuemax="{{bodyConditionStat.max}}"
+      style="background-color: #{{bodyConditionStat.type()}};
+      width: {{((bodyConditionStat.value - bodyConditionStat.min)/(bodyConditionStat.max - bodyConditionStat.min)) * 100}}%;">
+      {{bodyConditionStat.value}}</div>
+    </div>
+    <span class="label label-{{bodyConditionStat.maxType}} cow-pl cow-pl-high">{{bodyConditionStat.max}}</span>
+  </div>
+</div>
+<div class="cow-stats-body {{showBodyCondition}}">
+  <div id="popup_body_condition">
+    <p>Body condition shows how fat the cow is. It is affected by different events, and impacts the welfare of the cow heavily. A very fat, or very lean cow will suffer welfare loss.</p>
+    <p>The effects of body condition:</p>
+    <ul>
+      <li><span class="badge">3</span> - <span class="label label-danger">-1 welfare</span> per turn</li>
+      <li><span class="badge">2</span> - <span class="label label-success">+1 welfare</span> per turn</li>
+      <li><span class="badge">1</span></li>
+      <li><span class="badge">0</span></li>
+      <li><span class="badge">-1</span></li>
+      <li><span class="badge">-2</span> - <span class="label label-danger">-1 welfare</span> per turn</li>
+      <li><span class="badge">-3</span> - <span class="label label-danger">-1 welfare</span> per turn</li>
+      <li><span class="badge">-4</span> - <span class="label label-danger">cow dies</span></li>
+    </ul>
+  </div>
+</div>
+
+<div id="rumen-stats" class="cow-stats-head">
+  <div class="cow-stats-title">
+    <p>{{rumenStat.name}}
+      <a ng-click="showRumen == 'hidden' ? showRumen = '' : showRumen = 'hidden'"
+        class="glyphicon glyphicon-info-sign clickable"></a>
+    </p>
+  </div>
+  <div class="cow-stats-bar">
+    <span class="label label-{{rumenStat.minType}} cow-pl cow-pl-low">{{rumenStat.min}}</span>
+    <div class="progress cow-progress" style="width: 70%">
+      <div class="progress-bar" role="progressbar"
+      aria-valuemin="{{rumenStat.min}}" aria-valuemax="{{rumenStat.max}}"
+      style="background-color: #{{rumenStat.type()}};
+      width: {{((rumenStat.value - rumenStat.min)/(rumenStat.max - rumenStat.min)) * 100}}%;">
+      {{rumenStat.value}}</div>
+    </div>
+    <span class="label label-{{rumenStat.maxType}} cow-pl cow-pl-high">{{rumenStat.max}}</span>
+  </div>
+</div>
+<div class="cow-stats-body {{showRumen}}">
+  <div id="popup_rumen">
+    <p>Rumen PH levels are affected by the balance of water and energy. The current balance is:</p>
+    <p>
+      <span class="label water">{{rumenStat.info.water}}</span> /
+      <span class="label energy">{{rumenStat.info.energy}}</span>
+      <span ng-if="rumenStat.info.water != rumenStat.info.energy" class="label label-warning">
+        {{rumenStat.info.water - rumenStat.info.energy}} level a turn
+      </span>
+    </p>
+    <p>The effects of rumen PH are:</p>
+    <ul>
+      <li><span class="badge">7.6</span> - use only the <span class="label label-warning">lowest</span> dice, <span class="label label-danger">-1 welfare</span> per turn</li>
+      <li><span class="badge">7.4</span> - use only the <span class="label label-warning">lowest</span> dice, <span class="label label-danger">-1 welfare</span> per turn</li>
+      <li><span class="badge">7.2</span> - use only the <span class="label label-warning">lowest</span> dice</li>
+      <li>...</li>
+      <li><span class="badge">5.6</span> - use only the <span class="label label-warning">lowest</span> dice</li>
+      <li><span class="badge">5.4</span> - use only the <span class="label label-warning">lowest</span> dice, <span class="label label-danger">-1 welfare</span> per turn</li>
+      <li><span class="badge">5.2</span> - <span class="label label-warning">-1</span> to all dice, use only the <span class="label label-warning">lowest</span> dice, <span class="label label-danger">-1 welfare</span> per turn</li>
+      <li><span class="badge">5</span> - <span class="label label-warning">-1</span> to all dice, use only the <span class="label label-warning">lowest</span> dice, <span class="label label-danger">-1 welfare</span> per turn</li>
+    </ul>
+  </div>
+</div>
+
+<div id="muck-stats" class="cow-stats-head">
+  <div class="cow-stats-title">
+    <p>{{muckStat.name}}
+      <a ng-click="showMuck == 'hidden' ? showMuck = '' : showMuck = 'hidden'"
+        class="glyphicon glyphicon-info-sign clickable"></a>
+    </p>
+  </div>
+  <div class="cow-stats-bar">
+    <span class="label label-{{muckStat.minType}} cow-pl cow-pl-low">{{muckStat.min}}</span>
+    <div class="progress cow-progress">
+      <div class="progress-bar" role="progressbar"
+      aria-valuemin="{{muckStat.min}}" aria-valuemax="{{muckStat.max}}"
+      style="background-color: #{{muckStat.type()}};
+      width: {{((muckStat.value - muckStat.min)/(muckStat.max - muckStat.min)) * 100}}%;">
+      {{muckStat.value}}</div>
+    </div>
+    <span class="label label-{{muckStat.maxType}} cow-pl cow-pl-high">{{muckStat.max}}</span>
+  </div>
+</div>
+<div class="cow-stats-body {{showMuck}}">
+  <div id="popup_muck">
+    <p>Every ration that is not absorbed as milk or meat, and passes out of the cow becomes muck. As muck builds up it reduces the cow's welfare.</p>
+    <p>The effects of muck are:</p>
+    <ul>
+      <li><span class="badge">1</span></li>
+      <li><span class="badge">2</span></li>
+      <li><span class="badge">3</span> - <span class="label label-danger">-1</span> welfare (once)</li>
+      <li><span class="badge">4</span></li>
+      <li><span class="badge">5 and above</span> - <span class="label label-danger">-1</span> welfare (once)</li>
+    </ul>
+  </div>
+</div>
+
+<div id="oligos-stats" class="cow-stats-head">
+  <div class="cow-stats-title">
+    <p>{{oligosStat.name}}
+      <a ng-click="showOligos == 'hidden' ? showOligos = '' : showOligos = 'hidden'"
+        class="glyphicon glyphicon-info-sign clickable"></a>
+    </p>
+  </div>
+  <div class="cow-stats-bar">
+    <span class="label label-{{oligosStat.minType}} cow-pl cow-pl-low">{{oligosStat.min}}</span>
+    <div class="progress cow-progress" style="width: 70%">
+      <div class="progress-bar" role="progressbar"
+      aria-valuemin="{{oligosStat.min}}" aria-valuemax="{{oligosStat.max}}"
+      style="background-color: #{{muckStat.type()}};
+      width: {{((oligosStat.value - oligosStat.min)/(oligosStat.max - oligosStat.min)) * 100}}%;">
+      {{oligosStat.value}}</div>
+    </div>
+    <span class="label label-{{oligosStat.maxType}} cow-pl cow-pl-high">{{oligosStat.max}}</span>
+  </div>
+</div>
+<div class="cow-stats-body {{showOligos}}">
+  <div id="popup_oligos">
+    <p>Oligos is a nutrition boost for the cow, but too much will become useless and even have a negative effect on the cow's welfare. Every time and <span class="label oligos">Oligos</span> ingreident is absorbed, the marker increases.</p>
+    <p>The effects of each oligos absorbed are:</p>
+    <ul>
+      <li><span class="badge">1</span> - scores <span class="label label-success">10 pts</span></li>
+      <li><span class="badge">2</span> - scores <span class="label label-success">2 pts</span>, <span class="label label-danger">-1</span> welfare (once)</li>
+      <li><span class="badge">3 and above</span> - <span class="label label-danger">-1</span> welfare (once)</li>
+    </ul>
+  </div>
+</div>

@@ -17,16 +17,16 @@ class Cow < ActiveRecord::Base
 
     #ph_marker
     if self.ph_marker >= 7.4
-      self.welfare -= 1
+      self.decrease_welfare(1)
     elsif self.ph_marker <= 5.4
-      self.welfare -= 1
+      self.decrease_welfare(1)
     end
 
     #body_condition
-    if self.body_condition == 3 or self.body_condition <= -2
-      self.welfare -= 1
+    if self.body_condition >= 3 or self.body_condition <= -2
+      self.decrease_welfare(1)
     elsif self.body_condition == 2
-      self.welfare += 1
+      self.increase_welfare(1)
     end
 
     self.save

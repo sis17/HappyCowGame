@@ -1,5 +1,6 @@
 var hcApp = angular.module('happyCow', [
-  'ui.bootstrap', 'ngSanitize', 'ngRoute', 'restangular', 'angularModalService', 'ngStorage', 'colorpicker.module',
+  'ui.bootstrap', 'ngSanitize', 'ngRoute', 'restangular', 'angularModalService',
+  'ngStorage', 'colorpicker.module', /*'mgcrea.ngStrap',*/
   'happyCowServices', 'happyCowDirectives'
 ]);
 

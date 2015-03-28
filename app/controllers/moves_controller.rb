@@ -18,32 +18,26 @@ class MovesController < ApplicationController
   end
 
   def update
-    # do a check to calculate the dice, and if the 3rd dice is needed
-    #if (params[:move][:ration_id] > 0 && )
+    messages = []
+    success = false
     @move = move.find(params[:id])
 
     if params[:confirm_ration] and params[:ration_id]
       @move.ration_id = params[:ration_id]
       @move.save
-      @move.set_dice
-
-      render json: {
-        success: true,
-        move: @move.as_json,
-        message: {title:'Ration Confirmed', text: 'The ration was selection was confirmed.', type:'success'}
-      } and return
-    end
-
-    if params[:select_dice] and params[:move][:selected_die]
-      response = @move.select_dice(params[:move][:selected_die])
-      #@move.update(params.require(:move).permit(:selected_die))
-      render json: response and return
+      messages = @move.set_dice
+      success = true
+    elsif params[:select_dice] and params[:move][:selected_die]
+      messages = @move.select_dice(params[:move][:selected_die])
+      success = true
+    else
+      messages.push({title:'Move Not Made', message: 'No move was made, actions were not specified.', type:'warning'})
     end
 
     render json: {
-      success: false,
+      success: success,
       move: @move.as_json,
-      message: {title:'Move Not Made', message: 'No move was made, actions were not specified.', type:'warning'}
+      messages: messages
     } and return
   end
 

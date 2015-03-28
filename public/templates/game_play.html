@@ -96,25 +96,7 @@
   <div id="section-info" class="container">
     <h3>Cow Condition</h3>
 
-    <div class="container-fluid">
-      <div ng-repeat="stat in stats" class="row">
-        <div class="col-md-4">
-          <p>{{stat.name}} <span class="glyphicon glyphicon-info-sign clickable"></span></p>
-        </div>
-        <div class="col-md-8">
-          <span class="label label-{{stat.minType}} cow-pl cow-pl-low">{{stat.min}}</span>
-          <div class="progress cow-progress" style="width: 70%">
-            <div class="progress-bar" role="progressbar"
-            aria-valuemin="{{stat.min}}" aria-valuemax="{{stat.max}}"
-            style="background-color: #{{stat.type()}};
-            width: {{((stat.value-stat.min)/(stat.max-stat.min)) * 100}}%;">
-            {{stat.value}}
-          </div>
-        </div>
-        <span class="label label-{{stat.maxType}} cow-pl cow-pl-high">{{stat.max}}</span>
-      </div>
-    </div>
-  </div>
+    <div ng-include="cowStatsTemplate"></div>
 
   <h5>Ingredients Values</h5>
   <table ng-controller="IngredientValueCtrl" class="table table-condensed">
@@ -171,8 +153,10 @@
     </div>
   </div>
 </div>
+
 </div>
 </div>
+
 
 <script type="text/ng-template" id="reviewRound.html">
 <div class="modal-header">

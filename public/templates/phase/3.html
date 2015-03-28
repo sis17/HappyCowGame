@@ -1,7 +1,7 @@
 <div ng-controller="MovementCtrl" class="movement">
-  <img id="game-board" class="game-board-item" src="images/cow-body-{{game.cow.body_condition < -1 ? 'thin' : (game.cow.body_condition > 1 ? 'fat' : 'normal')}}.png"
+  <img id="game-board" class="game-board-item" ng-src="images/cow-body-{{game.cow.body_condition < -1 ? 'thin' : (game.cow.body_condition > 1 ? 'fat' : 'normal')}}.png"
       style="width: {{width}}px; left: {{left}}px; top: {{top}}px">
-  <img class="game-board-item top" src="images/happycow{{game.cow.welfare > 4 ? '-happy' : (game.cow.welfare < -2 ? '-ill' : (game.cow.welfare < -5 ? '-veryill' : ''))}}.png"
+  <img class="game-board-item top" ng-src="images/happycow{{game.cow.welfare > 4 ? '-happy' : (game.cow.welfare < -2 ? '-ill' : (game.cow.welfare < -5 ? '-veryill' : ''))}}.png"
       style="left: {{left+8}}px; top: {{top+205}}px; width:165px;">
   <div id="game-board-rumen" class="game-board-item below" style="left: {{left+275}}px; top: {{top+55}}px;
         background-color:rgb(255,{{ph_colour}},{{ph_colour}})"></div>
@@ -14,7 +14,7 @@
         style="left: {{left+730}}px; top: {{top+280}}px; width: 60px; height: 45px;"></div>
   <div class="game-board-item top meat" style="left: {{left+695}}px; top: {{top+297}}px;">meat</div>
 
-  <div popup class="game-board-item top" style="left: {{left+310}}px; top: {{top+260}}px; width: 200px;">
+  <div popup class="game-board-item top" style="left: {{left+310}}px; top: {{top+260}}px; width: 200px;" template="popup_rumen">
       <span class="label label-{{rumenStat.minType}} cow-pl cow-pl-low">{{rumenStat.min}}</span>
       <div class="progress cow-progress" style="width: 70%">
         <div class="progress-bar" role="progressbar"
@@ -26,17 +26,6 @@
     </div>
     <span class="label label-{{rumenStat.maxType}} cow-pl cow-pl-high">{{rumenStat.max}}</span>
   </div>
-  <div class="hidden">
-    <h4>Rumen PH Levels</h4>
-    <p>are affected by the balance of water and energy.</p>
-    <p>
-      Current balance: <span class="label water">{{game.countIngredientsInArea('water',3)}}</span> /
-      <span class="label energy">{{game.countIngredientsInArea('energy',3)}}</span> -
-      <span class="label label-default">
-        {{game.countIngredientsInArea('water',3) - game.countIngredientsInArea('energy',3)}} a turn
-      </span>
-    </p>
-  </div>
 
   <div ng-repeat="ration in game.allRations" class="ration ration-board clickable {{ration.selected || ration.id == move.ration.id ? 'selected' : ''}}"
         style="left: {{left+ration.position.centre_x-10}}px; top: {{top+ration.position.centre_y-10}}px;
@@ -47,7 +36,7 @@
   <img ng-repeat="motile in game.motiles" ng-src="images/motile.png" class="motile clickable"
         style="left: {{left+motile.position.centre_x-10}}px; top: {{top+motile.position.centre_y-10}}px;" />
 
-  <div ng-repeat="pos in graph.traverse(position.id)" ng-if="pos.depth > 0"
+  <div ng-repeat="pos in possiblePositions" ng-if="pos.depth > 0"
         class="move-position {{pos.depth == 1 ? 'move-position-first clickable' : ''}}"
         style="left: {{left+pos.centre_x}}px; top: {{top+pos.centre_y}}px; padding-left:3px;"
         ng-click="pos.depth == 1 ? moveRation(pos.id) : null">{{pos.depth}}
@@ -84,21 +73,15 @@
       </p>
     </div>
     <div class="area pull-right">
-      <p ng-if="rations.length <= 0">You have no rations to move. <button ng-click="endMovementPhase()" class="btn btn-primary">Finish</button></p>
-      <div ng-if="move.dice1 > 0" >
+      <p ng-if="rations.length <= 0">You have no rations to move. <button ng-click="game.doneTurn()" class="btn btn-primary">Finish</button></p>
+      <div ng-if="move.ration_id" >
         <p class="pull-left" style="width: 50%;">Select a dice, then click on it's route on the board to move the ration.</p>
-        <ul class="list-inline pull-right pad-10">
-          <li>
-            <a ng-click="selectDice(1, move.dice1)" class="{{ !move.selected_die || move.selected_die == 1 || move.dice1 == move.dice2 ? 'clickable' : 'fade-out'}}">
-              <div class="die die-{{move.dice1}} {{move.dice1 == move.dice2 ? 'die-double-left' : ''}}"></div>
+        <ul ng-if="dice.length > 0" class="list-inline pull-right pad-10">
+          <li ng-repeat="die in dice">
+            <a ng-click="die.select()" class="{{die.class()}} clickable">
+              <div class="die {{die.number == 3 ? 'water' : ''}} die-{{die.value}} {{die.doubleClass}}"></div>
             </a>
           </li>
-          <li><a ng-click="selectDice(2, move.dice2)" class="{{ !move.selected_die || move.selected_die == 2 || move.dice1 == move.dice2 ? 'clickable' : 'fade-out'}}">
-              <div class="die die-{{move.dice2}} {{move.dice1 == move.dice2 ? 'die-double-right' : ''}}"></div>
-          </a></li>
-          <li ng-if="move.dice3 > 0"><a ng-click="selectDice(3, move.dice3)" class="{{ !move.selected_die || move.selected_die == 3 ? 'clickable' : 'fade-out'}}">
-              <div class="die water die-{{move.dice3}}"></div>
-          </a></li>
         </ul>
       </div>
     </div>
