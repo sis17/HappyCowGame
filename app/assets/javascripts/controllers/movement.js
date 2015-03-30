@@ -11,7 +11,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
           if (move && move.game_user_id == currentUser.id) {
             $scope.move = moves[i];
             if ($scope.move.ration_id) {
-              $scope.buildDice();
+              buildDice();
             }
           }
         }
@@ -39,7 +39,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
           if (response.move) {
             $scope.move = Restangular.one('moves', $scope.move.id).get().$object;
             // build dice
-            $scope.buildDice();
+            buildDice();
           }
           notice(response.messages);
         }, function() {
@@ -167,7 +167,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       if ($scope.possiblePositions.length == 0) { // check if the ration is stuck
         notice('You were Stuck', 'Your ration could not finish it`s moves.', 'info', 6)
         $scope.endMovementPhase();
-      } elseif ($scope.movementsLeft <= 0) { // check if there's allowed movements left
+      } else if ($scope.movementsLeft <= 0) { // check if there's allowed movements left
         $scope.endMovementPhase();
       }
 
@@ -209,7 +209,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       $scope.dice.push(die);
     }
     // put dice into structure to show doubles or tripples
-    $scope.buildDice = function() {
+    var buildDice = function() {
       $scope.dice = [];
       if ($scope.move.dice1 == $scope.move.dice2 && $scope.move.dice1 == $scope.move.dice3) {// triple
         addDice(1, $scope.move.dice1, 3, 'water');
@@ -225,7 +225,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       } else {
         addDice(1, $scope.move.dice1, 1, '');
         addDice(2, $scope.move.dice2, 1, '');
-        addDice(3, $scope.move.dice3, 1, '');
+        addDice(3, $scope.move.dice3, 1, 'water');
       }
     }
 

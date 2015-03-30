@@ -78,7 +78,7 @@ class UsersController < ApplicationController
         render json: {
           success: true,
           user: @user,
-          messages: [{title: 'Account Created', text: 'Your account has been created. Pleaes remember your details.', type: 'success', time: 4}]
+          messages: [{title: 'Account Created', text: 'Your account has been created. Please remember your details.', type: 'success', time: 4}]
         } and return
       end
       messages.push({title: 'Oops', text: 'The account could not be created, make sure you enter all necessary details.', type: 'warning', time: 5})

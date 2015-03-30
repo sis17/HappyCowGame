@@ -14,25 +14,27 @@
   border: 1px solid #000;
   border-radius: 5px;
 }
+.die.water { background-color: #5BC0DE; }
 
 .die.die-double {
   width: 80px;
   border-radius: 5px 5px 5px 5px;
 }
+.die.die-double.water { background: linear-gradient(to right, #FFFF99 50%, #5BC0DE 50%); }
 .die.die-triple {
   width: 120px;
   border-radius: 5px 5px 5px 5px;
 }
+.die.die-triple.water { background: linear-gradient(to right, #FFFF99 67%, #5BC0DE 33%); }
 
-.die.water { background-color: #5BC0DE; }
-
-.die.die- {background-color: #D9534F;}
-.die.die-1 {background-image: url('../images/dice-1.png');}
-.die.die-2 {background-image: url('../images/dice-2.png');}
-.die.die-3 {background-image: url('../images/dice-3.png');}
-.die.die-4 {background-image: url('../images/dice-4.png');}
-.die.die-5 {background-image: url('../images/dice-5.png');}
-.die.die-6 {background-image: url('../images/dice-6.png');}
+.die .die-value {width:100%; height:100%;}
+.die .die-value.die-value- {background-color: #D9534F;}
+.die .die-value.die-value-1 {background-image: url('../images/dice-1.png');}
+.die .die-value.die-value-2 {background-image: url('../images/dice-2.png');}
+.die .die-value.die-value-3 {background-image: url('../images/dice-3.png');}
+.die .die-value.die-value-4 {background-image: url('../images/dice-4.png');}
+.die .die-value.die-value-5 {background-image: url('../images/dice-5.png');}
+.die .die-value.die-value-6 {background-image: url('../images/dice-6.png');}
 
 .motile {
   position: fixed;

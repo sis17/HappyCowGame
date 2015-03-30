@@ -13,6 +13,7 @@ var baseCtrl = angular.module('happyCow').controller('BaseCtrl', [
       },
       logout: function() {
         $scope.$storage.user = null;
+        notice('Logged Out', 'Your session has been successfully ended.', 'info', 4);
         $location.path('login')
       },
       get: function() {

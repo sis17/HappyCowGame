@@ -79,7 +79,9 @@
         <ul ng-if="dice.length > 0" class="list-inline pull-right pad-10">
           <li ng-repeat="die in dice">
             <a ng-click="die.select()" class="{{die.class()}} clickable">
-              <div class="die {{die.number == 3 ? 'water' : ''}} die-{{die.value}} {{die.doubleClass}}"></div>
+              <div class="die {{die.doubleClass}} {{die.waterClass}}">
+                <div class="die-value die-value-{{die.value}}"></div>
+              </div>
             </a>
           </li>
         </ul>
