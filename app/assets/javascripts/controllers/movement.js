@@ -37,7 +37,11 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
         $scope.move.ration_id = ration.id;
         $scope.move.patch({confirm_ration:true, ration_id:ration.id}).then(function (response) {
           if (response.move) {
-            $scope.move = Restangular.one('moves', $scope.move.id).get().$object;
+            Restangular.one('moves', $scope.move.id).get().then(function(move) {
+              $scope.move = move;
+              // build dice
+              buildDice();
+            });
             // build dice
             buildDice();
           }
@@ -102,6 +106,10 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
             }
             // load the first possible positions
             $scope.possiblePositions = graph.traverse($scope.position.id);
+            if ($scope.possiblePositions.length == 0) { // check if the ration is stuck
+              notice('You were Stuck', 'Your ration could not finish it`s moves.', 'info', 6);
+              endMovementPhase($scope.getRation($scope.move.ration_id));
+            }
           });
         }
     };
@@ -164,18 +172,18 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       ration.position_id = newPos.id;
 
       // test for the end of the turn
-      if ($scope.possiblePositions.length == 0) { // check if the ration is stuck
-        notice('You were Stuck', 'Your ration could not finish it`s moves.', 'info', 6)
-        $scope.endMovementPhase();
-      } else if ($scope.movementsLeft <= 0) { // check if there's allowed movements left
-        $scope.endMovementPhase();
+      if ($scope.movementsLeft <= 0) { // check if there's allowed movements left
+        endMovementPhase(ration);
+      } else if ($scope.possiblePositions.length == 0) { // check if the ration is stuck
+        notice('You were Stuck', 'Your ration could not finish it`s moves.', 'info', 6);
+        endMovementPhase(ration);
       }
 
       // update the possible positions
       $scope.position = newPos;
     }
 
-    $scope.endMovementPhase = function(ration) {
+    var endMovementPhase = function(ration) {
       Restangular.one("rations", ration.id).patch({ration: ration}).then(function(response) {
         $scope.game.update();
         $scope.game.getAllRations();
@@ -197,7 +205,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
           return (!$scope.move.selected_die || $scope.move.selected_die == this.number) && this.value > 0 ? '' : 'fade-out';
         },
         select: function() {
-          if (this.value >= 1 || this.value <= 6) {
+          if (this.value >= 1) {
             $scope.selectDice(this.number, this.value*this.combine)
           } else {
             notice('Die Cannot Be Used', 'The die you selected is out of play.', 'warning', 6);
@@ -211,15 +219,15 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     // put dice into structure to show doubles or tripples
     var buildDice = function() {
       $scope.dice = [];
-      if ($scope.move.dice1 == $scope.move.dice2 && $scope.move.dice1 == $scope.move.dice3) {// triple
+      if ($scope.move.dice1 > 0 && $scope.move.dice1 == $scope.move.dice2 && $scope.move.dice1 == $scope.move.dice3) {// triple
         addDice(1, $scope.move.dice1, 3, 'water');
-      } else if ($scope.move.dice1 == $scope.move.dice2) { // first double
+      } else if ($scope.move.dice1 > 0 && $scope.move.dice1 == $scope.move.dice2) { // first double
         addDice(1, $scope.move.dice1, 2, '');
         addDice(3, $scope.move.dice3, 1, 'water');
-      } else if ($scope.move.dice1 == $scope.move.dice3) { // second double
+      } else if ($scope.move.dice1 > 0 && $scope.move.dice1 == $scope.move.dice3) { // second double
         addDice(1, $scope.move.dice1, 2, 'water');
         addDice(2, $scope.move.dice2, 1, '');
-      } else if ($scope.move.dice2 == $scope.move.dice3) { // third double
+      } else if ($scope.move.dice2 > 0 && $scope.move.dice2 == $scope.move.dice3) { // third double
         addDice(1, $scope.move.dice1, 1, '');
         addDice(2, $scope.move.dice2, 2, 'water');
       } else {

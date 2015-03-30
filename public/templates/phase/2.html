@@ -56,12 +56,14 @@
   </div>
   <div class="modal-body">
     <img class="image image-md" ng-src="images/{{card.image}}" alt="{{card.type}}">
+    <p ng-if="card.category == 'action'"><strong>Action:</strong> This card is an action card, it can be played at any time. It will cause an effect and then be used up.</p>
+    <p ng-if="card.category != 'action'"><strong>Ingredient:</strong> This card is an ingredient, it is 1 of 5 types that can be used to make food rations.</p>
     <p><strong>Points:</strong> {{card.points}}</p>
-    <p ng-bind-html="card.description"></p>
+    <div><strong>Description:</strong> <div ng-bind-html="card.description"></div></div>
   </div>
   <div class="modal-footer">
     <div class="btn-group">
-      <button class="btn btn-primary {{game_user_card.used || !game.canAct(2) ? 'disabled' : ''}}"
+      <button class="btn btn-primary {{game_user_card.used || (!game.canAct(2) && card.category != 'action') ? 'disabled' : ''}}"
               ng-click="use()">Use</button>
       <button ng-click="cancel()" class="btn btn-info">Back</button>
     </div>
@@ -139,7 +141,7 @@
       <div class="big-ration big-ration-full">
         <div ng-repeat="ingredient in ingredients" class="ingredient {{ingredient.game_card.card.category}}">
           <p>{{ingredient.game_card.card.category}}</p>
-          <p>{{ingredient.game_card.card.description}}</p>
+          <div ng-bind-html="ingredient.game_card.card.description"></div>
         </div>
       </div>
       <p ng-if="canCreate">This ration has space for {{spaces}} more ingredients.</p>

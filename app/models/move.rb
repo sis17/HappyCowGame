@@ -18,11 +18,7 @@ class Move < ActiveRecord::Base
       self.dice2 = rand(1..6)
       self.add_water
     end
-    messages.push({title:'Ration Confirmed', text: 'The ration was selection was confirmed.', type:'success', time: 4})
-    puts 'setting dice'
-    puts self.dice1
-    puts self.dice2
-    puts self.dice3
+
     # -1 to all dice
     if cow.ph_marker <= 5.2
       messages.push({title:'Loss of Movement', text: 'The Ruemn pH is '+cow.ph_marker.to_s+', so all dice lose 1 value.', type:'warning', time: 0})
@@ -30,10 +26,6 @@ class Move < ActiveRecord::Base
       self.dice2 -= 1 if self.dice2
       self.dice3 -= 1 if self.dice3
     end
-    puts 'removed one value'
-    puts self.dice1
-    puts self.dice2
-    puts self.dice3
 
     # use only the lowest dice if pH is greater than 7.4 or less than 5.6
     if cow.ph_marker >= 7.4 or cow.ph_marker <= 5.6
@@ -48,32 +40,6 @@ class Move < ActiveRecord::Base
           self.dice2 = 0 if self.dice2 < self.dice3
         end
       end
-      puts 'only has lowest'
-      puts self.dice1
-      puts self.dice2
-      puts self.dice3
-      #if self.dice1 > self.dice2
-      #  if self.dice2 > self.dice3
-      #    self.dice2 = 0
-      #  else
-      #    self.dice3 = 0
-      #  end
-      #  self.dice1 = 0
-      #elsif self.dice2 > self.dice3
-      #  if self.dice1 > self.dice3
-      #    self.dice1 = 0
-      #  else
-      #    self.dice3 = 0
-      #  end
-      #  self.dice2 = 0
-      #elsif self.dice3 > self.dice1
-      #  if self.dice2 > self.dice3
-      #    self.dice2 = 0
-      #  else
-      #    self.dice1 = 0
-      #  end
-      #  self.dice3 = 0
-      #end
     end
     self.save
     return messages

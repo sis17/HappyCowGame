@@ -13,5 +13,6 @@ class MoveTest < ActiveSupport::TestCase
     cow.save
     @move = Move.find(@move.id)
     @move.set_dice
+    # used puts to test randomness
   end
 end

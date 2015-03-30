@@ -134,6 +134,8 @@ class GameUserCard < ActiveRecord::Base
         message = "The weather event #{event.title} has been cancelled."
       end
       success = true
+    elsif card.category != 'action'
+      message = 'The card is not an action card, it must be added to a ration to be used.'
     end
 
     if success

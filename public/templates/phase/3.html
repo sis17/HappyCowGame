@@ -9,7 +9,7 @@
   <div class="game-board-item below {{game.cow.pregnancy_id > 0 ? 'meat' : 'milk'}}-background"
         style="left: {{left+680}}px; top: {{top+170}}px; width: 40px; height: 34px;"></div>
   <div class="game-board-item top {{game.cow.pregnancy_id > 0 ? 'meat' : 'milk'}}"
-        style="left: {{left+655}}px; top: {{top+205}}px;">milk</div>
+        style="left: {{left+655}}px; top: {{top+205}}px;">{{game.cow.pregnancy_id > 0 ? 'meat' : 'milk'}}</div>
   <div class="game-board-item below meat-background"
         style="left: {{left+730}}px; top: {{top+280}}px; width: 60px; height: 45px;"></div>
   <div class="game-board-item top meat" style="left: {{left+695}}px; top: {{top+297}}px;">meat</div>
@@ -29,7 +29,7 @@
 
   <div ng-repeat="ration in game.allRations" class="ration ration-board clickable {{ration.selected || ration.id == move.ration.id ? 'selected' : ''}}"
         style="left: {{left+ration.position.centre_x-10}}px; top: {{top+ration.position.centre_y-10}}px;
-        border-color:#{{ration.game_user.colour}}">
+        border-color:{{ration.game_user.colour}}">
     <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
   </div>
 
