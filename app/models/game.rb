@@ -112,6 +112,10 @@ class Game < ActiveRecord::Base
 
     self.stage = 1
     self.save
+
+    # make the first round active, ready for the start of the game
+    self.round.makeActive
+
     return true
   end
 

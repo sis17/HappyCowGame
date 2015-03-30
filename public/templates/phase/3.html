@@ -62,14 +62,13 @@
     <div class="area area-{{movePhase == 1 ? 'in' : 'out'}} pull-left">
       <div>
         <div ng-repeat="ration in rations | orderBy : order" class="ration {{!move.ration.id ? 'clickable' : ''}} pull-left pad-10
-              {{ration.selected || ration.id == move.ration.id ? 'selected' : ''}}"
+              {{ration.id == move.ration.id ? 'selected' : ''}}"
               ng-click="selectRation(ration)" style="opacity: {{ration.selected || ration.id == move.ration.id ? '1' : '0.6'}};">
           <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
         </div>
       </div>
-      <p ng-if="rations.length > 0 && !move.ration.id">Select a ration, then
-        <button ng-if="!move.ration.id"
-              ng-click="confirmRation(selectedRation)" class="btn btn-sm btn-primary">confirm</button>
+      <p ng-if="rations.length > 0 && !move.ration_id">Select a ration, then
+        <button ng-click="confirmRation()" class="btn btn-sm btn-primary">confirm</button>
               it to move.
       </p>
     </div>

@@ -31,22 +31,18 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     $scope.visitedPositions = {}; // positions that the ration can't revisit
 
-    $scope.confirmRation = function(ration) {
-      if (!ration) {
+    $scope.confirmRation = function() {
+      if (!$scope.move.ration.id) {
         // if no ration is selected, let the user know
         notice('First Choose a Ration', 'You need to select a ration from the list, then press `Confirm`.', 'info', 2)
       } else {
         // a ration has been selected, so confirm it as chosen
-        $scope.move.ration_id = ration.id;
-        $scope.move.patch({confirm_ration:true, ration_id:ration.id}).then(function (response) {
+        $scope.move.patch({confirm_ration:true, ration_id:$scope.move.ration.id}).then(function (response) {
           if (response.move) {
             Restangular.one('moves', $scope.move.id).get().then(function(move) {
               $scope.move = move;
-              // build dice
               buildDice();
             });
-            // build dice
-            buildDice();
           }
           notice(response.messages);
         }, function() {
@@ -57,27 +53,17 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     $scope.selectRation = function(ration) {
       $scope.game.getAllRations();
+      console.log($scope.move.ration)
       // only allow the select if the ration is not set
-      if ($scope.move.ration_id <= 0) {
-        for (i in $scope.rations) {
-          if ($scope.rations[i] && typeof $scope.rations[i] === 'object')
-            $scope.rations[i].selected = false;
-        }
+      if (!$scope.move.ration || !$scope.move.ration.id <= 0) {
         // move to the ration
         $scope.top = 50 + 100 - (ration.position.centre_y/2);
         $scope.left = 20 + 100 - (ration.position.centre_x/2);
-
-        ration.selected = true;
-        $scope.selectedRation = ration;
+        $scope.move.ration = ration;
+        //ration.selected = true;
+        //$scope.selectedRation = ration;
       }
     }
-
-    $scope.selectDice = function(dieNum, dieValue) {
-      $scope.game.getAllRations();
-      $scope.move.selected_die = dieNum;
-      $scope.move.movements_left = dieValue;
-      loadSelection();
-    };
 
     var loadSelection = function() {
       if (!$scope.move.ration_id || !$scope.move.selected_die || $scope.move.selected_die < 1) {
@@ -210,7 +196,10 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
             if ($scope.move.selected_die && $scope.move.selected_die == this.number) {
               notice('Die Already Selected', 'You have already begun moving that die. You have '+$scope.move.movements_left+' movements left.', 'info', 6);
             } else {
-              $scope.selectDice(this.number, this.value*this.combine);
+              $scope.game.getAllRations();
+              $scope.move.selected_die = this.number;
+              $scope.move.movements_left = this.value*this.combine;
+              loadSelection();
             }
           } else {
             notice('Die Cannot Be Used', 'The die you selected is out of play.', 'warning', 6);
