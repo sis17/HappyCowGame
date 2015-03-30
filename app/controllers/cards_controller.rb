@@ -39,7 +39,7 @@ class CardsController < ApplicationController
     if params[:game_user_id]
       @card = GameUserCard.find(params[:id])
       action = Action.new
-      action.set('Discarded a Card', "They discarded the card #{@card.game_card.card.title}.",
+      action.set('Discarded a Card', "discarded the card #{@card.game_card.card.title}.",
         @card.game_user.game.round.id, @card.game_user.game.round.current_phase, @card.game_user.id
       )
       @card.destroy

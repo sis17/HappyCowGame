@@ -34,14 +34,23 @@ class PositionsController < ApplicationController
       graph[position.id]['centre_x'] = position.centre_x;
       graph[position.id]['centre_y'] = position.centre_y;
       graph[position.id]['links'] = {};
+      graph[position.id]['rations'] = {};
     end
 
     # add any links
     if depth >= 0 and position.positions
       position.positions.each do |pos|
+        puts taken_positions
         if !taken_positions[pos.id]
           # add the links to the current position
           graph[position.id]['links'][pos.id] = pos.id;
+          # add the next position, if it doesn't already exist
+          build_graph(graph, pos, depth, taken_positions)
+        elsif taken_positions[pos.id] && taken_positions[pos.id][:type] == 'ration'
+          ration = taken_positions[pos.id]
+          # add the links to the current position
+          graph[position.id]['links'][pos.id] = pos.id;
+          graph[position.id]['rations'][ration[:id]] = ration[:id]#Ration.find(ration[:id]).as_json;
           # add the next position, if it doesn't already exist
           build_graph(graph, pos, depth, taken_positions)
         end
@@ -54,11 +63,11 @@ class PositionsController < ApplicationController
     if @game
       rations = Ration.joins(:game_user).where(game_users: {game_id:@game.id})
       rations.each do |ration|
-        taken_positions[ration.position.id] = ration.position.id
+        taken_positions[ration.position.id] = {id: ration.id, type: 'ration'}
       end
       motiles = Motile.where(game: @game)
       motiles.each do |motile|
-        taken_positions[motile.position.id] = motile.position.id
+        taken_positions[motile.position.id] = {id: motile.id, type: 'motile'}
       end
     end
     return taken_positions

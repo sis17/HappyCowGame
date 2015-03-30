@@ -27,9 +27,17 @@ class MovesController < ApplicationController
       @move.save
       messages = @move.set_dice
       success = true
-    elsif params[:select_dice] and params[:move][:selected_die]
-      messages = @move.select_dice(params[:move][:selected_die])
-      success = true
+    elsif params[:make_move] and params[:move][:selected_die]
+      if !@move.selected_die or @move.selected_die < 1
+        messages = @move.select_dice(params[:move][:selected_die])
+      end
+
+      if params[:position_id]
+        messages.concat(@move.confirm_move(params[:position_id]))
+        success = true
+      else
+        messages.push({title:'Move Not Made', message: 'No position was specified.', type:'warning'})
+      end
     else
       messages.push({title:'Move Not Made', message: 'No move was made, actions were not specified.', type:'warning'})
     end

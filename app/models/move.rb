@@ -45,12 +45,80 @@ class Move < ActiveRecord::Base
     return messages
   end
 
+  def get_movements
+    movements = 0
+    movements = self.dice1 if self.selected_die == 1
+    movements = self.dice2 if self.selected_die == 2
+    movements = self.dice3 if self.selected_die == 3
+
+    if self.dice1 == self.dice2 and self.dice1 == self.dice3 # triple
+      movements *= 3
+    elsif movements == self.dice1 and movements == self.dice2 # first double
+      movements *= 2
+    elsif movements == self.dice1 and movements == self.dice3 # middle double
+      movements *= 2
+    elsif movements == self.dice2 and movements == self.dice3 # last double
+      movements *= 2
+    end
+
+    return movements
+  end
+
   def select_dice(dieNum)
     messages = []
     # check for water, and diseases
     self.selected_die = dieNum
     self.save
-    messages.push({title:'Dice Confirmed', message: 'The dice was selection was confirmed.', type:'success'})
+
+    if dieNum == 1 || dieNum == 2 || dieNum == 3
+      self.movements_left = self.get_movements
+      self.movements_made = 0
+      self.save
+    else
+      messages.push({title:'Dice Unknown', text: 'The dice could not be found ('+dieNum.to_s+').', type:'warning', time:0})
+    end
+
+    messages.push({title:'Dice Confirmed', text: 'The dice selection was confirmed.', type:'success', time:5})
+    return messages
+  end
+
+  def confirm_move(position_id)
+    messages = []
+    success = true
+    ration = self.ration
+    new_position = Position.find(position_id)
+
+    # check the ration can move there
+    game = self.round.game
+    existing_motile = Motile.where(game: game, position_id: new_position.id).take
+    existing_ration = Ration.joins(:game_user).where(game_users: {game_id:game.id}, position_id: new_position.id).take
+    if existing_motile
+      success = false
+    elsif existing_ration
+      success = false
+      # if incoming ration has more fiber, switch places
+      if ration.count_type('fiber') > existing_ration.count_type('fiber')
+        existing_ration.position = ration.position
+        existing_ration.save
+        success = true
+        ration.game_user.score += 1
+        ration.game_user.save
+        messages.push({title:'Ration Pushed', text: 'You had more fiber than another ration, so pushed past it. +1pt.', type:'success', time: 5})
+      else
+        messages.push({title:'You Cannot Push', text: 'Your ration does not have enough fiber to push the other ration. You need '+existing_ration.count_type('fiber').to_s+' fiber.', type:'warning', time: 6})
+      end
+    end
+
+    # update the move
+    if success
+      ration.position_id = new_position.id
+      ration.save
+      self.movements_left -= 1
+      self.movements_made += 1
+      self.save
+      messages.push({title:'Ration Moved', text: ''+self.movements_made.to_s+'/'+self.get_movements.to_s+' movements used.', type:'success', time: 5})
+    end
+
     return messages
   end
 

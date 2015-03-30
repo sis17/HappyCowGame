@@ -56,6 +56,17 @@ class GamesController < ApplicationController
         @round = @game.round
         nextPlayer = @game.get_next_player
         messageText = ''
+
+        # make the action if a movement round
+        movement = Move.where(round: @round, game_user: @round.game_user).take
+        if @round.current_phase == 3 and movement.ration_id
+          action = Action.new
+          ration = movement.ration
+          action.set('Moved a Ration', 'moved a ration with '+ration.describe_ingredients+', '+movement.movements_made.to_s+' positions.',
+            @round.id, 3, ration.game_user.id
+          )
+        end
+
         if nextPlayer.id == @round.starting_user_id
           # if the phase has come back to the first player, move on the phase
           @round.current_phase = @round.current_phase+1

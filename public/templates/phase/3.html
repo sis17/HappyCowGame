@@ -40,6 +40,7 @@
         class="move-position {{pos.depth == 1 ? 'move-position-first clickable' : ''}}"
         style="left: {{left+pos.centre_x}}px; top: {{top+pos.centre_y}}px; padding-left:3px;"
         ng-click="pos.depth == 1 ? moveRation(pos.id) : null">{{pos.depth}}
+        {{pos.rations.length > 0 ? 'pushable' : ''}}
   </div>
 
   <div id="board-controls">
