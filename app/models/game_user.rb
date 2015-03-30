@@ -84,7 +84,7 @@ class GameUser < ActiveRecord::Base
 
       # create an action to mark the event
       action = Action.new
-      action.set('Created a Ration', 'They created a ration with '+ration.describe_ingredients+'.',
+      action.set('Created a Ration', 'created a ration with '+ration.describe_ingredients+'.',
         ration.game_user.game.round_id, 2, ration.game_user.id
       )
 

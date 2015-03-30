@@ -19,6 +19,11 @@ class Round < ActiveRecord::Base
         :moves,
         {game_user: {:include => [
           :user => {:only => [:name]}
+        ]}},
+        {actions: {:include => [
+          game_user: {:include => [
+            user: {:only => [:name]}
+          ]}
         ]}}
       ]
     )

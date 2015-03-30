@@ -37,6 +37,8 @@ angular.module('happyCow').controller('RoundViewCtrl', [
 angular.module('happyCow').controller('RoundReviewCtrl',
   function ($scope, $modalInstance, round) {
     $scope.round = round;
+    console.log(round);
+    $scope.reviewDetailsTemplate = 'templates/partials/review_details.html';
 
     $scope.ok = function () {
       $modalInstance.close();

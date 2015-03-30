@@ -64,6 +64,11 @@ class Game < ActiveRecord::Base
     self.carddeck.cards.each do |card|
       GameCard.new(game: self, card: card).save
     end
+    GameCard.new(game: self, card: Card.find_by(category: 'energy')).save # create extra energy
+    GameCard.new(game: self, card: Card.find_by(category: 'protein')).save # create extra protein
+    GameCard.new(game: self, card: Card.find_by(category: 'fiber')).save # create extra fiber
+    GameCard.new(game: self, card: Card.find_by(category: 'water')).save # create extra water
+    # no extra oligos, this means it's half as likely
 
     #give cards to each player
     self.game_users.each do |game_user|
@@ -154,7 +159,7 @@ class Game < ActiveRecord::Base
       ration.game_user.save
 
       action = Action.new
-      action.set('Ration Absorbed', 'Their ration was absorbed as '+type+', and gained '+score.to_s+' points for '+ration.describe_ingredients+'.',
+      action.set('Ration Absorbed', 'had a ration absorbed as '+type+', and gained '+score.to_s+' points for '+ration.describe_ingredients+'.',
         self.round_id, 3, ration.game_user.id
       )
 
@@ -232,8 +237,8 @@ class Game < ActiveRecord::Base
 
   def assign_cards(game_user, number)
     # assemble the right proportion of card ids in a balance
-    actions = GameCard.joins(:card).where("cards.category = 'action'").all.shuffle[1..self.card_balance('action')]
-    ingredients = GameCard.joins(:card).where("cards.category != 'action'").all.shuffle[1..self.card_balance('ingredient')]
+    actions = GameCard.joins(:card).where("cards.category = 'action'").all.shuffle[1..(self.card_balance('action')*2)]
+    ingredients = GameCard.joins(:card).where("cards.category != 'action'").all.shuffle[1..(self.card_balance('ingredient')*2)]
     game_card_ids = []
     actions.each do |game_card|
       game_card_ids.push(game_card.id)

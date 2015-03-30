@@ -147,7 +147,7 @@ class GameUserCard < ActiveRecord::Base
       end
       #record the action
       action = Action.new
-      action.set('Used a Card', "They used the card #{card.title}, with the result: #{message}.",
+      action.set('Used a Card', " used the card #{card.title}, with the result: #{message}.",
         self.game_user.game.round.id, 2, self.game_user.id
       )
       self.destroy
