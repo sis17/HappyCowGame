@@ -104,13 +104,6 @@ class GameUserCard < ActiveRecord::Base
           cow.disease_id = nil
         end
         cow.save
-        count = 4
-        self.game_user.game_user_cards do |game_user_card|
-          if game_user_card.id != self.id and count > 0
-            count += 1
-            game_user_card.destroy
-          end
-        end
         success = true
       else
         failed_text = 'You cannot use Medical Insurance, as you do not have 4 cards to spend.'

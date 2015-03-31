@@ -44,11 +44,13 @@ class MovesController < ApplicationController
       messages.push({title:'Move Not Made', message: 'No move was made, actions were not specified.', type:'warning'})
     end
 
-    render json: {
+    response = {
       success: success,
       move: @move.as_json,
       messages: messages
-    } and return
+    }
+    response[:move] = @move if @move
+    render json: response and return
   end
 
   private

@@ -127,9 +127,13 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
         // update the position
         $scope.move.patch({make_move: true, move: $scope.move, position_id: newPos.id}).then(function(response) {
             if (response.success) {
-              $scope.move.movements_left = response.move.movements_left;
-              $scope.move.movements_made = response.move.movements_made;
-              $scope.animateRation(ration, newPos); // when finished it will save the position
+              if (response.move) {
+                $scope.move.movements_left = response.move.movements_left;
+                $scope.move.movements_made = response.move.movements_made;
+                $scope.animateRation(ration, newPos); // when finished it will save the position
+              } else {
+                endMovementPhase(); // the ration has been deleted
+              }
             }
             notice(response.messages);
         },function() {
@@ -168,14 +172,14 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
       // test for the end of the turn
       if ($scope.move.movements_left <= 0) { // check if there's allowed movements left
-        endMovementPhase(ration);
+        endMovementPhase();
       } else if ($scope.possiblePositions.length == 0) { // check if the ration is stuck
-        notice('You were Stuck', 'Your ration could not finish it`s moves.', 'info', 6);
-        endMovementPhase(ration);
+        //notice('You were Stuck', 'Your ration could not finish it`s moves.', 'info', 6);
+        endMovementPhase();
       }
     }
 
-    var endMovementPhase = function(ration) {
+    var endMovementPhase = function() {
       $scope.game.getAllRations();
       $scope.game.doneTurn();
     }

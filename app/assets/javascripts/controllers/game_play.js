@@ -106,7 +106,6 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
                 $scope.game.round = round;
                 if (roundId != round.id) {
                   // at the start of the phase we want to look at the event
-                  // update motile peices
                   $scope.changePhaseTemplate(1);
                 } else {
                   $scope.changePhaseTemplate($scope.game.round.current_phase);

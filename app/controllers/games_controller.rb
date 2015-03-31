@@ -31,9 +31,11 @@ class GamesController < ApplicationController
         movement = Move.where(round: @round, game_user: @round.game_user).take
         if @round.current_phase == 3 and movement.ration_id
           action = Action.new
-          ration = movement.ration
-          action.set('Moved a Ration', 'moved a ration with '+ration.describe_ingredients+', '+movement.movements_made.to_s+' positions.',
-            @round.id, 3, ration.game_user.id
+          with = ''
+          with = ', with '+movement.ration.describe_ingredients+', ' if movement.ration
+          action.set(
+            'Moved a Ration', 'moved a ration '+with+movement.movements_made.to_s+' positions.',
+            @round.id, 3, @round.game_user.id
           )
 
           # add the round records

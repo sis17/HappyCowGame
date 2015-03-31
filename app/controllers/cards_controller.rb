@@ -17,7 +17,20 @@ class CardsController < ApplicationController
 
       if params[:use]
         # do the use action
+        card = @game_user_card.game_card.card
+        game_user = @game_user_card.game_user
         response = @game_user_card.use #act_on_card(@game_user_card, params)
+
+        if response[:success] and card.uri == 'medical_insurance'
+          count = 0
+          gucs = GameUserCard.where(game_user: game_user)
+          while count < 4 and gucs[count]
+            guc = gucs[count]
+            GameUserCard.destroy(guc.id)
+            count += 1
+          end
+          response[:message][:text] = ' 4 of your cards have been removed.'
+        end
 
         render json: response and return
       end
