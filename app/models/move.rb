@@ -84,9 +84,10 @@ class Move < ActiveRecord::Base
 
   def confirm_move(position_id)
     messages = []
-    success = true
+    success = false
     ration = self.ration
     new_position = Position.find(position_id)
+    success = true if new_position
 
     # check the ration can move there
     game = self.round.game
@@ -94,7 +95,7 @@ class Move < ActiveRecord::Base
     existing_ration = Ration.joins(:game_user).where(game_users: {game_id:game.id}, position_id: new_position.id).take
     if existing_motile
       success = false
-    elsif existing_ration
+    elsif existing_ration and existing_ration.id != ration.id
       success = false
       # if incoming ration has more fiber, switch places
       if ration.count_type('fiber') > existing_ration.count_type('fiber')
@@ -111,12 +112,20 @@ class Move < ActiveRecord::Base
 
     # update the move
     if success
-      ration.position_id = new_position.id
+      old_pos = ration.position
+      ration.position = new_position
       ration.save
       self.movements_left -= 1
       self.movements_made += 1
       self.save
       messages.push({title:'Ration Moved', text: ''+self.movements_made.to_s+'/'+self.get_movements.to_s+' movements used.', type:'success', time: 5})
+      #check if the ration is in the trough, to slide others down
+      game.arrange_trough(old_pos)
+
+      # consume the ration if on one of the meat, milk or muck squares
+      if self.movements_left == 0 and (new_position.order == 78 or new_position.order == 86 or new_position.order == 95)
+        messages.concat(game.finish_ration(ration))
+      end
     end
 
     return messages

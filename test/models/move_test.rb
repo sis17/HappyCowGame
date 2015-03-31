@@ -24,8 +24,24 @@ class MoveTest < ActiveSupport::TestCase
     @move.select_dice(1)
     movements = @move.movements_left
     assert_equal(@move.get_movements, @move.movements_left, "The move has the number of movements left that were on the dice")
-    @move.confirm_move(positions(:pos7))
+    @move.confirm_move(positions(:pos7).id)
     assert_equal(movements-1, @move.movements_left, "The move has one less movement's left.")
     assert_equal(1, @move.movements_made, "The move has one movement made.")
+  end
+
+  test "consume ration" do
+    @move.ration = rations(:ration1_twosimeon) # confirm ration
+    @move.set_dice
+    @move.save
+    @move = Move.find(@move.id)
+    @move.dice1 = 1
+    @move.select_dice(1)
+    game_user = game_users(:twosimeon)
+    messages = @move.confirm_move(positions(:pos_milk).id)
+
+    assert_equal(0, @move.movements_left, "The move has no movement's left.")
+    assert_equal(1, @move.movements_made, "The move has one movement made.")
+    assert(@move.ration.destroyed?, "The ration has been removed.")
+    assert_equal(game_user.score+2, GameUser.find(game_user.id).score, "The game user has 2 more points.")
   end
 end

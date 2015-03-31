@@ -29,3 +29,15 @@ pos7:
 pos_rumen:
   area_id: 3
   order: 55
+
+pos_milk:
+  area_id: 4
+  order: 78
+
+pos_meat:
+  area_id: 4
+  order: 86
+
+pos_muck:
+  area_id: 4
+  order: 95

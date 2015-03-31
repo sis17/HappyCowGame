@@ -28,11 +28,13 @@ class MovesController < ApplicationController
       messages = @move.set_dice
       success = true
     elsif params[:make_move] and params[:move][:selected_die]
+      ration = @move.ration
       if !@move.selected_die or @move.selected_die < 1
         messages = @move.select_dice(params[:move][:selected_die])
       end
 
       if params[:position_id]
+        # update the ration position
         messages.concat(@move.confirm_move(params[:position_id]))
         success = true
       else

@@ -13,24 +13,7 @@ class RationsController < ApplicationController
 
   def update
     @ration = Ration.find(params[:id])
-
-    old_pos = @ration.position
-    @ration.update(params.require(:ration).permit(:position_id))
-    #check if the ration is in the trough, to slide others down
-    @ration.game_user.game.arrange_trough(old_pos)
-
-    action = Action.new
-    action.set('Moved a Ration', 'They moved a ration with '+@ration.describe_ingredients+', from position '+old_pos.id.to_s+' to position '+@ration.position.id.to_s+'.',
-      @ration.game_user.game.round_id, 3, @ration.game_user.id
-    )
-    response = {ration: @ration}
-
-    # consume the ration if on one of the meat, milk or muck squares
-    pos = params[:ration][:position_id]
-    if pos == 78 or pos == 86 or pos == 95
-      response = @ration.game_user.game.finish_ration(@ration)
-    end
-
+    # actions done in the move_controller
     render json: response and return
   end
 

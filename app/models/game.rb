@@ -142,12 +142,23 @@ class Game < ActiveRecord::Base
   end
 
   def finish_ration(ration)
+    messages = []
     type = 'something'
-    if ration.position_id == 78 # milk
+
+    if !ration.position
+      messages.push({
+          title: 'Ration Not Consumed',
+          text: "Your ration could not be consumed, we couldn't figure out where it is.",
+          type: 'warning', time: 6
+      });
+      return messages
+    end
+
+    if ration.position.order == 78 # milk
       if !self.cow.pregnancy_id then type = 'milk' else type = "meat" end
     end
-    if ration.position_id == 86 then type = "meat" end
-    if ration.position_id == 95 then type = "muck" end
+    if ration.position.order == 86 then type = "meat" end
+    if ration.position.order == 95 then type = "muck" end
 
     if type != 'something'
       score = 0
@@ -170,26 +181,20 @@ class Game < ActiveRecord::Base
       ingredients = ration.describe_ingredients
       ration.destroy
 
-      return {
-        success: true,
-        ration: nil,
-        message: {
+      messages.push({
           title: 'Ration Consumed',
           text: "Your ration was consumed as #{type}, you gained #{score} points for: #{ingredients}",
-          type: 'success'
-        }
-      }
+          type: 'success', time: 6
+      });
+    else
+      messages.push({
+          title: 'Ration Not Consumed',
+          text: "Your ration could not be consumed, we didn`t recognise what it is being consumed as.",
+          type: 'warning', time: 6
+      });
     end
 
-    return {
-      success: false,
-      ration: ration,
-      message: {
-        title: 'Ration Not Consumed',
-        text: "Your ration could not be consumed, we didn`t recognise what it is being consumed as.",
-        type: 'warning'
-      }
-    }
+    return messages
   end
 
   def arrange_trough(starting_pos)
