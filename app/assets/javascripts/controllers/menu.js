@@ -14,6 +14,11 @@ menuCtrl.controller('ScoreViewCtrl', [
 angular.module('happyCow').controller('RoundViewCtrl', [
   '$scope', '$modal', 'Restangular',
   function($scope, $modal, Restangular) {
+
+    $scope.$watch('game.rounds', function() {
+      // update the game rounds
+    });
+
     $scope.review = function (round) {
       Restangular.one('rounds', round.id).get().then(function(roundData) {
         var modalInstance = $modal.open({
@@ -23,6 +28,9 @@ angular.module('happyCow').controller('RoundViewCtrl', [
           resolve: {
             round: function () {
               return roundData;
+            },
+            game_users: function () {
+              return $scope.game.game_users;
             }
           }
         });
@@ -35,8 +43,9 @@ angular.module('happyCow').controller('RoundViewCtrl', [
   }
 ]);
 angular.module('happyCow').controller('RoundReviewCtrl',
-  function ($scope, $modalInstance, round) {
+  function ($scope, $modalInstance, round, game_users) {
     $scope.round = round;
+    $scope.game_users = game_users;
     console.log(round);
     $scope.reviewDetailsTemplate = 'templates/partials/review_details.html';
 

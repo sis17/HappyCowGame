@@ -4,15 +4,17 @@
       <thead>
         <tr>
           <th>Players</th>
-          <th>Beginning Score</th>
-          <th>Ending Score</th>
+          <th>Score</th>
           <th>Number of Cards</th>
           <th>Number of Rations</th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="game_user in game.game_users | orderBy:id" class="player-{{game_user.id}}">
-          <td>{{game_user.user.name}}</td><td>tbc</td><td>{{game_user.score}}</td><td>tbc</td><td>tbc</td>
+        <tr ng-repeat="game_user in game_users | orderBy:id">
+          <td><span class="label label-default player-{{game_user.id}}">{{game_user.user.name}}</span></td>
+          <td><span ng-repeat="record in round.round_records | filter:{name:'score', game_user_id:game_user.id}">{{record.value}}</span></td>
+          <td><span ng-repeat="record in round.round_records | filter:{name:'cards', game_user_id:game_user.id}">{{record.value}}</span></td>
+          <td><span ng-repeat="record in round.round_records | filter:{name:'rations', game_user_id:game_user.id}">{{record.value}}</span></td>
         </tr>
       </tbody>
     </table>

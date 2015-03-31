@@ -18,39 +18,9 @@ class GamesController < ApplicationController
     if params[:done_turn]
       # the user has finished doing what they can, move on to next turn, or phase, or round
       if @game.round.current_phase == 4
-        #move on to the next turn
-        round = Round.where(game_id: @game.id, number: @game.round.number+1).first
-        if round
-          @game.cow.turn_effects
-          # move the motiles
-          @game.motiles.each do |motile|
-            messages.concat(motile.move)
-          end
-
-          @game.round = round
-          @game.round.makeActive
-          @game.save
-
-          # each player needs 2 more cards
-          @game.game_users.each do |game_user|
-            @game.assign_cards(game_user, 2)
-          end
-
-          success = true
-          messages.push({
-              title: 'Round Finished',
-              text: 'It is Round '+@game.round.number.to_s+', and is now '+@game.round.game_user.user.name+'`s turn.',
-              type: 'info', time: 5
-          })
-        else
-          #there are no more rounds!
-          @game.finish
-          success = false
-          messages.push({
-              title: 'Game Finished', text: 'There are no more rounds.',
-              type: 'info', time: 5
-          })
-        end
+        #move on to the next round
+        messages.concat(@game.finish_round)
+        success = true
       else
         # get the next player, or move to the next phase
         @round = @game.round
@@ -65,6 +35,14 @@ class GamesController < ApplicationController
           action.set('Moved a Ration', 'moved a ration with '+ration.describe_ingredients+', '+movement.movements_made.to_s+' positions.',
             @round.id, 3, ration.game_user.id
           )
+
+          # add the round records
+          round_record = RoundRecord.new(
+            round: @round, game_user: @round.game_user, name: 'score', value: @round.game_user.score).save
+          round_record = RoundRecord.new(
+            round: @round, game_user: @round.game_user, name: 'cards', value: @round.game_user.game_user_cards.count).save
+          round_record = RoundRecord.new(
+            round: @round, game_user: @round.game_user, name: 'rations', value: @round.game_user.rations.count).save
         end
 
         if nextPlayer.id == @round.starting_user_id

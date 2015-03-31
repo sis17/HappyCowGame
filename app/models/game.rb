@@ -281,6 +281,42 @@ class Game < ActiveRecord::Base
     return 0
   end
 
+  def finish_round
+    messages = []
+    round = Round.where(game_id: self.id, number: self.round.number+1).first
+    if round
+      self.cow.turn_effects
+      # move the motiles
+      self.motiles.each do |motile|
+        messages.concat(motile.move)
+      end
+
+      self.round = round
+      self.round.makeActive
+      self.save
+
+      # each player needs 2 more cards
+      self.game_users.each do |game_user|
+        self.assign_cards(game_user, 2)
+      end
+
+      messages.push({
+          title: 'Round Finished',
+          text: 'It is Round '+self.round.number.to_s+', and is now '+self.round.game_user.user.name+'`s turn.',
+          type: 'info', time: 5
+      })
+    else
+      #there are no more rounds!
+      self.finish
+      messages.push({
+          title: 'Game Finished', text: 'There are no more rounds.',
+          type: 'info', time: 5
+      })
+    end
+
+    return messages
+  end
+
   def finish
     if self.stage == 1
       self.stage = 2
@@ -307,7 +343,9 @@ class Game < ActiveRecord::Base
   def as_json(options={})
     super(
       :include=> [
-        {round: {:include => [:event,
+        {round: {:include => [
+          :event,
+          :round_records,
           {game_user: {:include => [
             :user => {:only => [:id, :name, :experience]}
           ]}},

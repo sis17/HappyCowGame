@@ -10,6 +10,7 @@ class GameUser < ActiveRecord::Base
   has_many :rations
   has_many :moves
   has_many :actions
+  has_many :round_records
 
   def make_ration(ration_params)
     messages = []

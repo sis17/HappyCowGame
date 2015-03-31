@@ -78,7 +78,7 @@ class Move < ActiveRecord::Base
       messages.push({title:'Dice Unknown', text: 'The dice could not be found ('+dieNum.to_s+').', type:'warning', time:0})
     end
 
-    messages.push({title:'Dice Confirmed', text: 'The dice selection was confirmed.', type:'success', time:5})
+    messages.push({title:'Dice Confirmed', text: 'You have '+self.movements_left.to_s+'/'+self.get_movements.to_s+' movements left.', type:'success', time:5})
     return messages
   end
 
@@ -118,7 +118,7 @@ class Move < ActiveRecord::Base
       self.movements_left -= 1
       self.movements_made += 1
       self.save
-      messages.push({title:'Ration Moved', text: ''+self.movements_made.to_s+'/'+self.get_movements.to_s+' movements used.', type:'success', time: 5})
+      #messages.push({title:'Ration Moved', text: ''+self.movements_made.to_s+'/'+self.get_movements.to_s+' movements used.', type:'success', time: 5})
       #check if the ration is in the trough, to slide others down
       game.arrange_trough(old_pos)
 

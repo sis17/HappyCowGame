@@ -6,6 +6,7 @@ class Round < ActiveRecord::Base
 
   has_many :moves
   has_many :actions
+  has_many :round_records
 
   def makeActive
     # cause the event to happen
@@ -21,6 +22,11 @@ class Round < ActiveRecord::Base
           :user => {:only => [:name]}
         ]}},
         {actions: {:include => [
+          game_user: {:include => [
+            user: {:only => [:name]}
+          ]}
+        ]}},
+        {round_records: {:include => [
           game_user: {:include => [
             user: {:only => [:name]}
           ]}

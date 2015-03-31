@@ -50,10 +50,11 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
         Restangular.one('games', $routeParams.gameId).get().then(function(game) {
           $scope.game.cow = game.cow;
           $scope.game.round = game.round;
+          $scope.game.rounds = game.rounds;
           $scope.game.motiles = game.motiles;
           $scope.game.stage = game.stage;
           $scope.game.ingredient_cats = game.ingredient_cats;
-          
+
           if ($scope.game.stage != game.stage) {
             if ($scope.game.stage == 4) {
               notice('The Cow Died!', 'That`s the end of the game, next time take better care of the cow.', 'danger', 10)
