@@ -7,10 +7,12 @@ hcApp.controller('GroupGameCtrl', [
       rounds_min: 10,
       rounds_max: 10
     };
+
     Restangular.one('carddecks', 1).get().then(function(carddeck) {
       $scope.game.carddeck_id = carddeck.id;
       $scope.carddeck = carddeck;
     });
+    
     $scope.game_users = [];
 
     // get list of users for invites

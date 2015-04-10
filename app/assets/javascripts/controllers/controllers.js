@@ -87,6 +87,14 @@ var baseCtrl = angular.module('happyCow').controller('BaseCtrl', [
 
   }
 ]);
+angular.module('happyCow').controller('TurnChangeNoticeCtrl',
+  function ($scope, $modalInstance, user) {
+    $scope.user = user;
+
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+});
 
 var welcomeCtrl = hcApp.controller('WelcomeCtrl', [
   '$scope',

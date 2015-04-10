@@ -3,8 +3,8 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
   function($scope, $location, Restangular, notice, $timeout) {
 
     var showMoves = function() {
-      if ($scope.move && $scope.move.ration_id) {
-        if ($scope.move.selected_die) {
+      if ($scope.user.move && $scope.user.move.ration_id) {
+        if ($scope.user.move.selected_die) {
           loadSelection();
         }
         buildDice();
@@ -13,30 +13,37 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     $scope.$watch('user.rations', function() { /* update the rations */ });
     $scope.$watch('game.allRations', function() { /* update the rations */ });
-    $scope.$watch('move', function() {
-      console.log('$scope.move has changed')
-      if ($scope.move && $scope.move.ration_id) {
-        if ($scope.move.selected_die) {
-          loadSelection();
-        }
-        buildDice();
-      }
-    });
-    console.log($scope.move);
-    $scope.game.getAllRations();
 
+    /*$scope.$watch('$storage.user.game_user.id', function() {
+      console.log('the game user id has changed');
+      $scope.user.getMoves();
+      console.log($scope.user.move.ration_id);
+    });*/
+
+    $scope.$watch('user.move.ration_id', function(newValue, oldValue) {
+      console.log('$scope.user.move.ration_id has changed to: '+newValue);
+      $scope.user.move.ration_id = newValue;
+      showMoves();
+    });
+    $scope.$watch('move.selected_die', function(newValue, oldValue) {
+      console.log('$scope.user.move.selected_die has changed to: '+newValue);
+      showMoves();
+    });
+
+    // start up stuff
+    $scope.game.getAllRations();
     $scope.visitedPositions = {}; // positions that the ration can't revisit
 
     $scope.confirmRation = function() {
-      if (!$scope.move.ration) {
+      if (!$scope.user.move.ration) {
         // if no ration is selected, let the user know
         notice('First Choose a Ration', 'You need to select a ration from the list, then press `Confirm`.', 'info', 2)
       } else {
         // a ration has been selected, so confirm it as chosen
-        $scope.move.patch({confirm_ration:true, ration_id:$scope.move.ration.id}).then(function (response) {
+        $scope.user.move.patch({confirm_ration:true, ration_id:$scope.user.move.ration.id}).then(function (response) {
           if (response.move) {
-            Restangular.one('moves', $scope.move.id).get().then(function(move) {
-              $scope.move = move;
+            Restangular.one('moves', $scope.user.move.id).get().then(function(move) {
+              $scope.user.move = move;
               buildDice();
             });
           }
@@ -56,20 +63,19 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       if (ration.position.area_id == 1 && ration.position.order > 2) {
         notice('Ration Cannot Move', 'The ration you selected is behind others on the trough. The rations in front must be eaten before you can move this ration.', 'warning', 8)
         // only allow the select if the ration is not set
-      } else if (!$scope.move.ration || !$scope.move.ration.id <= 0) {
+      } else if (!$scope.user.move.ration || !$scope.user.move.ration.id <= 0) {
         // move to the ration
-        $scope.move.ration = ration;
+        $scope.user.move.ration = ration;
       }
     }
 
     var loadSelection = function() {
-      if (!$scope.move.ration_id || !$scope.move.selected_die || $scope.move.selected_die < 1) {
+      if (!$scope.user.move.ration_id || !$scope.user.move.selected_die || $scope.user.move.selected_die < 1) {
         return;
       }
       // do not update the selected die, it is not confirmed until movement
-      Restangular.one('games', $scope.game.id).one('positions', $scope.move.ration.position.id)
-                          .one('graph',$scope.move.movements_left).get().then(function(graph) {
-
+      Restangular.one('games', $scope.game.id).one('positions', $scope.user.move.ration.position.id)
+                          .one('graph',$scope.user.move.movements_left).get().then(function(graph) {
         $scope.graph = graph;
         $scope.graph.traverse = function(posId) {
           var depth = 0;
@@ -77,7 +83,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
           check = {};
           check[posId] = posId;
           var links = this[posId].links;
-          while (depth <= $scope.move.movements_left) { // only look for links if there's enough movements left
+          while (depth < $scope.user.move.movements_left) { // only look for links if there's enough movements left
             ++depth;
             var nextLinks = {};
             for (i in links) {
@@ -97,12 +103,10 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
           return positions;
         }
         // load the first possible positions
-        var ration = $scope.getRation($scope.move.ration.id);
+        var ration = $scope.getRation($scope.user.move.ration.id);
         $scope.possiblePositions = graph.traverse(ration.position.id);
-        //if ($scope.possiblePositions.length == 0 ) { // check if the ration is stuck
-          //notice('You were Stuck', 'Your ration could not finish it`s moves.', 'info', 6);
-          //endMovementPhase($scope.getRation($scope.move.ration_id));
-        //}
+      }, function() {
+        console.log('error, positions not returned')
       });
     }
 
@@ -119,14 +123,14 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     $scope.moveRation = function(newPosId) {
       var newPos = $scope.graph[newPosId];
-      var ration = $scope.getRation($scope.move.ration.id);
+      var ration = $scope.getRation($scope.user.move.ration.id);
       if (ration) {
         // update the position
-        $scope.move.patch({make_move: true, move: $scope.move, position_id: newPos.id}).then(function(response) {
+        $scope.user.move.patch({make_move: true, move: $scope.user.move, position_id: newPos.id}).then(function(response) {
             if (response.success) {
               if (response.move) {
-                $scope.move.movements_left = response.move.movements_left;
-                $scope.move.movements_made = response.move.movements_made;
+                $scope.user.move.movements_left = response.move.movements_left;
+                $scope.user.move.movements_made = response.move.movements_made;
                 $scope.animateRation(ration, newPos); // when finished it will save the position
               } else {
                 endMovementPhase(); // the ration has been deleted
@@ -157,27 +161,13 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
         if ($scope.currentSection <= $scope.sectionsCount) {
           animateLoop(ration, newPos); // go through the loop again
         } else {
-          //$scope.updateRation(ration, newPos); // finish the animation and move on
+          // finish the animation and move on
           ration.position = newPos
           $scope.possiblePositions = $scope.graph.traverse(newPos.id);
           ration.position_id = newPos.id;
         }
       }, $scope.sectionsCount)
     }
-
-    /*$scope.updateRation = function(ration, newPos) {
-      ration.position = newPos
-      $scope.possiblePositions = $scope.graph.traverse(newPos.id);
-      ration.position_id = newPos.id;
-
-      // test for the end of the turn
-      if ($scope.move.movements_left <= 0) { // check if there's allowed movements left
-        endMovementPhase();
-      } else if ($scope.possiblePositions.length == 0) { // check if the ration is stuck
-        //notice('You were Stuck', 'Your ration could not finish it`s moves.', 'info', 6);
-        endMovementPhase();
-      }
-    }*/
 
     var endMovementPhase = function() {
       $scope.game.getAllRations();
@@ -191,18 +181,18 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
         combine: combine,
         selected: false,
         class: function() {
-          return (!$scope.move.selected_die || $scope.move.selected_die == this.number) && this.value > 0 ? '' : 'fade-out';
+          return (!$scope.user.move.selected_die || $scope.user.move.selected_die == this.number) && this.value > 0 ? '' : 'fade-out';
         },
         select: function() {
-          if ($scope.move.selected_die && $scope.move.selected_die != this.number && $scope.move.movements_made > 0) {
+          if ($scope.user.move.selected_die && $scope.user.move.selected_die != this.number && $scope.user.move.movements_made > 0) {
             notice('Die Already Selected', 'You have already begun moving with another die, so cannot use that one.', 'warning', 6);
           } else if (this.value >= 1) {
-            if ($scope.move.selected_die && $scope.move.selected_die == this.number) {
-              notice('Die Already Selected', 'You have already begun moving that die. You have '+$scope.move.movements_left+' movements left.', 'info', 6);
+            if ($scope.user.move.selected_die && $scope.user.move.selected_die == this.number) {
+              notice('Die Already Selected', 'You have already begun moving that die. You have '+$scope.user.move.movements_left+' movements left.', 'info', 6);
             }
               $scope.game.getAllRations();
-              $scope.move.selected_die = this.number;
-              $scope.move.movements_left = this.value*this.combine;
+              $scope.user.move.selected_die = this.number;
+              $scope.user.move.movements_left = this.value*this.combine;
               loadSelection();
 
           } else {
@@ -217,21 +207,21 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     // put dice into structure to show doubles or tripples
     var buildDice = function() {
       $scope.dice = [];
-      if ($scope.move.dice1 > 0 && $scope.move.dice1 == $scope.move.dice2 && $scope.move.dice1 == $scope.move.dice3) {// triple
-        addDice(1, $scope.move.dice1, 3, 'water');
-      } else if ($scope.move.dice1 > 0 && $scope.move.dice1 == $scope.move.dice2) { // first double
-        addDice(1, $scope.move.dice1, 2, '');
-        addDice(3, $scope.move.dice3, 1, 'water');
-      } else if ($scope.move.dice1 > 0 && $scope.move.dice1 == $scope.move.dice3) { // second double
-        addDice(1, $scope.move.dice1, 2, 'water');
-        addDice(2, $scope.move.dice2, 1, '');
-      } else if ($scope.move.dice2 > 0 && $scope.move.dice2 == $scope.move.dice3) { // third double
-        addDice(1, $scope.move.dice1, 1, '');
-        addDice(2, $scope.move.dice2, 2, 'water');
+      if ($scope.user.move.dice1 > 0 && $scope.user.move.dice1 == $scope.user.move.dice2 && $scope.user.move.dice1 == $scope.user.move.dice3) {// triple
+        addDice(1, $scope.user.move.dice1, 3, 'water');
+      } else if ($scope.user.move.dice1 > 0 && $scope.user.move.dice1 == $scope.user.move.dice2) { // first double
+        addDice(1, $scope.user.move.dice1, 2, '');
+        addDice(3, $scope.user.move.dice3, 1, 'water');
+      } else if ($scope.user.move.dice1 > 0 && $scope.user.move.dice1 == $scope.user.move.dice3) { // second double
+        addDice(1, $scope.user.move.dice1, 2, 'water');
+        addDice(2, $scope.user.move.dice2, 1, '');
+      } else if ($scope.user.move.dice2 > 0 && $scope.user.move.dice2 == $scope.user.move.dice3) { // third double
+        addDice(1, $scope.user.move.dice1, 1, '');
+        addDice(2, $scope.user.move.dice2, 2, 'water');
       } else {
-        addDice(1, $scope.move.dice1, 1, '');
-        addDice(2, $scope.move.dice2, 1, '');
-        addDice(3, $scope.move.dice3, 1, 'water');
+        addDice(1, $scope.user.move.dice1, 1, '');
+        addDice(2, $scope.user.move.dice2, 1, '');
+        addDice(3, $scope.user.move.dice3, 1, 'water');
       }
     }
 

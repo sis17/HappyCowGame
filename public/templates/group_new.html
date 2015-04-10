@@ -77,7 +77,15 @@
           <h4>Rounds</h4>
           <hr />
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
+              <p>Minimum number of rounds <input type="text" ng-model="game.rounds_min" style="width:40px;" size="3"></p>
+            </div>
+            <div class="col-md-6">
+              <p>Maximum number of rounds <input type="text" ng-model="game.rounds_max" style="width:40px;" size="3"></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
               <p>
                 There will be
                 <span ng-if="game.rounds_min != game.rounds_max">
@@ -85,11 +93,6 @@
                 </span>
                 <span class="badge">{{game.rounds_max}}</span> rounds.
               </p>
-            </div>
-            <div class="col-md-4">
-              <div class="pull-right">
-                <button data-toggle="modal" data-target="#round-modal" class="btn btn-default">Change</button>
-              </div>
             </div>
           </div>
         </div>
@@ -131,27 +134,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Done</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="round-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Choose the length of your Game</h4>
-      </div>
-      <div class="modal-body">
-        <p>The game will be the length of rounds you specify. If you want to have an unknown number of rounds, set a
-        different minimum and maximum amount, the game will have a number of rounds between those parameters.</p>
-        Minimum Rounds <input type="text" ng-model="game.rounds_min"><br />
-        Maximum Rounds <input type="text" ng-model="game.rounds_max">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
-        <button type="button" ng-click="updateRounds()" class="btn btn-primary" data-dismiss="modal">Save</button>
       </div>
     </div>
   </div>

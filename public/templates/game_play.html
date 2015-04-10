@@ -168,3 +168,14 @@
     <button ng-click="cancel()" class="btn btn-default">Close</button>
   </div>
 </script>
+
+<script type="text/ng-template" id="turnChangeNotice.html">
+  <div class="modal-header">
+    <h4 class="modal-title">It is {{user.name}}`s turn</h4>
+  </div>
+  <div class="modal-body">
+    <p>Please give control to {{user.name}}.</p>
+  <div class="modal-footer">
+    <button ng-click="cancel()" class="btn btn-primary">Continue</button>
+  </div>
+</script>

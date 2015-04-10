@@ -118,15 +118,15 @@ class Move < ActiveRecord::Base
       self.movements_left -= 1
       self.movements_made += 1
       self.save
-      
+
       #check if the ration is in the trough, to slide others down
       game.arrange_trough(old_pos)
 
       # consume the ration if on one of the meat, milk or muck squares
-      if self.movements_left < 1 and (new_position.order == 78 or new_position.order == 86 or new_position.order == 95)
-        puts self.movements_left
-        puts new_position.order
+      if self.movements_left < 1 and (new_position.order == 78 or new_position.order == 86)
         messages.concat(game.finish_ration(ration))
+      elsif new_position.order == 95
+        messages.concat(game.finish_ration(ration)) # consume the ration if it's at the last position
       end
     end
 

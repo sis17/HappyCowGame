@@ -104,14 +104,6 @@ a.menu-button:hover {
   margin-right: 10px;
   margin-left: 10px;
 }
-#cards-list .btn-group {
-  margin-top: 5px;
-  width: 150px;
-  background-color: #F5F5F5;
-  border: 1px solid #E3E3E3;
-  border-radius: 5px;
-  padding: 5px;
-}
 
 /* Turn Control */
 .bar.bar-bottom .area {

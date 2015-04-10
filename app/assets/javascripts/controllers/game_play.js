@@ -1,32 +1,49 @@
 var gameCtrl = hcApp.controller('GameCtrl', [
-  '$scope', '$sce', '$location', 'Restangular', '$routeParams', '$timeout', 'notice',
-  function($scope, $sce, $location, Restangular, $routeParams, $timeout, notice) {
+  '$scope', '$sce', '$location', 'Restangular', '$routeParams', '$timeout', 'notice', '$modal',
+  function($scope, $sce, $location, Restangular, $routeParams, $timeout, notice, $modal) {
     // for group games
     $scope.user.changeUser = function(game_user) {
       $scope.phaseTemplate = 'templates/phase/1.html';
       var user = $scope.groupUsers.get(game_user.user_id);
       user.game_user = game_user;
       $scope.user.assign(user);
-      //notice('User Changed', 'The user is now '+$scope.$storage.user.name, 'info', 5);
       $scope.user.getCards();
       $scope.user.getRations();
       $scope.user.getMoves();
     }
 
+    /*$scope.turnChangeNotice = function() {
+      var modalInstance = $modal.open({
+        templateUrl: 'turnChangeNotice.html',
+        controller: 'TurnChangeNoticeCtrl',
+        size: 'lg',
+        resolve: {
+          user: function () {
+            return $scope.$storage.user;
+          }
+        }
+      });
+
+      modalInstance.result.then(function () {
+        // do nothing
+      }, function () {
+      });
+    }*/
+
     $scope.user.getMoves = function() {
-      console.log('getting moves for '+$scope.$storage.user.name+', with game user id: '+$scope.$storage.user.game_user.id);
+      // update the user's possible moves, picking the one for this round
       Restangular.one('games', $scope.game.id).one('rounds', $scope.game.round.id).getList('moves').then(function(moves) {
         for (i in moves) {
           var move = moves[i];
           if (move && move.game_user_id == $scope.$storage.user.game_user.id) {
-            $scope.move = move;
+            $scope.user.move = move;
           }
         }
       });
     }
 
     $scope.user.getCards = function() {
-      console.log('getting cards for '+$scope.$storage.user.name+', with game user id: '+$scope.$storage.user.game_user.id);
+      // update the user's cards
       this.cards = Restangular.one('games', $routeParams.gameId).one('game_users', $scope.$storage.user.game_user.id)
               .getList('cards').$object;
     }
@@ -39,7 +56,7 @@ var gameCtrl = hcApp.controller('GameCtrl', [
     }
 
     $scope.user.getRations = function() {
-      console.log('getting rations for '+$scope.$storage.user.name+', with game user id: '+$scope.$storage.user.game_user.id);
+      // update the user's rations
       this.rations = Restangular.one('users', $routeParams.gameId).one('game_users', $scope.$storage.user.game_user.id)
               .getList('rations').$object;
     }
@@ -60,7 +77,7 @@ var gameCtrl = hcApp.controller('GameCtrl', [
 Restangular.one('games', $routeParams.gameId).get().then(function(game) {
     $scope.game = game;
     $scope.user.changeUser(game.round.game_user);
-console.log('Current round user: '+$scope.game.round.game_user.user.name+', with game user id: '+$scope.$storage.user.game_user.id);
+
     $scope.phaseTemplate = 'templates/phase/'+game.round.current_phase+'.html';
 
     $scope.nextPlayer = $scope.game.game_users[1];
@@ -124,34 +141,37 @@ console.log('Current round user: '+$scope.game.round.game_user.user.name+', with
 
     $scope.game.doneTurn = function() {
       var roundId = $scope.game.round.id;
-      Restangular.one('games', $scope.game.id).patch({
+      $scope.finishingTurn = true;
+      return Restangular.one('games', $scope.game.id).patch({
         round_id: $scope.game.round.id,
         game_user_id: $scope.$storage.user.game_user.id,
         done_turn: true
       }).then(function(response) {
         notice(response.messages);
-          if (response.success) {
+        if (response.success) {
+          $scope.finishingTurn = false;
               Restangular.one('rounds', response.game.round.id).get().then(function(round) {
                 $scope.game.round = round;
                 // if a group game, change the active user
                 if ($scope.game.isGroupGame()) {
                   $scope.user.changeUser($scope.game.round.game_user);
+                  //$scope.turnChangeNotice();
                 }
 
                 if (roundId != round.id) {
                   // at the start of the phase we want to look at the event
                   if (!$scope.game.isGroupGame()) {
                     $scope.user.getCards();
-                    $scope.user.getMoves();
+                    $scope.user.getRations();
                   }
                   $scope.changePhaseTemplate(1);
                 } else {
                   $scope.changePhaseTemplate($scope.game.round.current_phase);
                 }
               });
-          }
-          // updates to be done when turns finish
-          $scope.game.updateOnDoneTurn();
+        }
+        // updates to be done when turns finish
+        $scope.game.updateOnDoneTurn();
       }, function() {
         notice('Action Not Saved', 'An error occured and the turn could not be finished.', 'danger', 2);
       });

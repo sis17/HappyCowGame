@@ -14,8 +14,7 @@ class PositionsController < ApplicationController
   def graph
     if params[:id] and params[:depth]
       @position = Position.find(params[:id])
-      graph = Hash.new
-      build_graph(graph, @position, params[:depth].to_f, get_taken_positions)
+      graph = build_graph(@position, params[:depth].to_f, get_taken_positions)
       render json: graph and return
     end
     render :json => [] and return
@@ -23,10 +22,31 @@ class PositionsController < ApplicationController
 
   private
 
-  def build_graph(graph, position, depth, taken_positions)
-    depth -= 1
+  def build_graph(position, depth, taken_positions)
+    graph = {}
     # create the position, if not already there
-    if !graph[position.id]
+    build_position(graph, position, taken_positions)
+    next_positions = position.positions
+
+    while depth > 0 do
+      depth -= 1
+      next_next_positions = []
+
+      next_positions.each do |next_position|
+        # create the position, if not already there
+        added = build_position(graph, next_position, taken_positions)
+        if added
+          next_next_positions.concat(next_position.positions)
+        end
+      end
+      next_positions = next_next_positions
+    end
+    return graph
+  end
+
+  def build_position(graph, position, taken_positions)
+    added = false
+    if !graph[position.id] #and (!taken_positions[position.id] or taken_positions[position.id][:type] == 'ration')
       graph[position.id] = {}
       graph[position.id]['id'] = position.id;
       graph[position.id]['area_id'] = position.area_id;
@@ -34,28 +54,19 @@ class PositionsController < ApplicationController
       graph[position.id]['centre_x'] = position.centre_x;
       graph[position.id]['centre_y'] = position.centre_y;
       graph[position.id]['links'] = {};
+      position.positions.each do |next_position|
+        graph[position.id]['links'][next_position.id] = next_position.id
+      end
       graph[position.id]['rations'] = {};
-    end
+      added = true
 
-    # add any links
-    if depth >= 0 and position.positions
-      position.positions.each do |pos|
-        puts taken_positions
-        if !taken_positions[pos.id]
-          # add the links to the current position
-          graph[position.id]['links'][pos.id] = pos.id;
-          # add the next position, if it doesn't already exist
-          build_graph(graph, pos, depth, taken_positions)
-        elsif taken_positions[pos.id] && taken_positions[pos.id][:type] == 'ration'
-          ration = taken_positions[pos.id]
-          # add the links to the current position
-          graph[position.id]['links'][pos.id] = pos.id;
-          graph[position.id]['rations'][ration[:id]] = ration[:id]#Ration.find(ration[:id]).as_json;
-          # add the next position, if it doesn't already exist
-          build_graph(graph, pos, depth, taken_positions)
-        end
+      # if the position is taken by a ration, add the ration to the list
+      if taken_positions[position.id] && taken_positions[position.id][:type] == 'ration'
+        ration = taken_positions[position.id]
+        graph[position.id]['rations'][ration[:id]] = ration[:id]
       end
     end
+    return added
   end
 
   def get_taken_positions

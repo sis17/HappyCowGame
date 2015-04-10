@@ -79,7 +79,10 @@
       <img class="image image-full" ng-src="images/{{game_user_card.game_card.card.image}}"
             alt="{{game_user_card.game_card.card.category}}" ng-click="view(game_user_card)">
       <div>
-        <button class="btn btn-danger btn-sm pull-left" ng-click="discard(game_user_card)">Discard</button>
+        <div class="btn-group pull-left">
+          <button class="btn btn-danger btn-sm" ng-click="discard(game_user_card)">Discard</button>
+          <button class="btn btn-primary btn-sm game_user_card.used {{game_user_card.used || (!game.canAct(2) && game_user_card.game_card.card.category != 'action') ? 'disabled' : ''}}" ng-click="useCard(game_user_card)">Use</button>
+        </div>
         <button class="btn btn-info btn-sm pull-right" ng-click="view(game_user_card)">Details</button>
       </div>
     </li>
@@ -118,10 +121,11 @@
         </div>
       </div>
       <div class="col-md-2">
-        <button ng-if="user.cards.length <= 9" class="btn btn-success pull-right" ng-click="game.doneTurn()"
+        <button ng-if="user.cards.length <= 9 && (!newRation.show() || newRation.spaces() == 4)" class="btn btn-success pull-right" ng-click="game.doneTurn()"
                 data-toggle="tooltip" data-placement="top" title="End card actions">
           Finished
         </button>
+        <p ng-if="newRation.spaces() < 4 && newRation.show()">You are in the middle of creating a ration.</p>
         <p ng-if="user.cards.length > 9">You must discard cards to continue.</p>
       </div>
     </div>
