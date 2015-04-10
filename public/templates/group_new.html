@@ -1,0 +1,187 @@
+<div class="bar bar-dark bar-top">
+  <div class="pull-left">
+    <img class="cow-icon pull-left" alt="Happy Cow icon" src="images/happycow.png" />
+    <h2 class="title pull-left">New Group Game</h2>
+  </div>
+
+  <ul class="list-inline pull-right">
+    <li><a href="#/" class="btn btn-default">Home</a></li>
+  </ul>
+</div>
+
+<div id="games" ng-controller="GroupGameCtrl">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <form>
+          <h3>
+            <input ng-model="game.name" placeHolder="Game Name"/>
+          </h3>
+        </form>
+      </div>
+      <div class="col-md-6">
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-md-6">
+        <h4>Players</h4>
+        <table class="table">
+          <tr><th>Name</th><th>Experience</th><th>Colour</th><th></th></tr>
+          <tr ng-repeat="user in groupUsers.all()" class="clickable">
+            <td>{{user.name}}</td>
+            <td>{{user.experience}}</td>
+            <td><span class="label label-default" style="background-color: {{user.colour}};">sample</span></td>
+            <td>
+              <button ng-click="removeUser(user)" class="btn btn-warning btn-xs">Leave</button>
+            </td>
+          </tr>
+        </table>
+        <div>
+          <script type="text/ng-template" id="inviteTemplate.html">
+            <p>
+              <span class="label" style="background-color: {{match.model.colour}};">{{match.model.name}}</span>
+               - experience: <span class="badge">{{match.model.experience}}</span>
+            </p>
+          </script>
+          <input type="text" ng-model="newUser" placeholder="Search for players to invite"
+                typeahead="name as user.name for user in availableUsers() | filter:{name:$viewValue}"
+                typeahead-template-url="inviteTemplate.html"
+                typeahead-on-select="selectUser($item, $model, $label)" class="form-control">
+          <div ng-if="selectedUser" class="panel panel-default">
+            <div class="panel-body">
+              <span class="label" style="background-color: {{selectedUser.colour}};">{{selectedUser.name}}</span>
+                 ({{selectedUser.email}}) - experience: <span class="badge">{{selectedUser.experience}}</span>
+              <div class="btn-group pull-right">
+                  <button ng-click="inviteUser(selectedUser)" class="btn btn-primary">Add</button>
+                  <button ng-click="unselectUser()" class="btn btn-default">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div ng-if="game">
+          <h4>Card Deck</h4>
+          <hr />
+          <div class="row">
+            <div class="col-md-8">{{carddeck.name}} - rating: {{carddeck.rating}}</div>
+            <div class="col-md-4">
+              <div class="pull-right">
+                <button data-toggle="modal" data-target="#deck-modal" class="btn btn-default">Change</button>
+              </div>
+            </div>
+          </div>
+
+          <h4>Rounds</h4>
+          <hr />
+          <div class="row">
+            <div class="col-md-8">
+              <p>
+                There will be
+                <span ng-if="game.rounds_min != game.rounds_max">
+                  between <span class="badge">{{game.rounds_min}}</span> and
+                </span>
+                <span class="badge">{{game.rounds_max}}</span> rounds.
+              </p>
+            </div>
+            <div class="col-md-4">
+              <div class="pull-right">
+                <button data-toggle="modal" data-target="#round-modal" class="btn btn-default">Change</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="row bar">
+      <div class="btn-group pull-right">
+        <button ng-click="abandon()" class="btn btn-warning">Abandon</button>
+        <button ng-click="create()" class="btn btn-success" {{created ? 'disabled' : ''}}>
+          {{created ? 'Creating Game...' : 'Create'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deck-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Choose a card deck for your Game</h4>
+      </div>
+      <div class="modal-body">
+        <p>Choose a card deck:</p>
+        <accordion>
+          <accordion-group ng-repeat="deck in decks.$object" heading="{{deck.name}} - {{deck.rating}}">
+            <button ng-click='useDeck(deck)' class='btn btn-default'>Use</button>
+            <ul>
+              <li ng-repeat="card in deck.cards">
+                <img ng-src="images/{{card.image}}" width="20">
+                <strong>{{card.title}}</strong> -
+                <span ng-bind-html="card.description"></span>
+              </li>
+            </ul>
+          </accordion-group>
+        </accordion>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="round-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Choose the length of your Game</h4>
+      </div>
+      <div class="modal-body">
+        <p>The game will be the length of rounds you specify. If you want to have an unknown number of rounds, set a
+        different minimum and maximum amount, the game will have a number of rounds between those parameters.</p>
+        Minimum Rounds <input type="text" ng-model="game.rounds_min"><br />
+        Maximum Rounds <input type="text" ng-model="game.rounds_max">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+        <button type="button" ng-click="updateRounds()" class="btn btn-primary" data-dismiss="modal">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="loginGroupUser.html">
+  <div class="modal-header">
+    <h4 class="modal-title">The user must sign in.</h4>
+  </div>
+  <div class="modal-body">
+    <p>To add {{user.name}} to a game, they must login.</p>
+    <form class="form-horizontal">
+      <div class="form-group">
+        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-10">
+          <input ng-model="user.email" type="email" class="form-control" placeholder="Email">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+        <div class="col-sm-10">
+          <input ng-model="user.password" type="password" class="form-control" placeholder="Password">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button ng-click="login(user)" class="btn btn-primary">Sign in</button>
+      <button ng-click="cancel()" class="btn btn-info">Back</button>
+    </div>
+  </div>
+</script>

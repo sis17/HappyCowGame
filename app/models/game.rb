@@ -367,7 +367,7 @@ class Game < ActiveRecord::Base
             {ingredients: {include: [:ingredient_cat]}},
             :position
           ]}},
-          user: {only: [:name]}
+          user: {only: [:name, :id]}
         ]}}
       ]
     )

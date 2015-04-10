@@ -40,9 +40,7 @@ class RationsController < ApplicationController
     # if passed above, create the ration
     elsif params[:ration] and params[:ration][:game_user_id]
       allowed = true
-      game_user = GameUser.find(params[:ration][:game_user_id])
-      response = game_user.make_ration(params[:ration])
-
+      response = @game_user.make_ration(params[:ration])
       render json: response and return
     else
       messages.push({

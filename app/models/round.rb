@@ -19,7 +19,7 @@ class Round < ActiveRecord::Base
         :event,
         :moves,
         {game_user: {:include => [
-          :user => {:only => [:name]}
+          :user => {:only => [:name, :id]}
         ]}},
         {actions: {:include => [
           game_user: {:include => [

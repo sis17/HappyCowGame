@@ -27,6 +27,39 @@ var baseCtrl = angular.module('happyCow').controller('BaseCtrl', [
       }
     };
 
+    $scope.groupUsers = {
+      add: function(userData) {
+        $scope.$storage.groupUsers.push(userData);
+      },
+      all: function() {
+        if (!$scope.$storage.groupUsers) {
+          $scope.$storage.groupUsers = [];
+        }
+        return $scope.$storage.groupUsers;
+      },
+      get: function(user_id) {
+        for (i in $scope.$storage.groupUsers) {
+          if (user_id == $scope.$storage.groupUsers[i].id) {
+            return $scope.$storage.groupUsers[i]
+          }
+        }
+        return null;
+      },
+      remove: function(user_id) {
+        for (i in $scope.$storage.groupUsers) {
+          if (user_id = $scope.$storage.groupUsers[i].id) {
+            $scope.$storage.groupUsers.splice(i, 1);
+            return true;
+          }
+        }
+        return false;
+      },
+      logout: function() {
+        $scope.$storage.groupUsers = [];
+        notice('Logged Out', 'All group users have been logged out.', 'info', 4);
+        $location.path('')
+      }
+    }
 
 
     $scope.instructions = function() {

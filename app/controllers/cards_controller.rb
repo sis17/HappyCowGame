@@ -29,7 +29,7 @@ class CardsController < ApplicationController
             GameUserCard.destroy(guc.id)
             count += 1
           end
-          response[:message][:text] = ' 4 of your cards have been removed.'
+          response[:message][:text] += ' 4 of your cards have been removed.'
         end
 
         render json: response and return

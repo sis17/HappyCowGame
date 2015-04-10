@@ -147,17 +147,25 @@ class GamesController < ApplicationController
     messages = []
     success = false
     @game
-    @user = User.find(params[:user_id])
 
-    if params[:new] and params[:game] and @user
+    if params[:new] and params[:game] and (params[:user_id] or params[:users])
       @game = Game.new(params.require(:game).permit(:name, :carddeck_id, :rounds_min, :rounds_max))
       @game.stage = 0
-      @game.rounds_min = 8
-      @game.rounds_max = 8
-      @game.creater_id = @user.id
+      @game.rounds_min = 8 if !@game.rounds_min
+      @game.rounds_max = 8 if !@game.rounds_max
+      @game.carddeck_id = CardDeck.take.id if !@game.carddeck_id
       @game.save
 
-      @game.create_game_user(@user.id)
+      if params[:user_id] # for a single setup game
+        @user = User.find(params[:user_id])
+        @game.creater_id = @user.id
+        @game.create_game_user(@user.id)
+        @game.save
+      elsif params[:users] # for a group game
+        params[:users].each do |user|
+          @game.create_game_user(user[:id]) if User.find(user[:id])
+        end
+      end
 
       success = true
       messages.push({

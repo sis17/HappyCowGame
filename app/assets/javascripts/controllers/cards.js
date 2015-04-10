@@ -2,14 +2,14 @@ angular.module('happyCow').controller('CardsCtrl', [
   '$scope', '$location', 'Restangular', '$modal', 'notice',
   function($scope, $location, Restangular, $modal, notice) {
 
-    $scope.cards = $scope.user.getCards();
-    $scope.rations = $scope.user.getRations();
+    $scope.$watch('user.cards', function() { /* update the cards */});
+    $scope.$watch('user.rations', function() { /* update the rations */ });
 
     $scope.newRation = {
       ingredients: [{},{},{},{}],
       setIngredients: function() {
         this.ingredients = [];
-        var cards = $scope.cards.$object;
+        var cards = $scope.user.cards;
         for (i in cards) {
           if (cards[i] && cards[i].used) {
             this.ingredients.push(cards[i]);
@@ -30,9 +30,9 @@ angular.module('happyCow').controller('CardsCtrl', [
         return count;
       },
       replace: function(ingredient) {
-        for (i in $scope.cards.$object) {
-          if ($scope.cards.$object[i] == ingredient) {
-            $scope.cards.$object[i].used = false;
+        for (i in $scope.user.cards) {
+          if ($scope.user.cards[i] == ingredient) {
+            $scope.user.cards[i].used = false;
             this.setIngredients();
             break;
           }
@@ -40,10 +40,11 @@ angular.module('happyCow').controller('CardsCtrl', [
       },
       create: function() {
         var ration = {game_user_id: $scope.$storage.user.game_user.id, ingredients: this.ingredients};
+        console.log(ration.ingredients);
         Restangular.all('rations').post({ration: ration, game_id: $scope.game.id}).then(function(response) {
           notice(response.messages);
-          $scope.cards = $scope.user.getCards();
-          $scope.rations = $scope.user.getRations();
+          $scope.user.getCards();
+          $scope.user.getRations();
           $scope.newRation.ingredients = [{},{},{},{}];
           $scope.game.round.ration_created = true;
 
@@ -52,11 +53,11 @@ angular.module('happyCow').controller('CardsCtrl', [
         });
       },
       show: function() {
-        if ($scope.rations.$object && $scope.rations.$object.length >= 4) {
+        if ($scope.user.rations && $scope.user.rations.length >= 4) {
           return false;
         }
-        for (i in $scope.rations.$object) {
-          var r = $scope.rations.$object[i];
+        for (i in $scope.user.rations) {
+          var r = $scope.user.rations[i];
           if (r && r.round_created_id && r.round_created_id == $scope.game.round.id) {
             return false;
           }
@@ -67,7 +68,7 @@ angular.module('happyCow').controller('CardsCtrl', [
 
     $scope.countUnusedIngredients = function() {
       var count = 0;
-      var cards = $scope.cards.$object;
+      var cards = $scope.user.cards;
       for (i in cards) {
         var guc = cards[i];
         if (guc && guc.game_card && typeof guc === 'object' &&
@@ -80,7 +81,7 @@ angular.module('happyCow').controller('CardsCtrl', [
 
     $scope.countIngredients = function() {
       var count = 0;
-      var cards = $scope.cards.$object;
+      var cards = $scope.user.cards;
       for (i in cards) {
         var guc = cards[i];
         if (guc && guc.game_card && typeof guc === 'object' && guc.game_card.card.category != 'action') {
@@ -92,7 +93,7 @@ angular.module('happyCow').controller('CardsCtrl', [
 
     $scope.countActions = function() {
       var count = 0;
-      var cards = $scope.cards.$object;
+      var cards = $scope.user.cards;
       for (i in cards) {
         var guc = cards[i];
         if (guc && guc.game_card && typeof guc === 'object' &&
@@ -110,7 +111,7 @@ angular.module('happyCow').controller('CardsCtrl', [
         card.patch({use:true}).then(function(response) {
           notice(response.message.title, response.message.text, response.message.type, 6);
           $scope.game.update();
-          $scope.cards = $scope.user.getCards();
+          $scope.user.getCards();
         }, function() {
           card.used = false;
           notice('Card Not Used', 'An error occured and the card was not used.', 'danger', 3);
@@ -175,7 +176,7 @@ angular.module('happyCow').controller('CardsCtrl', [
       // delete card
       game_user_card.remove().then(function(response) {
           notice(response.message.title, response.message.text, response.message.type, 2);
-          $scope.cards = $scope.user.getCards();
+          $scope.user.getCards();
       }, function() {
           notice('Card Not Discarded', 'An error occured and the card was not discarded.', 'warning', 2);
       });
