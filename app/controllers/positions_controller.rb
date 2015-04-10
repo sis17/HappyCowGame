@@ -46,7 +46,7 @@ class PositionsController < ApplicationController
 
   def build_position(graph, position, taken_positions)
     added = false
-    if !graph[position.id] #and (!taken_positions[position.id] or taken_positions[position.id][:type] == 'ration')
+    if !graph[position.id] and (!taken_positions[position.id] or taken_positions[position.id][:type] == 'ration' or graph.size == 0)
       graph[position.id] = {}
       graph[position.id]['id'] = position.id;
       graph[position.id]['area_id'] = position.area_id;

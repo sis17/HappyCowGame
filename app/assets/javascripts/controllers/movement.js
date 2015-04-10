@@ -14,19 +14,10 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     $scope.$watch('user.rations', function() { /* update the rations */ });
     $scope.$watch('game.allRations', function() { /* update the rations */ });
 
-    /*$scope.$watch('$storage.user.game_user.id', function() {
-      console.log('the game user id has changed');
-      $scope.user.getMoves();
-      console.log($scope.user.move.ration_id);
-    });*/
-
     $scope.$watch('user.move.ration_id', function(newValue, oldValue) {
-      console.log('$scope.user.move.ration_id has changed to: '+newValue);
-      $scope.user.move.ration_id = newValue;
       showMoves();
     });
     $scope.$watch('move.selected_die', function(newValue, oldValue) {
-      console.log('$scope.user.move.selected_die has changed to: '+newValue);
       showMoves();
     });
 
