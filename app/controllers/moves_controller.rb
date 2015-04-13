@@ -35,8 +35,9 @@ class MovesController < ApplicationController
 
       if params[:position_id]
         # update the ration position
-        messages.concat(@move.confirm_move(params[:position_id]))
-        success = true
+        response = @move.confirm_move(params[:position_id])
+        success = response[:success]
+        messages.concat(response[:messages])
       else
         messages.push({title:'Move Not Made', message: 'No position was specified.', type:'warning'})
       end

@@ -93,6 +93,7 @@ class Move < ActiveRecord::Base
     game = self.round.game
     existing_motile = Motile.where(game: game, position_id: new_position.id).take
     existing_ration = Ration.joins(:game_user).where(game_users: {game_id:game.id}, position_id: new_position.id).take
+
     if existing_motile
       success = false
     elsif existing_ration and existing_ration.id != ration.id
@@ -106,7 +107,7 @@ class Move < ActiveRecord::Base
         ration.game_user.save
         messages.push({title:'Ration Pushed', text: 'You had more fiber than another ration, so pushed past it. +1pt.', type:'success', time: 5})
       else
-        messages.push({title:'You Cannot Push', text: 'Your ration does not have enough fiber to push the other ration. You need '+existing_ration.count_type('fiber').to_s+' fiber.', type:'warning', time: 6})
+        messages.push({title:'You Cannot Push', text: 'Your ration does not have enough fiber to push the other ration. You need at least '+(existing_ration.count_type('fiber')+1).to_s+' fiber.', type:'warning', time: 6})
       end
     end
 
@@ -130,7 +131,7 @@ class Move < ActiveRecord::Base
       end
     end
 
-    return messages
+    return {success: success, messages: messages}
   end
 
   def add_water

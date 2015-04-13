@@ -1,48 +1,5 @@
 var services = angular.module('happyCowServices', ['ngResource']);
 
-services.factory('User', function (Restangular, $localStorage, $location, notice, $q) {
-  return {
-    data: null,
-    assign: function(userData) {
-      $scope.$storage.user = userData;
-    },
-    logout: function() {
-      $scope.$storage.user = null;
-      notice('Logged Out', 'Your session has been successfully ended.', 'info', 4);
-      $location.path('login')
-    },
-    get: function() {
-      return $scope.$storage.user;
-    },
-    isCreator: function(game) {
-      if (game && game.creater_id) {
-        return $scope.$storage.user.id == game.creater_id;
-      }
-      return false;
-    }
-  };
-
-  /*{
-    getWeather: function() {
-      // the $http API is based on the deferred/promise APIs exposed by the $q service
-      // so it returns a promise for us by default
-      return $http.get('http://fishing-weather-api.com/sunday/afternoon')
-      .then(function(response) {
-        if (typeof response.data === 'object') {
-          return response.data;
-        } else {
-          // invalid response
-          return $q.reject(response.data);
-        }
-
-      }, function(response) {
-        // something went wrong
-        return $q.reject(response.data);
-      });
-    }
-  };*/
-});
-
 services.factory('notice', ['$timeout', '$document', function($timeout, $document) {
   var notices = $('#notices');
   return function(title, message, type, stick) {
@@ -59,11 +16,12 @@ services.factory('notice', ['$timeout', '$document', function($timeout, $documen
           '</div>'
         );
 
-        var time = message.time;
-        if (stick > 0) {
+        notice = notices.children().first();
+        if (message.time > 0) {
           $timeout(function() {
-            notices.find('#alert-'+number).fadeOut().remove();
-          }, (time)*1000);
+            console.log('removing notice: '+notice.attr('id'));
+            notice.fadeOut().remove();
+          }, (message.time)*1000);
         }
       }
     } else {

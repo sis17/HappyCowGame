@@ -12,7 +12,7 @@ hcApp.controller('GroupGameCtrl', [
       $scope.game.carddeck_id = carddeck.id;
       $scope.carddeck = carddeck;
     });
-    
+
     $scope.game_users = [];
 
     // get list of users for invites
@@ -37,16 +37,12 @@ hcApp.controller('GroupGameCtrl', [
                 var game_user = response.game.game_users[i];
                 if ($scope.groupUsers.get(game_user.user_id)) {
                   $scope.groupUsers.get(game_user.user_id).game_user = game_user;
-                  console.log(game_user.user.id);
                   // assign the first user
                   if (game_user.id == response.game.round.game_user_id) {
-                    console.log('assigning the first user:')
-                    console.log(game_user);
                     $scope.user.assign($scope.groupUsers.get(game_user.user_id));
                   }
                 }
               }
-              console.log($scope.groupUsers.all());
               $location.path('games/play/'+response.game.id);
             }
           }, function() {
@@ -90,7 +86,6 @@ hcApp.controller('GroupGameCtrl', [
       modalInstance.result.then(function (user) {
         user.game_users = [];
         $scope.groupUsers.add(user);
-        console.log($scope.groupUsers.all());
       }, function () {
         console.log('Modal dismissed at: ' + new Date());
       });

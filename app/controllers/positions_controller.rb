@@ -46,7 +46,7 @@ class PositionsController < ApplicationController
 
   def build_position(graph, position, taken_positions)
     added = false
-    if !graph[position.id] and (!taken_positions[position.id] or taken_positions[position.id][:type] == 'ration' or graph.size == 0)
+    if !graph[position.id] and !taken_positions[position.id]
       graph[position.id] = {}
       graph[position.id]['id'] = position.id;
       graph[position.id]['area_id'] = position.area_id;
@@ -61,10 +61,10 @@ class PositionsController < ApplicationController
       added = true
 
       # if the position is taken by a ration, add the ration to the list
-      if taken_positions[position.id] && taken_positions[position.id][:type] == 'ration'
-        ration = taken_positions[position.id]
-        graph[position.id]['rations'][ration[:id]] = ration[:id]
-      end
+      #if taken_positions[position.id] && taken_positions[position.id][:type] == 'ration'
+      #  ration = taken_positions[position.id]
+      #  graph[position.id]['rations'][ration[:id]] = ration[:id]
+      #end
     end
     return added
   end
@@ -72,10 +72,10 @@ class PositionsController < ApplicationController
   def get_taken_positions
     taken_positions = Hash.new
     if @game
-      rations = Ration.joins(:game_user).where(game_users: {game_id:@game.id})
-      rations.each do |ration|
-        taken_positions[ration.position.id] = {id: ration.id, type: 'ration'}
-      end
+      #rations = Ration.joins(:game_user).where(game_users: {game_id:@game.id})
+      #rations.each do |ration|
+        #taken_positions[ration.position.id] = {id: ration.id, type: 'ration'}
+      #end
       motiles = Motile.where(game: @game)
       motiles.each do |motile|
         taken_positions[motile.position.id] = {id: motile.id, type: 'motile'}
