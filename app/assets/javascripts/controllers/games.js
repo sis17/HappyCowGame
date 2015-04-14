@@ -1,7 +1,33 @@
 var welcomeCtrl = hcApp.controller('GamesCtrl', [
-  '$scope', '$location', 'Restangular', 'notice', '$modal',
-  function($scope, $location, Restangular, notice, $modal) {
+  '$scope', '$location', 'Restangular', 'notice', '$modal', '$filter',
+  function($scope, $location, Restangular, notice, $modal, $filter) {
     $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
+    $scope.selectedGameFilter = 1;
+    $scope.filterGame = function(game) {
+      if ($scope.selectedGameFilter == 'crowd') {
+        return game.creater_id <= 0 && game.stage == 1;
+      } else {
+        return game.stage == $scope.selectedGameFilter && game.creater_id >= 1;
+      }
+    }
+    $scope.countGameType = function(gameFilter, crowd) {
+      var count = 0;
+      for (i in $scope.game_users.$object) {
+        var game_user = $scope.game_users.$object[i];
+        if (game_user && game_user.game && game_user.game.stage == gameFilter) {
+          if (gameFilter == 1) {
+            if (crowd && game_user.game.creater_id <= 0) {
+              count++;
+            } else if (!crowd && game_user.game.creater_id >= 1) {
+              count++;
+            }
+          } else {
+            count++;
+          }
+        }
+      }
+      return count;
+    }
 
     $scope.selectGame = function(game_user) {
       if (game_user.game && game_user.game.id) {
@@ -76,24 +102,14 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
       });
     }
 
-    $scope.countFinished = function() {
-      var count = 0;
-      for (i in $scope.game_users.$object) {
-        if ($scope.game_users.$object[i] && $scope.game_users.$object[i].game && $scope.game_users.$object[i].game.stage > 1) {
-          count++;
-        }
+    $scope.getDate = function(game) {
+      if (game.stage <= 1) {
+        return $filter('date')(game.start_time, 'd MMM yyyy @ h:mma');
+      } else {
+        var start = new Date(game.start_time);
+        var end = new Date(game.end_time);
+        return $filter('date')(start-end, 'hh:mm');
       }
-      return count;
-    }
-
-    $scope.countPlaying = function() {
-      var count = 0;
-      for (i in $scope.game_users.$object) {
-        if ($scope.game_users.$object[i] && $scope.game_users.$object[i].game && $scope.game_users.$object[i].game.stage == 1) {
-          count++;
-        }
-      }
-      return count;
     }
 
     $scope.translatePhase = function(phaseNum) {

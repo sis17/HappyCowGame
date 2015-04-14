@@ -69,6 +69,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
                           .one('graph',$scope.user.move.movements_left).get().then(function(graph) {
         $scope.graph = graph;
         $scope.graph.traverse = function(posId) {
+          console.log('position in traverse: '+posId);
           var depth = 0;
           var positions = [];
           check = {};

@@ -17,19 +17,45 @@
       <div class="col-md-6"><h3>Games List</h3></div>
       <div class="col-md-6">
         <div class="btn-group pull-right">
-          <button ng-click="newGame()" class="btn btn-success">New Game</button>
+          <button ng-click="newGame()" class="btn btn-default btn-lg">New Networked Game
+            <img class="image image-btn" ng-src="images/network_game.png">
+          </button>
+          <a href="#/games/group" class="btn btn-default btn-lg">New Crowd Game
+            <img class="image image-btn" ng-src="images/crowd_game.png">
+          </a>
         </div>
       </div>
     </div>
     <hr />
     <div class="row">
       <div class="col-md-7">
+        <div>
+          <ul class="nav nav-tabs nav-justified">
+            <li class="{{selectedGameFilter == 0 ? 'active':''}}">
+              <a ng-click="selectedGameFilter = 0">Setting Up <span class="badge">{{countGameType(0)}}</span></a>
+            </li>
+            <li class="{{selectedGameFilter == 1 ? 'active':''}}">
+              <a ng-click="selectedGameFilter = 1">Networked <span class="badge">{{countGameType(1)}}</span></a>
+            </li>
+            <li class="{{selectedGameFilter == 'crowd' ? 'active':''}}">
+              <a ng-click="selectedGameFilter = 'crowd'">Crowd <span class="badge">{{countGameType(1, true)}}</span></a>
+            </li>
+            <li class="{{selectedGameFilter == 2 ? 'active':''}}">
+              <a ng-click="selectedGameFilter = 2">Finished <span class="badge">{{countGameType(2)}}</span></a>
+            </li>
+            <li  class="{{selectedGameFilter == 3 ? 'active':''}}">
+              <a ng-click="selectedGameFilter = 3">Failed <span class="badge">{{countGameType(3)}}</span></a>
+            </li>
+          </ul>
+        </div>
         <table class="table">
           <tr>
-            <th>Name</th><th>Score</th><th>Stage</th>
-            <th>Players</th><th>Round</th><th>Phase</th><th>Turn</th>
+            <th>Name</th><th>Score</th><th>Stage</th><th>Players</th>
+            <th ng-if="selectedGameFilter == 1">Round</th>
+            <th ng-if="selectedGameFilter == 1">Phase</th>
+            <th ng-if="selectedGameFilter == 1">Turn</th>
           </tr>
-          <tr ng-repeat="game_user in game_users.$object | orderBy:'-game.start_time'" class="clickable" ng-click="selectGame(game_user)">
+          <tr ng-repeat="game_user in game_users.$object | orderBy:'-game.start_time'" class="clickable" ng-click="selectGame(game_user)" ng-if="filterGame(game_user.game)">
             <td>{{game_user.game.name}}</td>
             <td>{{game_user.score}}</td>
             <td>
@@ -38,9 +64,9 @@
               <span ng-if="game_user.game.stage > 1 " class="label label-{{game_user.game.stage == 2 ? 'info' : 'danger' }}">Finished</span>
             </td>
             <td>{{game_user.game.game_users.length}}</td>
-            <td>{{game_user.game.round.number}}</td>
-            <td>{{translatePhase(game_user.game.round.current_phase)}}</td>
-            <td>
+            <td ng-if="game_user.game.stage == 1">{{game_user.game.round.number}}</td>
+            <td ng-if="game_user.game.stage == 1">{{translatePhase(game_user.game.round.current_phase)}}</td>
+            <td ng-if="game_user.game.stage == 1">
                 <span class="label" style="background-color: {{game_user.game.round.game_user.colour}}">
                   {{game_user.game.round.game_user.user.name}}
                 </span>
@@ -54,18 +80,21 @@
           <div class="container">
             <div class="row">
               <div class="col-md-6">
-                <dl>
-                  <dt>Begin Time</dt><dd>{{game.start_time | date:'d MMM yyyy @ h:mma'}}</dd>
+                <div ng-if="game.stage >= 1">
+                  <dt>{{game.stage > 1 ? 'Duration':'Begin Time'}}</dt>
+                    <dd>{{getDate(game)}}</dd>
                   <dt>Round Number</dt><dd>{{game.rounds.length}}</dd>
-                  <dt>Current Round</dt><dd>{{game.round.number}}</dd>
-                  <dt>Current Phase</dt><dd>{{translatePhase(game.round.current_phase)}}</dd>
-                  <dt>Current Player</dt>
-                    <dd>
-                      <span class="label label-default" style="background-color:{{game.round.game_user.colour}};">
-                        {{game.round.game_user.user.name}}
-                      </span>
-                    </dd>
-                </dl>
+                  <div ng-if="game.stage == 1">
+                    <dt>Current Round</dt><dd>{{game.round.number}}</dd>
+                    <dt>Current Phase</dt><dd>{{translatePhase(game.round.current_phase)}}</dd>
+                    <dt>Current Player</dt>
+                      <dd>
+                        <span class="label label-default" style="background-color:{{game.round.game_user.colour}};">
+                          {{game.round.game_user.user.name}}
+                        </span>
+                      </dd>
+                  </div>
+                </div>
               </div>
               <div class="col-md-6">
                 <h4>Players</h4>
@@ -101,9 +130,7 @@
     <hr />
     <div class="row">
       <div class="col-md-12">
-        Total: <span class="badge">{{game_users.$object.length}}</span> |
-        Playing: <span class="badge">{{countPlaying()}}</span> |
-        Finished: <span class="badge">{{countFinished()}}</span>
+        Total: <span class="badge">{{game_users.$object.length}}</span>
       </div>
     </div>
   </div>
