@@ -76,18 +76,20 @@ angular.module('happyCow').controller('GameCtrl', [
 // initialise game
 Restangular.one('games', $routeParams.gameId).get().then(function(game) {
     $scope.game = game;
-    
-    // load user details
-    $scope.user.getCards();
-    $scope.user.getRations();
-    $scope.user.getMoves();
-
     $scope.phaseTemplate = 'templates/phase/'+game.round.current_phase+'.html';
-
     $scope.nextPlayer = $scope.game.game_users[1];
 
     $scope.game.isGroupGame = function() {
       return !this.creater_id;
+    }
+
+    // load user details
+    if ($scope.game.isGroupGame()) {
+      $scope.user.changeUser($scope.game.round.game_user);
+    } else {
+      $scope.user.getCards();
+      $scope.user.getRations();
+      $scope.user.getMoves();
     }
 
     $scope.game.update = function() {

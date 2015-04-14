@@ -66,7 +66,9 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
         return;
       }
       var ration = $scope.getRation($scope.user.move.ration_id);
-      if (!ration.position.id) {
+      if (!ration || !ration.position) {
+        $scope.user.getRations();
+        $scope.user.getMoves();
         return;
       }
 
@@ -75,7 +77,6 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
                           .one('graph',$scope.user.move.movements_left).get().then(function(graph) {
         $scope.graph = graph;
         $scope.graph.traverse = function(posId) {
-          console.log('position in traverse: '+posId);
           var depth = 0;
           var positions = [];
           check = {};

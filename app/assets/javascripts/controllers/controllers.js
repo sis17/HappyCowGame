@@ -38,7 +38,6 @@ angular.module('happyCow').controller('BaseCtrl', [
         return $scope.$storage.groupUsers;
       },
       get: function(user_id) {
-        conosle.log($scope.$storage.groupUsers);
         for (i in $scope.$storage.groupUsers) {
           if (user_id == $scope.$storage.groupUsers[i].id) {
             return $scope.$storage.groupUsers[i]
