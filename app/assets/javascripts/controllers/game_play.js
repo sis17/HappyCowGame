@@ -76,7 +76,7 @@ angular.module('happyCow').controller('GameCtrl', [
 // initialise game
 Restangular.one('games', $routeParams.gameId).get().then(function(game) {
     $scope.game = game;
-    //$scope.user.changeUser(game.round.game_user);
+    
     // load user details
     $scope.user.getCards();
     $scope.user.getRations();
@@ -214,7 +214,7 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
     };
 
     // Kick off the interval
-    //$scope.intervalFunction();
+    $scope.intervalFunction();
 });
 
     $scope.changePhaseTemplate = function(num) {
