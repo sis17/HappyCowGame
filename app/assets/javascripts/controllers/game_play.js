@@ -35,7 +35,7 @@ var gameCtrl = hcApp.controller('GameCtrl', [
       Restangular.one('games', $scope.game.id).one('rounds', $scope.game.round.id).getList('moves').then(function(moves) {
         for (i in moves) {
           var move = moves[i];
-          if (move && move.game_user_id == $scope.$storage.user.game_user.id) {
+          if (move && move.game_user_id == $scope.$storage.user.game_user.id && move.round_id == $scope.game.round.id) {
             $scope.user.move = move;
           }
         }
@@ -83,6 +83,8 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
     $scope.nextPlayer = $scope.game.game_users[1];
 
     $scope.game.isGroupGame = function() {
+      console.log('testing if it is a group game');
+      console.log(!this.creater_id);
       return !this.creater_id;
     }
 

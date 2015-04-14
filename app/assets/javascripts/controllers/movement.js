@@ -23,6 +23,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     // start up stuff
     $scope.game.getAllRations();
+    $scope.user.getMoves();
     $scope.visitedPositions = {}; // positions that the ration can't revisit
 
     $scope.confirmRation = function() {
@@ -64,8 +65,13 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       if (!$scope.user.move.ration_id || !$scope.user.move.selected_die || $scope.user.move.selected_die < 1) {
         return;
       }
+      var ration = $scope.getRation($scope.user.move.ration_id);
+      if (!ration.position.id) {
+        return;
+      }
+
       // do not update the selected die, it is not confirmed until movement
-      Restangular.one('games', $scope.game.id).one('positions', $scope.user.move.ration.position.id)
+      Restangular.one('games', $scope.game.id).one('positions', ration.position.id)
                           .one('graph',$scope.user.move.movements_left).get().then(function(graph) {
         $scope.graph = graph;
         $scope.graph.traverse = function(posId) {
@@ -95,7 +101,6 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
           return positions;
         }
         // load the first possible positions
-        var ration = $scope.getRation($scope.user.move.ration.id);
         $scope.possiblePositions = graph.traverse(ration.position.id);
       }, function() {
         console.log('error, positions not returned')
@@ -163,6 +168,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
 
     var endMovementPhase = function() {
       $scope.game.getAllRations();
+      $scope.user.move = null;
       $scope.game.doneTurn();
     }
 
