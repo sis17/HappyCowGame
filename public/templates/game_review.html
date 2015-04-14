@@ -20,7 +20,26 @@
       <span class="label label-default " style="background-color:{{game_user.colour}};">
         {{game_user.user.name}}
       </span>
-       - Score <span class="badge">{{game_user.score}}</span>
+        - Score <span class="badge">{{game_user.score}}</span>
     </li>
   </ul>
+
+  <hr>
+
+  <dt>Beginning Time</dt>
+    <dd>{{game.start_time | date:'d MMM yyyy @ h:mma'}}</dd>
+  <dt>End Time</dt>
+    <dd>{{game.end_time | date:'d MMM yyyy @ h:mma'}}</dd>
+  <dt>Round Number</dt>
+    <dd>{{game.rounds.length}}</dd>
+  <dt>Current Round</dt>
+    <dd>{{game.round.number}}</dd>
+  <dt>Current Phase</dt>
+    <dd>{{translatePhase(game.round.current_phase)}}</dd>
+  <dt>Current Player</dt>
+    <dd>
+        <span class="label label-default" style="background-color:{{game.round.game_user.colour}};">
+          {{game.round.game_user.user.name}}
+        </span>
+    </dd>
 </div>

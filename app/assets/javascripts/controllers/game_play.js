@@ -2,7 +2,6 @@ angular.module('happyCow').controller('GameCtrl', [
   '$scope', '$sce', '$location', 'Restangular', '$routeParams', '$timeout', 'notice', '$modal',
   function($scope, $sce, $location, Restangular, $routeParams, $timeout, notice, $modal) {
     // for group games
-    console.log($scope.user);
     $scope.user.changeUser = function(game_user) {
       $scope.phaseTemplate = 'templates/phase/1.html';
       var user = $scope.groupUsers.get(game_user.user_id);
@@ -77,15 +76,17 @@ angular.module('happyCow').controller('GameCtrl', [
 // initialise game
 Restangular.one('games', $routeParams.gameId).get().then(function(game) {
     $scope.game = game;
-    $scope.user.changeUser(game.round.game_user);
+    //$scope.user.changeUser(game.round.game_user);
+    // load user details
+    $scope.user.getCards();
+    $scope.user.getRations();
+    $scope.user.getMoves();
 
     $scope.phaseTemplate = 'templates/phase/'+game.round.current_phase+'.html';
 
     $scope.nextPlayer = $scope.game.game_users[1];
 
     $scope.game.isGroupGame = function() {
-      console.log('testing if it is a group game');
-      console.log(!this.creater_id);
       return !this.creater_id;
     }
 
