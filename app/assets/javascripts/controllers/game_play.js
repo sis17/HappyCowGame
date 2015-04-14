@@ -1,7 +1,8 @@
-var gameCtrl = hcApp.controller('GameCtrl', [
+angular.module('happyCow').controller('GameCtrl', [
   '$scope', '$sce', '$location', 'Restangular', '$routeParams', '$timeout', 'notice', '$modal',
   function($scope, $sce, $location, Restangular, $routeParams, $timeout, notice, $modal) {
     // for group games
+    console.log($scope.user);
     $scope.user.changeUser = function(game_user) {
       $scope.phaseTemplate = 'templates/phase/1.html';
       var user = $scope.groupUsers.get(game_user.user_id);

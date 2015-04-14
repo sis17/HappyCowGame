@@ -109,7 +109,9 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-4"><a ng-href="#/games/review/{{game.id}}" class="btn btn-default">Stats</a></div>
+              <div class="col-md-4">
+                <a ng-if="game_user.game.stage >= 1" ng-href="#/games/review/{{game.id}}" class="btn btn-default">Stats</a>
+              </div>
               <div class="col-md-8">
                 <div ng-if="game.stage == 0" class="btn-group pull-right">
                   <button ng-if="user.isCreator(game)" ng-click="abandon(game.id)" class="btn btn-warning">Abandon</button>

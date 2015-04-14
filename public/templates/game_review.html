@@ -13,18 +13,14 @@
 
 <div id="games" ng-controller="GameReviewCtrl">
   <h2>Game: {{game.name}}</h2>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-
-      </div>
-      <div class="col-md-6">
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-      </div>
-    </div>
-  </div>
+  <hr>
+  <h3>Players</h3>
+  <ul class="dl-horizontal">
+    <li ng-repeat="game_user in game.game_users">
+      <span class="label label-default " style="background-color:{{game_user.colour}};">
+        {{game_user.user.name}}
+      </span>
+       - Score <span class="badge">{{game_user.score}}</span>
+    </li>
+  </ul>
 </div>

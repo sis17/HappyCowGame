@@ -1,4 +1,4 @@
-var baseCtrl = angular.module('happyCow').controller('BaseCtrl', [
+angular.module('happyCow').controller('BaseCtrl', [
   '$scope', '$sce', '$location', 'Restangular', '$localStorage', 'notice', '$modal',
   function($scope, $sce, $location, Restangular, $localStorage, notice, $modal) {
     $scope.$storage = $localStorage;
