@@ -1,6 +1,6 @@
 angular.module('happyCow').controller('CardsCtrl', [
-  '$scope', '$location', 'Restangular', '$modal', 'notice',
-  function($scope, $location, Restangular, $modal, notice) {
+  '$scope', '$location', 'Restangular', '$modal', 'notice', '$timeout',
+  function($scope, $location, Restangular, $modal, notice, $timeout) {
 
     $scope.$watch('user.cards', function() { /* update the cards */});
     $scope.$watch('user.rations', function() { /* update the rations */ });
@@ -80,10 +80,11 @@ angular.module('happyCow').controller('CardsCtrl', [
     }
 
     $scope.endCardsTurn = function() {
-      $scope.game.doneTurn();/*.then(function() {
+      $scope.game.doneTurn();
+      $timeout(function() {
         $scope.newRation.willCreate = null;
-      })*/
-      $scope.newRation.willCreate = null;
+      }, 1200)
+      //$scope.newRation.willCreate = null;
     }
 
     $scope.countUnusedIngredients = function() {

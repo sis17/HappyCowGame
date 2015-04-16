@@ -217,31 +217,31 @@ class Game < ActiveRecord::Base
 
   def sort_trough(type)
     # get rations that are in the trough, in order
-    rations = Ration.joins(:game_user).joins(:position)
-      .where('game_users.game_id = ? and positions.area_id = 1', self.id)
-      .order('"positions"."order" ASC')
-    j = 0
-    while j < rations.length do
-      i = j+1
-      greatest = rations[j].count_type(type)
-      greatest_pos = j
-      while rations[i] do
-        count = rations[i].count_type(type)
-        if count > greatest
-          greatest = count
-          greatest_pos = i
-        end
-        i += 1
-      end
-      if (greatest_pos != j) #switch
-        temp_pos = rations[j]
-        rations[j] = rations[greatest_pos]
-        rations[greatest_pos] = temp_pos
-      end
-      rations[j].position = Position.find_by(order: j+1)
-      rations[j].save
-      j += 1
-    end
+    #rations = Ration.joins(:game_user).joins(:position)
+    #  .where('game_users.game_id = ? and positions.area_id = 1', self.id)
+    #  .order('"positions"."order" ASC')
+    #j = 0
+    #while j < rations.length do
+    #  i = j+1
+    #  greatest = rations[j].count_type(type)
+    #  greatest_pos = j
+    #  while rations[i] do
+    #    count = rations[i].count_type(type)
+    #    if count > greatest
+    #      greatest = count
+    #      greatest_pos = i
+    #    end
+    #    i += 1
+    #  end
+    #  if (greatest_pos != j) #switch
+    #    temp_pos = rations[j]
+    #    rations[j] = rations[greatest_pos]
+    #    rations[greatest_pos] = temp_pos
+    #  end
+    #  rations[j].position = Position.find_by(order: j+1)
+    #  rations[j].save
+    #  j += 1
+    #end
   end
 
   def assign_cards(game_user, number)
