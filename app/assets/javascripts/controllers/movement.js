@@ -25,6 +25,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     $scope.game.getAllRations();
     $scope.user.getMoves();
     $scope.visitedPositions = {}; // positions that the ration can't revisit
+    $scope.possiblePositions = [];
 
     $scope.confirmRation = function() {
       if (!$scope.user.move.ration) {
@@ -47,12 +48,16 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
     }
 
     $scope.selectRation = function(ration) {
+      console.log('it is '+$scope.$storage.user.name+'`s turn');
       $scope.game.getAllRations();
       $scope.top = 50 + 100 - (ration.position.centre_y/2);
       $scope.left = 20 + 100 - (ration.position.centre_x/2);
 
+      // check the ration belongs to the current player
+      if (ration.game_user_id != $scope.$storage.user.game_user.id) {
+        notice('Not Yours', 'The ration you selected does not belong to you. Please select another.', 'warning', 8)
       // check it is not stuck in the trough
-      if (ration.position.area_id == 1 && ration.position.order > 2) {
+      } else if (ration.position.area_id == 1 && ration.position.order > 2) {
         notice('Ration Cannot Move', 'The ration you selected is behind others on the trough. The rations in front must be eaten before you can move this ration.', 'warning', 8)
         // only allow the select if the ration is not set
       } else if (!$scope.user.move.ration || !$scope.user.move.ration.id <= 0) {
@@ -119,12 +124,13 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
       return null;
     }
 
-    $scope.moveRation = function(newPosId) {
+    $scope.moveRation = function(newPosId, allMoves) {
+      $scope.moving = true;
       var newPos = $scope.graph[newPosId];
       var ration = $scope.getRation($scope.user.move.ration.id);
       if (ration) {
         // update the position
-        $scope.user.move.patch({make_move: true, move: $scope.user.move, position_id: newPos.id}).then(function(response) {
+        $scope.user.move.patch({make_move: true, all_moves: (allMoves ? true : false), move: $scope.user.move, position_id: newPos.id}).then(function(response) {
             if (response.success) {
               if (response.move) {
                 $scope.user.move.movements_left = response.move.movements_left;
@@ -133,11 +139,15 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
               } else {
                 endMovementPhase(); // the ration has been deleted
               }
+            } else {
+              $scope.moving = false;
             }
             notice(response.messages);
         },function() {
             notice('Ration Not Moved', 'An error occured and the ration was not moved.', 'warning', 4);
         });
+      } else {
+        $scope.moving = false;
       }
     }
 
@@ -160,6 +170,7 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
           animateLoop(ration, newPos); // go through the loop again
         } else {
           // finish the animation and move on
+          $scope.moving = false;
           ration.position = newPos
           $scope.possiblePositions = $scope.graph.traverse(newPos.id);
           ration.position_id = newPos.id;
@@ -221,6 +232,26 @@ var phaseCtrl = angular.module('happyCow').controller('MovementCtrl', [
         addDice(1, $scope.user.move.dice1, 1, '');
         addDice(2, $scope.user.move.dice2, 1, '');
         addDice(3, $scope.user.move.dice3, 1, 'water');
+      }
+    }
+
+    $scope.getStage = function() {
+      if ($scope.user.rations.length <= 0) {
+        return 0;
+      } else if (!$scope.user.move.ration_id) { // if no ration is selected
+        if (!$scope.user.move.ration) {
+          return 1;
+        } else {
+          return 2;
+        }
+      } else if (!$scope.user.move.selected_die) { // ration selected, dice shown
+        return 3;
+      } else if ($scope.possiblePositions.length > 0) { // dice selected
+        return 4;
+      } else if ($scope.user.move.movements_made > 0 && $scope.possiblePositions.length > 0) { // need to continue moving
+        return 5;
+      } else { // no more moves
+        return 6;
       }
     }
 

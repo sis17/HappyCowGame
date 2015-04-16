@@ -1,11 +1,31 @@
 <div ng-controller="CardsCtrl" class="cards">
-<h2>
-  Your Hand
-  <small>Total <span class="badge">{{user.cards.length}}</span></small>
-  <small>Actions <span class="badge">{{countActions()}}</span></small>
-  <small>Ingredients <span class="badge">{{countIngredients()}}</span></small>
-  <button ng-if="game.checkPhase(2)" class="btn btn-default pull-right" data-toggle="modal" data-target="#help-modal">Help!</button>
-</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="pull-left" style="margin-top:0px;">{{$storage.user.name}}'s Hand</h2>
+      <div class="pull-left" style="margin-top:10px; margin-left:5px;">
+        <small>Total <span class="badge">{{user.cards.length}}</span></small>
+        <small>Actions <span class="badge">{{countActions()}}</span></small>
+        <small>Ingredients <span class="badge">{{countIngredients()}}</span></small>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h4 ng-if="user.rations.length > 0" class="pull-left">{{$storage.user.name}}'s Rations</h4>
+      <div class="pull-left" style="margin-top:-3px;">
+        <div ng-repeat="ration in user.rations" class="ration ration-popover clickable pull-left pad-10">
+          <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
+        </div>
+        <div ng-repeat="ration in user.rations" class="hidden">
+          <p>Position: {{ration.position}}</p>
+          <ul>
+            <li ng-repeat="ingredient in ration.ingredients">
+              <span class="label {{ingredient.ingredient_cat.name}}"></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <button ng-if="game.checkPhase(2)" class="btn btn-default pull-right" data-toggle="modal" data-target="#help-modal">Help!</button>
+    </div>
+  </div>
 
 <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -81,7 +101,7 @@
       <div>
         <div class="btn-group pull-left">
           <button class="btn btn-danger btn-sm" ng-click="discard(game_user_card)">Discard</button>
-          <button class="btn btn-primary btn-sm game_user_card.used {{game_user_card.used || (!game.canAct(2) && game_user_card.game_card.card.category != 'action') ? 'disabled' : ''}}" ng-click="useCard(game_user_card)">Use</button>
+          <button class="btn btn-primary btn-sm game_user_card.used {{game_user_card.used || ((getStage() != 1 || !game.canAct(2)) && game_user_card.game_card.card.category != 'action') ? 'disabled' : ''}}" ng-click="useCard(game_user_card)">Use</button>
         </div>
         <button class="btn btn-info btn-sm pull-right" ng-click="view(game_user_card)">Details</button>
       </div>
@@ -92,24 +112,18 @@
 <div ng-if="game.canAct(2)" class="bar bar-bottom bar-light">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-4">
-        <p>Existing Rations</p>
-        <div>
-          <div ng-repeat="ration in user.rations" class="ration ration-popover clickable pull-left pad-10">
-            <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
-          </div>
-          <div ng-repeat="ration in user.rations" class="hidden">
-            <p>Position: {{ration.position}}</p>
-            <ul>
-              <li ng-repeat="ingredient in ration.ingredients">
-                <span class="label {{ingredient.ingredient_cat.name}}"></span>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="col-md-6">
+        <p ng-if="getStage() == 0">Do you want to create a food ration? You have {{countIngredients()}} ingredients to use.</p>
+        <p ng-if="getStage() == 1">Add ingredient cards to the food ration, you have {{countIngredients()}} to use. When you're ready create it.</p>
+        <p ng-if="getStage() == 2">You must discard cards to continue.</p>
+        <p ng-if="getStage() == 3">You can still play action cards. When you're ready finish your turn to move onto the Movement Phase.</p>
       </div>
       <div class="col-md-6">
-        <div ng-if="newRation.show()">
+        <div ng-if="getStage() == 0" class="btn-group pull-right">
+          <button class="btn btn-info" ng-click="newRation.willCreate = true">Yes</button>
+          <button class="btn btn-warning" ng-click="newRation.willCreate = false">No</button>
+        </div>
+        <div ng-if="getStage() == 1" class="btn-group">
           <div class="big-ration pull-left">
             <div ng-repeat="ingredient in newRation.ingredients" class="ingredient {{ingredient.game_card.card.category}}">
               <p>{{ingredient.game_card ? ingredient.game_card.card.category : 'empty'}}</p>
@@ -119,14 +133,12 @@
           <button class="btn btn-success pull-left" ng-click="confirmCreation()"
                   style="height: 50px; margin-top: 8px; border-radius: 0px 5px 5px 0px;">Create</button>
         </div>
-      </div>
-      <div class="col-md-2">
-        <button ng-if="user.cards.length <= 9 && (!newRation.show() || newRation.spaces() == 4)" class="btn btn-success pull-right" ng-click="game.doneTurn()"
-                data-toggle="tooltip" data-placement="top" title="End card actions">
-          Finished
-        </button>
-        <p ng-if="newRation.spaces() < 4 && newRation.show()">You are in the middle of creating a ration.</p>
-        <p ng-if="user.cards.length > 9">You must discard cards to continue.</p>
+        <div ng-if="getStage() == 3">
+          <button class="btn btn-success pull-right" ng-click="endCardsTurn()"
+                  data-toggle="tooltip" data-placement="top" title="End card actions">
+            Finished
+          </button>
+        </div>
       </div>
     </div>
   </div>

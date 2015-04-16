@@ -38,7 +38,7 @@
 
 .motile {
   position: fixed;
-  z-index: 0;
+  z-index: -1;
   width:30;
   height:30;
 }
@@ -62,7 +62,7 @@
   position: fixed;
   top: 50px;
   left: 20px;
-  z-index: 4;
+  z-index: 1;
 }
 
 .ration .ration-ingredient {
@@ -224,7 +224,7 @@
   position: fixed;
 }
 .game-board-item.top {
-  z-index: 2;
+  z-index: -1;
 }
 .game-board-item.below {
   z-index: -2;

@@ -7,9 +7,14 @@ angular.module('happyCow').controller('GameCtrl', [
       var user = $scope.groupUsers.get(game_user.user_id);
       user.game_user = game_user;
       $scope.user.assign(user);
+      console.log('changing user to '+user.name);
       $scope.user.getCards();
       $scope.user.getRations();
       $scope.user.getMoves();
+    }
+
+    $scope.user.getName = function() {
+      return $scope.$storage.user.name;
     }
 
     /*$scope.turnChangeNotice = function() {

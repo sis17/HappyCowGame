@@ -35,7 +35,9 @@ class MovesController < ApplicationController
 
       if params[:position_id]
         # update the ration position
-        response = @move.confirm_move(params[:position_id])
+        is_end_position = false
+        is_end_position = true if params[:all_moves]
+        response = @move.confirm_move(params[:position_id], is_end_position) # second parameter to determine if it's a final move
         success = response[:success]
         messages.concat(response[:messages])
       else

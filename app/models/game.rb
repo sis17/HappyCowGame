@@ -281,6 +281,27 @@ class Game < ActiveRecord::Base
     return 0
   end
 
+  def get_taken_positions(existing_ration)
+    taken_positions = Hash.new
+
+    # get rations and compare amount of fibre
+    #existing_ration = Ration.joins(:game_user).where(game_users: {game_id:self.id}, position_id: current_position.id).take
+    if existing_ration
+      rations = Ration.joins(:game_user).where(game_users: {game_id:self.id})
+      rations.each do |ration|
+        if ration.count_type('fiber') >= existing_ration.count_type('fiber')
+          taken_positions[ration.position.id] = {id: ration.id, type: 'ration'}
+        end
+      end
+    end
+
+    motiles = Motile.where(game: self)
+    motiles.each do |motile|
+      taken_positions[motile.position.id] = {id: motile.id, type: 'motile'}
+    end
+    return taken_positions
+  end
+
   def finish_round
     messages = []
     round = Round.where(game_id: self.id, number: self.round.number+1).first
@@ -307,7 +328,8 @@ class Game < ActiveRecord::Base
       })
     else
       #there are no more rounds!
-      self.finish
+      messages.concat(self.finish)
+
       messages.push({
           title: 'Game Finished', text: 'There are no more rounds.',
           type: 'info', time: 5
@@ -318,14 +340,21 @@ class Game < ActiveRecord::Base
   end
 
   def finish
+    messages = []
     if self.stage == 1
       self.stage = 2
       # give every player a bit of experience
       score = 0
       winner = nil
       self.game_users.each do |game_user|
-        game_user.user.experience += 1
-        game_user.user.save
+        if self.cow.welfare != 0
+          game_user.user.experience += (self.cow.welfare / 2)
+          messages.push({
+              title: 'New Experience', text: game_user.user.name+' gained '+(self.cow.welfare / 2).to_s+' experience.',
+              type: 'info', time: 5
+          })
+          game_user.user.save
+        end
       end
 
       # if there is a winner, and more than one player, give them a bonus
@@ -334,10 +363,15 @@ class Game < ActiveRecord::Base
         user = game_users[0].user
         user.experience += 2
         user.save
+        messages.push({
+            title: 'A Winner', text: user.name+' had the highest score of '+game_users[0].score.to_s+', so gained 2 experience.',
+            type: 'info', time: 5
+        })
       end
 
       self.save
     end
+    return messages
   end
 
   def as_json(options={})

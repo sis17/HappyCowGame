@@ -27,9 +27,10 @@
     <span class="label label-{{rumenStat.maxType}} cow-pl cow-pl-high">{{rumenStat.max}}</span>
   </div>
 
-  <div ng-repeat="ration in game.allRations" class="ration ration-board clickable {{ration.selected || ration.id == user.move.ration.id ? 'selected' : ''}}"
+  <div ng-repeat="ration in game.allRations" class="ration ration-board clickable"
+        ng-click="selectRation(ration)"
         style="left: {{left+ration.position.centre_x-10}}px; top: {{top+ration.position.centre_y-10}}px;
-        border-color:{{ration.game_user.colour}}">
+        border-color:{{ration.game_user.colour}}; background-color:{{ration.id == user.move.ration.id ? ration.game_user.colour : ''}};">
     <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
   </div>
 
@@ -37,9 +38,10 @@
         style="left: {{left+motile.position.centre_x-10}}px; top: {{top+motile.position.centre_y-10}}px;" />
 
   <div ng-repeat="pos in possiblePositions" ng-if="pos.depth > 0"
-        class="move-position {{pos.depth == 1 ? 'move-position-first clickable' : ''}}"
+        class="move-position {{pos.depth == 1 && !moving ? 'move-position-first clickable' : ''}}
+        {{pos.depth >= user.move.movements_left && !moving ? 'move-position-first clickable' : ''}}"
         style="left: {{left+pos.centre_x}}px; top: {{top+pos.centre_y}}px; padding-left:3px;"
-        ng-click="pos.depth == 1 ? moveRation(pos.id) : null">{{pos.depth}}
+        ng-click="moveRation(pos.id, pos.depth >= user.move.movements_left)">{{pos.depth}}
         {{pos.rations.length > 0 ? 'pushable' : ''}}
   </div>
 
@@ -60,28 +62,22 @@
 
   <div ng-if="game.checkPhase(3) && game.checkTurn()" class="bar bar-bottom bar-light">
     <div class="area pull-left">
-      <div>
-        <div ng-repeat="ration in user.rations | orderBy : order" class="ration {{!user.move.ration.id ? 'clickable' : ''}} pull-left pad-10
-              {{ration.id == user.move.ration.id ? 'selected' : ''}}"
-              ng-click="selectRation(ration)" style="opacity: {{ration.selected || ration.id == user.move.ration.id ? '1' : '0.6'}};">
-          <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
-        </div>
-      </div>
-      <p ng-if="user.rations.length > 0 && !user.move.ration_id">Select a ration, then
-        <button ng-click="confirmRation()" class="btn btn-sm btn-primary">confirm</button>
-              it to move.
-      </p>
+      <p ng-if="getStage() == 0">{{user.getName()}}, you have no food rations to move. Next turn try creating one with ingredient cards.</p>
+      <p ng-if="getStage() == 1">{{user.getName()}}, select a ration on the board that you want to move.</p>
+      <p ng-if="getStage() == 2">Now confirm it, and you'll get a choice of dice to use.</p>
+      <p ng-if="getStage() == 3">Select a dice, you will be able to move the value shown.</p>
+      <p ng-if="getStage() == 4">If you're happy with that dice, click on one of the positions shown in green to start moveing.</p>
+      <p ng-if="getStage() == 5">You've started moving your ration, you must now move as far as possible.</p>
+      <p ng-if="getStage() == 6">You cannot move any further, your turn is finished.</p>
     </div>
+
     <div class="area pull-right">
-      <p ng-if="user.rations.length <= 0">You have no rations to move.
+      <div ng-if="getStage() == 0 || getStage() == 6" class="pull-right">
         <button ng-click="game.doneTurn()" class="btn btn-primary">Finish</button>
-      </p>
-      <p ng-if="user.rations.length > 0 && user.move.ration_id && user.move.selected_die && possiblePositions.length <= 0">You have no more moves.
-        <button ng-click="game.doneTurn()" class="btn btn-primary">Finish</button>
-      </p>
-      <div ng-if="user.move.ration_id && (possiblePositions.length > 0 || !user.move.selected_die)" >
-        <p class="pull-left" style="width: 50%;">Select a dice, then click on it's route on the board to move the ration.</p>
-        <ul ng-if="dice.length > 0" class="list-inline pull-right pad-10">
+      </div>
+      <div ng-if="getStage() == 2" class="pull-right"><button ng-click="confirmRation()" class="btn btn-sm btn-primary">Confirm</button></div>
+      <div ng-if="getStage() == 3 || getStage() == 4 || getStage() == 5">
+        <ul class="list-inline pull-right pad-10">
           <li ng-repeat="die in dice">
             <a ng-click="die.select()" class="{{die.class()}} clickable">
               <div class="die {{die.doubleClass}} {{die.waterClass}}">

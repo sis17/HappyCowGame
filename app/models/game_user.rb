@@ -30,10 +30,10 @@ class GameUser < ActiveRecord::Base
     end
 
     # check there is space for the ration
-    if ration.position_id < 0
+    if !ration.position_id or ration.position_id < 0
       messages.push({
         title:'No Room in the Trough', text: 'Your ration could not be created, all the spaces in the trough are taken.',
-        type:'success', time: 5
+        type:'warning', time: 5
       })
       return {success: false, messages: messages}
     end

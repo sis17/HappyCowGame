@@ -78,18 +78,34 @@ class Move < ActiveRecord::Base
       messages.push({title:'Dice Unknown', text: 'The dice could not be found ('+dieNum.to_s+').', type:'warning', time:0})
     end
 
-    messages.push({title:'Dice Confirmed', text: 'You have '+self.movements_left.to_s+' movements left.', type:'success', time:5})
+    messages.push({title:'Dice Confirmed', text: 'You have '+self.movements_left.to_s+' moves.', type:'success', time:5})
     return messages
   end
 
-  def confirm_move(position_id)
+  def confirm_move(position_id, is_end_position)
     messages = []
     success = false
     ration = self.ration
     new_position = Position.find(position_id)
-    success = true if new_position
 
-    # check the ration can move there
+    # check the position is reachable
+    if is_end_position
+      graph = ration.position.build_graph(self.movements_left, self.round.game.get_taken_positions(ration))
+      success = true if graph[new_position.id]
+      messages.push({
+        title: 'Ration Cannot Move There', text: 'The position you selected is not reachable, please try moving step by step.', type: 'warning', time: 0
+      }) if success == false
+    else
+      # check the position is a neighbour
+      ration.position.positions.each do |position|
+        success = true if position.id == new_position.id
+      end
+      messages.push({
+        title: 'Ration Cannot Move There', text: 'The position you selected is not a neighbour, the move is not allowed.', type: 'warning', time: 0
+      }) if success == false
+    end
+
+    # check nothing is blocking the ration from moving there
     game = self.round.game
     existing_motile = Motile.where(game: game, position_id: new_position.id).take
     existing_ration = Ration.joins(:game_user).where(game_users: {game_id:game.id}, position_id: new_position.id).take
@@ -116,8 +132,13 @@ class Move < ActiveRecord::Base
       old_pos = ration.position
       ration.position = new_position
       ration.save
-      self.movements_left -= 1
-      self.movements_made += 1
+      if is_end_position
+        self.movements_made = self.movements_left
+        self.movements_left = 0
+      else
+        self.movements_left -= 1
+        self.movements_made += 1
+      end
       self.save
 
       #check if the ration is in the trough, to slide others down

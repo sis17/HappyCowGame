@@ -7,6 +7,7 @@ angular.module('happyCow').controller('CardsCtrl', [
 
     $scope.newRation = {
       ingredients: [{},{},{},{}],
+      willCreate: null,
       setIngredients: function() {
         this.ingredients = [];
         var cards = $scope.user.cards;
@@ -46,14 +47,14 @@ angular.module('happyCow').controller('CardsCtrl', [
           $scope.user.getCards();
           $scope.user.getRations();
           $scope.newRation.ingredients = [{},{},{},{}];
-          $scope.game.round.ration_created = true;
+          //$scope.game.round.ration_created = true;
 
         }, function() {
           notice('Ration Not Created', 'An error occured and the ration was not created.', 'danger', 2);
         });
       },
       show: function() {
-        if ($scope.user.rations && $scope.user.rations.length >= 4) {
+        if (($scope.user.rations && $scope.user.rations.length >= 4) || this.willCreate === false) {
           return false;
         }
         for (i in $scope.user.rations) {
@@ -65,6 +66,25 @@ angular.module('happyCow').controller('CardsCtrl', [
         return true;
       }
     };
+
+    $scope.getStage = function() {
+      if ($scope.newRation.willCreate == null && $scope.newRation.show()) {
+        return 0;
+      } else if ($scope.newRation.show()) {
+        return 1;
+      } else if ($scope.user.cards.length > 9) {
+        return 2;
+      } else {
+        return 3;
+      }
+    }
+
+    $scope.endCardsTurn = function() {
+      $scope.game.doneTurn();/*.then(function() {
+        $scope.newRation.willCreate = null;
+      })*/
+      $scope.newRation.willCreate = null;
+    }
 
     $scope.countUnusedIngredients = function() {
       var count = 0;
