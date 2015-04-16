@@ -83,8 +83,7 @@ angular.module('happyCow').controller('CardsCtrl', [
       $scope.game.doneTurn();
       $timeout(function() {
         $scope.newRation.willCreate = null;
-      }, 1200)
-      //$scope.newRation.willCreate = null;
+      }, 1200);
     }
 
     $scope.countUnusedIngredients = function() {

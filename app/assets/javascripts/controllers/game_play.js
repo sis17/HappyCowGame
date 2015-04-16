@@ -221,7 +221,7 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
     };
 
     // Kick off the interval
-    //$scope.intervalFunction();
+    $scope.intervalFunction();
 });
 
     $scope.changePhaseTemplate = function(num) {
