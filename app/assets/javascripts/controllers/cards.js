@@ -81,7 +81,7 @@ angular.module('happyCow').controller('CardsCtrl', [
 
     $scope.endCardsTurn = function() {
       $scope.game.doneTurn();
-      $timeout(function() {
+      $timeout(function() { // waits to show the message to choose to create a ration
         $scope.newRation.willCreate = null;
       }, 1200);
     }

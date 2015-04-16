@@ -73,7 +73,7 @@ class UsersController < ApplicationController
       @user = User.new(params.require(:user).permit(:email, :name, :password))
       if @user
         @user.experience = 0
-        @user.colour = "%06x" % (rand * 0xffffff)
+        @user.colour = '#'+("%06x" % (rand * 0xffffff))
         @user.save
         render json: {
           success: true,
