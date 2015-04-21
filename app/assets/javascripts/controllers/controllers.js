@@ -43,6 +43,10 @@ angular.module('happyCow').controller('BaseCtrl', [
     $scope.groupUsers = {
       add: function(userData) {
         $scope.$storage.groupUsers.push(userData);
+        // authorise the first user, so that a game can be created
+        if (!$scope.$storage.user && $scope.$storage.groupUsers.length <= 1) {
+          $scope.setAuthHeaders(userData.id, userData.key);
+        }
       },
       all: function() {
         if (!$scope.$storage.groupUsers) {

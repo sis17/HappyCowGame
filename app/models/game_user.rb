@@ -34,84 +34,84 @@ class GameUser < ActiveRecord::Base
       messages.push({
         title:'No Room in the Trough', text: 'Your ration could not be created, all the spaces in the trough are taken.',
         type:'warning', time: 5
-      })
-      return {success: false, messages: messages}
-    end
+        })
+        return {success: false, messages: messages}
+      end
 
-    #check the user has cards
-    if ingredients.length <= 0
-      messages.push({
-        title:'You Need Ingredients', text: 'You must use at least one ingredient to create a ration, you submitted none.',
-        type:'warning', time: 5
-      })
-      return {success: false, messages: messages}
-    end
-
-    ration.save
-
-    #tansfer cards to ingredients
-    cards = []
-    ingredients.each do |ing|
-      if ing[:id]
-        card = GameUserCard.find(ing[:id])
-        cards.push(card)
-        ingredient_cat = IngredientCat.where({name: card.game_card.card.category, game_id: self.game.id}).first
-
-        if self.game.cow.check_mad and ingredient_cat.name == 'protien' # if the mad cow disease is in action
-          ration.destroy # remove the ration again
-          messages.push({
-            title:'Illegal Protien', text: 'During the Mad Cow Crisis you cannot play protien cards. Your ration was not created.',
-            type:'danger', time: 6
-          })
-          return {success: false, messages: messages}
-        elsif ingredient_cat and card.game_user.id == self.id
-          ingredient = Ingredient.new({ration_id: ration.id, ingredient_cat_id: ingredient_cat.id})
-          ingredient.save
-        else
-          # an ingredient was not found
-          ration.destroy # remove the ration again
-          messages.push({
-            title:'Missing Ingredient', text: 'Your ration could not be created because an ingredient you submitted could not be found in your hand.',
-            type:'warning', time: 6
+      #check the user has cards
+      if ingredients.length <= 0
+        messages.push({
+          title:'You Need Ingredients', text: 'You must use at least one ingredient to create a ration, you submitted none.',
+          type:'warning', time: 5
           })
           return {success: false, messages: messages}
         end
-      end
-    end
 
-      # we're still here, so all good so far, remove the cards
-      cards.each do |card|
-        card.destroy
-      end
+        ration.save
 
-      # create an action to mark the event
-      action = Action.new
-      action.set('Created a Ration', 'created a ration with '+ration.describe_ingredients+'.',
-        ration.game_user.game.round_id, 2, ration.game_user.id
-      )
+        #tansfer cards to ingredients
+        cards = []
+        ingredients.each do |ing|
+          if ing[:id]
+            card = GameUserCard.find(ing[:id])
+            cards.push(card)
+            ingredient_cat = IngredientCat.where({name: card.game_card.card.category, game_id: self.game.id}).first
+            
+            if self.game.cow.check_mad and ingredient_cat.name == 'protien' # if the mad cow disease is in action
+              ration.destroy # remove the ration again
+              messages.push({
+                title:'Illegal Protien', text: 'During the Mad Cow Crisis you cannot play protien cards. Your ration was not created.',
+                type:'danger', time: 6
+                })
+                return {success: false, messages: messages}
+              elsif ingredient_cat and card.game_user.id == self.id
+                ingredient = Ingredient.new({ration_id: ration.id, ingredient_cat_id: ingredient_cat.id})
+                ingredient.save
+              else
+                # an ingredient was not found
+                ration.destroy # remove the ration again
+                messages.push({
+                  title:'Missing Ingredient', text: 'Your ration could not be created because an ingredient you submitted could not be found in your hand.',
+                  type:'warning', time: 6
+                  })
+                  return {success: false, messages: messages}
+                end
+              end
+            end
 
-      messages.push({
-        title:'Ration Created', text: 'Your ration was created with '+ration.describe_ingredients+'.',
-        type:'success', time: 6
-      })
+            # we're still here, so all good so far, remove the cards
+            cards.each do |card|
+              card.destroy
+            end
 
-    return {success: true, messages: messages}
-  end
+            # create an action to mark the event
+            action = Action.new
+            action.set('Created a Ration', 'created a ration with '+ration.describe_ingredients+'.',
+            ration.game_user.game.round_id, 2, ration.game_user.id
+            )
 
-  def as_json(options={})
-    super(
-      :include=> [
-        {game: {:include => [
-          {round: {:include => [
-            {game_user: {:include => [:user  => {:only => [:id, :name]}]}}
-          ]}},
-          :cow,
-          :game_users
-        ]}},
-        :rations,
-        :game_cards,
-        :user => {:only => [:name]}
-      ]
-    )
-  end
-end
+            messages.push({
+              title:'Ration Created', text: 'Your ration was created with '+ration.describe_ingredients+'.',
+              type:'success', time: 6
+              })
+
+              return {success: true, messages: messages}
+            end
+
+            def as_json(options={})
+              super(
+              :include=> [
+                {game: {:include => [
+                  {round: {:include => [
+                    {game_user: {:include => [:user  => {:only => [:id, :name]}]}}
+                    ]}},
+                    :cow,
+                    :game_users
+                    ]}},
+                    :rations,
+                    :game_cards,
+                    :user => {:only => [:name]}
+                  ]
+                  )
+                end
+              end
