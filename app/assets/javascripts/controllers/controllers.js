@@ -64,7 +64,7 @@ angular.module('happyCow').controller('BaseCtrl', [
       },
       remove: function(user_id) {
         for (i in $scope.$storage.groupUsers) {
-          if (user_id = $scope.$storage.groupUsers[i].id) {
+          if (user_id == $scope.$storage.groupUsers[i].id) {
             $scope.$storage.groupUsers.splice(i, 1);
             return true;
           }
