@@ -156,7 +156,7 @@ class GamesController < ApplicationController
       @game.stage = 0
       @game.rounds_min = 8 if !@game.rounds_min
       @game.rounds_max = 8 if !@game.rounds_max
-      @game.carddeck_id = CardDeck.take.id if !@game.carddeck_id
+      @game.carddeck_id = Carddeck.take.id if !@game.carddeck_id
       @game.save
 
       if params[:user_id] # for a single setup game
