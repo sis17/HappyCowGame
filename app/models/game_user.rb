@@ -12,7 +12,7 @@ class GameUser < ActiveRecord::Base
   has_many :actions
   has_many :round_records
 
-  def make_ration(ration_params)
+  def make_ration(ingredients)
     messages = []
     ration = Ration.new
     ration.game_user_id = self.id
@@ -39,7 +39,7 @@ class GameUser < ActiveRecord::Base
     end
 
     #check the user has cards
-    if ration_params[:ingredients].length <= 0
+    if ingredients.length <= 0
       messages.push({
         title:'You Need Ingredients', text: 'You must use at least one ingredient to create a ration, you submitted none.',
         type:'warning', time: 5
@@ -51,19 +51,20 @@ class GameUser < ActiveRecord::Base
 
     #tansfer cards to ingredients
     cards = []
-    ration_params[:ingredients].each do |ing|
+    ingredients.each do |ing|
       if ing[:id]
         card = GameUserCard.find(ing[:id])
         cards.push(card)
         ingredient_cat = IngredientCat.where({name: card.game_card.card.category, game_id: self.game.id}).first
-        if self.game.cow.check_mad and ingredient_cat.name == 'protein' # if the mad cow disease is in action
+
+        if self.game.cow.check_mad and ingredient_cat.name == 'protien' # if the mad cow disease is in action
           ration.destroy # remove the ration again
           messages.push({
-            title:'Illegal Protein', text: 'During the Mad Cow Crisis you cannot play protein cards. Your ration was not created.',
+            title:'Illegal Protien', text: 'During the Mad Cow Crisis you cannot play protien cards. Your ration was not created.',
             type:'danger', time: 6
           })
           return {success: false, messages: messages}
-        elsif ingredient_cat
+        elsif ingredient_cat and card.game_user.id == self.id
           ingredient = Ingredient.new({ration_id: ration.id, ingredient_cat_id: ingredient_cat.id})
           ingredient.save
         else

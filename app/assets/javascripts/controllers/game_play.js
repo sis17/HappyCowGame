@@ -1,20 +1,52 @@
 angular.module('happyCow').controller('GameCtrl', [
   '$scope', '$sce', '$location', 'Restangular', '$routeParams', '$timeout', 'notice', '$modal',
   function($scope, $sce, $location, Restangular, $routeParams, $timeout, notice, $modal) {
-    // for group games
-    $scope.user.changeUser = function(game_user) {
-      $scope.phaseTemplate = 'templates/phase/1.html';
-      var user = $scope.groupUsers.get(game_user.user_id);
-      user.game_user = game_user;
-      $scope.user.assign(user);
-      console.log('changing user to '+user.name);
-      $scope.user.getCards();
-      $scope.user.getRations();
-      $scope.user.getMoves();
+
+    if (!$scope.groupPlayers) {
+      $scope.groupPlayers = $scope.$storage.groupUsers; // for now
+    }
+    var getGroupPlayer = function(user_id) {
+      var groupPlayer = null;
+      for (i in $scope.groupPlayers) {
+        if ($scope.groupPlayers[i].id && $scope.groupPlayers[i].key && $scope.groupPlayers[i].id == user_id) {
+          return $scope.groupPlayers[i];
+        }
+      }
+      if (!groupPlayer) {
+        // the player does not exist, to add them, they must authenticate themselves
+        notice('No Authentication', 'You are not logged into this game, please try logging in again.', 'warning', 6);
+      }
     }
 
-    $scope.user.getName = function() {
-      return $scope.$storage.user.name;
+    $scope.player = {};
+    $scope.$storage.player = $scope.user.data;
+    $scope.player.change = function(user, game_user) {
+      user.game_user = game_user;
+      $scope.$storage.player = user;
+      // set the headers for authentication
+      $scope.setAuthHeaders(user.id, user.key);
+      // load the correct data for the user
+      console.log('changing user to '+user.name);
+      this.getCards();
+      this.getRations();
+      this.getMoves();
+    }
+
+    $scope.player.getName = function() {
+      if ($scope.$storage.player)
+        return $scope.$storage.player.name;
+    }
+    $scope.player.getId = function() {
+      if ($scope.$storage.player)
+        return $scope.$storage.player.id;
+    }
+    $scope.player.getGameUser = function() {
+      if ($scope.$storage.player)
+        return $scope.$storage.player.game_user;
+    }
+    $scope.player.getGameUserId = function() {
+      if ($scope.$storage.player)
+        return $scope.$storage.player.game_user.id;
     }
 
     /*$scope.turnChangeNotice = function() {
@@ -24,7 +56,7 @@ angular.module('happyCow').controller('GameCtrl', [
         size: 'lg',
         resolve: {
           user: function () {
-            return $scope.$storage.user;
+            return $scope.$storage.player;
           }
         }
       });
@@ -35,42 +67,42 @@ angular.module('happyCow').controller('GameCtrl', [
       });
     }*/
 
-    $scope.user.getMoves = function() {
+    $scope.player.getMoves = function() {
       // update the user's possible moves, picking the one for this round
       Restangular.one('games', $scope.game.id).one('rounds', $scope.game.round.id).getList('moves').then(function(moves) {
         for (i in moves) {
           var move = moves[i];
-          if (move && move.game_user_id == $scope.$storage.user.game_user.id && move.round_id == $scope.game.round.id) {
-            $scope.user.move = move;
+          if (move && move.game_user_id == $scope.$storage.player.game_user.id && move.round_id == $scope.game.round.id) {
+            $scope.player.move = move;
           }
         }
       });
     }
 
-    $scope.user.getCards = function() {
+    $scope.player.getCards = function() {
       // update the user's cards
-      this.cards = Restangular.one('games', $routeParams.gameId).one('game_users', $scope.$storage.user.game_user.id)
+      this.cards = Restangular.one('games', $routeParams.gameId).one('game_users', $scope.$storage.player.game_user.id)
               .getList('cards').$object;
     }
 
-    $scope.user.countCards = function() {
+    $scope.player.countCards = function() {
       if (!this.cards) {
         return '';
       }
       return this.cards.length;
     }
 
-    $scope.user.getRations = function() {
+    $scope.player.getRations = function() {
       // update the user's rations
-      this.rations = Restangular.one('users', $routeParams.gameId).one('game_users', $scope.$storage.user.game_user.id)
+      this.rations = Restangular.one('users', $routeParams.gameId).one('game_users', $scope.$storage.player.game_user.id)
               .getList('rations').$object;
     }
 
-    $scope.user.createRation = function(ingredients) {
-      var ration = {game_user_id: $scope.$storage.user.game_user.id, ingredients: ingredients};
+    $scope.player.createRation = function(ingredients) {
+      var ration = {game_user_id: $scope.$storage.player.game_user.id, ingredients: ingredients};
       Restangular.all('rations').post({ration: ration, game_id: $routeParams.gameId}).then(function(response) {
         notice(response.message.title, response.message.message, response.message.type, 4);
-        $scope.cards = $scope.user.getCards();
+        $scope.cards = $scope.player.getCards();
         if ($scope.game.round)
           $scope.game.round.ration_created = true;
       }, function() {
@@ -90,19 +122,19 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
 
     // load user details
     if ($scope.game.isGroupGame()) {
-      $scope.user.changeUser($scope.game.round.game_user);
+      // fetch first crowd user, already authenticated
+      var user = getGroupPlayer($scope.game.round.game_user.user_id);
+      $scope.player.change(user, $scope.game.round.game_user);
     } else {
-      $scope.user.getCards();
-      $scope.user.getRations();
-      $scope.user.getMoves();
+      $scope.player.change($scope.$storage.user, $scope.$storage.user.game_user);
     }
 
     $scope.game.update = function() {
       if ($scope.game.round) {
         var current_game_user = $scope.game.round.game_user;
         var current_game_stage = $scope.game.stage;
-        Restangular.one('game_users', $scope.$storage.user.game_user.id).get().then(function(game_user) {
-          $scope.$storage.user.game_user = game_user;
+        Restangular.one('game_users', $scope.$storage.player.game_user.id).get().then(function(game_user) {
+          $scope.$storage.player.game_user = game_user;
         });
         Restangular.one('games', $routeParams.gameId).get().then(function(game) {
           $scope.game.cow = game.cow;
@@ -155,7 +187,7 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
       $scope.finishingTurn = true;
       return Restangular.one('games', $scope.game.id).patch({
         round_id: $scope.game.round.id,
-        game_user_id: $scope.$storage.user.game_user.id,
+        game_user_id: $scope.$storage.player.game_user.id,
         done_turn: true
       }).then(function(response) {
         notice(response.messages);
@@ -165,15 +197,17 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
                 $scope.game.round = round;
                 // if a group game, change the active user
                 if ($scope.game.isGroupGame()) {
-                  $scope.user.changeUser($scope.game.round.game_user);
+                  var user = getGroupPlayer($scope.game.round.game_user.user_id)
+                  $scope.player.change(user, $scope.game.round.game_user);
+                  //$scope.player.change($scope.game.round.game_user);
                   //$scope.turnChangeNotice();
                 }
 
                 if (roundId != round.id) {
                   // at the start of the phase we want to look at the event
                   if (!$scope.game.isGroupGame()) {
-                    $scope.user.getCards();
-                    $scope.user.getRations();
+                    $scope.player.getCards();
+                    $scope.player.getRations();
                   }
                   $scope.changePhaseTemplate(1);
                 } else {
@@ -207,7 +241,7 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
       return this.round.current_phase == phaseNum;
     }
     $scope.game.checkTurn = function() {
-      return this.isGroupGame() || this.round.game_user_id == $scope.$storage.user.game_user.id;
+      return this.isGroupGame() || this.round.game_user_id == $scope.player.getGameUserId();
     }
 
     $scope.rounds = $scope.game.getCurrentRounds();

@@ -1,18 +1,31 @@
 angular.module('happyCow').controller('BaseCtrl', [
-  '$scope', '$sce', '$location', 'Restangular', '$localStorage', 'notice', '$modal',
-  function($scope, $sce, $location, Restangular, $localStorage, notice, $modal) {
+  '$scope', '$sce', '$location', 'Restangular', '$localStorage', 'notice', '$modal', '$http',
+  function($scope, $sce, $location, Restangular, $localStorage, notice, $modal, $http) {
+    // set the headers for authentication
+    $scope.setAuthHeaders = function(id, key) {
+      $http.defaults.headers.common.UserId = id;
+      $http.defaults.headers.common.UserKey = key;
+    }
+
     $scope.$storage = $localStorage;
+
     if (!$scope.$storage.user) {
       $location.path('login');
+    } else {
+      $scope.setAuthHeaders($scope.$storage.user.id, $scope.$storage.user.key);
     }
 
     $scope.user = {
       data: null,
       assign: function(userData) {
         $scope.$storage.user = userData;
+        // set the headers for authentication
+        $scope.setAuthHeaders(userData.id, userData.key);
       },
       logout: function() {
         $scope.$storage.user = null;
+        $http.defaults.headers.common.UserId = null;
+        $http.defaults.headers.common.UserKey = '';
         notice('Logged Out', 'Your session has been successfully ended.', 'info', 4);
         $location.path('login')
       },

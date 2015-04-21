@@ -1,4 +1,6 @@
 class MovesController < ApplicationController
+  # authenticate the following actions
+  before_action :authenticate, only: [:index, :show, :update]
   before_filter :load_user
 
   def index

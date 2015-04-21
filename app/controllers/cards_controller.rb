@@ -1,4 +1,6 @@
 class CardsController < ApplicationController
+  # authenticate the following actions
+  before_action :authenticate, only: [:index, :show, :create, :update, :destroy]
   before_filter :load_user
 
   def index

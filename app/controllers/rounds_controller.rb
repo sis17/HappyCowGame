@@ -1,4 +1,7 @@
 class RoundsController < ApplicationController
+  # authenticate the following actions
+  before_action :authenticate, only: [:index, :show, :create]
+
   def index
     @rounds = Round.includes(:event, :moves).all
     render :json => @rounds.as_json

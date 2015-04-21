@@ -21,14 +21,14 @@
             <ul class="dropdown-menu" role="menu">
               <li><button ng-click="instructions()" class="btn btn-success btn-sm dropdown-menu-button">Instructions</button></li>
               <li class="divider"></li>
-              <li><a href="#/games" class="btn btn-primary btn-sm dropdown-menu-button">Game Menu</a></li>
-              <li><button ng-click="user.logout()" class="btn btn-warning btn-sm dropdown-menu-button">Log Out</button></li>
-              <li><button ng-click="reportIssue()" class="btn btn-info btn-sm dropdown-menu-button">Report Issue</button></li>
+              <li ng-if="$storage.user"><a href="#/games" class="btn btn-primary btn-sm dropdown-menu-button">Game Menu</a></li>
+              <li ng-if="!$storage.user"><a href="#/" class="btn btn-primary btn-sm dropdown-menu-button">Main Menu</a></li>
+              <!--<li><button ng-click="reportIssue()" class="btn btn-info btn-sm dropdown-menu-button">Report Issue</button></li>-->
             </ul>
           </div>
         </li>
         <li ng-controller="ScoreViewCtrl">
-          <button popup class="btn btn-default">Score <span class="badge">{{$storage.user.game_user.score}}</span></button>
+          <button popup class="btn btn-default">Score <span class="badge">{{player.getGameUser().score}}</span></button>
           <div class="hidden">
             <ul class="list-group">
               <li ng-repeat="game_user in game.game_users | orderBy:score" class="list-group-item">
@@ -59,7 +59,7 @@
           <div class="btn-group">
             <a ng-click="changePhaseTemplate(1)" class="btn btn-{{game.round.current_phase == 1? 'info' : 'default'}}">Event</a>
             <a ng-click="changePhaseTemplate(2)" class="btn btn-{{game.round.current_phase == 2? 'info' : 'default'}}">
-              Cards <span class="badge">{{user.countCards()}}</span>
+              Cards <span class="badge">{{player.cards.length}}</span>
             </a>
             <a ng-click="changePhaseTemplate(3)" class="btn btn-{{game.round.current_phase == 3? 'info' : 'default'}}">Movement</a>
             <a ng-click="changePhaseTemplate(4)" class="btn btn-{{game.round.current_phase == 4? 'info' : 'default'}}">Review</a>
@@ -156,7 +156,6 @@
 
 </div>
 </div>
-
 
 <script type="text/ng-template" id="reviewRound.html">
   <div class="modal-header">

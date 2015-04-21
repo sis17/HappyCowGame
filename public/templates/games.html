@@ -121,7 +121,8 @@
                 </div>
                 <div ng-if="game.stage == 1" class="btn-group pull-right">
                   <button ng-click="leave()" class="btn btn-warning">Leave</button>
-                  <a ng-href="#/games/play/{{game.id}}" class="btn btn-primary">Resume</a>
+                  <a ng-if="game.creater_id" ng-href="#/games/play/{{game.id}}" class="btn btn-primary">Resume</a>
+                  <a ng-if="!game.creater_id" ng-href="#/games/group/{{game.id}}" class="btn btn-primary">Resume</a>
                 </div>
               </div>
             </div>

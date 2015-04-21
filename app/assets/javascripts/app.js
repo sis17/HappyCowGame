@@ -1,11 +1,11 @@
 var hcApp = angular.module('happyCow', [
   'ui.bootstrap', 'ngSanitize', 'ngRoute', 'restangular', 'angularModalService',
-  'ngStorage', 'colorpicker.module', /*'mgcrea.ngStrap',*/
+  'ngStorage', 'colorpicker.module',
   'happyCowServices', 'happyCowDirectives'
-]);
+]).
 
-hcApp.config(['$routeProvider',
-  function($routeProvider) {
+config(
+  function($routeProvider, RestangularProvider) {
     $routeProvider.
       when('/login', {
         templateUrl: 'templates/login.html',
@@ -39,8 +39,15 @@ hcApp.config(['$routeProvider',
         templateUrl: 'templates/group_new.html',
         controller: 'GroupGameCtrl'
       }).
+      when('/games/group/:gameId', {
+        templateUrl: 'templates/group_setup.html',
+        controller: 'GroupSetupCtrl'
+      }).
       otherwise({
         templateUrl: 'templates/welcome.html',
         controller: 'WelcomeCtrl'
       });
-  }]);
+
+
+  }
+);

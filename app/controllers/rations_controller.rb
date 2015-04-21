@@ -1,4 +1,6 @@
 class RationsController < ApplicationController
+  # authenticate the following actions
+  before_action :authenticate, only: [:index, :show, :create, :update]
   before_filter :load_user
 
   def index
@@ -40,7 +42,7 @@ class RationsController < ApplicationController
     # if passed above, create the ration
     elsif params[:ration] and params[:ration][:game_user_id]
       allowed = true
-      response = @game_user.make_ration(params[:ration])
+      response = @game_user.make_ration(params[:ration][:ingredients])
       render json: response and return
     else
       messages.push({

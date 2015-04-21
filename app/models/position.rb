@@ -7,6 +7,12 @@ class Position < ActiveRecord::Base
     :foreign_key => "position_from_id",
     :association_foreign_key => "position_to_id")
 
+  def is_free(game, existing_ration)
+    taken_positions = game.get_taken_positions(existing_ration)
+    return false if taken_positions[self.id]
+    return true
+  end
+
   def build_graph(depth, taken_positions)
       graph = {}
       # create the position, if not already there

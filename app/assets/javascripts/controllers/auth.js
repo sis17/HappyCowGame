@@ -9,6 +9,7 @@ var loginCtrl = hcApp.controller('LoginCtrl', [
       Restangular.service('login').post({email: user.email, password: user.password}).then(function (response) {
         notice(response.messages)
         if (response.success) {
+          response.user.key = response.key;
           $scope.user.assign(response.user);
           $location.path('games');
         }
@@ -39,6 +40,7 @@ var registerCtrl = hcApp.controller('RegisterCtrl', [
         Restangular.all('users').post({user:user}).then(function(response) {
           notice(response.messages);
           if (response.success && response.user) {
+            response.user.key = response.key;
             $scope.user.assign(response.user);
             $location.path('games');
           }

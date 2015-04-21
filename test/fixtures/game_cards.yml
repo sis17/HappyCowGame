@@ -40,7 +40,7 @@ gc8:
 
 gc9:
   game: two
-  card: card_theif
+  card: card_thief
   quantity: 2
 
 gc10:
@@ -85,7 +85,7 @@ gc17:
 
 gc18:
   game: two
-  card: card_managment
+  card: card_bioreacotor
   quantity: 2
 
 gc19:

@@ -1,4 +1,7 @@
 class GamesController < ApplicationController
+  # authenticate the following actions
+  before_action :authenticate, only: [:index, :create, :update, :destroy]
+
   def index
     @games = Game.all
     render json: @games.as_json
@@ -34,7 +37,7 @@ class GamesController < ApplicationController
           with = ''
           with = ', with '+movement.ration.describe_ingredients+', ' if movement.ration
           action.set(
-            'Moved a Ration', 'moved a ration '+with+movement.movements_made.to_s+' positions.',
+            'Moved a Ration', 'moved a ration '+with+movement.movements_made.to_s+' places.',
             @round.id, 3, @round.game_user.id
           )
 

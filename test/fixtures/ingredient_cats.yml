@@ -1,6 +1,6 @@
 
 two_watercategory:
-  name: water
+  name: 'water'
   milk_score: 1
   meat_score: 1
   muck_score: 1
@@ -14,9 +14,16 @@ two_energycategory:
   game: two
 
 two_protiencategory:
-  name: protein
+  name: protien
   milk_score: 3
   meat_score: 4
+  muck_score: 1
+  game: two
+
+two_fibercategory:
+  name: fiber
+  milk_score: 2
+  meat_score: 2
   muck_score: 1
   game: two
 

@@ -67,7 +67,7 @@ class Cow < ActiveRecord::Base
     ing_cat.meat_score = self.oligos_score
     ing_cat.milk_score = self.oligos_score
     ing_cat.save
-
+    
     self.save
   end
 

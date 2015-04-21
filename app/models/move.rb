@@ -114,14 +114,17 @@ class Move < ActiveRecord::Base
       success = false
     elsif existing_ration and existing_ration.id != ration.id
       success = false
-      # if incoming ration has more fiber, switch places
+      # if incoming ration has more fiber, find a new place for the ration
       if ration.count_type('fiber') > existing_ration.count_type('fiber')
-        existing_ration.position = ration.position
-        existing_ration.save
+        existing_ration.position.positions.each do |position|
+          if position.is_free(self.round.game, existing_ration)
+            existing_ration.position = position
+            existing_ration.save
+            break
+          end
+        end
         success = true
-        ration.game_user.score += 1
-        ration.game_user.save
-        messages.push({title:'Ration Pushed', text: 'You had more fiber than another ration, so pushed past it. +1pt.', type:'success', time: 5})
+        messages.push({title:'Ration Pushed', text: 'You had more fiber than another ration, so pushed it.', type:'success', time: 5})
       else
         messages.push({title:'You Cannot Push', text: 'Your ration does not have enough fiber to push the other ration. You need at least '+(existing_ration.count_type('fiber')+1).to_s+' fiber.', type:'warning', time: 6})
       end

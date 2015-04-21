@@ -22,6 +22,7 @@ class Ration < ActiveRecord::Base
     end
     return false
   end
+
   def count_type(type)
     count = 0
     self.ingredients.each do |ing|

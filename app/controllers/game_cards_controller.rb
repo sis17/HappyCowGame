@@ -1,4 +1,7 @@
 class GameCardsController < ApplicationController
+  # authenticate the following actions
+  before_action :authenticate, only: [:index, :show, :create, :update, :destroy]
+
   def index
     @game_cards =  GameCard.where({game_id: params[:game_id]}).all
     render json: @game_cards.as_json

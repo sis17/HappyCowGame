@@ -1,4 +1,7 @@
 class IssuesController < ApplicationController
+  # authenticate the following actions
+  before_action :authenticate, only: [:index, :show, :create, :update, :destroy]
+  
   def index
     @issues = Issue.all
     render json: @issues.as_json

@@ -4,6 +4,12 @@ class GameUserCard < ActiveRecord::Base
 
   def use
     card = self.game_card.card
+    if !card
+      return {
+        success: false,
+        message: {title:'Card Not Used', text: 'The card has no type, an error has caused it to be redundant.', type:'danger', time: 6}
+      }
+    end
     success = false
     message = 'Default card message...'
     failed_text = 'Sorry, the card could not be played, we`re still working on a condition for it.'
@@ -19,16 +25,26 @@ class GameUserCard < ActiveRecord::Base
       success = true
 
     elsif card.uri == 'rumination'
-      message = 'A random ration was moved back to the mouth.'
       game = self.game_user.game
-#TODO - improve the randomness
-      game_user_id = GameUser.where(game_id: game.id).first
-      ration = Ration.where(game_user_id:game_user_id).first
-      ration.position_id = 7
-      ration.save
+      ration = nil
+      rations = Ration.joins(:game_user, :position)
+        .where(game_users: {game_id: self.game_user.game_id}, positions: {area_id:[2,3,4]}).all.shuffle[0..0]
+      ration = rations[0] if rations.length > 0
 
-      game.cow.increase_welfare(1);
-      success = true
+      #puts 'rumination card use chosen ration with position: '+ration.position.order.to_s
+      if ration
+        ration.position = Position.where(order:7).take
+        ration.save
+
+        message = 'A ration belonging to '+ration.game_user.user.name
+        message += ' with '+ration.describe_ingredients+' was moved back to the mouth.'
+        game.cow.increase_welfare(1);
+        message += ' Welfare increased to '+self.game_user.game.cow.welfare.to_s+'.'
+        success = true
+      else
+        success = false
+        message = "No ration was found in the digestive system to move."
+      end
 
     elsif card.uri == 'vet'
       message = ''
@@ -60,9 +76,10 @@ class GameUserCard < ActiveRecord::Base
 
     # welfare +3, all other players lose 2 cards
     elsif card.uri == 'activists'
-      message = 'The activists took 2 cards from all other players. The cow`s welfare is at 0.'
+      message = 'The activists took up to 2 cards from all other players.'
       cow = self.game_user.game.cow
       cow.increase_welfare(3)
+      message += 'The cow`s welfare increased to '+cow.welfare.to_s+'.'
       self.game_user.game.game_users.each do |game_user|
         if game_user.id != self.game_user.id
           count = 2
@@ -84,7 +101,7 @@ class GameUserCard < ActiveRecord::Base
         cow.decrease_welfare(1)
         message += 'The cow had no previous oligos, so it`s welfare decreased.'
       end
-      cow.oligos_marker = 0
+      cow.set_oligos_marker(0) # reset the oligos marker, automatically resets points
       cow.save
 
       success = true
@@ -127,8 +144,81 @@ class GameUserCard < ActiveRecord::Base
         message = "The weather event #{event.title} has been cancelled."
       end
       success = true
+
+    elsif card.uri == 'saponins'
+      rations = Ration.joins(:game_user, :position).where(game_users: {game_id:self.game_user.game.id}, positions: {area_id:3})
+      ration_count = 0
+      rations.each do |ration|
+        if ration.has_type('fiber')
+          fiber_cat = IngredientCat.where(name: 'fiber', game: self.game_user.game).take
+          protein_cat = IngredientCat.where(name: 'protien', game: self.game_user.game).take
+          if fiber_cat
+            ingredient = Ingredient.where(ration: ration, ingredient_cat: fiber_cat).take
+            ingredient.ingredient_cat = protein_cat
+            ingredient.save
+            ration_count += 1
+          end
+        end
+      end
+      message = ration_count.to_s+' food rations had a fibre turned into a protien.'
+      success = true
+
+    elsif card.uri == 'bioreactor'
+      message = 'All ingredients will gain an extra point when they become muck. '
+      IngredientCat.where(game: self.game_user.game).each do |ing_cat|
+        ing_cat.muck_score += 1
+        ing_cat.save
+      end
+      success = true
+
+    elsif card.uri == 'high_sugar_grass'
+      message = ''
+      rations = Ration.joins(:game_user).where(game_users: {game_id:self.game_user.game_id})
+      ration_count = 0
+      rations.each do |ration|
+        if ration.position.area_id == 4 and ration.has_type('fiber')
+          score = ration.count_type('fiber')
+          ration.game_user.score += score
+          ration.game_user.save
+          ration_count += 1
+          message += ration.game_user.user.name+' gained '+score.to_s+' points. '
+        end
+      end
+      message = ration_count.to_s+' food rations had a fibre. '+message
+      success = true
+
+    elsif card.uri == 'thief'
+      success = true
+      rations = Ration.joins(:game_user).where(game_users: {game_id:self.game_user.game_id})
+      if rations.length >= 1
+        message = ''
+        first = rations[0]
+        last = rations[rations.length-1]
+        first_ingredients = [] # this is a placeholder, for the transaction
+        first.ingredients.each do |ing|
+          first_ingredients.push(ing)
+        end
+
+        last.ingredients.each do |ing|
+          ing.ration = first
+          ing.save
+        end
+
+        first_ingredients.each do |ing|
+          ing.ration = last
+          ing.save
+        end
+        message += first.describe_ingredients+' have been moved to the first ration. '
+        message += last.describe_ingredients+' have been moved to the last ration. '
+      else
+        message = 'There`s only one ration, so nothing was swapped.'
+      end
+
     elsif card.category != 'action'
-      message = 'The card is not an action card, it must be added to a ration to be used.'
+      return {
+        success: false,
+        message: {title:'Card Not Used', text: 'The card is not an action card, it must be added to a ration to be used.', type:'warning', time: 6}
+      }
     end
 
     if success
@@ -146,12 +236,12 @@ class GameUserCard < ActiveRecord::Base
       self.destroy
       return {
         success: true,
-        message: {title:'Card Used', text: message, type:'success'}
+        message: {title:'Card Used', text: message, type:'success', time: 8}
       }
     else
       return {
         success: false,
-        message: {title:'Card Not Used', text: failed_text, type:'warning'}
+        message: {title:'Card Not Used', text: failed_text, type:'warning', time: 6}
       }
     end
   end

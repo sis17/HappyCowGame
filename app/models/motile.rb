@@ -8,7 +8,7 @@ class Motile < ActiveRecord::Base
     while moves > 0 do
       ids = []
       self.position.positions.each do |position|
-        ids.push(position.id) if position.area_id == 3 && position.order != 61
+        ids.push(position.id) if position.area_id == 3 and position.order != 61
       end
 
       if ids.length > 0
@@ -23,10 +23,18 @@ class Motile < ActiveRecord::Base
             name = ingredient.ingredient_cat.name
             messages.push({
               title:'Motile Collision',
-              text:'A ration belonging to '+ration.game_user.user.name+' was hit by a motile peice and lost a <span class="label '+name+'">'+name+'</span>',
+              text:'A ration belonging to '+ration.game_user.user.name+' was hit by a motile peice and lost a <span class="label '+name+'">'+name+'</span>.',
               type:'warning', time: 6
             })
             ingredient.destroy
+            if ration.ingredients.length == 0
+              messages.push({
+                title:'Motile Collision',
+                text:'A ration belonging to '+ration.game_user.user.name+' has no ingredients left, it has been destroyed.',
+                type:'warning', time: 6
+              })
+              ration.destroy
+            end
           end
         end
       else

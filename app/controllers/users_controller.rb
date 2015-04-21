@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   #before_action :set_user, only: [:show, :edit, :update, :destroy]
+  # authenticate the following actions
+  before_action :authenticate, only: [:show, :create, :update, :destroy]
 
   def index
     @users = User.includes(:game_users).order('name')
@@ -11,16 +13,32 @@ class UsersController < ApplicationController
     render json: @user.to_json(:include => :game_users, :include => :games)
   end
 
-  # GET /users/login
+  def update
+    @user = User.find(params[:id])
+    if params[:profile]
+      @user.update(params.require(:profile).permit(:email, :name, :colour))
+      render json: {
+        success: true,
+        message: {title: 'Profile Saved', text: 'Your profile has been updated.', type: 'success'}
+      } and return
+    end
+
+    render json: {
+      success: false,
+      message: {title: 'You Must Update a Profile', text: 'You are not updating user details correctly, by editing your profile.', type: 'warning'}
+    } and return
+  end
+
   def login
     if (params[:email] && params[:password])
       @user = User.find_by email: params[:email]
       if @user
         if @user.password == params[:password]
           success = true
-          render json: { success: true, user: @user.as_json, messages: []} and return
-        else
-
+          @user.last_logged_in = DateTime.now
+          @user.key = SecureRandom.base64.tr('+/=', 'Qrt')
+          @user.save
+          render json: { success: true, user: @user.as_json, key: @user.key, messages: []} and return # successful login
         end
 
         render json: {
@@ -38,22 +56,6 @@ class UsersController < ApplicationController
     render json: {
       success: false,
       messages: [{title: 'Authorisation Failed', text: 'Your account does not exist, or you gave us the wrong email.', type: 'danger'}]
-    } and return
-  end
-
-  def update
-    @user = User.find(params[:id])
-    if params[:profile]
-      @user.update(params.require(:profile).permit(:email, :name, :colour))
-      render json: {
-        success: true,
-        message: {title: 'Profile Saved', text: 'Your profile has been updated.', type: 'success'}
-      } and return
-    end
-
-    render json: {
-      success: false,
-      message: {title: 'You Must Update a Profile', text: 'You are not updating user details correctly, by editing your profile.', type: 'warning'}
     } and return
   end
 

@@ -33,16 +33,16 @@ hcApp.controller('GroupGameCtrl', [
           Restangular.one('games', response.game.id).patch({begin:true}).then(function(response) {
             if (response.success) {
               // set up game_users on groupUsers
-              for (i in response.game.game_users) {
+              /*for (i in response.game.game_users) {
                 var game_user = response.game.game_users[i];
-                if ($scope.groupUsers.get(game_user.user_id)) {
+                /if ($scope.groupUsers.get(game_user.user_id)) {
                   $scope.groupUsers.get(game_user.user_id).game_user = game_user;
                   // assign the first user
-                  if (game_user.id == response.game.round.game_user_id) {
-                    $scope.user.assign($scope.groupUsers.get(game_user.user_id));
-                  }
+                  //if (game_user.id == response.game.round.game_user_id) {
+                  //  $scope.user.assign($scope.groupUsers.get(game_user.user_id));
+                  //}
                 }
-              }
+              }*/
               $location.path('games/play/'+response.game.id);
             }
           }, function() {
@@ -73,22 +73,28 @@ hcApp.controller('GroupGameCtrl', [
       user = $scope.selectedUser;
       $scope.selectedUser = null;
 
-      var modalInstance = $modal.open({
-        templateUrl: 'loginGroupUser.html',
-        controller: 'LoginGroupUserCtrl',
-        resolve: {
-          user: function () {
-            return user;
+      if (!$scope.$storage.user || user.id != $scope.$storage.user.id) { // if the user is not already logged in
+        var modalInstance = $modal.open({
+          templateUrl: 'loginGroupUser.html',
+          controller: 'LoginGroupUserCtrl',
+          resolve: {
+            user: function () {
+              return user;
+            }
           }
-        }
-      });
+        });
 
-      modalInstance.result.then(function (user) {
+        modalInstance.result.then(function (user) {
+          user.game_users = [];
+          $scope.groupUsers.add(user);
+        }, function () {
+          console.log('Modal dismissed at: ' + new Date());
+        });
+      } else { // add the logged in user
+        var user = $scope.$storage.user;
         user.game_users = [];
         $scope.groupUsers.add(user);
-      }, function () {
-        console.log('Modal dismissed at: ' + new Date());
-      });
+      }
     }
     $scope.availableUsers = function() {
       users = []
@@ -124,6 +130,7 @@ angular.module('happyCow').controller('LoginGroupUserCtrl',
         notice(response.messages)
         if (response.success) {
           $scope.user = response.user;
+          $scope.user.key = response.key; // add the key to authenticate
           $modalInstance.close($scope.user);
         }
       }, function() {

@@ -1,4 +1,7 @@
 class EventsController < ApplicationController
+  # authenticate the following actions
+  before_action :authenticate, only: [:index, :show, :create, :update, :destroy]
+
   def index
     @events = Event.all
     render json: @events.as_json

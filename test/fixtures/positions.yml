@@ -26,9 +26,17 @@ pos7:
   area_id: 2
   order: 7
 
+pos12:
+  area_id: 2
+  order: 12
+
 pos_rumen:
   area_id: 3
   order: 55
+
+pos_intestine:
+  area_id: 4
+  order: 68
 
 pos_milk:
   area_id: 4

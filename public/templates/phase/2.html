@@ -1,20 +1,20 @@
 <div ng-controller="CardsCtrl" class="cards">
   <div class="row">
     <div class="col-md-6">
-      <h2 class="pull-left" style="margin-top:0px;">{{$storage.user.name}}'s Hand</h2>
+      <h2 class="pull-left" style="margin-top:0px;">{{player.getName()}}'s Hand</h2>
       <div class="pull-left" style="margin-top:10px; margin-left:5px;">
-        <small>Total <span class="badge">{{user.cards.length}}</span></small>
+        <small>Total <span class="badge">{{player.cards.length}}</span></small>
         <small>Actions <span class="badge">{{countActions()}}</span></small>
         <small>Ingredients <span class="badge">{{countIngredients()}}</span></small>
       </div>
     </div>
     <div class="col-md-6">
-      <h4 ng-if="user.rations.length > 0" class="pull-left">{{$storage.user.name}}'s Rations</h4>
+      <h4 ng-if="player.rations.length > 0" class="pull-left">{{player.getName()}}'s Rations</h4>
       <div class="pull-left" style="margin-top:-3px;">
-        <div ng-repeat="ration in user.rations" class="ration ration-popover clickable pull-left pad-10">
+        <div ng-repeat="ration in player.rations" class="ration ration-popover clickable pull-left pad-10">
           <div ng-repeat="ingredient in ration.ingredients" class="ration-ingredient {{ingredient.ingredient_cat.name}}"></div>
         </div>
-        <div ng-repeat="ration in user.rations" class="hidden">
+        <div ng-repeat="ration in player.rations" class="hidden">
           <p>Position: {{ration.position}}</p>
           <ul>
             <li ng-repeat="ingredient in ration.ingredients">
@@ -92,7 +92,7 @@
 
 <div class="well well-sm">
   <ul id="cards-list" class="list-inline">
-    <li ng-repeat="game_user_card in user.cards" class="{{game_user_card.used ? 'used' : ''}}">
+    <li ng-repeat="game_user_card in player.cards" class="{{game_user_card.used ? 'used' : ''}}">
         <h3>
           {{game_user_card.game_card.card.title}}
         </h3>

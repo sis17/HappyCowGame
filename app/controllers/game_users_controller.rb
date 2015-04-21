@@ -1,4 +1,6 @@
 class GameUsersController < ApplicationController
+  # authenticate the following actions
+  before_action :authenticate, only: [:index, :show, :destroy]
   before_filter :load_user
 
   def index
@@ -23,7 +25,7 @@ class GameUsersController < ApplicationController
         type:'info', time:5})
       @game.destroy
     end
-    
+
     render json: {
       success: true,
       messages: messages
