@@ -1,6 +1,6 @@
 var loginCtrl = hcApp.controller('LoginCtrl', [
-  '$scope', '$location', 'Restangular', 'notice',
-  function($scope, $location, Restangular, notice) {
+  '$scope', '$location', 'Restangular', 'notice', '$modal',
+  function($scope, $location, Restangular, notice, $modal) {
     if (!$scope.user) {
       $scope.user = {};
     }
@@ -17,12 +17,27 @@ var loginCtrl = hcApp.controller('LoginCtrl', [
         notice('Uh Oh', 'The request could not be completed.', 'warning', 4);
       });
     }
+
+    $scope.register = function() {
+      var modalInstance = $modal.open({
+          templateUrl: 'register.html',
+          controller: 'RegisterCtrl',
+          resolve: {}
+      });
+
+      modalInstance.result.then(function (user) {
+        console.log(user);
+        $scope.user.assign(user); // log in the user
+        $location.path('games');
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+      });
+    }
   }
 ]);
 
-var registerCtrl = hcApp.controller('RegisterCtrl', [
-  '$scope', '$location', 'Restangular', 'notice',
-  function($scope, $location, Restangular, notice) {
+angular.module('happyCow').controller('RegisterCtrl',
+  function (notice, $scope, $modalInstance, Restangular) {
     if (!$scope.user) {
       $scope.user = {};
     }
@@ -41,13 +56,16 @@ var registerCtrl = hcApp.controller('RegisterCtrl', [
           notice(response.messages);
           if (response.success && response.user) {
             response.user.key = response.key;
-            $scope.user.assign(response.user);
-            $location.path('games');
+            $modalInstance.close(response.user);
           }
-        }, function() {
-          notice('Uh Oh', 'An error occured. Registration could not be completed.', 'warning', 4);
+        }, function(response) {
+          $scope.failedUpdate(response);
+          //notice('Uh Oh', 'An error occured. Registration could not be completed.', 'warning', 4);
         });
       }
     }
-  }
-]);
+
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+});

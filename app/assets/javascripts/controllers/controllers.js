@@ -7,7 +7,29 @@ angular.module('happyCow').controller('BaseCtrl', [
       $http.defaults.headers.common.UserKey = key;
     }
 
+    $scope.failedGet = function(response) {
+      console.log(response);
+      if (response.status == 401 && response.statusText.indexOf("Unauthorized") >= 0) {
+        notice('Not Authorised', 'Sorry, you are not logged in, please login and try again.', 'warning', 6);
+        $location.path('login');
+      } else {
+        notice('Network Error', 'Sorry, we couldn`t get the information to make this work.', 'danger', 5);
+      }
+    }
+    $scope.failedUpdate = function(response) {
+      console.log(response);
+      if (response.status == 401 && response.statusText.indexOf("Unauthorized") >= 0) {
+        notice('Not Authorised', 'Sorry, you are not logged in, please login and try again.', 'warning', 6);
+        $location.path('login');
+      } else {
+        notice('Network Error', 'Sorry, we couldn`t save that information right now.', 'danger', 5);
+      }
+    }
+
     $scope.$storage = $localStorage;
+    if (!$scope.$storage.auth_games) {
+      $scope.$storage.auth_games = {};
+    }
 
     if (!$scope.$storage.user) {
       $location.path('login');
@@ -40,41 +62,24 @@ angular.module('happyCow').controller('BaseCtrl', [
       }
     };
 
-    $scope.groupUsers = {
-      add: function(userData) {
-        $scope.$storage.groupUsers.push(userData);
-        // authorise the first user, so that a game can be created
-        if (!$scope.$storage.user && $scope.$storage.groupUsers.length <= 1) {
-          $scope.setAuthHeaders(userData.id, userData.key);
+    $scope.auth_games = {
+      logIn: function(game_id, user) {
+        if (!$scope.$storage.auth_games[game_id]) {
+          $scope.$storage.auth_games[game_id] = {};
         }
+        $scope.$storage.auth_games[game_id][user.id] = user;
       },
-      all: function() {
-        if (!$scope.$storage.groupUsers) {
-          $scope.$storage.groupUsers = [];
+      all: function(game_id) {
+        if (!$scope.$storage.auth_games[game_id]) {
+          $scope.$storage.auth_games[game_id] = {};
         }
-        return $scope.$storage.groupUsers;
+        return $scope.$storage.auth_games[game_id];
       },
-      get: function(user_id) {
-        for (i in $scope.$storage.groupUsers) {
-          if (user_id == $scope.$storage.groupUsers[i].id) {
-            return $scope.$storage.groupUsers[i]
-          }
-        }
-        return null;
+      loggedIn: function(game_id, user_id) {
+        return $scope.$storage.auth_games[game_id][user_id]
       },
-      remove: function(user_id) {
-        for (i in $scope.$storage.groupUsers) {
-          if (user_id == $scope.$storage.groupUsers[i].id) {
-            $scope.$storage.groupUsers.splice(i, 1);
-            return true;
-          }
-        }
-        return false;
-      },
-      logout: function() {
-        $scope.$storage.groupUsers = [];
-        notice('Logged Out', 'All group users have been logged out.', 'info', 4);
-        $location.path('')
+      logOut: function(game_id, user_id) {
+        $scope.$storage.auth_games[game_id][user_id] = null;
       }
     }
 
@@ -112,8 +117,29 @@ angular.module('happyCow').controller('TurnChangeNoticeCtrl',
       $modalInstance.dismiss('cancel');
     };
 });
+angular.module('happyCow').controller('LoginUserCtrl',
+  function (notice, $scope, $modalInstance, Restangular, user) {
+    $scope.user = user;
 
-var welcomeCtrl = hcApp.controller('WelcomeCtrl', [
+    $scope.login = function () {
+      Restangular.service('login').post({email: user.email, password: user.password}).then(function (response) {
+        notice(response.messages)
+        if (response.success) {
+          $scope.user = response.user;
+          $scope.user.key = response.key; // add the key to authenticate
+          $modalInstance.close($scope.user);
+        }
+      }, function() {
+        notice('Uh Oh', 'The request could not be completed.', 'warning', 4);
+      });
+    };
+
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('happyCow').controller('WelcomeCtrl', [
   '$scope',
   function($scope) {
 

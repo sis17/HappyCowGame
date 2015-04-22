@@ -1,7 +1,7 @@
 <div class="bar bar-dark bar-top">
   <div class="pull-left">
     <img class="cow-icon pull-left" alt="Happy Cow icon" src="images/happycow.png" />
-    <h2 class="title pull-left">New Game</h2>
+    <h2 class="title pull-left">Game Setup</h2>
   </div>
 
   <ul class="list-inline pull-right">
@@ -11,15 +11,15 @@
   </ul>
 </div>
 
-<div id="games" ng-controller="GameNewCtrl">
+<div id="games" ng-controller="GameSetupCtrl">
   <div class="container">
     <div class="row">
       <div class="col-md-6">
         <form>
-          <h3 ng-if="user.isCreator(game)">
+          <h3 ng-if="setup()">
             <input ng-model="game.name" ng-keyup="saveName(game.name)" placeHolder="Game Name"/>
           </h3>
-          <h3 ng-if="!user.isCreator(game)"><span class="small">Name: </span>{{game.name}}</h3>
+          <h3 ng-if="!setup()"><span class="small">Name: </span>{{game.name}}</h3>
         </form>
       </div>
       <div class="col-md-6">
@@ -30,14 +30,28 @@
       <div class="col-md-6">
         <h4>Players</h4>
         <table class="table">
-          <tr><th>Name</th><th>Experience</th><th>Colour</th></tr>
-          <tr ng-repeat="game_user in game.game_users" class="clickable">
+          <tr><th>Name</th><th>Experience</th><th>Colour</th><th>Present</th><th>Distant</th><th>Logged In</th></tr>
+          <tr ng-repeat="game_user in game.game_users">
             <td>{{game_user.user.name}}</td>
             <td>{{game_user.user.experience}}</td>
             <td><span class="label label-default" style="background-color: {{game_user.colour}};">sample</span></td>
+            <td>
+              <button ng-if="user.isCreator(game) && !game_user.network && game_user.user_id != $storage.user.id" ng-click="setNetwork(game_user, false)" class="btn btn-info btn-xs">Make Distant</button>
+              <span ng-if="!user.isCreator(game) && !game_user.network">Present</span>
+            </td>
+            <td>
+              <button ng-if="user.isCreator(game) && game_user.network && game_user.user_id != $storage.user.id" ng-click="setNetwork(game_user, false)" class="btn btn-info btn-xs">Make Present</button>
+              <span ng-if="!user.isCreator(game) && game_user.network">Distant</span>
+            </td>
+            <td>
+              <button ng-if="!game_user.network && !auth_games.loggedIn(game.id, game_user.user_id) && game_user.user_id != $storage.user.id"
+                      ng-click="login(game_user)" class="btn btn-primary btn-xs">Log In</button>
+              <button ng-if="!game_user.network && auth_games.loggedIn(game.id, game_user.user_id) && game_user.user_id != $storage.user.id"
+                      ng-click="logout(game_user)" class="btn btn-warning btn-xs">Log Out</button>
+            </td>
           </tr>
         </table>
-        <div ng-if="user.isCreator(game)">
+        <div ng-if="setup()">
           <script type="text/ng-template" id="inviteTemplate.html">
             <p>
               <span class="label" style="background-color: {{match.model.colour}};">{{match.model.name}}</span>
@@ -58,6 +72,9 @@
               </div>
             </div>
           </div>
+          <div style="padding-top:10px;">
+            or <button ng-click="createUser()" class="btn btn-success">Create a player</button>
+          </div>
         </div>
       </div>
 
@@ -69,14 +86,14 @@
             <div class="col-md-8">{{game.carddeck.name}} - rating: {{game.carddeck.rating}}</div>
             <div class="col-md-4">
               <div class="pull-right">
-                <button ng-if="user.isCreator(game)" data-toggle="modal" data-target="#deck-modal" class="btn btn-default">Change</button>
+                <button ng-if="setup()" data-toggle="modal" data-target="#deck-modal" class="btn btn-default">Change</button>
               </div>
             </div>
           </div>
 
           <h4>Rounds</h4>
           <hr />
-          <div class="row">
+          <div ng-if="setup()" class="row">
             <div class="col-md-6">
               <p>Minimum number of rounds <input type="text" ng-model="game.rounds_min" ng-keyup="updateRounds()" style="width:40px;" size="3"></p>
             </div>
@@ -84,18 +101,31 @@
               <p>Maximum number of rounds <input type="text" ng-model="game.rounds_max" ng-keyup="updateRounds()" style="width:40px;" size="3"></p>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-12">
+              <p>
+                There are
+                <span ng-if="game.rounds_min != game.rounds_max">
+                  between <span class="badge">{{game.rounds_min}}</span> and
+                </span>
+                <span class="badge">{{game.rounds_max}}</span> rounds.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <hr />
     <div class="row bar">
-      <div ng-if="user.isCreator(game)" class="btn-group pull-right">
+      <div ng-if="setup()" class="btn-group pull-right">
         <button ng-click="abandon()" class="btn btn-warning">Abandon</button>
         <button ng-click="create()" class="btn btn-success" {{created ? 'disabled' : ''}}>
           {{created ? 'Creating Game...' : 'Create'}}
         </button>
       </div>
-      <button ng-if="!user.isCreator(game)" ng-click="leave()" class="btn btn-warning pull-right">Leave</button>
+      <div ng-if="!setup()" class="btn-group pull-right">
+        <button ng-click="leave()" class="btn btn-warning">Leave</button>
+        <button ng-if="game.stave > 0" ng-click="begin()" class="btn btn-primary">Resume</button>
     </div>
   </div>
 </div>
@@ -110,7 +140,7 @@
       <div class="modal-body">
         <p>Invite a player from the list below:</p>
         <ul>
-          <li ng-repeat="user in users.$object" ng-if="canInvite(user)">
+          <li ng-repeat="user in users" ng-if="canInvite(user)">
             <p>
               <span class="label" style="background-color: {{user.colour}};">{{user.name}}</span>
                - experience: <span class="badge">{{user.experience}}</span>
@@ -136,7 +166,7 @@
       <div class="modal-body">
         <p>Choose a card deck:</p>
         <accordion>
-          <accordion-group ng-repeat="deck in decks.$object" heading="{{deck.name}} - {{deck.rating}}">
+          <accordion-group ng-repeat="deck in decks" heading="{{deck.name}} - {{deck.rating}}">
             <button ng-click='useDeck(deck)' class='btn btn-default'>Use</button>
             <ul>
               <li ng-repeat="card in deck.cards">

@@ -162,12 +162,14 @@ class GamesController < ApplicationController
       if params[:user_id] # for a single setup game
         @user = User.find(params[:user_id])
         @game.creater_id = @user.id
-        @game.create_game_user(@user.id)
+        game_user = @game.create_game_user(@user.id)
+        game_user.network = 0 # the creator shouldn't be set as network
+        game_user.save
         @game.save
-      elsif params[:users] # for a group game
-        params[:users].each do |user|
-          @game.create_game_user(user[:id]) if User.find(user[:id])
-        end
+      #elsif params[:users] # for a group game
+      #  params[:users].each do |user|
+      #    @game.create_game_user(user[:id]) if User.find(user[:id])
+      #  end
       end
 
       success = true

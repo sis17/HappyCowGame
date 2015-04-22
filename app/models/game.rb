@@ -81,28 +81,28 @@ class Game < ActiveRecord::Base
     # create ingredient cats
     IngredientCat.new(
       game: self, name: 'water',
-      description: '+1 movement dice. Lowers PH in the Rumen if it exceeds energy.',
+      description: '+1 movement dice. Lowers pH in the cow`s rumen if it exceeds energy.',
       milk_score: 1, meat_score: 1, muck_score: 1
     ).save
 
     IngredientCat.new(
       game: self, name: 'energy',
-      description: 'Raises PH in the Rumen if it exceeds water. Scores high as milk.',
+      description: 'Raises pH in the cow`s rumen if it exceeds water. Scores well when absorbed as milk.',
       milk_score: 6, meat_score: 2, muck_score: 1
     ).save
 
     IngredientCat.new(
-      game: self, name: 'protein', description: 'Scores adequately as milk, and best as meat.',
+      game: self, name: 'protein', description: 'Scores adequately when absorbed as milk, but best as meat.',
       milk_score: 3, meat_score: 4, muck_score: 1
     ).save
 
     IngredientCat.new(
-      game: self, name: 'fiber', description: 'Allows pushing of rations with less fiber.',
+      game: self, name: 'fiber', description: 'A tough ingredient. Food rations with more fibre can push others out of their way.',
       milk_score: 2, meat_score: 2, muck_score: 1
     ).save
 
     IngredientCat.new(
-      game: self, name: 'oligos', description: 'A special health booster. Scores very well the first time absorbed.',
+      game: self, name: 'oligos', description: 'A special health booster. Scores very well the first time absorbed, but poorly after the second time absorbed.',
       milk_score: 10, meat_score: 10, muck_score: 1
     ).save
 

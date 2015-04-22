@@ -13,6 +13,16 @@ class GameUsersController < ApplicationController
     render json: @game_user.as_json
   end
 
+  def update
+    #@game_user = GameUser.find(params[:id])
+    GameUser.update(params[:id], params.permit(:network, :key))
+    @game_user = GameUser.find(params[:id])
+    render json: {
+      success: true,
+      game_user:@game_user.as_json
+    }
+  end
+
   def destroy
     @game_user = GameUser.find(params[:id])
     @game = @game_user.game

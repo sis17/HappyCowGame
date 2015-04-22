@@ -16,12 +16,16 @@ var cowCtrl = angular.module('happyCow').controller('CowCtrl', [
               water: $scope.game.countIngredientsInArea('water',3),
               energy: $scope.game.countIngredientsInArea('energy',3)
             },
-            name: 'Rumen PH', min: 4.8, minType: 'warning', max: 7.6, maxType: 'success',
+            name: 'Rumen PH', min: 4.8, minType: 'danger', max: 7.6, maxType: 'danger',
             value: $scope.game.cow.ph_marker,
             type: function() {
-              if (this.value <= 5.6) { return 'f0ad43'}
-              if (this.value <= 7.0) {return '5bc0de'}
-              else {return '5cb85c'}
+              var pad = "00";
+              var red = Math.abs(6.5 - this.value)*231; // max is 1.1 * 231 will give 255
+              var green = (this.value*39.23) / ((Math.abs(6.5 - this.value)+1)*1.5); // the lower red is, the higher green is
+              red = (pad+(Math.round(red).toString(16))).slice(-pad.length);
+              green = (pad+(Math.round(green).toString(16))).slice(-pad.length);
+              var blue = '00';
+              return red+green+blue;
             }
           };
          $scope.welfareStat = {

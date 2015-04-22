@@ -17,12 +17,7 @@
       <div class="col-md-6"><h3>Games List</h3></div>
       <div class="col-md-6">
         <div class="btn-group pull-right">
-          <button ng-click="newGame()" class="btn btn-default btn-lg">New Networked Game
-            <img class="image image-btn" ng-src="images/network_game.png">
-          </button>
-          <a href="#/games/group" class="btn btn-default btn-lg">New Crowd Game
-            <img class="image image-btn" ng-src="images/crowd_game.png">
-          </a>
+          <button ng-click="newGame()" class="btn btn-success">New Game</button>
         </div>
       </div>
     </div>
@@ -35,10 +30,7 @@
               <a ng-click="selectedGameFilter = 0">Setting Up <span class="badge">{{countGameType(0)}}</span></a>
             </li>
             <li class="{{selectedGameFilter == 1 ? 'active':''}}">
-              <a ng-click="selectedGameFilter = 1">Networked <span class="badge">{{countGameType(1)}}</span></a>
-            </li>
-            <li class="{{selectedGameFilter == 'crowd' ? 'active':''}}">
-              <a ng-click="selectedGameFilter = 'crowd'">Crowd <span class="badge">{{countGameType(1, true)}}</span></a>
+              <a ng-click="selectedGameFilter = 1">Playing <span class="badge">{{countGameType(1)}}</span></a>
             </li>
             <li class="{{selectedGameFilter == 2 ? 'active':''}}">
               <a ng-click="selectedGameFilter = 2">Finished <span class="badge">{{countGameType(2)}}</span></a>
@@ -55,7 +47,7 @@
             <th ng-if="selectedGameFilter == 1">Phase</th>
             <th ng-if="selectedGameFilter == 1">Turn</th>
           </tr>
-          <tr ng-repeat="game_user in game_users.$object | orderBy:'-game.start_time'" class="clickable" ng-click="selectGame(game_user)" ng-if="filterGame(game_user.game)">
+          <tr ng-repeat="game_user in game_users | orderBy:'-game.start_time'" class="clickable" ng-click="selectGame(game_user)" ng-if="filterGame(game_user.game)">
             <td>{{game_user.game.name}}</td>
             <td>{{game_user.score}}</td>
             <td>
@@ -113,16 +105,12 @@
                 <a ng-if="game_user.game.stage >= 1" ng-href="#/games/review/{{game.id}}" class="btn btn-default">Stats</a>
               </div>
               <div class="col-md-8">
-                <div ng-if="game.stage == 0" class="btn-group pull-right">
-                  <button ng-if="user.isCreator(game)" ng-click="abandon(game.id)" class="btn btn-warning">Abandon</button>
-                  <a ng-href="#/games/new/{{game.id}}" class="btn btn-success">
-                    {{user.isCreator(game)? 'Finish' : 'View'}} Setup
+                <div ng-if="game.stage <= 1" class="btn-group pull-right">
+                  <button ng-if="user.isCreator(game) && game.stage == 0" ng-click="abandon(game.id)" class="btn btn-warning">Abandon</button>
+                  <button ng-if="!user.isCreator(game) || game.stage > 0" ng-click="leave()" class="btn btn-warning">Leave</button>
+                  <a ng-href="#/games/setup/{{game.id}}" class="btn btn-primary">
+                    {{game.stage == 0 ? 'Setup' : 'Resume'}}
                   </a>
-                </div>
-                <div ng-if="game.stage == 1" class="btn-group pull-right">
-                  <button ng-click="leave()" class="btn btn-warning">Leave</button>
-                  <a ng-if="game.creater_id" ng-href="#/games/play/{{game.id}}" class="btn btn-primary">Resume</a>
-                  <a ng-if="!game.creater_id" ng-href="#/games/group/{{game.id}}" class="btn btn-primary">Resume</a>
                 </div>
               </div>
             </div>
@@ -133,7 +121,7 @@
     <hr />
     <div class="row">
       <div class="col-md-12">
-        Total: <span class="badge">{{game_users.$object.length}}</span>
+        Total: <span class="badge">{{game_users.length}}</span>
       </div>
     </div>
   </div>

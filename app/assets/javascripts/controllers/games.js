@@ -1,29 +1,27 @@
 var welcomeCtrl = hcApp.controller('GamesCtrl', [
   '$scope', '$location', 'Restangular', 'notice', '$modal', '$filter',
   function($scope, $location, Restangular, notice, $modal, $filter) {
-    $scope.game_users = Restangular.one('users', $scope.$storage.user.id).getList('game_users');
+    // set user as logged in
+    $scope.setAuthHeaders($scope.$storage.user.id, $scope.$storage.user.key);
+
+    $scope.game_users = [];
+    Restangular.one('users', $scope.$storage.user.id).getList('game_users').then(function(game_users) {
+      $scope.game_users = game_users;
+    }, function(response) {
+      $scope.failedGet(response);
+    });
+
     $scope.selectedGameFilter = 1;
     $scope.filterGame = function(game) {
-      if ($scope.selectedGameFilter == 'crowd') {
-        return game.creater_id <= 0 && game.stage == 1;
-      } else {
-        return game.stage == $scope.selectedGameFilter && game.creater_id >= 1;
-      }
+      return game.stage == $scope.selectedGameFilter;
     }
+
     $scope.countGameType = function(gameFilter, crowd) {
       var count = 0;
-      for (i in $scope.game_users.$object) {
-        var game_user = $scope.game_users.$object[i];
+      for (i in $scope.game_users) {
+        var game_user = $scope.game_users[i];
         if (game_user && game_user.game && game_user.game.stage == gameFilter) {
-          if (gameFilter == 1) {
-            if (crowd && game_user.game.creater_id <= 0) {
-              count++;
-            } else if (!crowd && game_user.game.creater_id >= 1) {
-              count++;
-            }
-          } else {
-            count++;
-          }
+          count++;
         }
       }
       return count;
@@ -95,7 +93,7 @@ var welcomeCtrl = hcApp.controller('GamesCtrl', [
       }).then(function(response) {
         notice(response.messages);
         if (response.success) {
-          $location.path('games/new/'+response.game.id);
+          $location.path('games/setup/'+response.game.id);
         }
       }, function() {
         notice('Initalisation Failed', 'An error occured and the game could not be initialised.', 'warning', 2);

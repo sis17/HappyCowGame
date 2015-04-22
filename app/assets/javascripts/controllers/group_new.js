@@ -120,25 +120,3 @@ hcApp.controller('GroupGameCtrl', [
     }
   }
 ]);
-
-angular.module('happyCow').controller('LoginGroupUserCtrl',
-  function (notice, $scope, $modalInstance, Restangular, user) {
-    $scope.user = user;
-
-    $scope.login = function () {
-      Restangular.service('login').post({email: user.email, password: user.password}).then(function (response) {
-        notice(response.messages)
-        if (response.success) {
-          $scope.user = response.user;
-          $scope.user.key = response.key; // add the key to authenticate
-          $modalInstance.close($scope.user);
-        }
-      }, function() {
-        notice('Uh Oh', 'The request could not be completed.', 'warning', 4);
-      });
-    };
-
-    $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
-    };
-});

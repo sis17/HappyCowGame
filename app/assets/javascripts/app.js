@@ -23,9 +23,9 @@ config(
         templateUrl: 'templates/games.html',
         controller: 'GamesCtrl'
       }).
-      when('/games/new/:gameId', {
-        templateUrl: 'templates/game_new.html',
-        controller: 'GameNewCtrl'
+      when('/games/setup/:gameId', {
+        templateUrl: 'templates/game_setup.html',
+        controller: 'GameSetupCtrl'
       }).
       when('/games/play/:gameId', {
         templateUrl: 'templates/game_play.html',
@@ -35,14 +35,14 @@ config(
         templateUrl: 'templates/game_review.html',
         controller: 'GameReviewCtrl'
       }).
-      when('/games/group', {
+      /*when('/games/group', {
         templateUrl: 'templates/group_new.html',
         controller: 'GroupGameCtrl'
       }).
       when('/games/group/:gameId', {
         templateUrl: 'templates/group_setup.html',
         controller: 'GroupSetupCtrl'
-      }).
+      }).*/
       otherwise({
         templateUrl: 'templates/welcome.html',
         controller: 'WelcomeCtrl'

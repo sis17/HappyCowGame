@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   #before_action :set_user, only: [:show, :edit, :update, :destroy]
   # authenticate the following actions
-  before_action :authenticate, only: [:show, :create, :update, :destroy]
+  before_action :authenticate, only: [:show, :update, :destroy]
 
   def index
     @users = User.includes(:game_users).order('name')
@@ -76,10 +76,13 @@ class UsersController < ApplicationController
       if @user
         @user.experience = 0
         @user.colour = '#'+("%06x" % (rand * 0xffffff))
+        @user.last_logged_in = DateTime.now
+        @user.key = SecureRandom.base64.tr('+/=', 'Qrt')
         @user.save
         render json: {
           success: true,
           user: @user,
+          key: @user.key,
           messages: [{title: 'Account Created', text: 'Your account has been created. Please remember your details.', type: 'success', time: 4}]
         } and return
       end
