@@ -30,7 +30,21 @@
       <div class="col-md-6">
         <h4>Players</h4>
         <table class="table">
-          <tr><th>Name</th><th>Experience</th><th>Colour</th><th>Present</th><th>Distant</th><th>Logged In</th></tr>
+          <tr><th>Name</th><th>Experience</th><th>Colour</th>
+            <th>Present <a popup class="glyphicon glyphicon-info-sign"></a>
+              <div class="hidden">
+                <p>'Present' means a player will sit by the creator of the game to play, at the same machine.</p>
+                <img class="image image-full" ng-src="images/crowd_game.png">
+              </div>
+            </th>
+            <th>Distant <a popup class="glyphicon glyphicon-info-sign"></a>
+              <div class="hidden">
+                <p>'Distant' means the game will wait for a player elswhere, on another machine, to take their turn.</p>
+                <img class="image image-full" ng-src="images/network_game.png">
+              </div>
+            </th>
+            <th>Logged In</th>
+          </tr>
           <tr ng-repeat="game_user in game.game_users">
             <td>{{game_user.user.name}}</td>
             <td>{{game_user.user.experience}}</td>

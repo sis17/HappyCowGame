@@ -5,9 +5,6 @@
 #welcome .container, #games .container {
   width: 100%;
 }
-#welcome .container .row div {
-  min-height: 300px;
-}
 
 .main-centre {
   padding: 20%;

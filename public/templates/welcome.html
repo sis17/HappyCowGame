@@ -14,24 +14,13 @@
 <div id="welcome" ng-controller="WelcomeCtrl">
   <div class="container">
     <div class="row">
-      <div class="col-md-6">
-          <div class="well">
-            <h3>Networked Games</h3>
-            <a href="#/login">
-              <img class="image image-full" ng-src="images/network_game.png">
-            </a>
-            <p>Log In or Sign Up to play a game at your own machine, by yourself or with people at other machines.</p>
-          </div>
+      <div class="col-md-12">
+        <h1><a href="#/login">Log In</a> or <a href="#/login">Sign Up</a> to start playing.</h1>
       </div>
-      <div class="col-md-6">
-          <div class="well">
-            <h3>Crowd Games</h3>
-            <a href="#/games/group">
-              <img class="image image-full" ng-src="images/crowd_game.png">
-            </a>
-            <p>Begin a game with people at this machine, you need to be registered first.</p>
-          </div>
-      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6"><img class="image image-full" ng-src="images/network_game.png"></div>
+      <div class="col-md-6"><img class="image image-full" ng-src="images/crowd_game.png"></div>
     </div>
   </div>
 </div>

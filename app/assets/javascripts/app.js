@@ -35,14 +35,6 @@ config(
         templateUrl: 'templates/game_review.html',
         controller: 'GameReviewCtrl'
       }).
-      /*when('/games/group', {
-        templateUrl: 'templates/group_new.html',
-        controller: 'GroupGameCtrl'
-      }).
-      when('/games/group/:gameId', {
-        templateUrl: 'templates/group_setup.html',
-        controller: 'GroupSetupCtrl'
-      }).*/
       otherwise({
         templateUrl: 'templates/welcome.html',
         controller: 'WelcomeCtrl'
