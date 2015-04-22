@@ -63,7 +63,7 @@ var gameNewCtrl = hcApp.controller('GameSetupCtrl', [
       if (all_assigned) {
         $location.path('games/play/'+$scope.game.id);
       } else {
-        notice('Players Not Logged In', 'All players either need to be set as playing over a network, or logged in.', 'warning', 6);
+        notice('Players Not Logged In', 'All players either need to be set as distant (playing on another machine), or logged in.', 'warning', 6);
       }
     }
 
