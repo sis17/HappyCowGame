@@ -160,7 +160,7 @@ class Move < ActiveRecord::Base
 
   def add_water
     if self.ration_id
-      has_water = Ration.joins(ingredients: [:ingredient_cat] )
+      has_water = Ration.joins(ingredients: [:ingredient_cat])
                       .where('ingredient_cats.name = "water" AND rations.id = ?', self.ration_id).first
       if has_water
         self.dice3 = rand(1..6)

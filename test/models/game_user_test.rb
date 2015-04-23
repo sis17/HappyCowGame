@@ -6,7 +6,7 @@ class GameUserTest < ActiveSupport::TestCase
     @game_user = game_users(:twosimeon)
   end
 
-  def "make ration" do
-    
+  test "make ration" do
+
   end
 end

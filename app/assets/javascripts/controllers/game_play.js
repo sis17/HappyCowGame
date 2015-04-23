@@ -2,27 +2,13 @@ angular.module('happyCow').controller('GameCtrl', [
   '$scope', '$sce', '$location', 'Restangular', '$routeParams', '$timeout', 'notice', '$modal',
   function($scope, $sce, $location, Restangular, $routeParams, $timeout, notice, $modal) {
 
-    $scope.player = {};
-    $scope.$storage.player = {};
-    $scope.player.change = function(game_user) {
-      if (game_user.network && game_user.user_id != $scope.$storage.user.id) {
-        console.log('the player is networked, so cannot be authenticated');
-        
-        if (!$scope.$storage.player.name) { // if no player has been loaded, load the user
-          $scope.$storage.player = $scope.$storage.auth_games[$scope.game.id][$scope.$storage.user.id];
-          this.getCards();
-          this.getRations();
-          this.getMoves();
-        }
-        return;
-      }
-
-      var user = $scope.$storage.auth_games[$scope.game.id][game_user.user_id];
-      console.log('changing user to '+user.name);
-      if (!user.key || !user.id) {
+    var loadUser = function(user, game_user) {
+      if (!user.key || !user.id) { // check for authentication
         notice('No Authentication', 'You are not logged into this game, please try returning to the game menu and logging in again.', 'warning', 6);
         return;
       }
+
+      console.log('changing user to '+user.name);
       // set the headers for authentication
       $scope.setAuthHeaders(user.id, user.key);
 
@@ -31,9 +17,37 @@ angular.module('happyCow').controller('GameCtrl', [
       $scope.$storage.player = user;
 
       // load the correct data for the user
-      this.getCards();
-      this.getRations();
-      this.getMoves();
+      $scope.player.getCards();
+      $scope.player.getRations();
+      $scope.player.getMoves();
+    }
+
+    $scope.player = {};
+    $scope.$storage.player = {};
+    $scope.player.change = function(game_user) {
+      if ($scope.$storage.user.game_user.network == 1) { // if the current user is distant
+        console.log('the current user is present');
+        if (game_user.id == $scope.$storage.user.game_user.id) { // and if it's the current user's turn
+          loadUser($scope.$storage.user, game_user);
+        } else {
+          console.log('the player is distant (but present to the creator), so cannot be authenticated');
+        }
+      } else { // if the current user is present
+        console.log('the current user is present');
+        if (game_user.network) { // and the current player is distant
+          console.log('the player is distant, so cannot be authenticated');
+
+        } else { // and the current player is present, fetch their details
+          var user = $scope.$storage.auth_games[$scope.game.id][game_user.user_id];
+          loadUser(user, game_user);
+        }
+      }
+
+      // if possible, this should be avoided
+      if (!$scope.$storage.player.name) { // if no player has been loaded, load the user
+        console.log('The current player is distant, load the current user instead.')
+        loadUser($scope.$storage.user, $scope.$storage.user.game_user);
+      }
     }
 
     $scope.player.getName = function() {
@@ -264,6 +278,8 @@ Restangular.one('games', $routeParams.gameId).get().then(function(game) {
       notice('No Authentication', 'Oops, you were not authenticated properly in the game, sorry.', 'warning', 6);
       $location.path('games');
     }
+}, function(response) {
+  $scope.failedGet(response);
 });
 
     $scope.changePhaseTemplate = function(num) {

@@ -27,7 +27,8 @@ class GameUserCard < ActiveRecord::Base
     elsif card.uri == 'rumination'
       game = self.game_user.game
       ration = nil
-      rations = Ration.joins(:game_user, :position)
+      rations = Ration.joins(:game_user, :position, ingredients: [:ingredient_cat])
+        .where('ingredient_cats.name = "water"')
         .where(game_users: {game_id: self.game_user.game_id}, positions: {area_id:[2,3,4]}).all.shuffle[0..0]
       ration = rations[0] if rations.length > 0
 
@@ -43,7 +44,7 @@ class GameUserCard < ActiveRecord::Base
         success = true
       else
         success = false
-        message = "No ration was found in the digestive system to move."
+        message = "No ration in the digestive system with fiber was found."
       end
 
     elsif card.uri == 'vet'

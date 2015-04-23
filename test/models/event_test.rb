@@ -25,7 +25,7 @@ class EventTest < ActiveSupport::TestCase
     event.makeActive(@game)
     assert_equal(true, @game.cow.check_cold, "The cow is cold")
     ration = rations(:ration2_twosimeon)
-    ration.position = positions(:pos_milk) # set the ration to the milk position
+    ration.position = positions(:pos78) # set the ration to the milk position
     @game.finish_ration(ration)
     simeon = game_users(:twosimeon)
     simeon = GameUser.find(simeon.id)

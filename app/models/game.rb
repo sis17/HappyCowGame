@@ -55,7 +55,7 @@ class Game < ActiveRecord::Base
     #create 3 motile pieces
     count = 3
     while count > 0 do
-      position_id = Position.where(area_id:3).offset(rand(Position.where(area_id:3).count)).first.id
+      position_id = Position.where('id not in (?)',[61]).where(area_id:3).offset(rand(Position.where(area_id:3).count)).first.id
       Motile.new(game_id: self.id, position_id: position_id).save
       count -= 1
     end

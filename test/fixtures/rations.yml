@@ -18,3 +18,13 @@ ration2_tworuth:
   game_user: tworuth
   position: pos4
   round_created_id: 2
+
+smallfiber:
+  game_user: tworuth
+  position: pos60
+  round_created_id: 3
+
+lotsoffiber:
+  game_user: tworuth
+  position: pos61
+  round_created_id: 3

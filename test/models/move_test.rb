@@ -42,7 +42,7 @@ class MoveTest < ActiveSupport::TestCase
     @move.dice1 = 1
     @move.select_dice(1)
     game_user = game_users(:twosimeon)
-    pos_next = positions(:pos_milk)
+    pos_next = positions(:pos78)
     @move.ration.position.positions.push(pos_next)
     messages = @move.confirm_move(pos_next.id, false)
 

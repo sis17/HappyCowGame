@@ -24,7 +24,7 @@ class CowTest < ActiveSupport::TestCase
   end
 
   test "the turn effect of water and energy" do
-    pos = positions(:pos_rumen)
+    pos = positions(:pos60)
     ration1 = rations(:ration1_twosimeon)
     ration1.position = pos
     ration1.save
@@ -34,7 +34,7 @@ class CowTest < ActiveSupport::TestCase
     ration3 = rations(:ration1_tworuth)
     ration3.position = pos
     ration3.save
-    
+
     @cow.set_ph_marker(6.5) # reset it
     @cow.turn_effects
     # there are 2 water and 3 energy

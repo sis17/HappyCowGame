@@ -30,22 +30,56 @@ pos12:
   area_id: 2
   order: 12
 
-pos_rumen:
+pos25:
+  area_id: 3
+  order: 25
+
+pos50:
   area_id: 3
   order: 55
 
-pos_intestine:
+pos55:
+  area_id: 3
+  order: 55
+  positions: pos56, pos50
+
+pos56:
+  area_id: 3
+  order: 56
+  positions: pos57, pos50
+
+pos57:
+  area_id: 3
+  order: 57
+
+pos58:
+  area_id: 3
+  order: 58
+
+pos59:
+  area_id: 3
+  order: 59
+
+pos60:
+  area_id: 3
+  order: 60
+
+pos61:
+  area_id: 3
+  order: 61
+
+pos68:
   area_id: 4
   order: 68
 
-pos_milk:
+pos78:
   area_id: 4
   order: 78
 
-pos_meat:
+pos86:
   area_id: 4
   order: 86
 
-pos_muck:
+pos95:
   area_id: 4
   order: 95

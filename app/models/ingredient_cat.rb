@@ -7,5 +7,6 @@ class IngredientCat < ActiveRecord::Base
     return self.milk_score if type == 'milk'
     return self.meat_score if type == 'meat'
     return self.muck_score if type == 'muck'
+    return nil
   end
 end

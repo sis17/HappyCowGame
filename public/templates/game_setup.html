@@ -58,9 +58,9 @@
               <button ng-if="user.isCreator(game) && game_user.network && game_user.user_id != $storage.user.id" ng-click="setNetwork(game_user, false)" class="btn btn-info btn-xs">Make Present</button>
             </td>
             <td>
-              <button ng-if="!game_user.network && !auth_games.loggedIn(game.id, game_user.user_id) && game_user.user_id != $storage.user.id"
+              <button ng-if="user.isCreator(game) && !game_user.network && !auth_games.loggedIn(game.id, game_user.user_id) && game_user.user_id != $storage.user.id"
                       ng-click="login(game_user)" class="btn btn-primary btn-xs">Log In</button>
-              <button ng-if="!game_user.network && auth_games.loggedIn(game.id, game_user.user_id) && game_user.user_id != $storage.user.id"
+              <button ng-if="user.isCreator(game) && !game_user.network && auth_games.loggedIn(game.id, game_user.user_id) && game_user.user_id != $storage.user.id"
                       ng-click="logout(game_user)" class="btn btn-warning btn-xs">Log Out</button>
             </td>
           </tr>

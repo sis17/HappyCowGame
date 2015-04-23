@@ -6,7 +6,7 @@ simeon:
   colour: ff0000
   experience: 1
   password: test
-  salt: something
+  key: something
 
 ruth:
   email: rmc3@aber.ac.uk
@@ -14,4 +14,4 @@ ruth:
   colour: 00ff00
   experience: 1
   password: test
-  salt: something
+  key: something

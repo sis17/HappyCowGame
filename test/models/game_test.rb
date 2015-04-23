@@ -28,7 +28,7 @@ class GameTest < ActiveSupport::TestCase
   test "finish ration milk" do
     game = games(:two)
     ration1 = rations(:ration1_twosimeon)
-    ration1.position = positions(:pos_milk)
+    ration1.position = positions(:pos78)
     game_user = ration1.game_user
     result = game.finish_ration(ration1)
     #assert(result[:success], "The result of finish ration on ration1 is true")
@@ -42,7 +42,7 @@ class GameTest < ActiveSupport::TestCase
 
     ration3 = rations(:ration1_tworuth)
     game.cow.pregnancy_id = 1
-    ration3.position = positions(:pos_milk)
+    ration3.position = positions(:pos78)
     game_user = ration3.game_user
     result = game.finish_ration(ration3)
     #assert(result[:success], "The result of finish ration on ration3 is true")
@@ -52,7 +52,7 @@ class GameTest < ActiveSupport::TestCase
   test "finish ration meat" do
     game = games(:two)
     ration1 = rations(:ration1_twosimeon)
-    ration1.position = positions(:pos_meat)
+    ration1.position = positions(:pos86)
     game_user = ration1.game_user
     result = game.finish_ration(ration1)
     #assert(result[:success], "The result of finish ration on ration1 is true")
@@ -63,7 +63,7 @@ class GameTest < ActiveSupport::TestCase
   test "finish ration muck" do
     game = games(:two)
     ration1 = rations(:ration1_tworuth)
-    ration1.position = positions(:pos_muck)
+    ration1.position = positions(:pos95)
     game_user = ration1.game_user
     previous_action_number = Action.count
     result = game.finish_ration(ration1)
@@ -76,7 +76,7 @@ class GameTest < ActiveSupport::TestCase
   test "finish ration with oligos" do
     game = games(:two)
     ration1 = rations(:ration2_tworuth)
-    ration1.position = positions(:pos_milk)
+    ration1.position = positions(:pos78)
     game_user = ration1.game_user
     result = game.finish_ration(ration1)
     cow = Cow.find(game.cow_id)
@@ -89,7 +89,7 @@ class GameTest < ActiveSupport::TestCase
   test "finish ration when cold" do
     game = games(:two)
     ration1 = rations(:ration1_tworuth)
-    ration1.position = positions(:pos_milk)
+    ration1.position = positions(:pos78)
     game_user = ration1.game_user
     cold_event = events(:event_wth_cld)
     cold_event.makeActive(game)

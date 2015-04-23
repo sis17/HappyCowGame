@@ -8,18 +8,18 @@ angular.module('happyCow').controller('BaseCtrl', [
     }
 
     $scope.failedGet = function(response) {
-      console.log(response);
       if (response.status == 401 && response.statusText.indexOf("Unauthorized") >= 0) {
         notice('Not Authorised', 'Sorry, you are not logged in, please login and try again.', 'warning', 6);
+        $scope.user.logout();
         $location.path('login');
       } else {
         notice('Network Error', 'Sorry, we couldn`t get the information to make this work.', 'danger', 5);
       }
     }
     $scope.failedUpdate = function(response) {
-      console.log(response);
       if (response.status == 401 && response.statusText.indexOf("Unauthorized") >= 0) {
         notice('Not Authorised', 'Sorry, you are not logged in, please login and try again.', 'warning', 6);
+        $scope.user.logout();
         $location.path('login');
       } else {
         notice('Network Error', 'Sorry, we couldn`t save that information right now.', 'danger', 5);

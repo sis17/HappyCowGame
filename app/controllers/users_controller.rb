@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   #before_action :set_user, only: [:show, :edit, :update, :destroy]
   # authenticate the following actions
-  before_action :authenticate, only: [:show, :update, :destroy]
+  before_action :authenticate, only: [:index, :show, :update, :destroy]
 
   def index
     @users = User.includes(:game_users).order('name')

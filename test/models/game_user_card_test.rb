@@ -187,7 +187,7 @@ class GameUserCardTest < ActiveSupport::TestCase
   end
 
   test "use card saponins (fiber in rumen turned to protien)" do
-    ration = Ration.new(game_user:@game_user, position:positions(:pos_rumen))
+    ration = Ration.new(game_user:@game_user, position:positions(:pos25))
     ration.save
     Ingredient.new(ration:ration, ingredient_cat:ingredient_cats(:two_fibercategory)).save
     Ingredient.new(ration:ration, ingredient_cat:ingredient_cats(:two_fibercategory)).save
@@ -245,7 +245,7 @@ class GameUserCardTest < ActiveSupport::TestCase
 
   test "use card high sugar grass" do
     # put fiber in the intestines
-    ration = Ration.new(game_user:@game_user, position:positions(:pos_intestine))
+    ration = Ration.new(game_user:@game_user, position:positions(:pos78))
     ration.save
     Ingredient.new(ration:ration, ingredient_cat:ingredient_cats(:two_fibercategory)).save
     Ingredient.new(ration:ration, ingredient_cat:ingredient_cats(:two_fibercategory)).save

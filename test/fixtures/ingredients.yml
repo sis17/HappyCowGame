@@ -22,3 +22,15 @@ energy3:
 oligos1:
   ingredient_cat: two_oligoscategory
   ration: ration2_tworuth
+
+fiber1:
+  ingredient_cat: two_fibercategory
+  ration: smallfiber
+
+fiber2:
+  ingredient_cat: two_fibercategory
+  ration: lotsoffiber
+
+fiber3:
+  ingredient_cat: two_fibercategory
+  ration: lotsoffiber

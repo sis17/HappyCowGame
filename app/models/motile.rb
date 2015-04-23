@@ -38,7 +38,7 @@ class Motile < ActiveRecord::Base
           end
         end
       else
-        # how did this happen?
+        #puts 'the motile cannot move '+moves.to_s
       end
 
       moves -= 1

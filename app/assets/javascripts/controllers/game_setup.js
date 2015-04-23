@@ -6,9 +6,15 @@ var gameNewCtrl = hcApp.controller('GameSetupCtrl', [
 
     // get the game
     Restangular.one('games', $routeParams.gameId).get().then(function(game) {
-      // set the logged in user's game user
-      $scope.$storage.user.game_user = game.game_users[0];
       $scope.game = game;
+      // set the logged in user's game user
+      for (i in game.game_users) {
+        var game_user = game.game_users[i];
+        if (game_user.user_id == $scope.$storage.user.id) {
+          $scope.$storage.user.game_user = game_user;
+        }
+      }
+      
       // set the logged in user as automatically authenticated
       $scope.$storage.auth_games[game.id] = {};
       $scope.auth_games.logIn(game.id, $scope.$storage.user);
@@ -47,6 +53,10 @@ var gameNewCtrl = hcApp.controller('GameSetupCtrl', [
       });
     }
     $scope.begin = function() {
+      if (!$scope.user.isCreator($scope.game)) {
+        $location.path('games/play/'+$scope.game.id);
+        return;
+      }
       // check everyone is logged in
       var all_assigned = true;
       console.log($scope.$storage.auth_games[$scope.game.id]);
