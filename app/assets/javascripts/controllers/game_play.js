@@ -23,6 +23,8 @@ angular.module('happyCow').controller('GameCtrl', [
     }
 
     $scope.player = {};
+    $scope.player.rations = [];
+    $scope.player.cards = [];
     $scope.$storage.player = {};
     $scope.player.change = function(game_user) {
       if ($scope.$storage.user.game_user.network == 1) { // if the current user is distant
@@ -99,8 +101,10 @@ angular.module('happyCow').controller('GameCtrl', [
 
     $scope.player.getCards = function() {
       // update the user's cards
-      this.cards = Restangular.one('games', $routeParams.gameId).one('game_users', $scope.player.getGameUserId())
-              .getList('cards').$object;
+      Restangular.one('games', $routeParams.gameId).one('game_users', $scope.player.getGameUserId())
+              .getList('cards').then(function(cards) {
+        $scope.player.cards = cards;
+      });
     }
 
     $scope.player.countCards = function() {
@@ -112,8 +116,10 @@ angular.module('happyCow').controller('GameCtrl', [
 
     $scope.player.getRations = function() {
       // update the user's rations
-      this.rations = Restangular.one('users', $routeParams.gameId).one('game_users', $scope.player.getGameUserId())
-              .getList('rations').$object;
+      Restangular.one('users', $routeParams.gameId).one('game_users', $scope.player.getGameUserId())
+          .getList('rations').then(function(rations) {
+        $scope.player.rations = rations;
+      });
     }
 
     $scope.player.createRation = function(ingredients) {

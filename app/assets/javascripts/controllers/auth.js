@@ -1,7 +1,7 @@
 var loginCtrl = hcApp.controller('LoginCtrl', [
   '$scope', '$location', 'Restangular', 'notice', '$modal',
   function($scope, $location, Restangular, notice, $modal) {
-    if (!$scope.user || !$scope.$storage.user || !$scope.$storage.user.key) {
+    if (!$scope.user) {
       $scope.user = {};
     } else if ($scope.$storage.user && $scope.$storage.user.id && $scope.$storage.user.key) {
       $location.path('games');
