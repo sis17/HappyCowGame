@@ -8,17 +8,24 @@ class GamesController < ApplicationController
   end
 
   def show
+    not_found and return if !Game.exists?(params[:id]) # return not found
     @game = Game.find(params[:id])
+    unauthorised and return if !@user.is_playing(@game) # check user is authenticated
     render json: @game.as_json
   end
 
   def update
+    not_found and return if !Game.exists?(params[:id]) # return not found if it doesn't exist
     messages = []
     success = false
     @game = Game.find(params[:id])
+    unauthorised and return if !@user.is_playing(@game) # check user is authenticated
 
     # do a check to see if the game is in the review phase, if so, allow update of round_id
     if params[:done_turn]
+      current_player = GameUser.find(@game.round.game_user_id)
+      unauthorised and return if current_player.user_id != @user.id # check user is the current player
+
       # the user has finished doing what they can, move on to next turn, or phase, or round
       if @game.round.current_phase == 4
         #move on to the next round
@@ -30,31 +37,14 @@ class GamesController < ApplicationController
         nextPlayer = @game.get_next_player
         messageText = ''
 
-        # make the action if a movement round
-        movement = Move.where(round: @round, game_user: @round.game_user).take
-        if @round.current_phase == 3 and movement.ration_id
-          action = Action.new
-          with = ''
-          with = ', with '+movement.ration.describe_ingredients+', ' if movement.ration
-          action.set(
-            'Moved a Ration', 'moved a ration '+with+movement.movements_made.to_s+' places.',
-            @round.id, 3, @round.game_user.id
-          )
-
-          # add the round records
-          round_record = RoundRecord.new(
-            round: @round, game_user: @round.game_user, name: 'score', value: @round.game_user.score).save
-          round_record = RoundRecord.new(
-            round: @round, game_user: @round.game_user, name: 'cards', value: @round.game_user.game_user_cards.count).save
-          round_record = RoundRecord.new(
-            round: @round, game_user: @round.game_user, name: 'rations', value: @round.game_user.rations.count).save
-        end
+        @game.make_round_records # make the action if a movement round, and add round records for this round
 
         if nextPlayer.id == @round.starting_user_id
           # if the phase has come back to the first player, move on the phase
           @round.current_phase = @round.current_phase+1
           messageText = ' the next phase, and '
         end
+
         @round.game_user = nextPlayer
         @round.save
 
@@ -66,41 +56,14 @@ class GamesController < ApplicationController
       end
 
     elsif !params[:begin] && @game.stage == 0
+      puts @game.user.name
+      unauthorised and return if @game.user_id != @user.id # check user is game creator
+
       # update a game, before it is formally created
       @game = Game.find(params[:id])
-      # update the game details
-      if params[:name]
-        @game.name = params[:name]
-        messages.push({
-            title: 'Game Changed', text: 'The game name was changed to '+@game.name+'.',
-            type: 'success', time: 4
-        })
-      end
-      if params[:carddeck_id]
-        carddeck = CardDeck.find(params[:carddeck_id])
-        if carddeck
-          @game.carddeck_id = params[:carddeck_id]
-          messages.push({
-              title: 'Game Changed', text: 'The game card deck was changed to '+carddeck.name+'.',
-              type: 'success', time: 4
-          })
-        end
-      end
-      if params[:rounds_min]
-        @game.rounds_min = params[:rounds_min]
-        messages.push({
-            title: 'Game Changed', text: "The minimum number of rounds was changed to #{@game.rounds_min.to_s}.",
-            type: 'success', time: 2
-        })
-      end
-      if params[:rounds_max]
-        @game.rounds_max = params[:rounds_max]
-        messages.push({
-            title: 'Game Changed', text: "The maximum number of rounds was changed to #{@game.rounds_max.to_s}.",
-            type: 'success', time: 2
-        })
-      end
-      #@game.update(params.require(:game).permit(:name, :carddeck_id, :rounds_min, :rounds_max))
+      messages.push({
+          title: 'Game Saved', text: 'The game has been successfully updated.', type: 'success', time: 4
+      }) if @game.update(params.permit(:name, :carddeck_id, :rounds_min, :rounds_max))
 
       # update any new users
       if params[:users]
@@ -119,8 +82,8 @@ class GamesController < ApplicationController
       success = true
 
     elsif params[:begin] && @game.stage == 0
+      unauthorised and return if @game.user.id != @user.id # check user is game creator
       # formally create a game, move it to stage 1
-      @game = Game.find(params[:id])
       success = @game.begin
 
       if success
@@ -161,15 +124,11 @@ class GamesController < ApplicationController
 
       if params[:user_id] # for a single setup game
         @user = User.find(params[:user_id])
-        @game.creater_id = @user.id
+        @game.user_id = @user.id
         game_user = @game.create_game_user(@user.id)
         game_user.network = 0 # the creator shouldn't be set as network
         game_user.save
         @game.save
-      #elsif params[:users] # for a group game
-      #  params[:users].each do |user|
-      #    @game.create_game_user(user[:id]) if User.find(user[:id])
-      #  end
       end
 
       success = true
@@ -191,9 +150,13 @@ class GamesController < ApplicationController
   end
 
   def destroy
+    not_found and return if !Game.exists?(params[:id]) # return not found
+
     messages = []
     success = false
     @game = Game.find(params[:id])
+    unauthorised and return if @game.user_id != @user.id # check user is game creator
+
     if @game
       @game.game_users.each do |game_user|
         game_user.destroy
@@ -211,6 +174,7 @@ class GamesController < ApplicationController
         type:'warning', time: 4
       })
     end
+
     render json: {
       success: success,
       messages: messages
@@ -219,20 +183,20 @@ class GamesController < ApplicationController
 
   private
 
-  def assign_cards(game, game_user, number)
-    game_card_count = GameCard.where({game_id: game.id}).count - 1
-    while number > 0 do
-        # get the card, and check that any cards exist
-        game_card = GameCard.where({game_id: game.id}).offset(rand(0..game_card_count)).first
-        if game_card
-          game_user_card = GameUserCard.new
-          game_user_card.game_card_id = game_card.id
-          game_user_card.game_user_id = game_user.id
-          game_user_card.save
-        end
-        number -= 1
-    end
-  end
+  #def assign_cards(game, game_user, number)
+  #  game_card_count = GameCard.where({game_id: game.id}).count - 1
+  #  while number > 0 do
+  #      # get the card, and check that any cards exist
+  #      game_card = GameCard.where({game_id: game.id}).offset(rand(0..game_card_count)).first
+  #      if game_card
+  #        game_user_card = GameUserCard.new
+  #        game_user_card.game_card_id = game_card.id
+  #        game_user_card.game_user_id = game_user.id
+  #        game_user_card.save
+  #      end
+  #      number -= 1
+  #  end
+  #end
 
   def create_ingredient_cats(game)
     ing_cat_water = IngredientCat.new(

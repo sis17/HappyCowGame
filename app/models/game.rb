@@ -1,7 +1,7 @@
 class Game < ActiveRecord::Base
   has_many :game_users
   has_many :users, through: :game_user
-  has_many :users, foreign_key: 'creater_id'
+  #has_one :user, foreign_key: 'user_id'
   has_many :ingredient_cats
   has_many :rounds
   has_many :motiles
@@ -12,6 +12,7 @@ class Game < ActiveRecord::Base
   belongs_to :round
   belongs_to :round, foreign_key: "round_id"
   belongs_to :cow
+  belongs_to :user
 
   def begin
     # check it's in the right phase
@@ -139,6 +140,29 @@ class Game < ActiveRecord::Base
 
     return self.game_users[currentUserIndex+1] if self.game_users[currentUserIndex+1]
     return self.game_users[0]
+  end
+
+  def make_round_records
+    movement = Move.where(round: self.round, game_user: self.round.game_user).take
+    if self.round.current_phase == 3
+      if movement.ration_id
+        action = Action.new
+        with = ''
+        with = ', with '+movement.ration.describe_ingredients+', ' if movement.ration
+        action.set(
+          'Moved a Ration', 'moved a ration '+with+movement.movements_made.to_s+' places.',
+          @round.id, 3, @round.game_user.id
+        )
+      end
+
+      # add the round records
+      round_record = RoundRecord.new(
+        round: @round, game_user: @round.game_user, name: 'score', value: @round.game_user.score).save
+      round_record = RoundRecord.new(
+        round: @round, game_user: @round.game_user, name: 'cards', value: @round.game_user.game_user_cards.count).save
+      round_record = RoundRecord.new(
+        round: @round, game_user: @round.game_user, name: 'rations', value: @round.game_user.rations.count).save
+    end
   end
 
   def finish_ration(ration)

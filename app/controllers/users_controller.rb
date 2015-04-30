@@ -4,19 +4,21 @@ class UsersController < ApplicationController
   before_action :authenticate, only: [:index, :show, :update, :destroy]
 
   def index
-    @users = User.includes(:game_users).order('name')
-    render :json => @users.to_json(:include => :game_users)
+    @users = User.order('name')
+    render :json => @users.as_json
   end
 
   def show
-    @user = User.includes(:game_users, :games).find(params[:id])
-    render json: @user.to_json(:include => :game_users, :include => :games)
+    unauthorised and return if params[:id] != @user.id.to_s # check user is authenticated
+    render json: @user.as_json and return
   end
 
   def update
-    @user = User.find(params[:id])
+    #@user = User.find(params[:id])
+    unauthorised and return if params[:id] != @user.id.to_s # check user is authenticated
+
     if params[:profile]
-      @user.update(params.require(:profile).permit(:email, :name, :colour))
+      @user.update(params.require(:profile).permit(:email, :name, :colour, :password))
       render json: {
         success: true,
         message: {title: 'Profile Saved', text: 'Your profile has been updated.', type: 'success'}
@@ -60,9 +62,6 @@ class UsersController < ApplicationController
   end
 
   # POST /users
-  # POST /users.json
-  # At the moment we are only allowing the admin user to create new
-  # accounts.
   def create
     success = false
     user = nil
@@ -71,6 +70,8 @@ class UsersController < ApplicationController
     existing_user = User.find_by email: params[:user][:email]
     if existing_user
       messages.push({title: 'User Account Exists', text: 'We already have an account registered for that email, try signing in.', type: 'warning', time: 6})
+    elsif !params[:user][:email] || !params[:user][:password]
+      messages.push({title: 'Oops', text: 'The account could not be created, make sure you enter all necessary details.', type: 'warning', time: 5})
     else
       @user = User.new(params.require(:user).permit(:email, :name, :password))
       if @user
@@ -81,7 +82,7 @@ class UsersController < ApplicationController
         @user.save
         render json: {
           success: true,
-          user: @user,
+          user: @user.as_json,
           key: @user.key,
           messages: [{title: 'Account Created', text: 'Your account has been created. Please remember your details.', type: 'success', time: 4}]
         } and return
@@ -94,13 +95,5 @@ class UsersController < ApplicationController
       user: user,
       messages: messages
     } and return
-  end
-
-
-  private
-
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def user_params
-    params.require(:user).permit(:email, :name, :password, :password_confirmation)
   end
 end

@@ -15,4 +15,12 @@ class ApplicationController < ActionController::Base
       return false
     end
   end
+
+  def unauthorised
+    head status: :unauthorized
+  end
+
+  def not_found
+    head status: :not_found
+  end
 end

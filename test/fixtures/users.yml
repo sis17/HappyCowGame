@@ -15,3 +15,11 @@ ruth:
   experience: 1
   password: test
   key: something
+
+test1:
+  email: test1@aber.ac.uk
+  name: Test1
+  colour: 00000f
+  experience: 0
+  password: test
+  key: something

@@ -55,8 +55,8 @@ angular.module('happyCow').controller('BaseCtrl', [
         return $scope.$storage.user;
       },
       isCreator: function(game) {
-        if (game && game.creater_id) {
-          return $scope.$storage.user.id == game.creater_id;
+        if (game && game.user_id) {
+          return $scope.$storage.user.id == game.user_id;
         }
         return false;
       }
