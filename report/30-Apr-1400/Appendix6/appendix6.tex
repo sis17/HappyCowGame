@@ -1,0 +1,41 @@
+\chapter{Installation Instructions}
+Upon the completion of this project, although more could be done to the application, it is in a finished state that can be deployed and used. It therefore seems appropriate to provide instructions for installation so that future developers can maintain and deploy the system.
+
+The project can be downloaded by running the following command with Git:
+\begin{verbatim}
+git clone https://github.com/sis17/HappyCowGame.git
+\end{verbatim}
+
+To run the project you will need Ruby (1.9.3 or higher) and Rails (4.1.4 or higher) installed. Once these are installed, make sure you have the required gems by running the following command:
+\begin{verbatim}
+gem install bundler
+\end{verbatim}
+
+For this to work, you will need a version of MySQL. Follow the commands given by the operation above to install this.
+
+The development database is set to SQLite3 by default. To change this, you will need to change configuration in the following location:
+\begin{verbatim}
+/.openshift/config/database.yml
+\end{verbatim}
+
+The database structure required by the application is available for MySQL or SQLite3 databases: 
+\begin{verbatim}
+http://sis17.github.io/HappyCowGame/databases/mysql.sql
+\end{verbatim}
+or
+\begin{verbatim}
+http://sis17.github.io/HappyCowGame/databases/sqlite3.sql
+\end{verbatim}
+
+Now you are ready to make changes to the application and add great features. When you've got them working share them by creating a pull request.
+
+The application is currently hosted by OpenShift. To get the application from your development version to the live server you will need to register with OpenShift and create an account. Once this is done, set up a new application with Rails and MySQL installed. It can also be helpful to have PHPMyAdmin to edit the database.
+
+Once this is done you need to push the application to the server. This should be fairly straightforward:
+\begin{verbatim}
+git push <server location> <branch name>
+\end{verbatim}
+
+You will be asked for a GitHub key. If you have set one in the OpenShift config, then you will be asked for the relevant password.
+
+Finally, set up the database structure, and then check out the application.

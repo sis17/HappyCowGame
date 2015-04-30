@@ -1,0 +1,157 @@
+\chapter{Code Samples}
+This section includes sections of code mentioned in the report.
+
+\section{Traversing Positions}
+This is the code that builds a graph of the available positions a food ration can move to. The language is Ruby.
+
+\begin{verbatim}
+class Position < ActiveRecord::Base
+...
+  # build_graph returns a hash of all the available 
+  # positions within a certain
+  # depth of the current position. It does this by 
+  # taking a depth (level) from
+  # the current position at a time, while also 
+  # assmebling the next level.
+  def build_graph(depth, taken_positions)
+      
+      # the graph is a hash of all possible positions
+      graph = {}
+      # add the initial position to the graph
+      self.build(graph, taken_positions)
+      current_level = self.positions
+
+      # while the depth is not reached, 
+      #add levels of positions to the graph
+      while depth > 0 do
+        depth -= 1
+        # this holds the next level of positions to be added
+        next_level = []
+        
+        # loop through the current level of positions
+        current_level.each do |position|
+          # add the position to the graph, if not already there
+          added = position.build(graph, taken_positions)
+          # if it has been added, add it's links to the next level
+          next_level.concat(position.positions) if added
+        end
+        current_level = next_level
+      end
+      
+      # return the finished graph
+      return graph
+  end
+...
+end
+\end{verbatim}
+
+\section{User Authentication}
+As mentioned in the report, the article \cite{APISecurity} provided a solution to stateless RESTful user authentication. The method uses headers. Whenever a user logs in, a key is stored in the database with their details. For a user to access resources from the API a header ID representing the user, and their most recent key, must be provided.
+
+\begin{verbatim}
+class ApplicationController < ActionController::Base
+...
+   def authenticate
+    user_id = request.headers['UserId']
+    user_key = request.headers['UserKey']
+    @user = User.where(id: user_id, key: user_key)
+    			      .first if user_id and user_key
+	
+	# if no user record is found, 
+	#return an unauthorized response (401)
+    unless @user
+      head status: :unauthorized
+      return false
+    end
+  end
+...
+end
+\end{verbatim}
+
+
+\section{Popup Directive}
+Angular allows developers to easily create their own directives. Finding the Bootstrap popover insufficient, a new directive was created, using the Bootstrap popover, but which could include HTML markup. It works by assigning a template with content, or assuming the div element directly following the popup directive includes the content to show in the popup.
+
+\begin{verbatim}
+var directives = angular.module('happyCowDirectives', [])
+
+// an element with the 'popup' attribute will use this directive
+.directive('popup', function ($compile,$templateCache) {
+  return {
+    restrict: "A",
+    compile: function($templateElement, $templateAttributes) {
+      return function($scope, $element, $attributes) {
+          // set the options for the Bootstrap popover
+          var options = {
+            content: function() {
+              if ($attributes.template && 
+              	  $attributes.template.length > 0) {
+                // the content can be set by providing a 
+                //template name.
+                return $('#'+$attributes.template).html();
+              } else {
+                // the content can be set by using the 
+                //content of the following element, a hidden div.
+                return $($element).next().html();
+              }
+            },
+            container: 'body',
+            placement: 'bottom',
+            html: true
+          };
+          // the constructed popover is returned
+          $($element).popover(options);
+      };
+    }
+  };
+});
+\end{verbatim}
+
+\section{Alerts Service}
+Angular allows developers to create modules called services. These are reusable components that can perform an operation anywhere in the app. The service below is used to create Alerts to provide users with feeback about the outcomes of their actions, or warnings about the status of the application. The service is called 'Notice'.
+
+\begin{verbatim}
+var services = angular.module('happyCowServices', []);
+
+services.factory('notice', ['$timeout', '$document', 
+ function($timeout, $document) {
+  var notices = $('#notices');
+
+  // set a time out, when finished it will fade out the notice
+  var removeNotice = function(number, seconds) {
+    $timeout(function() {
+      notices.find('#alert-'+number).fadeOut().remove();
+    }, (seconds)*1000);
+  }
+
+  // create the HTML for a Bootstrap Alert
+  var buildNotice = function(type, message) {
+    var number = parseInt(notices.data('number'));
+    notices.data('number',++number);
+
+    notices.prepend('<div id="alert-'+number+'" '+
+    	  'class="alert alert-'+type+' alert-dismissible" role="alert">'+
+      '<button type="button" class="close" '+
+      'data-dismiss="alert" aria-label="Close">'+
+      '<span aria-hidden="true">&times;</span></button>'+message+'</div>');
+    return number;
+  }
+
+  return function(title, text, type, time) {
+    // create a number of notices, if the first parameter is infact an array
+    if( Object.prototype.toString.call( title ) === '[object Array]' ) {
+      for (i in title) { // in this case title is actually an array of messages
+        message = title[i];
+        var number = buildNotice(message.type, 
+        		'<strong>'+message.title+'</strong> '+message.text);
+        removeNotice(number, message.time);
+      }
+
+    // create a single notice
+    } else {
+      var number = buildNotice(type, '<strong>'+title+'</strong> '+text));
+      removeNotice(number, time);
+    }
+  };
+}]);
+\end{verbatim}

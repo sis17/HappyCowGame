@@ -1,0 +1,39 @@
+\chapter{Third-Party Code and Libraries}
+
+Third party libraries were used for both the server-side and client-side of the application. As well as these, technologies used to develop, deploy and host the application has been listed. Each piece of software is listed below with a short description and reference.
+
+\section{Server Side Software}
+\begin{itemize}
+	\item \textbf{Ruby} (1.9.3) \cite{Ruby} was used as the server side language of development.
+	\item \textbf{Rails4} (4.1.4) \cite{Rails} was used as the server side framework to server resources through an API. Rails lent a lot to the project, making development much more straightforward. Within Rails a few Gems (libraries for Rails) were used.
+	\begin{itemize}
+		\item \textbf{BootstrapSASS} \cite{BootstrapSASS} was used to render the Bootstrap CSS as SCSS. This meant that SCSS could be built and then served to the server. The library was used without modification.
+		\item \textbf{jQuery} \cite{JQuery} was used to operate some Bootstap elements. In most cases this was done through and extra AngularBootstrap plug-in. The library was used without modification.
+	\end{itemize}
+	\item \textbf{MySQL2} \cite{MySQL2} was used as the database managment system within the live environment. The library was used without modification.
+	\item \textbf{SQLite3} \cite{SQLite3} was used as the database management system within the development environment. The library was used without modification.
+\end{itemize}
+
+\section{Client Side Software}
+\begin{itemize}
+	\item \textbf{AngularJS} \cite{Angular} was the client side framework used to create the user interface. Plug-ins specific to Angular were also used (listed below). The Angular library was used without modification.
+	\begin{itemize}
+		\item \textbf{AngularStrap} \cite{AngularStrap} provides the common Bootstrap functionality, normally accessable through jQuery operations, in a format that can be used with Angular directly. So it defines Modals, Popovers, Accordions, Alerts, and the like. The AngularStrap Library was used without modification.
+		\item \textbf{AngularRoute} \cite{AngularRoute} is a library that allows an Angular app to route internal URLs to different controllers. This allows different pages to be pulled from pre-loaded templates. The AngularRoute library was used without modification.
+		\item \textbf{AngularSanitize} \cite{AngularSanitize} is an Angular plug-in that allows HTML to be injected into an element of the DOM. Because of XSS attacks, without this plugin, adding HTML to a page could cause security issues. The AngularSanitize library was used without modificaiton.
+		\item \textbf{Lodash} (3.7.0) is a 'JavaScript utility library delivering consistency, modularity, performance, \& extras' \cite{Lodash}. It was a requirement of Restangular (below).
+		\item \textbf{Restangular} \cite{Restangular} is a greate replacement for the default Angular \$http service, and ngResource service. It is ideal for requesting resources from a RESTful API and was just what was needed for this project. The Restangular library was used without modification.
+		\item \textbf{AngularStorage} \cite{ngStorage} is a plug-in that abstracts away the need to interact with the browser's storage object at all. Instead it allows the developer to interact with client storage through a the controller's scope. The ngStorage library was used without modification.
+	\end{itemize}
+	\item \textbf{Bootsrap} \cite{Bootstrap} was used extensively within this project to format buttons, headers, modals, images, icons, dropdowns and more in a standard and smart way. The library was used without modification.
+	\begin{itemize}
+		\item \textbf{BootstrapColorpicker} \cite{BootstrapCP} provides a colour picker that matches normal Bootstrap style. It was used to allow players to select a colour for their profile. The library was used without modification.
+	\end{itemize}
+\end{itemize}	
+
+\section{Assisting Software}
+\begin{itemize}
+	\item \textbf{Git} \cite{Git} is used to manage releases of the software and to package and deploy it from the development environment to the live server. Git was used without modification.
+	\item \textbf{Atom} \cite{Atom} was used as the text editor for development of the application. It is built by GitHub to integrate with a project using Git. Atom was used without modificaiton.
+	\item \textbf{OpenShift} \cite{OpenShift} is a service by RedHat. It allows a user to host up to three web applications for free. These applications can use a MySQL database and may also have Ruby and Rails installed.
+\end{itemize}

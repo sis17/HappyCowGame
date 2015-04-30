@@ -1,0 +1,1314 @@
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.8.13)  30 APR 2015 14:29
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**dissertation.tex
+(./dissertation.tex
+LaTeX2e <2011/06/27>
+Babel <3.9h> and hyphenation patterns for 4 languages loaded.
+(/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
+Document Class: report 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) (./mmp.sty
+Package: mmp 
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count88
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/palatino.sty
+Package: palatino 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+(/usr/share/texlive/texmf-dist/tex/latex/carlisle/plain.sty
+Package: plain 1996/04/22 Plain TeX emulation (DPC)
+\tabs@latex=\box26
+\tabsyet@latex=\box27
+\tabsdone@latex=\box28
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2013/01/14 v2.14 AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks15
+\ex@=\dimen105
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen106
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count89
+LaTeX Info: Redefining \frac on input line 210.
+\uproot@=\count90
+\leftroot@=\count91
+LaTeX Info: Redefining \overline on input line 306.
+\classnum@=\count92
+\DOTSCASE@=\count93
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
+\Mathstrutbox@=\box29
+\strutbox@=\box30
+\big@size=\dimen107
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\macc@depth=\count94
+\c@MaxMatrixCols=\count95
+\dotsspace@=\muskip10
+\c@parentequation=\count96
+\dspbrk@lvl=\count97
+\tag@help=\toks16
+\row@=\count98
+\column@=\count99
+\maxfields@=\count100
+\andhelp@=\toks17
+\eqnshift@=\dimen108
+\alignsep@=\dimen109
+\tagshift@=\dimen110
+\tagwidth@=\dimen111
+\totwidth@=\dimen112
+\lineht@=\dimen113
+\@envbody=\toks18
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks19
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+)
+(/usr/share/texlive/texmf-dist/tex/latex/subfigure/subfigure.sty
+Package: subfigure 2002/03/15 v2.1.5 subfigure package
+\subfigtopskip=\skip46
+\subfigcapskip=\skip47
+\subfigcaptopadj=\dimen114
+\subfigbottomskip=\skip48
+\subfigcapmargin=\dimen115
+\subfiglabelskip=\skip49
+\c@subfigure=\count101
+\c@lofdepth=\count102
+\c@subtable=\count103
+\c@lotdepth=\count104
+
+****************************************
+* Local config file subfigure.cfg used *
+****************************************
+(/usr/share/texlive/texmf-dist/tex/latex/subfigure/subfigure.cfg)
+\subfig@top=\skip50
+\subfig@bottom=\skip51
+)
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count105
+\float@exts=\toks20
+\float@box=\box31
+\@float@everytoks=\toks21
+\@floatcapt=\box32
+)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty
+Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+\fancy@headwidth=\skip52
+\f@ncyO@elh=\skip53
+\f@ncyO@erh=\skip54
+\f@ncyO@olh=\skip55
+\f@ncyO@orh=\skip56
+\f@ncyO@elf=\skip57
+\f@ncyO@erf=\skip58
+\f@ncyO@olf=\skip59
+\f@ncyO@orf=\skip60
+)
+(/usr/share/texlive/texmf-dist/tex/latex/lastpage/lastpage.sty
+Package: lastpage 2013/01/28 v1.2l Refers to last page's name (HMM; JPG)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip11
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+))
+(/usr/share/texlive/texmf-dist/tex/latex/cite/cite.sty
+LaTeX Info: Redefining \cite on input line 302.
+LaTeX Info: Redefining \nocite on input line 373.
+Package: cite 2010/09/10  v 5.3
+) (./dissertation.aux
+(./cover.aux) (./declaration.aux) (./acknowledgements.aux) (./abstract.aux)
+(./Chapter1/chapter1.aux) (./Chapter2/chapter2.aux
+
+LaTeX Warning: Label `2_model_position' multiply defined.
+
+) (./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux
+
+LaTeX Warning: Label `4_cards_commands' multiply defined.
+
+) (./Chapter5/chapter5.aux) (./Appendix1/appendix1.aux)
+(./Appendix2/appendix2.aux) (./Appendix3/appendix3.aux)
+(./Appendix4/appendix4.aux) (./Appendix5/appendix5.aux)
+(./Appendix6/appendix6.aux))
+\openout1 = `dissertation.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 34.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count106
+\scratchdimen=\dimen116
+\scratchbox=\box33
+\nofMPsegments=\count107
+\nofMParguments=\count108
+\everyMPshowfont=\toks22
+\MPscratchCnt=\count109
+\MPscratchDim=\dimen117
+\MPnumerator=\count110
+\makeMPintoPDFobject=\count111
+\everyMPtoPDFconversion=\toks23
+)
+Package lastpage Info: Please have a look at the pageslts package at
+(lastpage)             http://www.ctan.org/tex-archive/ 
+(lastpage)             macros/latex/contrib/pageslts/ 
+(lastpage)             or
+(lastpage)             http://www.ctan.org/tex-archive/ 
+(lastpage)             install/macros/latex/contrib/pageslts.tds.zip
+(lastpage)             ! on input line 34.
+\openout2 = `cover.aux'.
+
+ (./cover.tex
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 28.
+LaTeX Font Info:    Try loading font information for U+msa on input line 28.
+ (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 28.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [0
+
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}])
+\openout2 = `declaration.aux'.
+
+ (./declaration.tex
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 7.
+
+Underfull \hbox (badness 10000) in paragraph at lines 30--31
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--34
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--54
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 56--57
+
+ []
+
+) [1
+
+
+]
+\openout2 = `acknowledgements.aux'.
+
+ (./acknowledgements.tex) [2
+
+
+]
+\openout2 = `abstract.aux'.
+
+ (./abstract.tex) [3
+
+
+] (./dissertation.toc
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
+
+[1
+
+] [2])
+\tf@toc=\write3
+\openout3 = `dissertation.toc'.
+
+ [3] (./dissertation.lof [4])
+\tf@lof=\write4
+\openout4 = `dissertation.lof'.
+
+ [5] (./dissertation.lot)
+\tf@lot=\write5
+\openout5 = `dissertation.lot'.
+
+ [6]
+\openout2 = `Chapter1/chapter1.aux'.
+
+
+(./Chapter1/chapter1.tex
+Chapter 1.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20.74> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
+[1
+
+
+]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 24.
+
+
+LaTeX Warning: Citation `BrowserGames' on page 2 undefined on input line 25.
+
+
+LaTeX Warning: Citation `Tizen' on page 2 undefined on input line 25.
+
+
+LaTeX Warning: Citation `GameEngAndTools' on page 2 undefined on input line 25.
+
+
+
+LaTeX Warning: Citation `GameDevCons' on page 2 undefined on input line 25.
+
+
+LaTeX Warning: Citation `GooglePlay' on page 2 undefined on input line 25.
+
+
+LaTeX Warning: Citation `Vassal' on page 2 undefined on input line 29.
+
+
+LaTeX Warning: Citation `VassalProblem' on page 2 undefined on input line 29.
+
+[2]
+
+LaTeX Warning: Citation `BGAStudio' on page 3 undefined on input line 31.
+
+
+LaTeX Warning: Citation `PhotonEngine' on page 3 undefined on input line 33.
+
+
+LaTeX Warning: Citation `Cocos2DX' on page 3 undefined on input line 33.
+
+
+LaTeX Warning: Citation `LearnCocos2D' on page 3 undefined on input line 33.
+
+
+LaTeX Warning: Citation `Rails' on page 3 undefined on input line 33.
+
+
+LaTeX Warning: Citation `SPABook' on page 3 undefined on input line 36.
+
+
+LaTeX Warning: Citation `DevBBoneApps' on page 3 undefined on input line 36.
+
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 36.
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+
+LaTeX Warning: Citation `CompareFrWrks' on page 3 undefined on input line 40.
+
+
+LaTeX Warning: Citation `SPABook' on page 3 undefined on input line 42.
+
+
+LaTeX Warning: Citation `DevBBoneApps' on page 3 undefined on input line 42.
+
+[3]
+
+LaTeX Warning: Citation `BBoneJS' on page 4 undefined on input line 44.
+
+
+LaTeX Warning: Citation `Ember' on page 4 undefined on input line 44.
+
+
+LaTeX Warning: Citation `AngularJS' on page 4 undefined on input line 44.
+
+
+LaTeX Warning: Citation `DevBBoneApps' on page 4 undefined on input line 46.
+
+
+LaTeX Warning: Citation `AngOverBB' on page 4 undefined on input line 48.
+
+
+LaTeX Warning: Citation `Angular' on page 4 undefined on input line 50.
+
+
+LaTeX Warning: Citation `SPABook' on page 4 undefined on input line 52.
+
+
+LaTeX Warning: Citation `BestSerPlat' on page 4 undefined on input line 54.
+
+[4] [5] [6]
+
+LaTeX Warning: Citation `XP' on page 7 undefined on input line 115.
+
+[7]) [8]
+\openout2 = `Chapter2/chapter2.aux'.
+
+ (./Chapter2/chapter2.tex
+Chapter 2.
+<Images/2/applications.png, id=64, 859.21pt x 252.945pt>
+File: Images/2/applications.png Graphic file (type png)
+
+<use Images/2/applications.png>
+Package pdftex.def Info: Images/2/applications.png used on input line 17.
+(pdftex.def)             Requested size: 433.62pt x 127.65709pt.
+
+Overfull \hbox (6.82866pt too wide) in paragraph at lines 17--18
+ [][] 
+ []
+
+[9
+
+
+
+] [10 <./Images/2/applications.png>] [11]
+<Images/2/users.png, id=77, 182.6825pt x 151.56625pt>
+File: Images/2/users.png Graphic file (type png)
+ <use Images/2/users.png>
+Package pdftex.def Info: Images/2/users.png used on input line 76.
+(pdftex.def)             Requested size: 182.68204pt x 151.56587pt.
+
+<Images/2/games.png, id=78, 174.6525pt x 232.87pt>
+File: Images/2/games.png Graphic file (type png)
+ <use Images/2/games.png>
+Package pdftex.def Info: Images/2/games.png used on input line 84.
+(pdftex.def)             Requested size: 174.65207pt x 232.86942pt.
+
+<Images/2/cows.png, id=79, 158.5925pt x 167.62625pt>
+File: Images/2/cows.png Graphic file (type png)
+ <use Images/2/cows.png>
+Package pdftex.def Info: Images/2/cows.png used on input line 92.
+(pdftex.def)             Requested size: 158.59209pt x 167.62582pt.
+
+<Images/2/rounds.png, id=80, 146.5475pt x 135.50626pt>
+File: Images/2/rounds.png Graphic file (type png)
+
+<use Images/2/rounds.png>
+Package pdftex.def Info: Images/2/rounds.png used on input line 100.
+(pdftex.def)             Requested size: 146.54712pt x 135.5059pt.
+
+<Images/2/cards.png, id=81, 166.6225pt x 167.62625pt>
+File: Images/2/cards.png Graphic file (type png)
+ <use Images/2/cards.png>
+Package pdftex.def Info: Images/2/cards.png used on input line 108.
+(pdftex.def)             Requested size: 166.62209pt x 167.62582pt.
+
+<Images/2/events.png, id=82, 166.6225pt x 152.57pt>
+File: Images/2/events.png Graphic file (type png)
+ <use Images/2/events.png>
+Package pdftex.def Info: Images/2/events.png used on input line 116.
+(pdftex.def)             Requested size: 166.62209pt x 152.56963pt.
+
+[12 <./Images/2/users.png>]
+<Images/2/rations.png, id=86, 174.6525pt x 88.33pt>
+File: Images/2/rations.png Graphic file (type png)
+ <use Images/2/rations.png>
+Package pdftex.def Info: Images/2/rations.png used on input line 124.
+(pdftex.def)             Requested size: 174.65207pt x 88.32977pt.
+
+<Images/2/ingredients.png, id=87, 203.76125pt x 84.315pt>
+File: Images/2/ingredients.png Graphic file (type png)
+
+<use Images/2/ingredients.png>
+Package pdftex.def Info: Images/2/ingredients.png used on input line 132.
+(pdftex.def)             Requested size: 203.76074pt x 84.31477pt.
+
+<Images/2/positions.png, id=88, 125.46875pt x 118.4425pt>
+File: Images/2/positions.png Graphic file (type png)
+
+<use Images/2/positions.png>
+Package pdftex.def Info: Images/2/positions.png used on input line 140.
+(pdftex.def)             Requested size: 125.46843pt x 118.4422pt.
+
+<Images/2/actions.png, id=89, 180.675pt x 134.5025pt>
+File: Images/2/actions.png Graphic file (type png)
+
+<use Images/2/actions.png>
+Package pdftex.def Info: Images/2/actions.png used on input line 148.
+(pdftex.def)             Requested size: 180.67455pt x 134.50215pt.
+
+<Images/2/round_records.png, id=90, 151.56625pt x 120.45pt>
+File: Images/2/round_records.png Graphic file (type png)
+
+<use Images/2/round_records.png>
+Package pdftex.def Info: Images/2/round_records.png used on input line 149.
+(pdftex.def)             Requested size: 151.56587pt x 120.44969pt.
+
+
+LaTeX Warning: Citation `RailsActRec' on page 13 undefined on input line 158.
+
+[13 <./Images/2/games.png>]
+<Images/2/relationship_example.png, id=94, 594.22pt x 422.57875pt>
+File: Images/2/relationship_example.png Graphic file (type png)
+
+<use Images/2/relationship_example.png>
+Package pdftex.def Info: Images/2/relationship_example.png used on input line 1
+69.
+(pdftex.def)             Requested size: 433.62pt x 308.3832pt.
+
+Overfull \hbox (6.82866pt too wide) in paragraph at lines 169--170
+ [][] 
+ []
+
+[14 <./Images/2/cows.png> <./Images/2/rounds.png>] [15 <./Images/2/cards.png> <
+./Images/2/events.png>] <Images/2/pages.png, id=102, 1092.08pt x 484.81125pt>
+File: Images/2/pages.png Graphic file (type png)
+
+<use Images/2/pages.png>
+Package pdftex.def Info: Images/2/pages.png used on input line 192.
+(pdftex.def)             Requested size: 433.62pt x 192.50072pt.
+
+Overfull \hbox (6.82866pt too wide) in paragraph at lines 192--193
+ [][] 
+ []
+
+
+LaTeX Warning: Citation `AngularRoute' on page 16 undefined on input line 197.
+
+[16 <./Images/2/rations.png> <./Images/2/ingredients.png>]
+<Images/2/pages-1-welcome.png, id=107, 600.74437pt x 366.61969pt>
+File: Images/2/pages-1-welcome.png Graphic file (type png)
+
+<use Images/2/pages-1-welcome.png>
+Package pdftex.def Info: Images/2/pages-1-welcome.png used on input line 205.
+(pdftex.def)             Requested size: 289.07999pt x 176.42297pt.
+
+<Images/2/pages-2-login.png, id=108, 600.74437pt x 366.61969pt>
+File: Images/2/pages-2-login.png Graphic file (type png)
+
+<use Images/2/pages-2-login.png>
+Package pdftex.def Info: Images/2/pages-2-login.png used on input line 214.
+(pdftex.def)             Requested size: 289.07999pt x 176.42297pt.
+
+<Images/2/pages-3-register.png, id=109, 600.74437pt x 366.61969pt>
+File: Images/2/pages-3-register.png Graphic file (type png)
+
+<use Images/2/pages-3-register.png>
+Package pdftex.def Info: Images/2/pages-3-register.png used on input line 222.
+(pdftex.def)             Requested size: 289.07999pt x 176.42297pt.
+
+<Images/2/pages-4-games.png, id=110, 600.74437pt x 366.61969pt>
+File: Images/2/pages-4-games.png Graphic file (type png)
+
+<use Images/2/pages-4-games.png>
+Package pdftex.def Info: Images/2/pages-4-games.png used on input line 230.
+(pdftex.def)             Requested size: 289.07999pt x 176.42297pt.
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+
+<Images/2/pages-5-profile.png, id=111, 600.74437pt x 366.61969pt>
+File: Images/2/pages-5-profile.png Graphic file (type png)
+
+<use Images/2/pages-5-profile.png>
+Package pdftex.def Info: Images/2/pages-5-profile.png used on input line 241.
+(pdftex.def)             Requested size: 289.07999pt x 176.42297pt.
+
+<Images/2/pages-6-new.png, id=112, 600.74437pt x 366.61969pt>
+File: Images/2/pages-6-new.png Graphic file (type png)
+
+<use Images/2/pages-6-new.png>
+Package pdftex.def Info: Images/2/pages-6-new.png used on input line 251.
+(pdftex.def)             Requested size: 289.07999pt x 176.42297pt.
+ [17 <./Images/2/positions.png> <./Images/2/actions.png> <./Images/2/round_reco
+rds.png>]
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+
+<Images/2/game-board.png, id=119, 1690.81688pt x 2393.19093pt>
+File: Images/2/game-board.png Graphic file (type png)
+
+<use Images/2/game-board.png>
+Package pdftex.def Info: Images/2/game-board.png used on input line 267.
+(pdftex.def)             Requested size: 433.62pt x 613.74301pt.
+
+Overfull \hbox (6.82866pt too wide) in paragraph at lines 267--268
+ [][] 
+ []
+
+
+LaTeX Warning: Float too large for page by 1.7455pt on input line 270.
+
+[18 <./Images/2/relationship_example.png>]
+<Images/2/ui-sections.png, id=124, 1325.95375pt x 722.7pt>
+File: Images/2/ui-sections.png Graphic file (type png)
+
+<use Images/2/ui-sections.png>
+Package pdftex.def Info: Images/2/ui-sections.png used on input line 278.
+(pdftex.def)             Requested size: 433.62pt x 236.34137pt.
+
+Overfull \hbox (6.82866pt too wide) in paragraph at lines 278--279
+ [][] 
+ []
+
+[19 <./Images/2/pages.png> <./Images/2/pages-1-welcome.png>]
+
+LaTeX Warning: Citation `Angular' on page 20 undefined on input line 289.
+
+[20 <./Images/2/pages-2-login.png> <./Images/2/pages-3-register.png>] [21 <./Im
+ages/2/pages-4-games.png> <./Images/2/pages-5-profile.png>]
+<Images/2/detail-1.png, id=141, 537.50812pt x 347.04657pt>
+File: Images/2/detail-1.png Graphic file (type png)
+
+<use Images/2/detail-1.png>
+Package pdftex.def Info: Images/2/detail-1.png used on input line 301.
+(pdftex.def)             Requested size: 433.62pt x 279.97293pt.
+
+Overfull \hbox (6.82866pt too wide) in paragraph at lines 301--302
+ [][] 
+ []
+
+<Images/2/detail-graph.png, id=142, 259.7203pt x 286.06876pt>
+File: Images/2/detail-graph.png Graphic file (type png)
+
+<use Images/2/detail-graph.png>
+Package pdftex.def Info: Images/2/detail-graph.png used on input line 310.
+(pdftex.def)             Requested size: 144.54pt x 159.20218pt.
+
+<Images/2/detail-links.png, id=143, 668.4975pt x 138.5175pt>
+File: Images/2/detail-links.png Graphic file (type png)
+
+<use Images/2/detail-links.png>
+Package pdftex.def Info: Images/2/detail-links.png used on input line 319.
+(pdftex.def)             Requested size: 361.34999pt x 74.87653pt.
+
+<Images/2/detail-2.png, id=144, 746.03719pt x 331.2375pt>
+File: Images/2/detail-2.png Graphic file (type png)
+
+<use Images/2/detail-2.png>
+Package pdftex.def Info: Images/2/detail-2.png used on input line 328.
+(pdftex.def)             Requested size: 433.62pt x 192.52222pt.
+
+Overfull \hbox (6.82866pt too wide) in paragraph at lines 328--329
+ [][] 
+ []
+
+[22 <./Images/2/pages-6-new.png>]
+<Images/2/detail-3.png, id=149, 564.60938pt x 331.2375pt>
+File: Images/2/detail-3.png Graphic file (type png)
+
+<use Images/2/detail-3.png>
+Package pdftex.def Info: Images/2/detail-3.png used on input line 340.
+(pdftex.def)             Requested size: 433.62pt x 254.39659pt.
+
+Overfull \hbox (6.82866pt too wide) in paragraph at lines 340--341
+ [][] 
+ []
+
+) [23] [24 <./Images/2/game-board.png
+
+pdfTeX warning: pdflatex (file ./Images/2/game-board.png): large interlaced PNG
+ might cause out of memory (use non-interlaced PNG to fix this)
+>] [25 <./Images/2/ui-sections.png> <./Images/2/detail-1.png>] [26 <./Images/2/
+detail-graph.png> <./Images/2/detail-links.png> <./Images/2/detail-2.png>]
+[27 <./Images/2/detail-3.png>]
+\openout2 = `Chapter3/chapter3.aux'.
+
+ (./Chapter3/chapter3.tex
+Chapter 3.
+[28
+
+
+
+]
+
+LaTeX Warning: Citation `jQuery' on page 29 undefined on input line 30.
+
+
+LaTeX Warning: Citation `AngularOverBB' on page 29 undefined on input line 30.
+
+
+LaTeX Warning: Citation `AngularBootstrap' on page 29 undefined on input line 3
+0.
+
+[29]
+
+LaTeX Warning: Citation `AngularResource' on page 30 undefined on input line 44
+.
+
+
+LaTeX Warning: Citation `Restangular' on page 30 undefined on input line 44.
+
+
+LaTeX Warning: Citation `APISecurity' on page 30 undefined on input line 53.
+
+[30]
+
+LaTeX Warning: Citation `APISecurity' on page 31 undefined on input line 57.
+
+
+LaTeX Warning: Citation `ClientStorage' on page 31 undefined on input line 59.
+
+
+LaTeX Warning: Citation `reference' on page 31 undefined on input line 61.
+
+[31] <Images/3/graph.png, id=185, 376.40625pt x 376.40625pt>
+File: Images/3/graph.png Graphic file (type png)
+
+<use Images/3/graph.png>
+Package pdftex.def Info: Images/3/graph.png used on input line 73.
+(pdftex.def)             Requested size: 144.54pt x 144.54065pt.
+
+<Images/3/tree-1.png, id=186, 432.11438pt x 237.13594pt>
+File: Images/3/tree-1.png Graphic file (type png)
+
+<use Images/3/tree-1.png>
+Package pdftex.def Info: Images/3/tree-1.png used on input line 74.
+(pdftex.def)             Requested size: 180.67499pt x 99.15134pt.
+
+<Images/3/tree-1-example-1.png, id=187, 432.11438pt x 295.1025pt>
+File: Images/3/tree-1-example-1.png Graphic file (type png)
+
+<use Images/3/tree-1-example-1.png>
+Package pdftex.def Info: Images/3/tree-1-example-1.png used on input line 83.
+(pdftex.def)             Requested size: 216.81pt x 148.06421pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<Images/3/tree-1-example-2.png, id=188, 432.11438pt x 246.9225pt>
+File: Images/3/tree-1-example-2.png Graphic file (type png)
+
+<use Images/3/tree-1-example-2.png>
+Package pdftex.def Info: Images/3/tree-1-example-2.png used on input line 92.
+(pdftex.def)             Requested size: 216.81pt x 123.89046pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+File: Images/3/graph.png Graphic file (type png)
+<use Images/3/graph.png>
+Package pdftex.def Info: Images/3/graph.png used on input line 104.
+(pdftex.def)             Requested size: 144.54pt x 144.54065pt.
+
+<Images/3/tree-2-step-1.png, id=189, 376.40625pt x 376.40625pt>
+File: Images/3/tree-2-step-1.png Graphic file (type png)
+
+<use Images/3/tree-2-step-1.png>
+Package pdftex.def Info: Images/3/tree-2-step-1.png used on input line 105.
+(pdftex.def)             Requested size: 144.54pt x 144.54065pt.
+
+<Images/3/tree-2-step-2.png, id=190, 376.40625pt x 376.40625pt>
+File: Images/3/tree-2-step-2.png Graphic file (type png)
+
+<use Images/3/tree-2-step-2.png>
+Package pdftex.def Info: Images/3/tree-2-step-2.png used on input line 106.
+(pdftex.def)             Requested size: 144.54pt x 144.54065pt.
+
+<Images/3/tree-2-step-3.png, id=191, 376.40625pt x 376.40625pt>
+File: Images/3/tree-2-step-3.png Graphic file (type png)
+
+<use Images/3/tree-2-step-3.png>
+Package pdftex.def Info: Images/3/tree-2-step-3.png used on input line 107.
+(pdftex.def)             Requested size: 144.54pt x 144.54065pt.
+
+<Images/3/tree-2-step-4.png, id=192, 376.40625pt x 376.40625pt>
+File: Images/3/tree-2-step-4.png Graphic file (type png)
+
+<use Images/3/tree-2-step-4.png>
+Package pdftex.def Info: Images/3/tree-2-step-4.png used on input line 108.
+(pdftex.def)             Requested size: 144.54pt x 144.54065pt.
+
+<Images/3/tree-2-full.png, id=193, 432.11438pt x 305.64188pt>
+File: Images/3/tree-2-full.png Graphic file (type png)
+
+<use Images/3/tree-2-full.png>
+Package pdftex.def Info: Images/3/tree-2-full.png used on input line 109.
+(pdftex.def)             Requested size: 144.54pt x 102.23325pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[32 <./Images/3/graph.png> <./Images/3/tree-1.png>] [33 <./Images/3/tree-1-exam
+ple-1.png> <./Images/3/tree-1-example-2.png>]
+<Images/3/efficient-example.png, id=205, 654.19406pt x 331.99031pt>
+File: Images/3/efficient-example.png Graphic file (type png)
+
+<use Images/3/efficient-example.png>
+Package pdftex.def Info: Images/3/efficient-example.png used on input line 123.
+
+(pdftex.def)             Requested size: 361.34999pt x 183.37535pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: Citation `APISecurity' on page 34 undefined on input line 133.
+
+[34] [35] [36]) [37] [38 <./Images/3/tree-2-step-1.png> <./Images/3/tree-2-step
+-2.png> <./Images/3/tree-2-step-3.png> <./Images/3/tree-2-step-4.png> <./Images
+/3/tree-2-full.png>] [39 <./Images/3/efficient-example.png>]
+\openout2 = `Chapter4/chapter4.aux'.
+
+
+(./Chapter4/chapter4.tex
+Chapter 4.
+[40
+
+
+
+] [41] [42] <Images/4/new-design.png, id=240, 776.14969pt x 400.49625pt>
+File: Images/4/new-design.png Graphic file (type png)
+
+<use Images/4/new-design.png>
+Package pdftex.def Info: Images/4/new-design.png used on input line 64.
+(pdftex.def)             Requested size: 216.81pt x 111.8754pt.
+
+<Images/4/command-stages-cards.png, id=241, 615.29875pt x 333.245pt>
+File: Images/4/command-stages-cards.png Graphic file (type png)
+
+<use Images/4/command-stages-cards.png>
+Package pdftex.def Info: Images/4/command-stages-cards.png used on input line 7
+3.
+(pdftex.def)             Requested size: 433.62pt x 234.8513pt.
+
+Overfull \hbox (6.82866pt too wide) in paragraph at lines 73--74
+ [][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<Images/4/command-stages-movement.png, id=242, 649.42625pt x 521.95pt>
+File: Images/4/command-stages-movement.png Graphic file (type png)
+
+<use Images/4/command-stages-movement.png>
+Package pdftex.def Info: Images/4/command-stages-movement.png used on input lin
+e 80.
+(pdftex.def)             Requested size: 216.81pt x 174.25102pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[43 <./Images/4/new-design.png>]
+
+LaTeX Warning: Citation `KarmaJasmine' on page 44 undefined on input line 88.
+
+) [44 <./Images/4/command-stages-cards.png>] [45 <./Images/4/command-stages-mov
+ement.png>]
+\openout2 = `Chapter5/chapter5.aux'.
+
+ (./Chapter5/chapter5.tex
+Chapter 5.
+[46
+
+
+
+]
+Overfull \hbox (2.11569pt too wide) in paragraph at lines 29--30
+\OT1/ptm/m/n/10.95 went to-wards what was needed to make the project work well,
+ and which frame-works best promised
+ []
+
+[47]
+
+LaTeX Warning: Citation `RailsDocs' on page 48 undefined on input line 33.
+
+
+LaTeX Warning: Citation `Git' on page 48 undefined on input line 48.
+
+
+LaTeX Warning: Citation `OpenShift' on page 48 undefined on input line 48.
+
+
+LaTeX Warning: Citation `JetBrains' on page 48 undefined on input line 50.
+
+
+LaTeX Warning: Citation `Atom' on page 48 undefined on input line 50.
+
+[48]
+Overfull \hbox (10.74994pt too wide) in paragraph at lines 66--67
+[]\OT1/ptm/m/n/10.95 Games be-tween mul-ti-ple peo-ple across a net-work and ar
+ound the same com-puter works smoothly.
+ []
+
+[49] [50] [51]
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+) [52] [53
+
+
+]
+\openout2 = `Appendix1/appendix1.aux'.
+
+ (./Appendix1/appendix1.tex
+Appendix A.
+
+LaTeX Warning: Citation `Ruby' on page 54 undefined on input line 7.
+
+
+LaTeX Warning: Citation `Rails' on page 54 undefined on input line 8.
+
+
+LaTeX Warning: Citation `BootstrapSASS' on page 54 undefined on input line 10.
+
+
+LaTeX Warning: Citation `JQuery' on page 54 undefined on input line 11.
+
+
+LaTeX Warning: Citation `MySQL2' on page 54 undefined on input line 13.
+
+
+LaTeX Warning: Citation `SQLite3' on page 54 undefined on input line 14.
+
+
+LaTeX Warning: Citation `Angular' on page 54 undefined on input line 19.
+
+
+LaTeX Warning: Citation `AngularStrap' on page 54 undefined on input line 21.
+
+[54
+
+
+]
+
+LaTeX Warning: Citation `AngularRoute' on page 55 undefined on input line 22.
+
+
+LaTeX Warning: Citation `AngularSanitize' on page 55 undefined on input line 23
+.
+
+
+LaTeX Warning: Citation `Lodash' on page 55 undefined on input line 24.
+
+
+LaTeX Warning: Citation `Restangular' on page 55 undefined on input line 25.
+
+
+LaTeX Warning: Citation `ngStorage' on page 55 undefined on input line 26.
+
+
+LaTeX Warning: Citation `Bootstrap' on page 55 undefined on input line 28.
+
+
+LaTeX Warning: Citation `BootstrapCP' on page 55 undefined on input line 30.
+
+
+LaTeX Warning: Citation `Git' on page 55 undefined on input line 36.
+
+
+LaTeX Warning: Citation `Atom' on page 55 undefined on input line 37.
+
+
+LaTeX Warning: Citation `OpenShift' on page 55 undefined on input line 38.
+
+) [55]
+\openout2 = `Appendix2/appendix2.aux'.
+
+ (./Appendix2/appendix2.tex
+Appendix B.
+[56
+
+
+
+] [57] [58] [59] [60] [61] [62] [63] [64] [65] [66]) [67]
+\openout2 = `Appendix3/appendix3.aux'.
+
+
+(./Appendix3/appendix3.tex
+Appendix C.
+<Images/app3/applications.png, id=323, 859.21pt x 252.945pt>
+File: Images/app3/applications.png Graphic file (type png)
+
+<use Images/app3/applications.png>
+Package pdftex.def Info: Images/app3/applications.png used on input line 14.
+(pdftex.def)             Requested size: 426.79134pt x 125.64622pt.
+
+Overfull \hbox (17.0pt too wide) in paragraph at lines 14--15
+[][] 
+ []
+
+[68
+
+
+
+ <./Images/app3/applications.png>]
+<Images/app3/full-database.png, id=328, 991.705pt x 473.77pt>
+File: Images/app3/full-database.png Graphic file (type png)
+
+<use Images/app3/full-database.png>
+Package pdftex.def Info: Images/app3/full-database.png used on input line 30.
+(pdftex.def)             Requested size: 426.79134pt x 203.89063pt.
+
+
+LaTeX Warning: Citation `ActiveRecordConvention' on page 69 undefined on input 
+line 33.
+
+[69 <./Images/app3/full-database.png>] [70] [71]
+<Images/app3/extra-database.png, id=340, 623.32875pt x 343.2825pt>
+File: Images/app3/extra-database.png Graphic file (type png)
+
+<use Images/app3/extra-database.png>
+Package pdftex.def Info: Images/app3/extra-database.png used on input line 77.
+(pdftex.def)             Requested size: 426.79134pt x 235.04756pt.
+
+Overfull \hbox (17.0pt too wide) in paragraph at lines 77--78
+[][] 
+ []
+
+[72 <./Images/app3/extra-database.png>] [73] [74] [75]
+<Images/app3/pages.png, id=355, 1092.08pt x 484.81125pt>
+File: Images/app3/pages.png Graphic file (type png)
+
+<use Images/app3/pages.png>
+Package pdftex.def Info: Images/app3/pages.png used on input line 200.
+(pdftex.def)             Requested size: 426.79134pt x 189.4677pt.
+
+<Images/app3/pages-1-index.png, id=356, 600.74437pt x 366.61969pt>
+File: Images/app3/pages-1-index.png Graphic file (type png)
+
+<use Images/app3/pages-1-index.png>
+Package pdftex.def Info: Images/app3/pages-1-index.png used on input line 205.
+(pdftex.def)             Requested size: 289.07999pt x 176.42297pt.
+ [76 <./Images/app3/pages.png>]
+<Images/app3/pages-2-login.png, id=361, 600.74437pt x 366.61969pt>
+File: Images/app3/pages-2-login.png Graphic file (type png)
+
+<use Images/app3/pages-2-login.png>
+Package pdftex.def Info: Images/app3/pages-2-login.png used on input line 211.
+(pdftex.def)             Requested size: 289.07999pt x 176.42297pt.
+
+<Images/app3/pages-3-register.png, id=362, 600.74437pt x 366.61969pt>
+File: Images/app3/pages-3-register.png Graphic file (type png)
+
+<use Images/app3/pages-3-register.png>
+Package pdftex.def Info: Images/app3/pages-3-register.png used on input line 21
+7.
+(pdftex.def)             Requested size: 289.07999pt x 176.42297pt.
+ [77 <./Images/app3/pages-1-index.png> <./Images/app3/pages-2-login.png>]
+<Images/app3/pages-4-games.png, id=368, 600.74437pt x 366.61969pt>
+File: Images/app3/pages-4-games.png Graphic file (type png)
+
+<use Images/app3/pages-4-games.png>
+Package pdftex.def Info: Images/app3/pages-4-games.png used on input line 223.
+(pdftex.def)             Requested size: 289.07999pt x 176.42297pt.
+
+<Images/app3/pages-5-profile.png, id=369, 600.74437pt x 366.61969pt>
+File: Images/app3/pages-5-profile.png Graphic file (type png)
+
+<use Images/app3/pages-5-profile.png>
+Package pdftex.def Info: Images/app3/pages-5-profile.png used on input line 229
+.
+(pdftex.def)             Requested size: 289.07999pt x 176.42297pt.
+ [78 <./Images/app3/pages-3-register.png> <./Images/app3/pages-4-games.png>]
+<Images/app3/pages-6-new.png, id=375, 600.74437pt x 366.61969pt>
+File: Images/app3/pages-6-new.png Graphic file (type png)
+
+<use Images/app3/pages-6-new.png>
+Package pdftex.def Info: Images/app3/pages-6-new.png used on input line 235.
+(pdftex.def)             Requested size: 289.07999pt x 176.42297pt.
+ [79 <./Images/app3/pages-5-profile.png> <./Images/app3/pages-6-new.png>]
+<Images/app3/ui-menu.png, id=381, 993.7125pt x 193.72375pt>
+File: Images/app3/ui-menu.png Graphic file (type png)
+
+<use Images/app3/ui-menu.png>
+Package pdftex.def Info: Images/app3/ui-menu.png used on input line 259.
+(pdftex.def)             Requested size: 361.34999pt x 70.44402pt.
+
+<Images/app3/ui-cow-info.png, id=382, 370.38374pt x 513.92pt>
+File: Images/app3/ui-cow-info.png Graphic file (type png)
+
+<use Images/app3/ui-cow-info.png>
+Package pdftex.def Info: Images/app3/ui-cow-info.png used on input line 265.
+(pdftex.def)             Requested size: 180.67499pt x 250.69377pt.
+ [80 <./Images/app3/ui-menu.png>]
+<Images/app3/ui-phase-event.png, id=387, 1275.76625pt x 329.23pt>
+File: Images/app3/ui-phase-event.png Graphic file (type png)
+
+<use Images/app3/ui-phase-event.png>
+Package pdftex.def Info: Images/app3/ui-phase-event.png used on input line 277.
+
+(pdftex.def)             Requested size: 426.79134pt x 110.13824pt.
+ [81 <./Images/app3/ui-cow-info.png> <./Images/app3/ui-phase-event.png>]
+<Images/app3/ui-phase-cards.png, id=394, 1276.77pt x 606.265pt>
+File: Images/app3/ui-phase-cards.png Graphic file (type png)
+
+<use Images/app3/ui-phase-cards.png>
+Package pdftex.def Info: Images/app3/ui-phase-cards.png used on input line 285.
+
+(pdftex.def)             Requested size: 426.79134pt x 202.6583pt.
+
+<Images/app3/ui-phase-cards-create.png, id=395, 1288.815pt x 607.26875pt>
+File: Images/app3/ui-phase-cards-create.png Graphic file (type png)
+
+<use Images/app3/ui-phase-cards-create.png>
+Package pdftex.def Info: Images/app3/ui-phase-cards-create.png used on input li
+ne 290.
+(pdftex.def)             Requested size: 426.79134pt x 201.09427pt.
+ [82 <./Images/app3/ui-phase-cards.png> <./Images/app3/ui-phase-cards-create.pn
+g>]
+<Images/app3/ui-phase-move.png, id=401, 1288.815pt x 605.26125pt>
+File: Images/app3/ui-phase-move.png Graphic file (type png)
+
+<use Images/app3/ui-phase-move.png>
+Package pdftex.def Info: Images/app3/ui-phase-move.png used on input line 304.
+(pdftex.def)             Requested size: 426.79134pt x 200.42949pt.
+
+<Images/app3/ui-phase-review.png, id=402, 1290.8225pt x 605.26125pt>
+File: Images/app3/ui-phase-review.png Graphic file (type png)
+
+<use Images/app3/ui-phase-review.png>
+Package pdftex.def Info: Images/app3/ui-phase-review.png used on input line 310
+.
+(pdftex.def)             Requested size: 426.79134pt x 200.11548pt.
+ [83 <./Images/app3/ui-phase-move.png>]
+
+LaTeX Warning: Citation `AngularBook' on page 84 undefined on input line 316.
+
+[84 <./Images/app3/ui-phase-review.png>] [85]
+Overfull \hbox (70.06581pt too wide) in paragraph at lines 365--366
+[]\OT1/ptm/m/n/10.95 A \OT1/ptm/b/n/10.95 Lo-cal-Stor-age-Mod-ule \OT1/ptm/m/n/
+10.95 ser-vice ($\OT1/pcr/m/n/10.95 https : / / github . com / grevory / angula
+r-[]local-[]storage$\OT1/ptm/m/n/10.95 ).
+ []
+
+<Images/app3/detail-1.png, id=414, 537.50812pt x 347.04657pt>
+File: Images/app3/detail-1.png Graphic file (type png)
+
+<use Images/app3/detail-1.png>
+Package pdftex.def Info: Images/app3/detail-1.png used on input line 378.
+(pdftex.def)             Requested size: 361.34999pt x 233.30902pt.
+ [86]
+<Images/app3/detail-2.png, id=418, 746.03719pt x 331.2375pt>
+File: Images/app3/detail-2.png Graphic file (type png)
+
+<use Images/app3/detail-2.png>
+Package pdftex.def Info: Images/app3/detail-2.png used on input line 384.
+(pdftex.def)             Requested size: 361.34999pt x 160.4377pt.
+ [87 <./Images/app3/detail-1.png> <./Images/app3/detail-2.png>] <Images/app3/de
+tail-3.png, id=425, 564.60938pt x 331.2375pt>
+File: Images/app3/detail-3.png Graphic file (type png)
+
+<use Images/app3/detail-3.png>
+Package pdftex.def Info: Images/app3/detail-3.png used on input line 395.
+(pdftex.def)             Requested size: 289.07999pt x 169.59604pt.
+
+<Images/app3/detail-4.png, id=426, 325.215pt x 268.00125pt>
+File: Images/app3/detail-4.png Graphic file (type png)
+
+<use Images/app3/detail-4.png>
+Package pdftex.def Info: Images/app3/detail-4.png used on input line 401.
+(pdftex.def)             Requested size: 289.07999pt x 238.24226pt.
+ [88 <./Images/app3/detail-3.png>]) [89 <./Images/app3/detail-4.png>]
+\openout2 = `Appendix4/appendix4.aux'.
+
+ (./Appendix4/appendix4.tex
+Appendix D.
+[90
+
+
+
+] [91] [92] [93] [94] [95] [96] [97] [98] [99] [100] [101] [102]) [103]
+\openout2 = `Appendix5/appendix5.aux'.
+
+
+(./Appendix5/appendix5.tex
+Appendix E.
+[104
+
+
+
+]
+Overfull \hbox (6.82814pt too wide) in paragraph at lines 46--46
+[]          \OT1/pcr/m/n/10.95 # if it has been added, add it's links to the ne
+xt level[] 
+ []
+
+
+LaTeX Warning: Citation `APISecurity' on page 105 undefined on input line 49.
+
+[105]
+Overfull \hbox (0.25815pt too wide) in paragraph at lines 108--108
+[]                \OT1/pcr/m/n/10.95 //content of the following element, a hidd
+en div.[] 
+ []
+
+[106]
+Overfull \hbox (33.10811pt too wide) in paragraph at lines 157--157
+[]       \OT1/pcr/m/n/10.95 'class="alert alert-'+type+' alert-dismissible" rol
+e="alert">'+[] 
+ []
+
+
+Overfull \hbox (65.95807pt too wide) in paragraph at lines 157--157
+[]      \OT1/pcr/m/n/10.95 '<span aria-hidden="true">&times;</span></button>'+m
+essage+'</div>');[] 
+ []
+
+
+Overfull \hbox (72.52806pt too wide) in paragraph at lines 157--157
+[]    \OT1/pcr/m/n/10.95 // create a number of notices, if the first parameter 
+is infact an array[] 
+ []
+
+
+Overfull \hbox (46.2481pt too wide) in paragraph at lines 157--157
+[]    \OT1/pcr/m/n/10.95 if( Object.prototype.toString.call( title ) === '[obje
+ct Array]' ) {[] 
+ []
+
+
+Overfull \hbox (92.23804pt too wide) in paragraph at lines 157--157
+[]      \OT1/pcr/m/n/10.95 for (i in title) { // in this case title is actually
+ an array of messages[] 
+ []
+
+
+Overfull \hbox (59.38808pt too wide) in paragraph at lines 157--157
+[]      \OT1/pcr/m/n/10.95 var number = buildNotice(type, '<strong>'+title+'</s
+trong> '+text));[] 
+ []
+
+) [107]
+\openout2 = `Appendix6/appendix6.aux'.
+
+ (./Appendix6/appendix6.tex
+Appendix F.
+
+Overfull \hbox (6.00739pt too wide) in paragraph at lines 21--22
+[]\OT1/ptm/m/n/10.95 The database struc-ture re-quired by the ap-pli-ca-tion is
+ avail-able for MySQL or SQLite3 databases: 
+ []
+
+[108
+
+
+
+]) [109] (./dissertation.bbl
+Underfull \hbox (badness 1661) in paragraph at lines 22--24
+[]\OT1/ptm/m/n/10.95 Apache Soft-ware Foun-da-tion, ``Apache Li-cense, Ver-sion
+ 2.0,'' $http : / / www . apache . org /
+ []
+
+) 
+AED: lastpage setting LastPage
+[110
+
+
+] (./dissertation.aux (./cover.aux) (./declaration.aux)
+(./acknowledgements.aux) (./abstract.aux) (./Chapter1/chapter1.aux)
+(./Chapter2/chapter2.aux) (./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux)
+(./Chapter5/chapter5.aux) (./Appendix1/appendix1.aux)
+(./Appendix2/appendix2.aux) (./Appendix3/appendix3.aux)
+(./Appendix4/appendix4.aux) (./Appendix5/appendix5.aux)
+(./Appendix6/appendix6.aux))
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 3348 strings out of 494989
+ 47050 string characters out of 6180577
+ 100133 words of memory out of 5000000
+ 6329 multiletter control sequences out of 15000+600000
+ 26005 words of font info for 57 fonts, out of 8000000 for 9000
+ 36 hyphenation exceptions out of 8191
+ 34i,11n,45p,998b,402s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times
+/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on dissertation.pdf (120 pages, 12194628 bytes).
+PDF statistics:
+ 526 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 306 words of extra memory for PDF output out of 10000 (max. 10000000)
+

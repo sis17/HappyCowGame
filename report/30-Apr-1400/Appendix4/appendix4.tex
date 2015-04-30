@@ -1,0 +1,411 @@
+\chapter{Test Results}
+This section contains the test results for server side automated tests and application usability tests. All automated tests listed here passed.
+
+\section{Automated Tests}
+  \subsection{Unit Tests}
+The unit tests are located in \textit{/app/test/models}. Each test described below will have at least one assertion that passes, but many have two or more.
+\subsubsection{Action Model Tests}
+\begin{itemize}
+	\item test that a game has several actions
+	\item test that playing a card creates an action
+	\item test that creating a ration creates an action
+\end{itemize}
+
+\subsubsection{Card Model Tests}
+\begin{itemize}
+	\item test that a card has a creator
+\end{itemize}
+
+\subsubsection{Carddeck Model Tests}
+\begin{itemize}
+	\item test that a card deck has a creator
+	\item test that a card deck has a number of cards
+\end{itemize}
+
+\subsubsection{Cow Model Tests}
+\begin{itemize}
+	\item test that a cow belongs to a game
+	\item test increasing the cow's pH marker within it's range
+	\item test increasing the cow's pH marker beyond it's range
+	\item test decreasing the cow's pH marker within it's range
+	\item test decreasing the cow's pH marker below it's range
+	\item test that an more energy than water in the cow's rumen decreases the rumen pH level
+	\item test increasing the cow's welfare marker to 1
+	\item test increasing the cow's welfare beyond it's range
+	\item test decreasing the cow's welfare to -1
+	\item test that decreasing the cow's welfare to -7 will kill the cow and end the game
+	\item test increasing the cow's body condition to 1
+	\item test increasing the cow's body condition beyond it's range
+	\item test decreasing the cow's body condition to -1
+	\item test that decreasing the cow's body condition to -3 will kill the cow and end the game
+	\item test that setting a weather event resets the cow's weather event
+	\item test that setting a disease event resets the cow's disease event
+	\item test that setting the pregnant event resets the cow's pregnancy event
+	\item test that the cow's scores for oligos is 10 by default
+	\item test that when the cow's oligos marker is at 1, it's oligos score is 2
+	\item test that when the cow's oligos marker is at 2, it's oligos score is 0 and welfare decreases
+	\item test that resetting the cow's oligos marker puts it's oligos score back at 10
+	\item test that when increasing the cow's muck marker to 3 welfare decreases 1
+	\item test that when increasing the cow's muck marker to 5 welfare decreases 2
+	\item test that when increasing the cow's muck marker to 6 welfare decreases 3
+	\item test that when increasing the cow's muck marker to 7 welfare decreases 4
+	\item test that killing the cow sets the game to a failed stage
+	\item test that the method to check if the cow is constipated works
+	\item test that the method to check if the cow has mad cow disease works
+	\item test that the method to check if the cow has diarrhea works
+	\item test that the method to check if the cow is in hot weather works
+	\item test that the method to check if the cow is in cold weather works
+\end{itemize}
+
+\subsubsection{Event Model Tests}
+\begin{itemize}
+	\item test making the constipation event the active disease event
+	\item test making the diarrhea event the active disease event
+	\item test making the cold weather event the active weather event
+	\item test making the hot weather event the active weather event
+	\item test making the good weather event the active weather event
+	\item test making the mad cow crisis event the active disease event
+	\item test making the mad cow crisis event inactive again
+\end{itemize}
+
+\subsubsection{Game Model Tests}
+\begin{itemize}
+	\item test beginning a game without any users
+	\item test beginning a game with a higher minimum number of rounds than maximum
+	\item test beginning a game already in the playing phase
+	\item test that beginning a game moves it's stage to 1
+	\item test that beginning a game populates the game cards from the card deck
+	\item test beginning a game creates a cow, motile pieces and ingredient types
+	\item test that beginning a game makes the correct number of rounds
+	\item test that in a new game, the last event is the slaughter house
+	\item test that in a new game every player has 2 cards
+	\item test that the game's function to get the next player works
+	\item test that a ration absorbed as milk gives a score of 2
+	\item test that the absorbed function only works if the ration is in a viable position
+	\item test that a ration absorbed as milk, when the cow is pregnant, gives a meat score of 2
+	\item test that a ration absorbed as meat gives a score of 2
+	\item test that a ration absorbed as muck gives a score of 2
+	\item test that a ration with two oligos scores 10 for the first and 2 for the second
+	\item test that a ration absorbed when the cow is cold gets 1 less point per ingredient
+	\item test that rations in the trough automatically shuffle down
+	\item test that a game user is created by copying in user details
+	\item test that a game user cannot be created once the game is begun
+	\item test that a user cannot be created twice as a game user in a game
+	\item test that the assign cards function gives a number game cards to the specified game user
+	\item test that the winner of the game gets 3 experience and everyone else gets 1 if the welfare is 2
+	\item test that in the case of a tie, neither player gets more experience
+	\item test that when the cow dies players lose a lot of experience
+	\item test that the card balance function distributes more ingredients at the beginning, and more actions at the end
+	\item test that you cannot create a game user without a user
+\end{itemize}
+
+\subsubsection{GameUserCard Model Tests}
+\begin{itemize}
+	\item test that you cannot use a card with no specified action
+	\item test that you cannot use a card that is not an action card
+	\item test the action of the card acidodis plus
+	\item test the action of the card acidodis minus
+	\item test the action of the card rumination
+	\item test the action of the card thief
+	\item test the action of the card vet
+	\item test the action of the card clean stables
+	\item test the action of the card animal welfare activists
+	\item test the action of the card deficiency
+	\item test the action of the card medical insurance
+	\item test the action of the card saponins (fiber in rumen turned to protien)
+	\item test the action of the card probiotics
+	\item test the action of the card farm improvements
+	\item test the action of the card bioreactor
+	\item test the action of the card high sugar grass
+\end{itemize}
+
+\subsubsection{GameUser Model Tests}
+\begin{itemize}
+	\item test that a game user belongs to a game
+	\item test that a game user belongs to a user
+	\item test that a ration will not be created without ingredients
+	\item test that a ration will not be created with ingredients that do not belong to the new owner
+	\item test that a ration will be created with correct ingredients
+	\item test that a user's cards used to create a ration are destroyed
+\end{itemize}
+
+\subsubsection{IngredientCat Model Tests}
+\begin{itemize}
+	\item test that an ingredient category has many ingredients
+	\item test that an ingredient category has a game
+	\item test that the method to get ingredient category scores works for water
+	\item test that the method to get ingredient category scores works for energy
+	\item test that the method to get ingredient category scores works for protein
+	\item test that the method to get ingredient category scores works for fiber
+	\item test that the method to get ingredient category scores works for olgios
+	\item test that the oglios score decreases when oligos is absorbed
+\end{itemize}
+
+\subsubsection{Ingredient Model Tests}
+\begin{itemize}
+	\item test that an ingredient has a ration
+	\item test that an ingredient has an ingredient category
+\end{itemize}
+
+\subsubsection{Motile Model Tests}
+\begin{itemize}
+	\item test that a motile element has a game
+	\item test that a motile element has a position
+	\item test the result of moving a motile element to an empty place
+	\item test that a motile element cannot not move to the exit of the rumen
+	\item test the result of moving a motile element onto a ration
+\end{itemize}
+
+\subsubsection{Move Model Tests}
+\begin{itemize}
+	\item test setting the dice for a move
+	\item test setting the dice for a move with water
+	\item test setting the dice for a move with a low rumen pH
+	\item test setting the dice for a move with a high rumen pH
+	\item test setting the dice for a move with the cow constipated
+	\item test setting the dice for a move with the cow having diarrhea
+	\item test that with a selected dice, a ration can move between positions
+	\item test that a ration is consumed when ending it's turn on the milk position
+\end{itemize}
+
+\subsubsection{Position Model Tests}
+\begin{itemize}
+	\item test that a ration cannot move to a position with a motile element
+	\item test that a position with no ration or motile element is free
+	\item test that a ration with 1 fiber cannot move to a position occupied by a ration with 2 fiber
+	\item test that a ration with 2 fiber can move to a position occupied by a ration with 1 fiber
+\end{itemize}
+
+\subsubsection{Ration Model Tests}
+\begin{itemize}
+	\item test that the method describe\_ingredients returns a string with labels of the ration's ingredients
+	\item test that the method has\_type correctly determines if a ration has an ingredient
+	\item test that the method count\_type correctly returns the number of ingredients a ration has of that type
+\end{itemize}
+	
+  \subsection{Functional Tests}
+The functional tests are located in \textit{/app/test/controllers}. Each test described below will have at least one assertion that passes, but many have two or more.
+\subsubsection{Actions Controller Tests}
+\begin{itemize}
+	\item test the request should not get the index method, without authentication
+	\item test the request should not get a specific record, without authentication
+	\item test the request should get the index method
+	\item test the request should get the show method for an authenticated user
+\end{itemize}
+
+\subsubsection{Carddecks Controller Tests}
+\begin{itemize}
+	\item test the request should not get the index method, without authentication
+	\item test the request should not get a specific record, without authentication
+	\item test the request should get the index method
+	\item test the request should get the show method for an authenticated user
+\end{itemize}
+
+\subsubsection{Cards Controller Tests}
+\begin{itemize}
+	\item test the request should not get the index method, without authentication
+	\item test the request should not get a specific record, without authentication
+	\item test the request should get game cards filtered by games
+	\item test the request should get game user cards filtered by game users
+	\item test the request should not get game user cards filtered by game users, with an unauthenticated game user
+	\item test the request should get  a card for an authenticated user
+	\item test the request should get a game card filtered by a game
+	\item test the request should get a game user card filtered by a game user
+	\item test the request should not get a game user card filtered by a game user, with an unauthenticated game user
+	\item test the request should not get a game card filtered by a game, with a non playing user
+	\item test the request should update a record of a card
+	\item test the request should update a record of a game card
+	\item test the request should not update a record of a game user card for an unauthenticated user
+	\item test the request should update a record of a game user card for an authenticated user
+	\item test the request should not use an ingredient card
+	\item test the request should not update a game user card without a use parameter
+	\item test the request should not delete a card
+	\item test the request should not delete a game card
+	\item test the request should delete a game user card for an authenticated user
+\end{itemize}
+
+\subsubsection{Events Controller Tests}
+\begin{itemize}
+	\item test the request should not get the index method, without authentication
+	\item test the request should not get a specific record, without authentication
+	\item test the request should get the index method
+	\item test the request should get the show method for an authenticated user
+\end{itemize}
+
+\subsubsection{GameUser Controller Tests}
+\begin{itemize}
+	\item test the request should not get the index method, without authentication
+	\item test the request should not get a specific record, without authentication
+	\item test the request should not update a record, without authentication
+	\item test the request should get the index method
+	\item test the request should get the show method for specific user only
+	\item test the request should update a record for an authorised user
+	\item test the request should delete a record for a specific user only
+	\item test the request to delete a game user should destroy a game because they are the only game user
+\end{itemize}
+
+\subsubsection{Games Controller Tests}
+\begin{itemize}
+	\item test the request should not get the index method, without authentication
+	\item test the request should not get a specific record, without authentication
+	\item test the request should get the show method
+	\item test the request should not get the show method for a user who is not part of the game
+	\item test the request should allow finishing a turn for the current player
+	\item test the request should not allow finishing a turn for a player other than the current player
+	\item test the request should not allow finishing a turn for user who is not a player
+	\item test the request should not allow an update of game details once the game is in stage two
+	\item test the request should allow an update of game details for a game in stage one
+	\item test the request should not allow an update of game details for a non creator
+	\item test the request should not allow a non-creator to begin a game
+	\item test the request should allow the game creator to begin a game
+\end{itemize}
+
+\subsubsection{Moves Controller Tests}
+\begin{itemize}
+	\item test the request should not get the index method, without authentication
+	\item test the request should not get a specific record, without authentication
+	\item test the request should filter the index method when nested under rounds
+	\item test the request should filter the index method when nested under game users
+	\item test the request should not filter the index method when nested under game users, with an unauthenticated game user
+	\item test the request should get the show method for an authenticated user
+	\item test the request should not get the show method when filtered by a game user, with an unauthenticated game user
+	\item test the request should not get the show method when filtered by a round, with playing user who is not in the round
+	\item test the request should not update a record for an unauthenticated user
+	\item test the request should not update a record for an authenticated user who does not supply an update action
+	\item test the request should update a record when confirming a ration for an authenticated user
+	\item test the request should not update a record when confirming a ration when it is already confirmed
+	\item test the request should not update a record when confirming a ration when the ration does not belong to the authenticated user
+	\item test the request should not update a record when making a move when no ration is confirmed
+	\item test the request should update a record when making a move when a ration is confirmed
+	\item test the request should not update a record when making a move to change the selected die
+	\item test the request should not update a record when making a move to move to a ration to a non-neighbouring position
+	\item test the request should not update a record when making a move to move a ration too far
+\end{itemize}
+
+\subsubsection{Positions Controller Tests}
+\begin{itemize}
+	\item test the request should not get the index method, without authentication
+	\item test the request should not get a specific record, without authentication
+\end{itemize}
+
+\subsubsection{Rations Controller Tests}
+\begin{itemize}
+	\item test the request should not get the index method, without authentication
+	\item test the request should not get a specific record, without authentication
+	\item test the request should get the index method
+	\item test the request should get the index method when filtered by the game user
+	\item test the request should get show method for an authenticated user
+	\item test the request should create a ration for an authenticated user
+	\item test the request should not create more than one ration a turn
+	\item test the request should not create a ration using an un-owned ingredient
+	\item test the request should not create a ration with non-ingredient cards
+	\item test the request should not create a ration for an unauthorised user
+\end{itemize}
+
+\subsubsection{Rounds Controller Tests}
+\begin{itemize}
+	\item test the request should not get the index method, without authentication
+	\item test the request should not get a specific record, without authentication
+	\item test the request should get the index method
+	\item test the request should get the show method
+\end{itemize}
+
+\subsubsection{Users Controller Tests}
+\begin{itemize}
+	\item test the request should not get the index method, without authentication
+	\item test the request should not get a specific record, without authentication
+	\item test the request should not update, without user authentication
+	\item test the request should get the index method
+	\item test the request should get the show method for a specific user only
+	\item test the request should update a record for a specific user only
+	\item test the request should update a record with a user's users name, email, colour and password
+	\item test the request should not login a user with an incorrect username
+	\item test the request should not login a user with an incorrect password
+	\item test the request should login a user with with a correct username and password
+	\item test the request should not create a user with an existing username
+	\item test the request should not create a user without a password
+	\item test the request should create a user given a username, name and password
+\end{itemize}
+
+\section{Usability Tests}
+	Testing was done over the period of two months. Testers were invited to play the game, usually with little instruction, but help as they went along if they became confused. This helped ascertain how difficult the learning curve of using the application was. Feedback from users is shown below.
+
+\subsection{Feedback from the 12th of March}
+\begin{itemize}
+	\item It is not clear to know how to get started when playing a game. - Developer's Note: some improvements have been made to usability, but it is still an ongoing issue to consider.
+	\item No obvious instructions, rules or tutorial (or at least I did not find them). - Developer's Note:  these have now been added, but could be improved.
+	\item Log out button does not work, and drop down menu stays after returning to main page. Developer's Note: the log out button and drop down have been fixed.
+	\item I cannot actually change card deck when creating a game. - Developer's Note: there is currently only one card deck to choose from, adding more is an enhancment. Perhaps they should be removed until then to avoid confusion.
+	\item The zoom and arrow keys in 'movement' do not work as expected. - Developer's Note: the zoom did not work correctly and was consequently removed, the arrow keys to move around the board were fixed.
+	\item I cannot work out how to do anything in any of the turn phases. - Developer's Note: effort has been made to make this clearer by listing instructions one at a time.
+	\item I played several rounds until the game ended, but was not able to do anything. - Developer's Note: it needs to be clearer what the user is meant to do in a game.
+\end{itemize}
+
+\subsection{Feedback from the 26th of March}
+\begin{itemize}
+	\item Spelling error on user profile page, 'confrim password' is spelled incorrectly. - Developer's Note: this has been fixed.
+	\item Spelling error across the application, 'PH' needs to be written as 'pH' - Developer's Note: this has been fixed in some places.
+	\item Ingredient instructions are not clear enough, and misleading. They need to be improved. - Developer's Note: changes to instructions are now complete.
+	\item The layout of text in the review phase is hard to read, consider changing the layout. - Developer's Note: the layout has been fixed.
+	\item The phase screen should move to the next phase automatically when the turn is updated - Developer's Note: automatic moving of the phase screen is complete.
+	\item The drop down allowing review of previous rounds does not update automatically - Developer's Note: this has been fixed.
+	\item The disease information in the cow information does not update automatically. - Developer's Note: this is fixed but for instance of first event.
+	\item The phase controls are not obvious, consider a layout that does not require their existence. - Developer's Note: a new design has been formulated, but time has not allowed it to be implemented yet.
+	\item Rations get 'stuck' behind others, as there is no way to finish a turn if the movement of the ration is not complete - Developer's Note: this has been fixed.
+	\item Notices do not disappear automatically, particularly end of turn notices. - Developer's Note: partly fixed, notices created in batches do not automatically disappear.
+	\item The text pointing to the milk square of the board should change to 'meat' when the cow is pregnant. - Developer's Note: This change has been made.
+	\item The last two squares of the oesophagus are not joined. - Developer's Note: this has been fixed.
+	\item Update of positions sometimes allows movement to positions that are too far away. Consider changing the way this update is performed. - Developer's Note: the update of positions has been radically changed, causing this error to be fixed.
+	\item A ration should be removed if all it's ingredients are destroyed by motile elements. - Developer's Note: complete, but not thoroughly tested.
+	\item A spelling error in the message about a motile collision: 'piece' is spelled incorrectly. - Developer's Note: this has been fixed.
+	\item A pop-up in the cards phase should ask the user if they want to finish their turn, as the button can be mistaken for the 'create ration' button. - Developer's Note: no longer an issue with new layout of button instructions.
+	\item An error occurred when ending a turn. - Developer's Note: there must have been an error. Testing has fixed many issues, and this one has not reoccurred.
+	\item Text description of ingredients does not fit into the boxes when reviewing the selected ingredients for a ration. - Developer's Note: this has been fixed.
+	\item Rations are not showing their owner's colour. - Developer's Note: this has been fixed.
+	\item The constipation and diarrhea event cards do not correctly describe the actions of the events. - Developer's Note: the descriptions have been updated.
+	\item Alerts should disappear when a player performs a new major action. - Developer's Note: this will be an enhancement.
+	\item Random card generation produces too much oligos. Begin with twice as many other ingredients as olgios to randomly select from. - Developer's Note: this has been implemented.
+	\item The deficiency card does not reset the oligos score. - Developer's Note: the card action is now working.
+	\item A ration with more than four ingredients was created, although four were submitted. - Developer's Note: this was an error on the development version, it is not an issue on the liver server.
+	\item The pregnancy event should show the beginning and completion of pregnancy, instead of being the same event for both. - Developer's Note: an enhancement.
+\end{itemize}
+
+\subsection{Feedback from the 31st of March}
+\begin{itemize}
+	\item Position updating still has rendering problems. Make sure that the current position of the ration is not a possible position to move to. - Developer's Note: some errors remain, but many have been fixed.
+	\item Make it possible to skip the turn if no dice have a number. Low rumen pH makes this quite a reasonable occurrence. - Developer's Note: this is still an outstanding issue.
+	\item The acidodis card gave a message but produced no effect. - Developer's Note: this is also an outstanding issue, despite testing which should have fixed it.
+	\item A waiting notice would give helpful feedback to users when there is a long server requests. - Developer's Note: a waiting notice for creating a game has been implemented, but futher notices would be helpful.
+	\item Provide an option for a faster game that has a shorter cow digestive system. - Developer's Note: this must be an enhancement, it will take a lot of work.
+	\item Milk and meat squares can be hard to hit with a ration, perhaps make two of each type so that it is easier to get your ration absorbed. - Developer's Note: this will be an enhancement, it is not vital to game play.
+	\item Provide visual feedback when the cow is sick, and dead. - Developer's Note: this will be an enhancement, it is not vital to game play.
+\end{itemize}
+
+\subsection{Feeback from the 2nd of April}
+\begin{itemize}
+	\item New players need to know strategies of the game, and how to feed the cow by creating rations. - Developer's Note: a design for an enhancement to give players hints has been created, but not implemented.
+	\item An introduction to the game, not as long as the page instructions, but that can be cancelled would be helpful. - Developer's Note: this will be added at a later stage.
+	\item Make it obvious that the objective of the card's phase is to create a food ration. One way to do this would be by telling a user use ingredient cards. - Developer's Note: this has been accomplished by changing the instructions.
+	\item The colouring of the possible positions to move to can be confusing. Use a green square instead of a blue one. - Developer's Note: this has been implemented.
+	\item Rations move over each other, they should be able to push each other, but only if they have more fibre. - Developer's Note: this has been implemented as it was part of the requirements.
+	\item Put the player name before instructions or the cards, so that in crowd games you know whose turn it is easily. - Developer's Note: this has been done.
+	\item Put a use button by the cards so that once you know what they do you don't have click on their details to use them. - Developer's Note: this has been done.
+\end{itemize}
+
+\subsection{Feedback from the 14th of April}
+\begin{itemize}
+	\item Rations and motile elements are appearing on top of other sections of the screen outside of the game board area. - Developer's Note: this is still an outstanding issue, some game board elements have been fixed, but z-index adjustment is a fiddly thing. 
+	\item Some alerts, to do with ration creation, do not automatically fade away. - Developer's Note: ration creation alerts now fade, but others still remain.
+	\item In a crowd game, a popup between turns to let the user know whose turn it is next could be useful. As long as there is a 'do not show again' button. - Developer's Note: this will be an enhancement, it should be tried and user feedback can decide if it remains.
+	\item Allow players to move the entire ration movement in one click by clicking on the end of the route that rations can take. - Developer's Note: this has been done.
+	\item Some messages should wait longer before disappearing, as they have a long message but don't give time for the user to read them. - Developer's Note: where this has been noticed as an issue it has been fixed.
+	\item Change text on cards from 'absorbed' to 'made into meat/milk' to make it more clear what will happen. - Developer's Note: this issue is still outstanding.
+\end{itemize}
+
+\subsection{Feedback from the 16th of April}
+\begin{itemize}
+	\item Registering users failed, due to a database error. - Developer's Note: this has been fixed.
+	\item When registering several users, details should not be remembered by the form. - Developer's Note: this will be fixed at a later stage, it is only an issue if the person being registered does not want the machine he is registering at to remember his details.
+	\item The register page has a link to the login page, but this should read 'back' instead of 'sign in' to avoid confusion. - Developer's Note: this is no longer an issue, registering has been moved to a pop-up.
+	\item The pH scale should range from red, through green in the middle, to red again, to correctly show the danger of high and low pH values. - Developer's Note: this has been done.
+\end{itemize}

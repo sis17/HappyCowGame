@@ -1,0 +1,119 @@
+\chapter{Discussion and Conclusion}
+This chapter presents an evaluation of the entire project, considering what worked well during the process of design, development and testing, and how that process could be improved. A summary of enhancements is then given. These are less vital parts of the project that could not be implemented due to time constraints. Finally a conclusion summarises this report.
+
+\section{Critical Evaluation and Insight}
+It is frustrating when there is so much that could be done within a project, but time constraints mean that useful sections are left out. That is certainly true for this project, yet looking back much has been accomplished in the last thirteen weeks. The happy cow board game is playable as a web application. Players can register and manage their games. The user interface design has seen numerous improvements, becoming more robust with each change. Having worked hard to make this much possible, there is a natural desire to see the project grow, and to explore all the possible ways it could improve.
+
+Such ideas for improvement, and how the project could have developed had more time been available, are considered in the next section. Here the topic of discussion is what has been accomplished, and how well it has been done.
+
+\subsection{The Process and Method}
+Detailed requirement specification, up front design, and weekly meetings with the client have all greatly helped shape this project and guide it to maturity. The process was a delicate balance of some plan based structure with frequent meetings to assess the progress of the project. This resulted from taking the core elements of a plan based process, with continued client input to keep the project on track.
+
+In the early stages of the project, weekly meetings with the client helped me to check the requirements and design. At this stage the project was more strictly plan based and focused on documentation.
+
+The requirements analysis began with turning the existing game rules into a list of tasks, and adding to these necessary application tasks. When reviewing the tasks it was decided there was not time to complete all of them, so they were organised into four phases. The requirements helped to clarify game rules and provided a good check-list to gauge progress.
+
+Building on top of the requirements, the design drilled down into the unknown of the project to set some rules, and break down the problem into smaller sections. Its purpose was not to be detailed to the degree that it provided a code skeleton that needed to be merely filled in, but to make sure that no area of the project remained 'in the dark'. The database and API design in particular were invaluable as the project went forward. Bits were added, but the existing structure was only slightly changed. The design was not needed for communicating between teams of developers, yet it was a useful planning tool, and a reference. The good guidelines it provided meant that development could begin more quickly, and ensured that the foundations of the project had been well considered.
+
+As the design stabilised and development got under way, meetings turned into progress checks and usability tests. A number of meetings helped create a list of bugs to fix and things to change where requirements were misunderstood. These meetings also helped to prioritise tasks. At the beginning of the week we would agree what tasks in the current three week development phase needed to be done first. At the end of the week we would review them. This methodology has practices of Scrum, with retrospectives and sprint reviews. At the time it was simply a sensible way to sort the requirements without getting bogged down by box ticking.
+
+Testing was identified as an important aspect of the project. So real users were required to test the system and give their feedback, making sure it was usable. Soon after unit tests were required. These had the purpose of coming along after the main development phases of the code as a quick and efficient way of asserting the software did what was planned. The complexity of the project reached a stage at which testing the system as a whole was cumbersome, yet testing in units ensured the validity of those units.
+
+Functional tests were then required to make sure the common, or important, features of the software were stable. They were used to identify whether the HTTP requests issued by the client framework had the expected result.
+
+It was necessary to wait until most of the development was complete before beginning usability tests, as a playable game was needed. However, even in an unstable state, human users kindly played the game, and were eager to give a great deal of feedback. The user interface design was quickly shown to have major inadequacies. This could have been avoided by asking users to engage with a paper prototype and documenting what they preferred. Even at this stage, though, the feedback was invaluable, and lead to a few smaller changes and many planned enhancements for the future.
+
+\subsection{Frameworks}
+Choosing the best frameworks to take a project forward is a challenge. In the early weeks of a project much is yet to be discovered about the challenges that will unfold. Yet development has to start somewhere.
+
+During the requirements analysis and research stages of the project, a good deal of thought went towards what was needed to make the project work well, and which frameworks best promised  those features. The perceived technical pros and cons of these frameworks have been examined in the first chapter. Looking back, the chosen frameworks have been a huge benefit to the project, far outweighing the limitations they each brought.
+
+Ruby on Rails and a RESTful API provided some design challenges. How can the components of a game be represented in a database and served as resources through an API? Yet once the ground work of this design was accomplished, the implementation was straightforward. 
+
+Because of the large user community, a fantastic level of support is available for users of Rails. Many questions about the syntax, or available methods of Rail's Active Record, had answers in forums [RailsActRec], often with worked solutions. Official Rails documentation \cite{RailsDocs} also proved helpful. 
+
+Using Rails was a lesson in developing simple solutions by building on top of a mature framework. Several times, after writing a complex operation, a much easier and more efficient solution was presented by an expert Rails user. Once the design of the application was worked out, and it was obvious what needed to be done, writing the code was not difficult. The overall experience of using Rails was that of surprise at how easy creating game logic is.
+
+AngularJS was a slightly different story. Because I had not worked with this framework before, there was a much larger learning curve when development began. This is not because AngularJS is difficult to work with, but because it is substantially different from the family of frameworks that rely on jQuery-like operations that I was familiar with.
+
+Interactions between the model data of an Angular framework, and the controller and view are determined by the controller's scope. With a single controller, the updating the view seems to work like magic. With several nested controllers, however, each having a scope that inherits data from it's parent, interactions between the scope of controllers get more complex. It is necessary to learn how the scope of controllers works and not simply rely on the magic of Angular. 
+
+That was the case with this project. It took time understand the new framework, and though this slowed down development, one outcome of the project is an appreciation of Angular's strengths and weaknesses and knowledge of how to use it in a moderately sized application. 
+
+As with Rails, once the framework was understood it proved to be an efficient and suitable solution to develop the user interface for a reasonably complex game. The benefits of the framework were the ease with which data could be requested from the server and loaded into the application without the need for manually creating listeners to glue together the models, views and controllers.
+
+\subsection{Tools}
+After establishing that the project could be built with a combination of Rails and Angular frameworks, it became necessary to find a way to deploy the application to a live server. Because of the need for usability testing, it was possible that fixing issues with the project and pushing them to the live server might be a routine happening several times a day. Deployment therefore needed to be quick and simple.
+
+I was pleased to find a solution that relied on the use of Git \cite{Git}. RedHat provide a service called Openshift \cite{OpenShift} which allows a user to host a free Rails web application. It encourages users to deploy to the server using Github. This was ideal. It meant that as well as being able to use Git to manage changing branches and rolling back releases, it could also be used to push the application from development to a live environment, as a package, with just one command.
+
+Having committed to using Git, I explored text editors and IDEs. One possibility was using JetBrain's Rails interpreter \cite{JetBrains}. However, a simpler solution, that made less assumptions, was the text editor Atom \cite{Atom}, built by developers at GitHub to show the commit status of files. It is a modern, light and intelligent text editor. It also provided the necessary mark-up for Ruby and Javascript, thereby handling both the server side and client side development.
+
+The terminal remained my tool of choice for performing Rails and Git operations.
+
+\subsection{Outstanding Issues}
+At the end of the time allotted for this project a number of issues are outstanding, that if addressed, could greatly improve the project. These are the result of trade-offs due to limited time, whereas some aspects detailed in the requirements specification that were thought could not be addressed have been, some other sections were identified as not as crucial and are left unfinished.
+
+The most notable of these is client side automated testing. This was replaced by a healthy amount of usability testing. There were also complications with testing the framework when it depended so heavily on asynchronous HTTP requests. Still, for the project to be maintainable by a new developer, it would have been good to see these tests.
+
+Usability has been heavily addressed in this report. The usability tests led to a new design concept that focused on three objectives: eliminating the need for different phase screens, providing instructions to help users concentrate on one task at a time, and giving hints to users who want to improve their strategies. Only one of these was possible in the last weeks of development.
+
+\subsection{Outstanding Successes}
+There are a few aspects of the project that have been a pleasure to work on and see succeed.
+
+The movement of food rations on the game board began as a theoretical concept in the early design of the project. During development it underwent some major changes, that ended up radically simplifying the design. The end product is a robust data structure that enables quick searches of available positions food rations can move too, and animates the movement between these positions.
+
+Games between multiple people across a network and around the same computer works smoothly. In the finished application players can play at the same machine, and also with players across a network. This goes beyond the scope of the requirements analysis and design, but the good principals followed in the design of the application made it possible to implement in the time given.
+
+API security, that requires users are logged in to access resources uses stateless authentication through a access token stored by the client. This follows modern principals [reference] of API design, and integrated well with the client side framework.
+
+The detailed game rules and components have been presented in such a way, that with a bit of explanation about how the game works, users can discover the information they need and make strategic game choices. The server and client sections of the application work together well to perform operations and display game data. There is an interface that responds to user actions and provides feedback to users.
+
+Overall, the extent of work accomplished as well as its quality, and the methods for testing it, have resulted in a usable application. Some areas could be improved, but that is because the scope of the application goes beyond a thirteen-week project. The necessary sections of the project outlined in the requirements specification, as well as documentation and testing, have been achieved.
+
+\section{Future Work}
+What has been accomplished is good, but it is a start. With a functional game, it is easy to think of ways to improve it, and build upon the work done. Some of these are outlined below.
+
+\subsection{Changes to Existing Structure}
+Some areas of the application work, but in hindsight they could be improved. Two of these are discussed here: messages and dice.
+
+\subsubsection{Messages}
+Messages provide valuable feedback to the user about what goes on when actions are processed on the server. Currently they are returned with server responses to POST, PATCH and DELTE requests. However, this requires the assembly of JSON objects as requests are processed. Any method called, if it wants to return a message, must return a JSON object, which is collected by the controller and concatenated to a list of messages to be returned with the HTTP response.	
+
+Although this works, it is a bit messy. What would be far better is to persist messages within the database. This would allow messages to be generated anywhere in the server logic, without being returned through a chain of commands. Before the HTTP response is returned, the latest messages could be queried, and sent with the request.
+
+\subsubsection{Dice}
+Dice are represented as an integer from one to six. There are three dice values, stored as 'dice1', 'dice2', and 'dice3' within a Move record. The problem is, that not all dice are always used. Sometimes dice have no value. Also doubles and triples must have their values combined. Checking for the highest die of three, or the lowest, can take a fair amount of logic. This has to be repeated on both the client and server side of the application.
+
+A better solution would be to store dice records. Each dice would be able to identify if it was a double or triple, and only one value for those cases would need to be considered. Also, finding the highest or lowest dice value could be easily done when querying the database. It is only a small change, but would remove the need for a good bit of complex logic.
+
+\subsection{Design Enhancements}
+As a result of usability tests, a good amount of the user interface could be redesigned, with help of game user's input. This would improve the playability of the game and remove the need for it to be explained in such detail before hand.
+
+\subsubsection{A Single Game Play Interface}
+One area identified as needing improvement is moving the cards and game board to the same screen. While this may seem like it is adding complexity to the interface, it removes the need for the different phases of the game to change the view, causing confusion when the game is first played. Instead, a player can always see their cards, their food rations, and the game board. When an event happens, or to review the round, instead of a different screen being used, a pop-up can be presented. This can help demonstrate that the information is new, and is just to be understood, and that to get back to the game they can dismiss the message.
+
+\subsubsection{In Game Hints}
+To play the game strategically, and enjoy all its nuances, players currently have to read a long page of instructions. This can be changed without too much hassle to the interface, though it will require some complex logic. Players should be able to ask for a hint as often as they want. This will take into account the player's cards, their rations, and the state of the cow and suggest what is best to get points and keep the cow healthy.
+
+However, generating hints will be a challenge. It will require storing a list of hints that the user has already seen, and assessing when to re-display certain hints. The ingredients available to the user, as well as those in other rations will need to be checked before giving suggestions as to what ingredients to place in a new ration, or which food ration to move in the current round.
+
+\subsection{Game Enhancements}
+As well as improvements to the server, and the user interface, future work could encompass adding to the game to make it more enjoyable and competitive. Although the board game that the application is based on was finished and playable, the client has expressed wishes to change some aspects of the game. Some of these have been incorporated into the project, if they were minor, but others could not be added, but can be addressed in the future.
+
+\subsubsection{Dynamic Game Cards}
+A significant one of these improvements is dynamic game cards that can be created by application users. This would require a system of event actions, where cow information, player's cards, points, and ration contents can be changed by predefined actions. When a user creates a card, they have the option of fixing it's consequences to a number of these actions. This would be performed in a card creation environment. Once a card is created, it can be added to a deck of cards, which is used in a game.
+
+Allowing any user to create cards brings in the issue of moderation. Cards may have extreme consequences that reduce the enjoyment of a game. To counter this, cards would each have a rating. Once a player has used a card in a game, they may give it a rating. If a rating is poor other players are less likely to include it in their game.
+
+This enhancement is complex, it requires the creation of cards, dynamic card actions, creating and viewing card decks, and rating cards.
+
+\subsubsection{Shorter Games}
+To play a full game and navigate a few food rations through the cow's digestive system takes up to twenty or more rounds. A game of this length can take a few hours to play. This is often not practical in a classroom setting. Another enhancement suggested by the client is having a few different layouts of digestive systems. A short digestive system would have less positions that rations must move through, thereby making the game shorter. Another digestive system could be created for longer games, or for games with more than four players, to avoid congestion in the cow's digestive system.
+
+\subsubsection{Conclusion}
+As an educational resource, the Happy Cow Game application is useful. Work still needs to be done to mould it to better fit a classroom setting, or be easily playable at a science fair. For a teacher that has played the game, or understands the rules, an example is the client himself, it can be a good tool to nurture student’s interest in the subject. The client has already begun to register friends who want to test the game and find out more about his research.
+
+As a web application the Happy Cow Game has been a challenge. Finding the right development platform and frameworks took a week's research examining the advantages and disadvantages of different options. Creating a design that fitted the rules of the game into a RESTful API, and considering the challenges of moving pieces across a screen to represent a game board was a lesson in database design. Implementing the project built a robust understanding of Ruby on Rails and AngularJS as frameworks. Learning how to use the frameworks was a challenge, yet they provided an efficient working environment once these skills were grasped. Deploying the application to a live server, and gaining experience with Git was also useful. Finally testing the application, and seeing how users reacted to different aspects of the design helped shape an idea of what people find easy to use, and what is perceived as complicated.
+
+Much could still be done to improve the application: a new design, strategy hints, and dynamic cards Yet much has been successfully accomplished so far. Game rules have been taken from a two sided sheet of paper and turned into code that can be accessed through an API. The user interface has undergone a number of revisions to better portray the game to users. Players can group together at one machine, or play with each other across a network. With technologies now available it is possible to make a multi-player, turn-based game that can be played around the world, in thirteen weeks.

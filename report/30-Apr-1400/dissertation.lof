@@ -1,0 +1,45 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces An overview of the interactions between sections of the application.}}{10}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces The User record structure.}}{12}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces The Game record structure.}}{13}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces The Cow record structure.}}{14}
+\contentsline {figure}{\numberline {2.5}{\ignorespaces The Round record structure.}}{14}
+\contentsline {figure}{\numberline {2.6}{\ignorespaces The Card record structure.}}{15}
+\contentsline {figure}{\numberline {2.7}{\ignorespaces The Event record structure.}}{15}
+\contentsline {figure}{\numberline {2.8}{\ignorespaces The Ration record structure.}}{16}
+\contentsline {figure}{\numberline {2.9}{\ignorespaces The Ingredient record structure.}}{16}
+\contentsline {figure}{\numberline {2.10}{\ignorespaces The Position record structure.}}{17}
+\contentsline {figure}{\numberline {2.11}{\ignorespaces The Action and Round Record record structure.}}{17}
+\contentsline {figure}{\numberline {2.12}{\ignorespaces The main entities are shown on the left. Tables creating relationships between them are shown on the right. These are known and 'joining tables'.}}{18}
+\contentsline {figure}{\numberline {2.13}{\ignorespaces Pages are shown in different colours in order to show which phase of development they should be implemented in. The final phase, and some of the third were never created.}}{19}
+\contentsline {figure}{\numberline {2.14}{\ignorespaces The Index Page.}}{19}
+\contentsline {figure}{\numberline {2.15}{\ignorespaces The Login Page.}}{20}
+\contentsline {figure}{\numberline {2.16}{\ignorespaces The Register Page.}}{20}
+\contentsline {figure}{\numberline {2.17}{\ignorespaces The Games List Page.}}{21}
+\contentsline {figure}{\numberline {2.18}{\ignorespaces The Profile Page.}}{21}
+\contentsline {figure}{\numberline {2.19}{\ignorespaces The Games Set Up Page.}}{22}
+\contentsline {figure}{\numberline {2.20}{\ignorespaces The original game board. Players would sit around this and watch eachother move pieces. This is not possible with a web application where users can play accross a network.}}{24}
+\contentsline {figure}{\numberline {2.21}{\ignorespaces This shows an early design of the user interface. There are three main sections: game information, cow information, and the current phase.}}{25}
+\contentsline {figure}{\numberline {2.22}{\ignorespaces The original game board. Players would sit around this and watch eachother move pieces. This is not possible with a web application where users can play accross a network.}}{25}
+\contentsline {figure}{\numberline {2.23}{\ignorespaces A graph has a number of nodes, which represent positions, and links, which join positions. An example of a graph is a road map, where nodes are towns and links are the roads between them.}}{26}
+\contentsline {figure}{\numberline {2.24}{\ignorespaces Two types of links are shown here. On the left is a uni-directional link, the graph cannot be traversed from position 2 to position 1. On the right is a bi-directional link, the graph can be traversed from either position to the other.}}{26}
+\contentsline {figure}{\numberline {2.25}{\ignorespaces The ration is on position 16 and can move two spaces. So beginning with position 16, position 17 is checked, leading to position 18, where the algorithm finishes. If either of these positions had more than one link, the linked positions would also be added to the result.}}{26}
+\contentsline {figure}{\numberline {2.26}{\ignorespaces A proposed ordering of the positions within the rumen, in the inital design specification. This changed slightly during implementation.}}{27}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces On the left is a visual representation of the arrangement of seven positions as a graph. On the right is a diagram of the result of a traversal on such a graph. Beginning at position 1, each link between nodes is followed until 3 steps (a depth of 3) have been taken. This tree would then be sent to the client, and each position drawn in place.}}{32}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces This shows how a tree was drawn by the client. No order was given for drawing, so starting with position 1, the right-most link was followed (order). Therefore positions to the right of the tree were hidden by the same positions drawn after. The position that should have been drawn first is shown in green, yet the incorrect routes, shown in red which take more movements, were shown.}}{33}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Positions in green are reached, positions in red are excluded because they have already been included. Positions in orange are not displayed because their parents are excluded. Once again, the shortest route to position 3 is not taken.}}{33}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Steps of traversing the example graph, one set of links at a time. The resulting tree is shown at the end.}}{38}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces The inefficient, previous method is shown above. The method below shows the change, which made rendering positions much faster. The most expensive step was building a recursive tree of possible positions. Consider a block of positions, each with four links. This can quickly create a maze of possible solutions. The recursively built tree tried to represent every route, whereas a tree built in layers merely presented an allowed subsection of the graph.}}{39}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces A new proposed design, based on user feedback.}}{43}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces The cards phase was broken up into these five stages. These stages are designed to improve usability, as a player will only have one task to perform at a time.}}{44}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces The movement phase was broken up into these six stages. First they must choose and confirm a food ration, then they are presented with dice, and must move a food ration the number of positions shown on the dice they select.}}{45}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
