@@ -18,8 +18,8 @@ class GameUsersController < ApplicationController
   def update
     not_found and return if !GameUser.exists?(params[:id])
     @game_user = GameUser.find(params[:id])
-    unauthorised and return if @game_user.user_id != @user.id
-    
+    #unauthorised and return if @game_user.user_id != @user.id # this is for making a user present, or absent. It should be done through the game, really
+
     @game_user.update(params.permit(:network))
     render json: {
       success: true,

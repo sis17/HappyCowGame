@@ -6,21 +6,21 @@ class EventTest < ActiveSupport::TestCase
     @cow = cows(:twocow)
   end
 
-  test "make constipation active" do
+  test "making the constipation event the active disease event" do
     event = events(:event_dis_con)
     event.makeActive(@game)
     assert_equal(-1, @game.cow.welfare, "The cow's welfare is -1")
     assert_equal(true, @game.cow.check_constipated, "The is constipated")
   end
 
-  test "make diarrhea active" do
+  test "making the diarrhea event the active disease event" do
     event = events(:event_dis_dir)
     event.makeActive(@game)
     assert_equal(-1, @game.cow.welfare, "The cow's welfare is -1")
     assert_equal(true, @game.cow.check_diarrhea, "The cow has diarrhea")
   end
 
-  test "make cold weather active" do
+  test "making the cold weather event the active weather event" do
     event = events(:event_wth_cld)
     event.makeActive(@game)
     assert_equal(true, @game.cow.check_cold, "The cow is cold")
@@ -32,13 +32,13 @@ class EventTest < ActiveSupport::TestCase
     assert_equal(5, simeon.score, "Simeon has a score of 0, the absorbed ration made 0 points")
   end
 
-  test "make hot weather active" do
+  test "making the hot weather event the active weather event" do
     event = events(:event_wth_hot)
     event.makeActive(@game)
     assert_equal(true, @game.cow.check_hot, "The cow is hot")
   end
 
-  test "make good weather active" do
+  test "making the good weather event the active weather event" do
     event = events(:event_wth_gdw)
     event.makeActive(@game)
     assert_equal(false, @game.cow.check_hot, "The cow is not hot")
@@ -46,7 +46,7 @@ class EventTest < ActiveSupport::TestCase
     assert_equal(1, @game.cow.welfare, "The cow's welfare is 1")
   end
 
-  test "make mad cow crisis active" do
+  test "making the mad cow crisis event the active disease event" do
     event = events(:event_dis_mad)
     event.makeActive(@game)
     @game.ingredient_cats.each do |ing_cat|
@@ -57,7 +57,7 @@ class EventTest < ActiveSupport::TestCase
     assert_equal(true, @game.cow.check_mad, "The cow is mad")
   end
 
-  test "make mad cow crisis inactive" do
+  test "making the mad cow crisis event inactive again" do
     event = events(:event_dis_mad)
     event.makeActive(@game)
     event.makeInactive(@game)

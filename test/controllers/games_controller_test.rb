@@ -2,51 +2,48 @@ require 'test_helper'
 
 class GamesControllerTest < ActionController::TestCase
 
-  test "should not get index, without authentication" do
+  test "the request should not get the index method, without authentication" do
     get :index
     assert_response(401)
   end
 
-  test "should not get specific record, without authentication" do
+  test "the request should not get a specific record, without authentication" do
     get(:show, {'id' => games(:two).id})
     assert_response(401)
   end
 
-  test "should not allow update, without authentication" do
+  test "the request should not update a record, without authentication" do
     patch(:update, {'id' => games(:two).id, done_turn: 'true'})
     assert_response(401)
   end
 
-  test "should not allow destroy, without authentication" do
+  test "the request should delete a record, without authentication" do
     delete :destroy, {id: games(:two).id}
     assert_response(401)
   end
 
-  test "should get index" do
+  test "the requset should get the index method" do
     user = users(:simeon)
     @request.headers['UserId'] = user.id
     @request.headers['UserKey'] = user.key
 
     get :index
     assert_response :success
-
-    response = JSON.parse(@response.body)
-    assert_equal 1, response[0]['stage']
-    assert_equal 'PlayingGame', response[0]['name']
+    assert_equal 3, json_response.length
   end
 
-  test "should get show" do
+  test "the request should get the show method" do
     user = users(:simeon)
     @request.headers['UserId'] = user.id
     @request.headers['UserKey'] = user.key
 
     get :show, {id:games(:two).id}
     assert_response :success
+    assert_equal 1, json_response['stage']
+    assert_equal 'PlayingGame', json_response['name']
+  end
 
-    response = JSON.parse(@response.body)
-    assert_equal 1, response['stage']
-    assert_equal 'PlayingGame', response['name']
-
+  test "the request should not get the show method for a user who is not part of the game" do
     user = users(:test1)
     @request.headers['UserId'] = user.id
     @request.headers['UserKey'] = user.key
@@ -55,7 +52,7 @@ class GamesControllerTest < ActionController::TestCase
     assert_response(401)
   end
 
-  test "should allow done turn for current player" do
+  test "the request should allow finishing a turn for the current player" do
     # allow simeon to update the turn
     user = users(:simeon)
     @request.headers['UserId'] = user.id
@@ -65,7 +62,7 @@ class GamesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should not allow done turn for non current player" do
+  test "the request should not allow finishing a turn for a player other than the current player" do
     # should fail simeon to update the turn a second time, it's no longer his turn
     user = users(:ruth)
     @request.headers['UserId'] = user.id
@@ -75,7 +72,7 @@ class GamesControllerTest < ActionController::TestCase
     assert_response(401)
   end
 
-  test "should not allow done turn update for non player" do
+  test "the request should not allow finishing a turn for user who is not a player" do
     user = users(:test1)
     @request.headers['UserId'] = user.id
     @request.headers['UserKey'] = user.key
@@ -84,18 +81,17 @@ class GamesControllerTest < ActionController::TestCase
     assert_response(401)
   end
 
-  test "should not allow details update for started game" do
+  test "the request should not allow an update of game details once the game is in stage two" do
     user = users(:simeon)
     @request.headers['UserId'] = user.id
     @request.headers['UserKey'] = user.key
 
-    patch :update, {id:games(:two).id, done_turn: true}
+    patch :update, {id:games(:two).id, name: 'Happy Cow Game', rounds_min: 2}
     assert_response :success
-    response = JSON.parse(@response.body)
-    assert_not response['success']
+    assert_not json_response['success']
   end
 
-  test "should allow details update for unstarted game" do
+  test "the request should allow an updtae of game details for a game in stage one" do
     # should fail simeon to update the game, it's been started
     user = users(:simeon)
     @request.headers['UserId'] = user.id
@@ -103,13 +99,12 @@ class GamesControllerTest < ActionController::TestCase
 
     patch :update, {id:games(:one).id, name: 'Happy Cow Game', rounds_min: 2}
     assert_response :success
-    response = JSON.parse(@response.body)
-    assert response['success']
-    assert_equal 'Happy Cow Game', response['game']['name']
-    assert_equal 2, response['game']['rounds_min']
+    assert json_response['success']
+    assert_equal 'Happy Cow Game', json_response['game']['name']
+    assert_equal 2, json_response['game']['rounds_min']
   end
 
-  test "should not allow details update for a non creator" do
+  test "the request should not allow an update of game details for a non creator" do
     user = users(:ruth)
     @request.headers['UserId'] = user.id
     @request.headers['UserKey'] = user.key
@@ -118,7 +113,7 @@ class GamesControllerTest < ActionController::TestCase
     assert_response(401)
   end
 
-  test "should not allow begin for non creator" do
+  test "the request should not allow a non-creator to begin a game" do
     user = users(:ruth)
     @request.headers['UserId'] = user.id
     @request.headers['UserKey'] = user.key
@@ -127,8 +122,16 @@ class GamesControllerTest < ActionController::TestCase
     assert_response(401)
   end
 
-  test "should allow begin for creator" do
+  test "the request should allow the game creator to begin a game" do
+    user = users(:simeon)
+    @request.headers['UserId'] = user.id
+    @request.headers['UserKey'] = user.key
 
+    patch :update, {id:games(:one).id, begin: true}
+    assert_response :success
+    assert json_response['success']
+    assert_equal 1, json_response['game']['stage']
+    assert json_response['game']['round']
   end
 
 end

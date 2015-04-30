@@ -1,10 +1,12 @@
 pos1:
   area_id: 1
   order: 1
+  positions: pos7
 
 pos2:
   area_id: 1
   order: 2
+  positions: pos8
 
 pos3:
   area_id: 1
@@ -25,6 +27,27 @@ pos6:
 pos7:
   area_id: 2
   order: 7
+  positions: pos8, pos9
+
+pos8:
+  area_id: 2
+  order: 8
+  positions: pos7, pos10
+
+pos9:
+  area_id: 2
+  order: 9
+  positions: pos11, pos10, pos12
+
+pos10:
+  area_id: 2
+  order: 10
+  positions: pos9, pos12
+
+pos11:
+  area_id: 2
+  order: 11
+  positions: pos12
 
 pos12:
   area_id: 2

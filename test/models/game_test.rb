@@ -1,21 +1,63 @@
 require 'test_helper'
 
 class GameTest < ActiveSupport::TestCase
-  test "begin a game" do
+  def setup
+    srand(123)
+  end
+
+  test "beginning a game without any users" do
+    game = Game.new(name: 'No Users', rounds_min: 5, rounds_max: 5, carddeck:carddecks(:basic))
+  end
+  test "beginning a game with a higher minimum number of rounds than maximum" do
+    game = Game.new(name: 'Confused Rounds', rounds_min: 5, rounds_max: 2, carddeck:carddecks(:basic))
+    game.save
+    assert_not game.begin
+  end
+  test "beginning a game already in the playing phase" do
+    game = games(:two)
+    assert_not game.begin
+  end
+  test "that beginning a game moves it's stage to 1" do
     game = games(:one)
     game.begin
-
-    game = Game.find(game.id)
     assert_equal(1, game.stage, "The games's stage is now 1")
+  end
+  test "that beginning a game populates the game cards from the card deck" do
+    game = games(:one)
+    game.begin
+    #game = Game.find(game.id)
     assert_equal(GameCard.where(game:game).count, Card.count+4, "There are 4 more game cards than cards")
+  end
+  test "beginning a game creates a cow, motile pieces and ingredient types" do
+    game = games(:one)
+    game.begin
+    game = Game.find(game.id)
     assert_not_nil(game.cow, "The cow for the game is not nil")
-    assert_equal(1, game.round.number, "The initial round's number is 1")
-    assert_equal(5, game.rounds.length, "The game has 5 rounds")
     assert_equal(5, game.ingredient_cats.length, "The game has 5 ingredient categories")
     assert_equal(3, game.motiles.length, "The game has 3 motile pieces")
   end
+  test "that beginning a game makes the correct number of rounds" do
+    game = games(:one)
+    game.begin
+    last_round = game.rounds[game.rounds.length-1]
+    assert_equal 1, game.round.number
+    assert_equal 5, game.rounds.length
+  end
+  test "that in a new game, the last event is the slaughter house" do
+    game = games(:one)
+    game.begin
+    last_round = game.rounds[game.rounds.length-1]
+    assert_equal "end", last_round.event.uri
+  end
+  test "that in a new game every player has 2 cards" do
+    game = games(:one)
+    assert game.begin
+    game.game_users.each do |game_user|
+      assert 2, game_user.game_user_cards.length
+    end
+  end
 
-  test "get next player" do
+  test "that the game function to get the next player works" do
     game2 = games(:two)
     game2_ruth = game_users(:tworuth)
     assert_equal(game2_ruth.id, game2.get_next_player.id, "The next user id is equal to #{game2_ruth.id}")
@@ -25,7 +67,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(game2_ruth.id, game2.get_next_player.id, "The next user id is equal to #{game2_ruth.id}")
   end
 
-  test "finish ration milk" do
+  test "that a ration absorbed as milk gives a score of 2" do
     game = games(:two)
     ration1 = rations(:ration1_twosimeon)
     ration1.position = positions(:pos78)
@@ -34,12 +76,18 @@ class GameTest < ActiveSupport::TestCase
     #assert(result[:success], "The result of finish ration on ration1 is true")
     assert_equal(2, game_user.score, "The game user's score becomes 2")
     assert_not_includes(Ration.all, ration1, "The ration is not in the database")
-
+  end
+  test "that the absorbed function only works if the ration is in a viable position" do
+    game = games(:two)
     ration2 = rations(:ration2_twosimeon)
+    game_user = ration2.game_user
     result = game.finish_ration(ration2)
     #assert_not(result[:success], "The result of finish ration on ration1 is fase")
-    assert_equal(2, game_user.score, "The game user's score is still 2")
-
+    assert_equal(0, game_user.score, "The game user's score is still 0")
+    assert_includes(Ration.all, ration2, "The ration is in the database")
+  end
+  test "that a ration absorbed as milk, when the cow is pregnant, gives a meat score of 2" do
+    game = games(:two)
     ration3 = rations(:ration1_tworuth)
     game.cow.pregnancy_id = 1
     ration3.position = positions(:pos78)
@@ -49,7 +97,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(4, game_user.score, "The game user's score becomes 4")
   end
 
-  test "finish ration meat" do
+  test "that a ration absorbed as meat gives a score of 2" do
     game = games(:two)
     ration1 = rations(:ration1_twosimeon)
     ration1.position = positions(:pos86)
@@ -60,7 +108,7 @@ class GameTest < ActiveSupport::TestCase
     assert_not_includes(Ration.all, ration1, "The ration is not in the database")
   end
 
-  test "finish ration muck" do
+  test "that a ration absorbed as muck gives a score of 2" do
     game = games(:two)
     ration1 = rations(:ration1_tworuth)
     ration1.position = positions(:pos95)
@@ -73,7 +121,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(previous_action_number+1, Action.count, "1 action was created as a result of the finish ration")
   end
 
-  test "finish ration with oligos" do
+  test "that a ration with two oligos scores 10 for the first and 2 for the second" do
     game = games(:two)
     ration1 = rations(:ration2_tworuth)
     ration1.position = positions(:pos78)
@@ -86,7 +134,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(2, oligos_cat.get_score('milk'), "The next oligos scores 2")
   end
 
-  test "finish ration when cold" do
+  test "that a ration absorbed when the cow is cold gets 1 less point per ingredient" do
     game = games(:two)
     ration1 = rations(:ration1_tworuth)
     ration1.position = positions(:pos78)
@@ -98,7 +146,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(11, game_user.score, "The game user's score becomes 10")
   end
 
-  test "arrange trough from position 1" do
+  test "that rations in the trough automatically shuffle down" do
     game = games(:two)
     ration1 = rations(:ration1_twosimeon)
     ration1.position = positions(:pos7)
@@ -115,35 +163,28 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(0, pos4.rations.length, "position 4 has no rations")
   end
 
-  test "sort trough based on energy" do
+  test "that a game user is created by copying in user details" do
+    game = games(:one)
+    user = users(:test1)
+    game_user = game.create_game_user(user.id)
+    assert_equal game_user.colour, user.colour
+    assert_equal game_user.user.id, user.id
+    assert_equal 0, game_user.score
+    assert_equal "Test1", game_user.user.name
+  end
+  test "that a game user cannot be created once the game is begun" do
     game = games(:two)
-    game.sort_trough('energy')
-    ration1 = Ration.find(rations(:ration1_twosimeon).id)
-    ration2 = Ration.find(rations(:ration2_twosimeon).id)
-    ration3 = Ration.find(rations(:ration1_tworuth).id)
-    ration4 = Ration.find(rations(:ration2_tworuth).id)
-
-    #assert_equal(1, ration3.position.order, "ration3 is now at position 1")
-    #assert_equal(2, ration2.position.order, "ration2 is now at position 2")
-    #assert_equal(3, ration1.position.order, "ration1 is now at position 3")
-    #assert_equal(4, ration4.position.order, "ration4 is now at position 4")
+    user = users(:test1)
+    assert_not game.create_game_user(user.id)
+  end
+  test "that a user cannot be created twice as a game user in a game" do
+    game = games(:one)
+    user = users(:simeon)
+    game_user = game.create_game_user(user.id)
+    assert_equal game_users(:onesimeon).id, game_user.id
   end
 
-  test "sort trough based on water" do
-    game = games(:two)
-    game.sort_trough('water')
-    ration1 = Ration.find(rations(:ration1_twosimeon).id)
-    ration2 = Ration.find(rations(:ration2_twosimeon).id)
-    ration3 = Ration.find(rations(:ration1_tworuth).id)
-    ration4 = Ration.find(rations(:ration2_tworuth).id)
-
-    #assert_equal(1, ration1.position.order, "ration1 is now at position 1")
-    #assert_equal(2, ration2.position.order, "ration2 is now at position 2")
-    #assert_equal(3, ration3.position.order, "ration3 is now at position 3")
-    #assert_equal(4, ration4.position.order, "ration4 is now at position 4")
-  end
-
-  test "assign cards" do
+  test "that the assign cards function gives a number game cards to the specified game user" do
     game = games(:two)
     simeon = game_users(:twosimeon)
     simeon_card_count = simeon.game_user_cards.length
@@ -161,7 +202,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(ruth_card_count+60, ruth.game_user_cards.length, "Game user 2 has 60 more cards")
   end
 
-  test "finish with a winner" do
+  test "that the winner of the game gets 3 experience and everyone else gets 1 if the welfare is 2" do
     game = games(:two)
     simeon = game_users(:twosimeon)
     simeon.score = 1
@@ -177,7 +218,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(3 + (game.cow.welfare / 2), ruth.experience, "User2 has experience of 4")
   end
 
-  test "finish with a tie" do
+  test "that in the case of a tie, neither player gets more experience" do
     game = games(:two)
     simeon = game_users(:twosimeon)
     simeon.score = 3
@@ -192,16 +233,15 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(1 + (game.cow.welfare / 2), ruth.experience, "User2 has experience of 2")
   end
 
-  test "finish with dead cow" do
+  test "that when the cow dies players lose a lot of experience" do
     cow = cows(:twocow)
-    cow.kill
-    game = Game.find(cow.game.id)
-    game.finish
+    cow.decrease_welfare(7)
+    game = cow.game
     simeon = game.game_users[0]
-    assert_equal(1, simeon.user.experience, "User1 has experience of 1")
+    assert_equal(-3, simeon.user.experience, "User1 has experience of -3")
   end
 
-  test "card balance" do
+  test "that the card balance function distributes more ingredients at the beginning, and more actions at the end" do
     game = games(:two)
     # in it's first quater
     assert_equal(1, game.card_balance('action'), "1 action card is the balance");
@@ -212,18 +252,10 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(0, game.card_balance('ingredient'), "0 ingredient cards is the balance");
   end
 
-  test "add game user" do
-    game = Game.new
-    user = users(:simeon)
-    game_user = game.create_game_user(user.id)
-    assert_equal(game_user.user.id, user.id, "The new game user has the same user id as the user.")
-    assert_equal(game_user.colour, user.colour, "The new game user has the same colour as the user.")
-
+  test "that you can't create a game user without a user" do
+    game = Game.new(stage:0)
+    game.save
     game_user = game.create_game_user(0)
     assert_not(game_user, "The create game user method returned false")
-
-    user = users(:ruth)
-    game_user = game.create_game_user(user.id)
-    assert_equal('Ruth', game_user.user.name, "The new game user has the name Ruth.")
   end
 end

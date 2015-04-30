@@ -7,6 +7,10 @@ twosimeon:
   game: two
   user: simeon
 
+threesimeon:
+  game: three
+  user: simeon
+
 tworuth:
   game: two
   user: ruth

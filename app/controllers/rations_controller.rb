@@ -1,6 +1,6 @@
 class RationsController < ApplicationController
   # authenticate the following actions
-  before_action :authenticate, only: [:index, :show, :create, :update]
+  before_action :authenticate, only: [:index, :show, :create]
   before_filter :load_user
 
   def index
@@ -9,22 +9,18 @@ class RationsController < ApplicationController
   end
 
   def show
+    not_found and return if !Ration.exists?(params[:id])
     @ration = ration.includes({game_user: :user}, {ingredients: :ingredient_cat}, :position, :moves).find(params[:id])
     render json: @ration
-  end
-
-  def update
-    @ration = Ration.find(params[:id])
-    # actions done in the move_controller
-    render json: response and return
   end
 
   def create
     success = false
     messages = []
     @game_user = GameUser.find(params[:ration][:game_user_id])
-    current_round = @game_user.game.round
+    unauthorised and return if @game_user.user_id != @user.id # the creator must be the current user
 
+    current_round = @game_user.game.round
     # check a ration hasn't already been created this round
     already_created_ration = Ration.where(game_user_id: @game_user.id, round_created_id: current_round.id).first
     if already_created_ration
@@ -61,7 +57,6 @@ class RationsController < ApplicationController
   def load_user
     @game_user = GameUser.find(params[:game_user_id]) if params[:game_user_id]
     @game = Game.find(params[:game_id]) if params[:game_id]
-    #@rations = @user ? @user.rations : Ration.scoped
   end
 
   def ration

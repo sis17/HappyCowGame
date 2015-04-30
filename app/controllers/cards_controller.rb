@@ -1,6 +1,6 @@
 class CardsController < ApplicationController
   # authenticate the following actions
-  before_action :authenticate, only: [:index, :show, :create, :update, :destroy]
+  before_action :authenticate, only: [:index, :show, :update, :destroy]
   before_filter :load_user
 
   def index
@@ -9,19 +9,21 @@ class CardsController < ApplicationController
   end
 
   def show
+    not_found and return if !card.exists?(params[:id])
     @card = card.find(params[:id])
     render json: @card.as_json
   end
 
   def update
     if params[:game_user_id]
+      not_found and return if !GameUserCard.exists?(params[:id])
       @game_user_card = GameUserCard.find(params[:id])
 
       if params[:use]
         # do the use action
         card = @game_user_card.game_card.card
         game_user = @game_user_card.game_user
-        response = @game_user_card.use #act_on_card(@game_user_card, params)
+        response = @game_user_card.use
 
         if response[:success] and card.uri == 'medical_insurance'
           count = 0
@@ -52,6 +54,7 @@ class CardsController < ApplicationController
   def destroy
 
     if params[:game_user_id]
+      not_found and return if !GameUserCard.exists?(params[:id])
       @card = GameUserCard.find(params[:id])
       action = Action.new
       action.set('Discarded a Card', "discarded the card #{@card.game_card.card.title}.",
@@ -74,8 +77,9 @@ class CardsController < ApplicationController
 
   def load_user
     @game_user = GameUser.find(params[:game_user_id]) if params[:game_user_id]
+    unauthorised and return if params[:game_user_id] and @game_user.user_id != @user.id # check the user is the game user
     @game = Game.find(params[:game_id]) if params[:game_id]
-    #@rations = @user ? @user.rations : Ration.scoped
+    unauthorised and return if params[:game_id] and !@user.is_playing(@game) # check user is playing the game
   end
 
   def card

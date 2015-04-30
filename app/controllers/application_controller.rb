@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
     user_key = request.headers['UserKey']
     @user = User.where(id: user_id, key: user_key).first if user_id and user_key
 
+    # if no user record is found, return an unauthorized response (401)
     unless @user
       head status: :unauthorized
       return false

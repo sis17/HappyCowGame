@@ -15,8 +15,9 @@ class Game < ActiveRecord::Base
   belongs_to :user
 
   def begin
-    # check it's in the right phase
-    return false if self.stage != 0
+    # some checks before we get going
+    return false if self.stage != 0 # check it's in the right phase
+    return false if self.rounds_min > self.rounds_max # that the minimum number of rounds is not greater than the max
 
     #create the rounds
     game_user_offset = 0
@@ -121,6 +122,7 @@ class Game < ActiveRecord::Base
   end
 
   def create_game_user(user_id)
+    return false if self.stage >= 1
     return false if !User.exists?(user_id)
     user = User.find(user_id)
 
@@ -151,17 +153,17 @@ class Game < ActiveRecord::Base
         with = ', with '+movement.ration.describe_ingredients+', ' if movement.ration
         action.set(
           'Moved a Ration', 'moved a ration '+with+movement.movements_made.to_s+' places.',
-          @round.id, 3, @round.game_user.id
+          self.round.id, 3, self.round.game_user.id
         )
       end
 
       # add the round records
       round_record = RoundRecord.new(
-        round: @round, game_user: @round.game_user, name: 'score', value: @round.game_user.score).save
+        round: self.round, game_user: self.round.game_user, name: 'score', value: self.round.game_user.score).save
       round_record = RoundRecord.new(
-        round: @round, game_user: @round.game_user, name: 'cards', value: @round.game_user.game_user_cards.count).save
+        round: self.round, game_user: self.round.game_user, name: 'cards', value: self.round.game_user.game_user_cards.count).save
       round_record = RoundRecord.new(
-        round: @round, game_user: @round.game_user, name: 'rations', value: @round.game_user.rations.count).save
+        round: self.round, game_user: self.round.game_user, name: 'rations', value: self.round.game_user.rations.count).save
     end
   end
 
@@ -310,7 +312,6 @@ class Game < ActiveRecord::Base
     taken_positions = Hash.new
 
     # get rations and compare amount of fibre
-    #existing_ration = Ration.joins(:game_user).where(game_users: {game_id:self.id}, position_id: current_position.id).take
     if existing_ration
       rations = Ration.joins(:game_user).where(game_users: {game_id:self.id})
       rations.each do |ration|
@@ -367,7 +368,8 @@ class Game < ActiveRecord::Base
   def finish
     messages = []
     if self.stage == 1
-      self.stage = 2
+      self.stage = (self.cow.check_dead ? 3 : 2)
+      
       # give every player a bit of experience
       score = 0
       winner = nil
@@ -414,6 +416,7 @@ class Game < ActiveRecord::Base
             ]}}
           ]}}
         ]}},
+        {user: {:only => [:id, :name, :experience]}},
         :rounds,
         :carddeck,
         :cow,

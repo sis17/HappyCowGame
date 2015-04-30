@@ -4,3 +4,10 @@ twocow:
   ph_marker: 6.5
   oligos_marker: 0
   muck_marker: 0
+
+threecow:
+  welfare: 0
+  body_condition: 0
+  ph_marker: 6.5
+  oligos_marker: 0
+  muck_marker: 0

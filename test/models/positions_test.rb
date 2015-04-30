@@ -3,7 +3,7 @@ class PositionTest < ActiveSupport::TestCase
 
   end
 
-  test "is not free with motile" do
+  test "that a ration cannot move to a position with a motile element" do
     # position 50 has a motile piece
     game = games(:two)
     ration1 = rations(:smallfiber)
@@ -12,7 +12,7 @@ class PositionTest < ActiveSupport::TestCase
     assert_not(result, "Position 50 is not free, it has a motile element")
   end
 
-  test "is free" do
+  test "that a position with no ration or motile element is free" do
     game = games(:two)
     ration1 = rations(:smallfiber)
     position = positions(:pos12)
@@ -20,7 +20,7 @@ class PositionTest < ActiveSupport::TestCase
     assert(result, "Position 12 is free.")
   end
 
-  test "is not free with more fiber ration" do
+  test "that a ration with 1 fiber cannot move to a position occupied by a ration with 2 fiber" do
     game = games(:two)
     ration1 = rations(:smallfiber)
     position = positions(:pos12)
@@ -33,7 +33,7 @@ class PositionTest < ActiveSupport::TestCase
     assert_not(result, "Position 12 is not free, it has a ration with more fiber")
   end
 
-  test "is free with less fiber ration" do
+  test "that a ration with 2 fiber can move to a position occupied by a ration with 1 fiber" do
     game = games(:two)
     ration1 = rations(:lotsoffiber)
     position = positions(:pos12)

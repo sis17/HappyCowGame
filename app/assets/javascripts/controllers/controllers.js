@@ -103,7 +103,9 @@ angular.module('happyCow').controller('BaseCtrl', [
       });
     }
 
+    $scope.d = false
     $scope.debug = function() {
+      $scope.d = 'bug';
       //return $scope.user.get();
     }
 

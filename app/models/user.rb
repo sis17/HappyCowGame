@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
   has_many :rations
   has_many :rations, through: :game_users
-  has_many :games, through: :game
+  has_many :games
 
   def is_playing(game)
     game.game_users.each do |game_user|

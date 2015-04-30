@@ -55,8 +55,17 @@ class GamesController < ApplicationController
         })
       end
 
-    elsif !params[:begin] && @game.stage == 0
-      puts @game.user.name
+    elsif params[:begin] && @game.stage == 0
+      unauthorised and return if @game.user.id != @user.id # check user is game creator
+      # formally create a game, move it to stage 1
+      success = @game.begin
+      if success
+        messages.push({title: 'Game Begun', text: 'The game was successfully begun.', type: 'success', time: 2})
+      else
+        messages.push({title: 'Game Launch Failed', text: 'You cannot currently begin this game, sorry.', type: 'warning', time: 5})
+      end
+
+    elsif @game.stage == 0
       unauthorised and return if @game.user_id != @user.id # check user is game creator
 
       # update a game, before it is formally created
@@ -81,24 +90,13 @@ class GamesController < ApplicationController
       @game.save
       success = true
 
-    elsif params[:begin] && @game.stage == 0
-      unauthorised and return if @game.user.id != @user.id # check user is game creator
-      # formally create a game, move it to stage 1
-      success = @game.begin
-
-      if success
-        messages.push({
-            title: 'Game Begun',
-            text: 'The game was successfully begun.',
-            type: 'success', time: 2
-        })
-      else
-        messages.push({
-            title: 'Game Launch Failed',
-            text: 'You cannot currently begin this game, sorry.',
-            type: 'warning', time: 5
-        })
-      end
+    else
+      success = false
+      messages.push({
+          title: 'Game Already Started',
+          text: 'You cannot update game details once it has been started.',
+          type: 'warning', time: 6
+      })
     end
 
     render json: {

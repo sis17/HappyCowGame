@@ -8,6 +8,7 @@ one:
   carddeck: basic
   rounds_min: 5
   rounds_max: 5
+  user: simeon
 
 two:
   start_time: 2015-02-24 11:52:05
@@ -16,6 +17,18 @@ two:
   name: PlayingGame
   round: round1
   cow: twocow
+  rounds_min: 5
+  rounds_max: 5
+  carddeck: basic
+  user: simeon
+
+three:
+  start_time: 2015-02-24 11:52:05
+  end_time: 2015-02-24 11:52:05
+  stage: 1
+  name: AnotherGame
+  round: round1
+  cow: threecow
   rounds_min: 5
   rounds_max: 5
   carddeck: basic

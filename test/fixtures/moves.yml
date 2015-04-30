@@ -1,0 +1,14 @@
+move1simeon:
+  game_user: twosimeon
+  round: round1
+  ration: ration1_twosimeon
+  dice1: 1
+  dice2: 1
+  dice3: 0
+  selected_die: 1
+  movements_left: 2
+  movements_made: 0
+
+move1ruth:
+  game_user: tworuth
+  round: round1

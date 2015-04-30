@@ -6,15 +6,15 @@ class MotileTest < ActiveSupport::TestCase
     @motile = motiles(:motile1)
   end
 
-  test "a motile has a game" do
+  test "that a motile element has a game" do
     assert_not_nil(@motile.game, "The motile has a game")
   end
 
-  test "a motile has a position" do
+  test "that a motile element has a position" do
     assert_not_nil(@motile.position, "The motile has a position")
   end
 
-  test "move to an empty place" do
+  test "the result of moving a motile element to an empty place" do
     # fixtures won't add positions, so do it manually
     @motile.position.positions.push(positions(:pos56))
     @motile.position.positions.push(positions(:pos50))
@@ -22,7 +22,7 @@ class MotileTest < ActiveSupport::TestCase
     assert_equal(positions(:pos56).order, @motile.position.order, "The motile has moved to position 56")
   end
 
-  test "does not move to position 61" do
+  test "that a motile element cannot not move to the exit of the rumen" do
     # fixtures won't add positions, so do it manually
     @motile.position = positions(:pos60)
     @motile.position.positions.push(positions(:pos60))
@@ -34,7 +34,7 @@ class MotileTest < ActiveSupport::TestCase
     assert_not_equal(positions(:pos61).order, @motile.position.order, "The motile has not moved to position 61")
   end
 
-  test "move onto a ration" do
+  test "the result of moving a motile element onto a ration" do
     ration = rations(:ration1_twosimeon)
     ration.position = positions(:pos50)
     ration.save

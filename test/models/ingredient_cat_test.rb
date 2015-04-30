@@ -2,17 +2,17 @@ require 'test_helper'
 
 class GameTest < ActiveSupport::TestCase
 
-  test "an ingredient cateogry has many ingredients" do
+  test "that an ingredient cateogry has many ingredients" do
     cat = ingredient_cats(:two_watercategory)
     assert_not_nil(cat.ingredients, "The ingredient cateogry has ingredients")
   end
 
-  test "an ingredient category has a game" do
+  test "that an ingredient category has a game" do
     cat = ingredient_cats(:two_watercategory)
     assert_not_nil(cat.game, "The ingredient category has a game")
   end
 
-  test "get water category scores" do
+  test "that the method to get ingredient category scores works for water" do
     cat = ingredient_cats(:two_watercategory)
     assert_nil(cat.get_score(''), "No absorbtion type gives nil as result.")
     assert_equal(1, cat.get_score('milk'), "Water gets 1 when absorbed as milk.")
@@ -20,7 +20,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(1, cat.get_score('muck'), "Water gets 1 when absorbed as muck.")
   end
 
-  test "get energy category scores" do
+  test "that the method to get ingredient category scores works for energy" do
     cat = ingredient_cats(:two_energycategory)
     assert_nil(cat.get_score(''), "No absorbtion type gives nil as result.")
     assert_equal(6, cat.get_score('milk'), "Energy gets 6 when absorbed as milk.")
@@ -28,7 +28,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(1, cat.get_score('muck'), "Energy gets 1 when absorbed as muck.")
   end
 
-  test "get protein category scores" do
+  test "that the method to get ingredient category scores works for protien" do
     cat = ingredient_cats(:two_protiencategory)
     assert_nil(cat.get_score(''), "No absorbtion type gives nil as result.")
     assert_equal(3, cat.get_score('milk'), "Protein gets 3 when absorbed as milk.")
@@ -36,7 +36,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(1, cat.get_score('muck'), "Protein gets 1 when absorbed as muck.")
   end
 
-  test "get fiber category scores" do
+  test "that the method to get ingredient category scores works for fiber" do
     cat = ingredient_cats(:two_fibercategory)
     assert_nil(cat.get_score(''), "No absorbtion type gives nil as result.")
     assert_equal(2, cat.get_score('milk'), "Fibre gets 2 when absorbed as milk.")
@@ -44,7 +44,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(1, cat.get_score('muck'), "Fibre gets 1 when absorbed as muck.")
   end
 
-  test "get oligos category scores" do
+  test "that the method to get ingredient category scores works for olgios" do
     cat = ingredient_cats(:two_oligoscategory)
     assert_nil(cat.get_score(''), "No absorbtion type gives nil as result.")
     assert_equal(10, cat.get_score('milk'), "Oligos gets 10 when absorbed as milk.")
@@ -52,7 +52,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal(1, cat.get_score('muck'), "Oligos gets 1 when absorbed as muck.")
   end
 
-  test "oglios score decreases" do
+  test "that the oglios score decreases when oligos is absorbed" do
     cat = ingredient_cats(:two_oligoscategory)
     assert_equal(10, cat.get_score('milk'), "Oligos gets 10 when absorbed as milk.")
     assert_equal(10, cat.get_score('meat'), "Oligos gets 10 when absorbed as meat.")

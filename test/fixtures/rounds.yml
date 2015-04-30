@@ -29,3 +29,11 @@ round4:
   game_user: twosimeon
   game: two
   starting_user: twosimeon
+
+round5:
+  event: event_wth_cld
+  number: 1
+  current_phase: 2
+  game_user: threesimeon
+  game: three
+  starting_user: threesimeon

@@ -51,11 +51,13 @@
             <td><span class="label label-default" style="background-color: {{game_user.colour}};">sample</span></td>
             <td>
               <span ng-if="!game_user.network" class="glyphicon glyphicon-ok"></span>
-              <button ng-if="user.isCreator(game) && !game_user.network && game_user.user_id != $storage.user.id" ng-click="setNetwork(game_user, true)" class="btn btn-info btn-xs">Make Distant</button>
+              <button ng-if="user.isCreator(game) && game_user.network && game_user.user_id != $storage.user.id"
+                      ng-click="setNetwork(game_user, false)" class="btn btn-info btn-xs">Make Present</button>
             </td>
             <td>
               <span ng-if="game_user.network" class="glyphicon glyphicon-ok"></span>
-              <button ng-if="user.isCreator(game) && game_user.network && game_user.user_id != $storage.user.id" ng-click="setNetwork(game_user, false)" class="btn btn-info btn-xs">Make Present</button>
+              <button ng-if="user.isCreator(game) && !game_user.network && game_user.user_id != $storage.user.id"
+                      ng-click="setNetwork(game_user, true)" class="btn btn-info btn-xs">Make Distant</button>
             </td>
             <td>
               <button ng-if="user.isCreator(game) && !game_user.network && !auth_games.loggedIn(game.id, game_user.user_id) && game_user.user_id != $storage.user.id"

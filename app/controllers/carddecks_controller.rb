@@ -1,6 +1,6 @@
 class CarddecksController < ApplicationController
   # authenticate the following actions
-  before_action :authenticate, only: [:index, :create, :update, :destroy]
+  before_action :authenticate, only: [:index, :show, :create, :update, :destroy]
 
   def index
     @carddecks = Carddeck.all

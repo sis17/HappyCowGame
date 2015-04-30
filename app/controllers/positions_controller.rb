@@ -1,6 +1,6 @@
 class PositionsController < ApplicationController
   # authenticate the following actions
-  before_action :authenticate, only: [:graph]
+  #before_action :authenticate, only: [:graph]
   before_filter :load_game
 
   def index

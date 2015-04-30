@@ -13,30 +13,37 @@ class Position < ActiveRecord::Base
     return true
   end
 
+  # build_graph returns a hash of all the available positions within a certain
+  # depth of the current position. It does this by taking a depth (level) from
+  # the current position at a time, while also assmebling the next level.
   def build_graph(depth, taken_positions)
+      # the graph is a hash of all possible positions
       graph = {}
-      # create the position, if not already there
+      # add the initial position to the graph
       self.build(graph, taken_positions)
-      next_positions = self.positions
+      current_level = self.positions
 
+      # while the depth is not reached, add levels of positions to the graph
       while depth > 0 do
         depth -= 1
-        next_next_positions = []
-
-        next_positions.each do |next_position|
-          # create the position, if not already there
-          added = next_position.build(graph, taken_positions)
-          if added
-            next_next_positions.concat(next_position.positions)
-          end
+        # this holds the next level of positions to be added
+        next_level = []
+        # loop through the current level of positions
+        current_level.each do |position|
+          # add the position to the graph, if not already there
+          added = position.build(graph, taken_positions)
+          # if it has been added, add it's links to the next level
+          next_level.concat(position.positions) if added
         end
-        next_positions = next_next_positions
+        current_level = next_level
       end
+      # return the finished graph
       return graph
   end
 
   def build(graph, taken_positions)
-      added = false
+      # if the position is not already in the graph, or is not taken by a motile
+      # piece or another ration, then add it to the graph
       if !graph[self.id] and !taken_positions[self.id] or graph.size == 0
         graph[self.id] = {}
         graph[self.id]['id'] = self.id;
@@ -49,15 +56,9 @@ class Position < ActiveRecord::Base
           graph[self.id]['links'][next_position.id] = next_position.id
         end
         graph[self.id]['rations'] = {};
-        added = true
-
-        # if the position is taken by a ration, add the ration to the list
-        #if taken_positions[position.id] && taken_positions[position.id][:type] == 'ration'
-        #  ration = taken_positions[position.id]
-        #  graph[position.id]['rations'][ration[:id]] = ration[:id]
-        #end
+        return true
       end
-      return added
+      return false
   end
 
   def as_json(options={})

@@ -30,16 +30,11 @@ class Cow < ActiveRecord::Base
     end
 
     self.save
-    self.check_dead
+    self.kill if self.check_dead
   end
 
   def check_dead
-    if self.welfare < -6 or self.body_condition < -3
-      self.kill
-      # make notice
-      return true
-    end
-    return false
+    return (self.welfare < -6 or self.body_condition < -3)
   end
 
   def oligos_score
@@ -67,7 +62,7 @@ class Cow < ActiveRecord::Base
     ing_cat.meat_score = self.oligos_score
     ing_cat.milk_score = self.oligos_score
     ing_cat.save
-    
+
     self.save
   end
 
@@ -81,7 +76,7 @@ class Cow < ActiveRecord::Base
     amount = 5 if amount > 5
     self.welfare = amount
     self.save
-    self.check_dead
+    self.kill if self.check_dead
     return self.welfare
   end
 
@@ -110,7 +105,7 @@ class Cow < ActiveRecord::Base
     amount = 3 if amount > 3
     self.body_condition = amount
     self.save
-    self.check_dead
+    self.kill if self.check_dead
   end
 
   def check_constipated
@@ -133,10 +128,9 @@ class Cow < ActiveRecord::Base
    return Event.where(id:self.weather_id, uri: 'wth_hot').count > 0
   end
 
-  def kill
-    game = self.game
-    game.stage = 4
-    game.save
+  def kill # end the game, because the cow is dead
+    self.game.finish
+    self.game.save
   end
 
   def change_event(event)

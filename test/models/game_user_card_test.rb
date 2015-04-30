@@ -6,7 +6,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     @game_user = game_users(:twosimeon)
   end
 
-  test "use card with no specified action" do
+  test "that you cannot use a card with no specified action" do
     game = games(:two)
     card = Card.new(title:"Do Nothing", description:"Does nothing", image:"", category:"action", rating:0, points:0, uri:"nill")
     game_card = GameCard.new(game: game, card: card)
@@ -16,7 +16,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(false, result[:success], "The result of using the card was false.")
   end
 
-  test "use card that is not an action card" do
+  test "that you cannot use a card that is not an action card" do
     game = games(:two)
     game_user = game_users(:twosimeon)
     card = Card.new(title:"Dirt", description:"Does nothing.", image:"", category:"dirt", rating:0, points:0, uri:"nill")
@@ -27,7 +27,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(false, result[:success], "The result of using the card was false.")
   end
 
-  test "use card acidodis plus" do
+  test "the action of the card acidodis plus" do
     game_card = game_cards(:gc6)
     game_user_card = GameUserCard.new(game_card: game_card, game_user: @game_user)
     result = game_user_card.use
@@ -35,7 +35,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(7.1, cows(:twocow).ph_marker, "The cow's pH has increased to 7.1.")
   end
 
-  test "use card acidodis minus" do
+  test "the action of the card acidodis minus" do
     game_card = game_cards(:gc7)
     game_user_card = GameUserCard.new(game_card: game_card, game_user: @game_user)
     result = game_user_card.use
@@ -43,7 +43,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(5.9, cows(:twocow).ph_marker, "The cow's pH has decreased to 5.9.")
   end
 
-  test "use card rumination" do
+  test "the action of the card rumination" do
     # test with no available ration
     game_card = game_cards(:gc8)
     game_user_card = GameUserCard.new(game_card: game_card, game_user: @game_user)
@@ -64,7 +64,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(1, cows(:twocow).welfare, "The cow's welfare increased to 1.")
   end
 
-  test "use card thief" do
+  test "the action of the card thief" do
     game_card = game_cards(:gc9)
     game_user_card = GameUserCard.new(game_card: game_card, game_user: @game_user)
     result = game_user_card.use
@@ -78,7 +78,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(1, first_ration.ingredients.length, "The first ration has 1 ingredient.")
   end
 
-  test "use card vet" do
+  test "the action of the card vet" do
     #create a disease
     cow = cows(:twocow)
     cow.disease_id = events(:event_dis_con).id
@@ -94,7 +94,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(0, cow.welfare, "The cow's welfare has been moved to 0.")
   end
 
-  test "use card clean stables" do
+  test "the action of the card clean stables" do
     cow = cows(:twocow)
     cow.muck_marker = 2
     cow.save
@@ -109,7 +109,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(0, cow.muck_marker, "The cow's muck marker has been moved to 0.")
   end
 
-  test "use card activists" do
+  test "the action of the card animal welfare activists" do
     other_game_card = game_cards(:gc1)
     other_game_user = game_users(:tworuth)
     GameUserCard.new(game_card: other_game_card, game_user: other_game_user)
@@ -127,7 +127,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(3, cow.welfare, "The cow's welfare has been moved to 3.")
   end
 
-  test "use card deficiency" do
+  test "the action of the card deficiency" do
     # test first without any oligos increased
     cow = @game_user.game.cow
     cow.welfare = 0
@@ -154,7 +154,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     #assert_equal(0, cow.welfare, "The cow's welfare stayed the same.")
   end
 
-  test "use card medical insurance" do
+  test "the action of the card medical insurance" do
     #test with 4 cards, and decreased welfare
     game_card = game_cards(:gc14)
     game_user_card = GameUserCard.new(game_card: game_card, game_user: @game_user)
@@ -186,7 +186,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(false, result[:success], "The result of using the card was false.")
   end
 
-  test "use card saponins (fiber in rumen turned to protien)" do
+  test "the action of the card saponins (fiber in rumen turned to protien)" do
     ration = Ration.new(game_user:@game_user, position:positions(:pos25))
     ration.save
     Ingredient.new(ration:ration, ingredient_cat:ingredient_cats(:two_fibercategory)).save
@@ -201,7 +201,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(1, protiens_size, "The ration now has 2 protien.")
   end
 
-  test "use card probiotics" do
+  test "the action of the card probiotics" do
     cow = cows(:twocow)
     cow.ph_marker = 7
     cow.welfare = 0
@@ -216,7 +216,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(1, cow.welfare, "The cow's welfare marker increased to 1.")
   end
 
-  test "use card farm improvements" do
+  test "the action of the card farm improvements" do
     cow = cows(:twocow)
     cow.weather_id = events(:event_wth_cld)
     cow.save
@@ -229,7 +229,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(nil, cow.weather_id, "The cow's weather event has been removed.")
   end
 
-  test "use card bioreactor" do
+  test "the action of the card bioreactor" do
     game_card = game_cards(:gc18)
     game_user_card = GameUserCard.new(game_card: game_card, game_user: @game_user)
     result = game_user_card.use
@@ -243,7 +243,7 @@ class GameUserCardTest < ActiveSupport::TestCase
     assert_equal(2, category.muck_score, "The muck score for energy is 2.")
   end
 
-  test "use card high sugar grass" do
+  test "the action of the card high sugar grass" do
     # put fiber in the intestines
     ration = Ration.new(game_user:@game_user, position:positions(:pos78))
     ration.save
