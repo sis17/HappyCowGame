@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Week 5 - 23rd-27th February.</title>
+    <title>Week 8 - 16th-20th March.</title>
     
     <meta name="author" content="Simeon Smith">
 
@@ -130,23 +130,31 @@
       <div class="container">
         
 <div class="page-header">
-  <h1>Week 5 - 23rd-27th February. </h1>
+  <h1>Week 8 - 16th-20th March. </h1>
 </div>
 
 <div class="row post-full">
   <div class="col-xs-12">
     <div class="date">
-      <span>24 February 2015</span>
+      <span>17 March 2015</span>
     </div>
     <div class="content">
-      <h3 id="server-setup">Server Setup</h3>
-<p><a href="https://www.openshift.com/">RedHat Openshift</a> allows a user to host up to 3 simple-ish web applications for free. This suits the need of the project, as I need to deploy the game publicly in order for others, including Gabriel the client, to test.</p>
+      <h3 id="mid-project-demonstration">Mid-Project Demonstration</h3>
+<p>This was on the Tuesday of the week (the 17th). I took some time preparing for that.</p>
 
-<p>Openshift provides start up frameworks and plug and use databases. So I chose Ruby on Rails 4, and MySQL 2. Even better, sites on Openshift are managed by GitHub integration. However, it requires the project is set up on Openshift, and then cloned. This involved creating a new rails application, cloning it to my machine, and then copying the work form last week into that new app.</p>
+<h3 id="card-rules">Card Rules</h3>
+<p>The various cards that Gabi invented need to have their rules implemented, so their actions are automatically carried out. In some cases this is simple, as when moving a ration, or changing how much a type of ingredient is worth.</p>
 
-<p>Before I could do this however, Ruby Gems proved a nuisance. Installing the MySQL2 gem took some work and file changes, and depended on other gems which also took some file permission wrangling. In the end, everything was installed and worked, but of course, these are all unexpected trials which take time not accounted for.</p>
+<p>However, in other cases, it proves quite complex. For example, the thief card demands that the player chooses ingredients in their hand to replace with somebody else’s ration. This would require another popup where the user can select which ingredients to use and take.</p>
 
-<h3 id="back-end-database-models-and-controllers">Back-end Database, Models, and Controllers</h3>
+<p>The short term solution is to lean towards making the effects of cards random, so instead of getting to chose a ration or cards, the effect happens to a randomly chosen ration.</p>
+
+<p>The other difficult aspect is keeping all the cow details up to date. Some effects of cards and events happen straight away, others cause events such as pregnancy, or ration movement which only happen later. When multiple events happen, the system needs to know if the cow is constipated, or what the weather is to check how rations should move.</p>
+
+<p>Then there is the updating of the welfare, body condition and rumen PH markers. When one action causes a change in body condition for example, there may be a knock on effect on the welfare. A centralised part of the system needs to check these reactions and update the server.</p>
+
+<h3 id="testing">Testing</h3>
+<p>I began getting friends to test the game. The biggest confusion was what to do once a game is created, so how to play. To solve this I added instructions and help buttons.</p>
 
     </div>
 
@@ -160,7 +168,7 @@
   
      
     	<li><a href="/categories.html#progress-ref">
-    		progress <span>5</span>
+    		progress <span>7</span>
     	</a></li>
     
   
@@ -174,7 +182,7 @@
     <hr>
     <ul class="pagination">
     
-      <li class="prev"><a href="/progress/2015/02/21/week4" title="Week 4 - 16th-21st February.">&laquo; Previous</a></li>
+      <li class="prev"><a href="/progress/2015/03/10/week7" title="Week 7 - 9th-13th March.">&laquo; Previous</a></li>
     
       <li><a href="/archive.html">Archive</a></li>
     

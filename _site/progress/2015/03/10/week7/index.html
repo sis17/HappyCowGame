@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Week 7 - 9th-13th March.</title>
+    
+    <meta name="author" content="Simeon Smith">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap styles -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional theme -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Sticky Footer -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bs-sticky-footer.css" rel="stylesheet">
+    
+    <!-- Custom styles -->
+    <link href="/assets/themes/bootstrap-3/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!-- Update these with your own images
+      <link rel="shortcut icon" href="images/favicon.ico">
+      <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+      <nav class="navbar navbar-default" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#jb-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Happy Cow Game</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="jb-navbar-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+
+
+
+          </ul>
+          <form class="navbar-form navbar-right" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+      <div class="container">
+        
+<div class="page-header">
+  <h1>Week 7 - 9th-13th March. </h1>
+</div>
+
+<div class="row post-full">
+  <div class="col-xs-12">
+    <div class="date">
+      <span>10 March 2015</span>
+    </div>
+    <div class="content">
+      <h3 id="ui-fixes-and-game-rules">UI fixes and Game rules</h3>
+<p>After getting the main progress of the game in place, so that players can move from turn to turn, create and delete games, there are a host of rules and UI improvements that need to be put into place.</p>
+
+<h4 id="ration-placement">Ration Placement</h4>
+<p>One of these is that rations must appear in the trough, but only if there is a free space, and then directly after any existing rations. I implemented this. This means there is no links in positions between positions in the trough, rations are instead moved automatically.</p>
+
+<p>Then there is the problem of rations being able to move on top of each other. I prevented this by maintaining a list of ration positions. When the positions are requested for a dice number, positions with existing rations on (in that same game) are excluded from the list.</p>
+
+<h3 id="ration-movement">Ration movement</h3>
+<p>I initially thought this worked with a simple graph returned from the server. However, the problem proved more complicated.</p>
+
+<p>The issue is that the server returned positions from the specified position, but a position could appear several times if it could be moved to from several other positions. When that map of positions was drawn on the board, positions over-lapped each other. Because the positions were assembled recursively, the order they appeared was not out from the starting position, but in strings or paths.</p>
+
+<p>The solution was to request positions from the server, and then create a hash table of all the positions, with links to other positions. This was essentially a graph on the client side, but where no positions repeated. To draw the available places to move was then a matter of traversing the graph non-recursively, so that positions appeared in the correct order.</p>
+
+<h3 id="alerts-service">Alerts service</h3>
+<p>I took the quickly created alert code I made previously and turned it into a service. This meant that any part of the client side code can quickly make an alert that is managed by the service and can automatically fade away. It took a while to get used to the idea of services in AngularJS.</p>
+
+<h3 id="positions-in-the-database">Positions in the Database</h3>
+<p>This was a tedious task that had to be done this week. After testing the game with Gabi and Amanda, I realised any more testing would require all the positions to be set up to allow rations to fully navigate the cow’s intestines. This meant finding the x and y coordinates of each position and entering it into the database, and then also providing the join information between positions (especially tedious in the rumen).</p>
+
+<p>It has worked well since finished, however. The position design works well.</p>
+
+<h3 id="rations-absorbed">Rations Absorbed</h3>
+<p>This functionality was created this week. It was a matter of checking the position of a ration when it is updated (so when it has finished moving). If it is in the milk, meat or final position it is scored appropriately by looking up the current ingredient values in the cow, and the user is then notified.</p>
+
+<h3 id="turn-updates">Turn Updates</h3>
+<p>Another thing from the meeting with Amanada and Gabi was the fact that users need to be notified when others finish a turn, and it is then their turn to go. Previously it required a page refresh.</p>
+
+<p>The quick implementation is to get the page to request an update for the game, round and cow information ever few seconds. This works well. In the future I need to look into getting the server to initiate the update.</p>
+
+<h2 id="section">#</h2>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="glyphicon glyphicon-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#progress-ref">
+    		progress <span>7</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+    
+  
+    <hr>
+    <ul class="pagination">
+    
+      <li class="prev"><a href="/development/angular/2015/02/26/restangular-guide" title="Restangular guide.">&laquo; Previous</a></li>
+    
+      <li><a href="/archive.html">Archive</a></li>
+    
+      <li class="next"><a href="/progress/2015/03/17/week8" title="Week 8 - 16th-20th March.">Next &raquo;</a></li>
+    
+    </ul>
+    <hr>
+    
+  </div>
+</div>
+
+
+      </div>
+
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p>&copy; 2015 Simeon Smith
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </div>
+    </div>
+
+    
+
+
+    <!-- Latest compiled and minified JavaScript, requires jQuery 1.x (2.x not supported in IE8) -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/assets/themes/bootstrap-3/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>
+

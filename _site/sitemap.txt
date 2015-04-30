@@ -8,7 +8,11 @@ http://username.github.io/rss.xml
 http://username.github.io/sitemap.txt
 http://username.github.io/tags.html
 
-http://username.github.io/progress/2015/02/24/wekk5
+http://username.github.io/progress/2015/03/17/week8
+http://username.github.io/progress/2015/03/10/week7
+http://username.github.io/development/angular/2015/02/26/restangular-guide
+http://username.github.io/development/2015/02/26/rails-keep-json-clean
+http://username.github.io/progress/2015/02/24/week5
 http://username.github.io/progress/2015/02/21/week4
 http://username.github.io/progress/2015/02/14/week3
 http://username.github.io/progress/2015/02/06/week2

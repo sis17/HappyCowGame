@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="todo">
+
+<head>
+
+  <title>ToDo - Angular Demo</title>
+  <!-- load bootstrap and friends -->
+  <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/font-awesome.css" />
+  <link href="css/jumbotron-narrow.css" rel="stylesheet">
+
+  <!-- load angularjs and the seperate route module -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+
+  <!-- load up our app -->
+  <script src="js/app.js"></script>
+  <script src="js/controllers.js"></script>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h3 class="text-muted">Todo Today</h3>
+    </div>
+
+    <!-- content is injected here -->
+    <div class="panel panel-default" ng-controller="TodoListCtl">
+      <div class="panel-heading">
+        <div class="row">
+          <form class="form-inline col-md-7">
+            <div class="form-group">
+              <input ng-model="todo.title" type="text" placeholder="What needs to be done?" class="form-control">
+            </div>
+            <button class="btn btn-primary" type="submit" ng-click="add(todo)">Create</button>
+          </form>
+          <div class="btn-group col-md-5">
+            <button class="btn btn-danger" ng-click="clearAll()">Clear all</button>
+            <button class="btn btn-primary" ng-click="clear()">Clear completed</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <ul class="list-group">
+          <li ng-repeat="todo in todos"class="list-group-item">
+            <span style="{{todo.complete ? 'text-decoration: line-through;' : ''}}"
+                  class="{{todo.showEdit ? 'hidden' : ''}}">
+                  {{todo.title}}
+            </span>
+            <form class="form-inline {{todo.showEdit ? '' : 'hidden'}}" ng-submit="edit(todo)">
+              <input class="form-control" type="text" ng-model="todo.title" value="{{todo.title}}" />
+            </form>
+            <div class="btn-group pull-right">
+              <button class="btn btn-default btn-xs" ng-click="showEdit(todo)">
+                <span class="glyphicon glyphicon-edit"></span> Edit
+              </button>
+              <button class="btn btn-success btn-xs" ng-click="complete(todo)">
+                <span class="glyphicon glyphicon-ok"></span> Done
+              </button>
+            </div>
+          </li>
+        </ul>
+
+        <div>
+          <span class="label label-default" ng-if="countTodo() > 0">{{countTodo()}} todo</span>
+          <span class="label label-success" ng-if="countComplete() > 0">{{countComplete()}} complete</span>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- /container -->
+
+
+</body>
+</html>
